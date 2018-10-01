@@ -102,6 +102,7 @@
         <skip.release.tests>false</skip.release.tests>
         <spec.version>${last.final.spec.version}</spec.version>
         <javax.json.version>1.1</javax.json.version>
+        <api_package>javax.json.bind</api_package>
     </properties>
 
     <dependencies>
@@ -312,8 +313,9 @@
                     <!-- This plugin generates the spec.* properties used in maven-bundle-plugin -->
                     <groupId>org.glassfish.build</groupId>
                     <artifactId>spec-version-maven-plugin</artifactId>
-                    <version>1.2</version>
+                    <version>1.5</version>
                     <configuration>
+                    	<specMode>jakarta</specMode>
                         <spec>
                             <nonFinal>${non.final}</nonFinal>
                             <jarType>api</jarType>
@@ -321,7 +323,7 @@
                             <newSpecVersion>${new.spec.version}</newSpecVersion>
                             <specBuild>${milestone.number}</specBuild>
                             <specImplVersion>${project.version}</specImplVersion>
-                            <apiPackage>${project.groupId}</apiPackage>
+                            <apiPackage>${api_package}</apiPackage>
                         </spec>
                     </configuration>
                     <executions>

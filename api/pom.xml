@@ -101,7 +101,7 @@
         <skip.release.tests>false</skip.release.tests>
         <spec.version>1.1</spec.version>
         <jakarta.json.version>1.1.5</jakarta.json.version>
-        <api_package>javax.json.bind</api_package>
+        <api_package>jakarta.json.bind</api_package>
         <legal.doc.source>${project.basedir}/..</legal.doc.source>
         <vendor.name>Oracle Corporation</vendor.name>
     </properties>
@@ -308,7 +308,7 @@
                     <artifactId>spec-version-maven-plugin</artifactId>
                     <version>1.5</version>
                     <configuration>
-                    	<specMode>jakarta</specMode>
+                        <specMode>jakarta</specMode>
                         <spec>
                             <nonFinal>${non.final}</nonFinal>
                             <jarType>api</jarType>
@@ -323,7 +323,6 @@
                         <execution>
                             <goals>
                                 <goal>set-spec-properties</goal>
-                                <goal>check-module</goal>
                             </goals>
                         </execution>
                     </executions>

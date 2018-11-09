@@ -349,7 +349,7 @@
                             <Specification-Version>${spec.specification.version}</Specification-Version>
                             <Specification-Vendor>${vendor.name}</Specification-Vendor>
                             <_nodefaultversion>false</_nodefaultversion>
-                            <Export-Package>${api_package}.*; version=${spec.version}</Export-Package>
+                            <Export-Package>javax.json.bind.*; version=${spec.version}</Export-Package>
                             <_noee>true</_noee>
                         </instructions>
                     </configuration>

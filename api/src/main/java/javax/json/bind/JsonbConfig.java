@@ -30,14 +30,14 @@ import java.util.Optional;
 
 /**
  * <p>
- * <a name="supportedProps"></a>
+ * <a id="supportedProps"></a>
  * <b>Supported Properties</b><br>
  * <blockquote>
  * <p>
  * All JSON Binding providers are required to support the following set of properties.
  * Some providers may support additional properties.
  * <dl>
- *   <dt><tt>jsonb.to.json.formatted</tt> - java.lang.Boolean
+ *   <dt><code>jsonb.to.json.formatted</code> - java.lang.Boolean
  *   <dd>Controls whether or not the {@link javax.json.bind.Jsonb Jsonb} {@code toJson()}
  *       methods will format the resulting JSON data with line breaks and indentation. A
  *       true value for this property indicates human readable indented
@@ -45,13 +45,13 @@ import java.util.Optional;
  *       Default value is false (unformatted) if this property is not specified.
  * </dl>
  * <dl>
- *   <dt><tt>jsonb.to.json.encoding</tt> - java.lang.String
+ *   <dt><code>jsonb.to.json.encoding</code> - java.lang.String
  *   <dd>The {@link javax.json.bind.Jsonb Jsonb} serialization {@code toJson()} methods
  *       will default to this property for encoding of output JSON data. Default
  *       value is 'UTF-8' if this property is not specified.
  * </dl>
  * <dl>
- *   <dt><tt>jsonb.from.json.encoding</tt> - java.lang.String
+ *   <dt><code>jsonb.from.json.encoding</code> - java.lang.String
  *   <dd>The {@link javax.json.bind.Jsonb Jsonb} deserialization {@code fromJson()}
  *       methods will default to this property encoding of input JSON data if the
  *       encoding cannot be detected.

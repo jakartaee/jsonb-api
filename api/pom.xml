@@ -28,7 +28,7 @@
 
     <groupId>jakarta.json.bind</groupId>
     <artifactId>jakarta.json.bind-api</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>JSON-B API</name>
@@ -95,13 +95,11 @@
     <properties>
         <release.spec.feedback>jsonb-dev@eclipse.org</release.spec.feedback>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <last.final.spec.version>1.0</last.final.spec.version>
         <milestone.number>01</milestone.number>
-        <next.final.spec.version>1.1</next.final.spec.version>
-        <new.spec.version>${next.final.spec.version}</new.spec.version>
+        <new.spec.version>1.1.0</new.spec.version>
         <non.final>false</non.final>
         <skip.release.tests>false</skip.release.tests>
-        <spec.version>${last.final.spec.version}</spec.version>
+        <spec.version>1.1</spec.version>
         <jakarta.json.version>1.1.5</jakarta.json.version>
         <api_package>javax.json.bind</api_package>
         <legal.doc.source>${project.basedir}/..</legal.doc.source>
@@ -210,9 +208,6 @@
             </activation>
             <properties>
                 <!-- Final API bundle version properties -->
-                <spec.version>${next.final.spec.version}</spec.version>
-                <new.spec.version />
-                <milestone.number />
                 <non.final>false</non.final>
             </properties>
         </profile>
@@ -247,7 +242,6 @@
     </profiles>
 
     <build>
-        <!--finalName>${project.artifactId}</finalName-->
         <pluginManagement>
             <plugins>
                 <plugin>

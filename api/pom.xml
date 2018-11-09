@@ -157,9 +157,6 @@
                                     <includes>
                                         <include>module-info.java</include>
                                     </includes>
-                                    <compilerArgs>
-                                        <arg>-J-Xmodule:java.json.bind</arg>
-                                    </compilerArgs>
                                 </configuration>
                             </execution>
                         </executions>

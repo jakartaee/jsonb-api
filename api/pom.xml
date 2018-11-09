@@ -114,7 +114,6 @@
                 <groupId>jakarta.json</groupId>
                 <artifactId>jakarta.json-api</artifactId>
                 <version>${jakarta.json.version}</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
@@ -129,6 +128,7 @@
         <dependency>
             <groupId>jakarta.json</groupId>
             <artifactId>jakarta.json-api</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -149,7 +149,6 @@
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <configuration>
                             <docfilessubdirs>true</docfilessubdirs>
-                            <additionalparam>--add-modules java.json --module-path ${project.build.directory}/modules/jakarta.json-api-${jakarta.json.version}.jar</additionalparam>
                         </configuration>
                     </plugin>
                     <plugin>
@@ -366,7 +365,7 @@
                             <Specification-Vendor>${vendor.name}</Specification-Vendor>
                             <_nodefaultversion>false</_nodefaultversion>
                             <Export-Package>${api_package}.*; version=${spec.version}</Export-Package>
-                            <_noee>true</_noee> <!-- FIXME: FELIX-5430 -->
+                            <_noee>true</_noee>
                         </instructions>
                     </configuration>
                     <executions>
@@ -374,7 +373,7 @@
                             <id>osgi-bundle</id>
                             <phase>process-classes</phase>
                             <goals>
-                                <goal>bundle</goal>
+                                <goal>manifest</goal>
                             </goals>
                         </execution>
                     </executions>
@@ -521,31 +520,6 @@ All rights reserved.<br>Comments to: <a href="mailto:${release.spec.feedback}">$
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.1.1</version>
-                    <executions>
-                        <execution>
-                            <id>copy</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>copy</goal>
-                            </goals>
-                            <configuration>
-                                <artifactItems>
-                                    <artifactItem>
-                                        <groupId>jakarta.json</groupId>
-                                        <artifactId>jakarta.json-api</artifactId>
-                                        <version>${jakarta.json.version}</version>
-                                        <overWrite>true</overWrite>
-                                        <outputDirectory>${project.build.directory}/modules</outputDirectory>
-                                    </artifactItem>
-                                </artifactItems>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>1.6</version>
                 </plugin>
@@ -593,10 +567,6 @@ All rights reserved.<br>Comments to: <a href="mailto:${release.spec.feedback}">$
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

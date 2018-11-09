@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.eclipse.ee4j</groupId>
         <artifactId>project</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.4</version>
     </parent>
 
     <groupId>jakarta.json.bind</groupId>
@@ -93,30 +93,44 @@
     </developers>
 
     <properties>
+        <release.spec.feedback>jsonb-dev@eclipse.org</release.spec.feedback>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <last.final.spec.version>0.9</last.final.spec.version>
         <milestone.number>01</milestone.number>
-        <next.final.spec.version>1.0</next.final.spec.version>
-        <new.spec.version>${next.final.spec.version}</new.spec.version>
-        <non.final>true</non.final>
+        <new.spec.version>1.1.0</new.spec.version>
+        <non.final>false</non.final>
         <skip.release.tests>false</skip.release.tests>
-        <spec.version>${last.final.spec.version}</spec.version>
-        <javax.json.version>1.1</javax.json.version>
-        <api_package>javax.json.bind</api_package>
+        <spec.version>1.1</spec.version>
+        <jakarta.json.version>1.1.5</jakarta.json.version>
+        <api_package>jakarta.json.bind</api_package>
+        <legal.doc.source>${project.basedir}/..</legal.doc.source>
+        <vendor.name>Oracle Corporation</vendor.name>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>jakarta.json</groupId>
+                <artifactId>jakarta.json-api</artifactId>
+                <version>${jakarta.json.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
-            <groupId>javax.json</groupId>
-            <artifactId>javax.json-api</artifactId>
-            <version>${javax.json.version}</version>
+            <groupId>jakarta.json</groupId>
+            <artifactId>jakarta.json-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -124,18 +138,10 @@
         <profile>
             <id>jdk9</id>
             <activation>
-                <jdk>[1.9,)</jdk>
+                <jdk>[9,)</jdk>
             </activation>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <configuration>
-                            <docfilessubdirs>true</docfilessubdirs>
-                            <additionalparam>--add-modules java.json --module-path ${project.build.directory}/javax.json-api-${javax.json.version}.jar</additionalparam>
-                        </configuration>
-                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
@@ -146,15 +152,11 @@
                                     <goal>compile</goal>
                                 </goals>
                                 <configuration>
-                                    <release>9</release>
                                     <source>9</source>
                                     <target>9</target>
                                     <includes>
                                         <include>module-info.java</include>
                                     </includes>
-                                    <compilerArgs>
-                                        <arg>-J-Xmodule:java.json.bind</arg>
-                                    </compilerArgs>
                                 </configuration>
                             </execution>
                         </executions>
@@ -165,7 +167,7 @@
         <profile>
             <id>non-jdk9</id>
             <activation>
-                <jdk>(,1.9)</jdk>
+                <jdk>(,9)</jdk>
             </activation>
             <build>
                 <plugins>
@@ -196,9 +198,6 @@
             </activation>
             <properties>
                 <!-- Final API bundle version properties -->
-                <spec.version>${next.final.spec.version}</spec.version>
-                <new.spec.version />
-                <milestone.number />
                 <non.final>false</non.final>
             </properties>
         </profile>
@@ -225,10 +224,6 @@
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-release-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-deploy-plugin</artifactId>
                     </plugin>
                 </plugins>
@@ -237,13 +232,16 @@
     </profiles>
 
     <build>
-        <finalName>${project.artifactId}</finalName>
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>findbugs-maven-plugin</artifactId>
-                    <version>3.0.4</version>
+                    <version>3.0.5</version>
                     <configuration>
                         <effort>Max</effort>
                         <threshold>Low</threshold>
@@ -262,7 +260,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.6.0</version>
+                    <version>3.8.0</version>
                     <configuration>
                         <source>1.8</source>
                         <target>1.8</target>
@@ -285,15 +283,10 @@
                     </executions>
                 </plugin>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>2.5</version>
-                </plugin>
-                <plugin>
                     <!-- This plugin generates the buildNumber property used in maven-bundle-plugin -->
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>buildnumber-maven-plugin</artifactId>
-                    <version>1.3</version>
+                    <version>1.4</version>
                     <configuration>
                         <format>{0,date,MM/dd/yyyy hh:mm aa}</format>
                         <items>
@@ -315,7 +308,7 @@
                     <artifactId>spec-version-maven-plugin</artifactId>
                     <version>1.5</version>
                     <configuration>
-                    	<specMode>jakarta</specMode>
+                        <specMode>jakarta</specMode>
                         <spec>
                             <nonFinal>${non.final}</nonFinal>
                             <jarType>api</jarType>
@@ -330,7 +323,8 @@
                         <execution>
                             <goals>
                                 <goal>set-spec-properties</goal>
-                                <goal>check-module</goal>
+                                <!-- TODO: Enable when spec version plugin is fixed. -->
+                                <!--goal>check-module</goal-->
                             </goals>
                         </execution>
                     </executions>
@@ -338,9 +332,12 @@
                 <plugin>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>maven-bundle-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>3.5.1</version>
                     <extensions>true</extensions>
                     <configuration>
+                        <archive>
+                            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                        </archive>
                         <instructions>
                             <Build-Id>${buildNumber}</Build-Id>
                             <Bundle-Description>Java API for JSON Binding (JSON-Binding)</Bundle-Description>
@@ -350,26 +347,36 @@
                             <Extension-Name>${spec.extension.name}</Extension-Name>
                             <Implementation-Version>${spec.implementation.version}</Implementation-Version>
                             <Specification-Version>${spec.specification.version}</Specification-Version>
-                            <Specification-Vendor>Oracle Corporation</Specification-Vendor>
+                            <Specification-Vendor>${vendor.name}</Specification-Vendor>
                             <_nodefaultversion>false</_nodefaultversion>
-                            <Export-Package>javax.json.bind.*</Export-Package>
-                            <_failok>true</_failok> <!-- FIXME: FELIX-5430 -->
+                            <Export-Package>${api_package}.*; version=${spec.version}</Export-Package>
+                            <_noee>true</_noee>
                         </instructions>
                     </configuration>
                     <executions>
                         <execution>
                             <id>osgi-bundle</id>
-                            <phase>package</phase>
+                            <phase>process-classes</phase>
                             <goals>
-                                <goal>bundle</goal>
+                                <goal>manifest</goal>
                             </goals>
                         </execution>
                     </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.1.0</version>
+                    <configuration>
+                        <archive>
+                            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.10.4</version>
+                    <version>3.0.1</version>
                     <configuration>
                         <failOnError>true</failOnError>
                         <doctitle>JSON-Binding ${project.version} API Specification</doctitle>
@@ -399,6 +406,10 @@
                                 <value>http://download.oracle.com/javase/8/docs/api/</value>
                             </property>
                         </javaApiLinks>
+                        <bottom><![CDATA[<br>
+Copyright &#169; {inceptionYear}&#x2013;{currentYear} Oracle and/or its affiliates.
+All rights reserved.<br>Comments to: <a href="mailto:${release.spec.feedback}">${release.spec.feedback}</a>.]]>
+                        </bottom>
                     </configuration>
                     <executions>
                         <execution>
@@ -412,7 +423,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>2.3</version>
+                    <version>3.0.1</version>
                     <executions>
                         <execution>
                             <id>attach-sources</id>
@@ -424,46 +435,8 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>2.8.1</version>
-                    <configuration>
-                        <retryFailedDeploymentCount>10</retryFailedDeploymentCount>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.5.3</version>
-                    <!--
-                        To release a non-final version:
-                        ===============================
-                        mvn release:prepare -DdryRun=false -DreleaseVersion=<release-version> \
-                                -DdevelopmentVersion=<next-dev-version> -Dtag=<release-version> -Prelease
-
-                        mvn release:perform -DconnectionUrl="scm:git:file://<path-to-local-jsonb-repo>" -Dtag=<release-version> \
-                                -Prelease,skip-tests
-
-                        To release a final version:
-                        ===========================
-                        mvn release:prepare -DdryRun=false -DreleaseVersion=<release-version> \
-                                -DdevelopmentVersion=<next-dev-version> -Dtag=<release-version> -Prelease,final
-
-                        mvn release:perform -DconnectionUrl="scm:git:file://<path-to-local-jsonb-repo>" -Dtag=<release-version> \
-                                -Prelease,skip-tests,final
-                    -->
-                    <configuration>
-                        <arguments>-Dmaven.test.skip=${skip.release.tests} ${release.arguments}</arguments>
-                        <autoVersionSubmodules>true</autoVersionSubmodules>
-                        <mavenExecutorId>forked-path</mavenExecutorId>
-                        <preparationGoals>clean install</preparationGoals>
-                        <pushChanges>false</pushChanges>
-                        <useReleaseProfile>false</useReleaseProfile>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jxr-plugin</artifactId>
-                    <version>2.3</version>
+                    <version>3.0.0</version>
                     <executions>
                         <execution>
                             <goals>
@@ -476,7 +449,7 @@
                 <plugin>
                     <groupId>org.glassfish.copyright</groupId>
                     <artifactId>glassfish-copyright-maven-plugin</artifactId>
-                    <version>1.40</version>
+                    <version>1.50</version>
                     <configuration>
                         <excludeFile>${basedir}/../etc/config/copyright-exclude</excludeFile>
                         <!--svn|mercurial|git - defaults to svn-->
@@ -506,12 +479,12 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>2.17</version>
+                    <version>3.0.0</version>
                     <dependencies>
                         <dependency>
                             <groupId>com.puppycrawl.tools</groupId>
                             <artifactId>checkstyle</artifactId>
-                            <version>6.11.2</version>
+                            <version>8.14</version>
                         </dependency>
                     </dependencies>
                     <configuration>
@@ -532,39 +505,45 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.0.0</version>
-                    <executions>
-                        <execution>
-                            <id>copy</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>copy</goal>
-                            </goals>
-                            <configuration>
-                                <artifactItems>
-                                    <artifactItem>
-                                        <groupId>javax.json</groupId>
-                                        <artifactId>javax.json-api</artifactId>
-                                        <version>${javax.json.version}</version>
-                                        <overWrite>true</overWrite>
-                                        <outputDirectory>${project.build.directory}</outputDirectory>
-                                    </artifactItem>
-                                </artifactItems>
-                            </configuration>
-                        </execution>
-                    </executions>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.6</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>3.0.0-M2</version>
                 </plugin>
             </plugins>
         </pluginManagement>
+
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}/META-INF</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${legal.doc.source}</directory>
+                                    <includes>
+                                        <include>LICENSE.md</include>
+                                        <include>NOTICE.md</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
+                <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -573,10 +552,6 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -606,7 +581,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.0.5</version>
             </plugin>
         </plugins>
     </reporting>  

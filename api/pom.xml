@@ -323,6 +323,8 @@
                         <execution>
                             <goals>
                                 <goal>set-spec-properties</goal>
+                                <!-- TODO: Enable when spec version plugin is fixed. -->
+                                <!--goal>check-module</goal-->
                             </goals>
                         </execution>
                     </executions>

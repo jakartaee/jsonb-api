@@ -354,4 +354,17 @@ public interface Jsonb extends AutoCloseable {
      * @since JSON Binding 1.0
      */
     void toJson(Object object, Type runtimeType, OutputStream stream) throws JsonbException;
+    
+    /**
+     * Closes this resource, relinquishing any underlying resources. In particular,
+     * cleans up all CDI managed components (such as adapters with CDI dependencies)
+     * created during interaction with Jsonb. {@code close()} must be called after
+     * all threads have finished interaction with Jsonb. If there are remaining
+     * threads working with Jsonb after {@code close()} has been called, behaviour
+     * is undefined.
+     *
+     * @throws JsonbException If any unexpected problem occurs during the close.
+     */
+    @Override
+    void close() throws JsonbException;
 }

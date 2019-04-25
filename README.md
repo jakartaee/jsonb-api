@@ -1,4 +1,5 @@
-# Java API for JSON Binding (JSON-B)
+# Jakarta JSON Binding (JSON-B)
+
 [![Maven Central](https://img.shields.io/maven-central/v/jakarta.json.bind/jakarta.json.bind-api.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:jakarta.json.bind%20a:jakarta.json.bind-api)
 [![License](https://img.shields.io/badge/License-EPL%202.0-green.svg)](https://opensource.org/licenses/EPL-1.0)
 
@@ -50,6 +51,7 @@ User alice = jsonb.fromJson(aliceJson, User.class);
 
 ## Links
 
+- Official web site: https://eclipse-ee4j.github.io/jsonb-api
 - JSON-B user guide: https://javaee.github.io/jsonb-spec/users-guide.html
 - Eclipse Project for JSON-B: https://projects.eclipse.org/projects/ee4j.jsonb
 - Discussion groups: jsonb-dev@eclipse.org

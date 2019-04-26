@@ -1,4 +1,4 @@
-:component-name: Json Binding 1.0 Users Guide
+:component-name: Json Binding 1.0.1 Users Guide
 :toc: left
 :toclevels: 3
 
@@ -14,33 +14,26 @@ JSON-B is a standard binding layer for converting Java objects to/from JSON mess
 .Maven Dependencies
 ----
 <dependencies>
-    <!-- JSON-P API -->
-    <dependency>
-        <groupId>javax.json</groupId>
-        <artifactId>javax.json-api</artifactId>
-        <version>1.1</version>
-    </dependency>
-
     <!-- JSON-P RI -->
     <dependency>
         <groupId>org.glassfish</groupId>
-        <artifactId>javax.json</artifactId>
-        <version>1.1</version>
+        <artifactId>jakarta.json</artifactId>
+        <version>1.1.5</version>
         <scope>runtime</scope>
     </dependency>
 
     <!-- JSON-B API -->
     <dependency>
-        <groupId>javax.json.bind</groupId>
-        <artifactId>javax.json.bind-api</artifactId>
-        <version>1.0.0-RC2</version>
+        <groupId>jakarta.json.bind</groupId>
+        <artifactId>jakarta.json.bind-api</artifactId>
+        <version>1.0.1</version>
     </dependency>
 
     <!-- Yasson (JSON-B RI) -->
     <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>yasson</artifactId>
-        <version>1.0.0-RC1</version>
+        <version>1.0.3</version>
         <scope>runtime</scope>
     </dependency>
 </dependencies>
@@ -694,7 +687,8 @@ Jsonb jsonb = JsonbBuilder.create(config);
 
 == Further Information
 
-- JSON-B official web site: http://json-b.net
-- Specification project: http://github.com/javaee/jsonb-spec
+- JSON-B official web site: https://eclipse-ee4j.github.io/jsonb-api
+- Eclipse Project for JSON-B: https://projects.eclipse.org/projects/ee4j.jsonb
+- Discussion groups: jsonb-dev@eclipse.org
 - JSR-367 page on JCP site: https://jcp.org/en/jsr/detail?id=367
-- Yasson (Reference Implementation): https://projects.eclipse.org/projects/rt.yasson
+- Yasson (Compatible Implementation): https://github.com/eclipse-ee4j/yasson

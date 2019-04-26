@@ -1,120 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
+    Copyright (c) 2017, 2019 Oracle and/or its affiliates. All rights reserved.
 
-    DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+    This program and the accompanying materials are made available under the
+    terms of the Eclipse Public License v. 2.0, which is available at
+    http://www.eclipse.org/legal/epl-2.0.
 
-    Copyright (c) 2017 Oracle and/or its affiliates. All rights reserved.
+    This Source Code may also be made available under the following Secondary
+    Licenses when the conditions for such availability set forth in the
+    Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+    version 2 with the GNU Classpath Exception, which is available at
+    https://www.gnu.org/software/classpath/license.html.
 
-    The contents of this file are subject to the terms of either the GNU
-    General Public License Version 2 only ("GPL") or the Common Development
-    and Distribution License("CDDL") (collectively, the "License").  You
-    may not use this file except in compliance with the License.  You can
-    obtain a copy of the License at
-    https://oss.oracle.com/licenses/CDDL+GPL-1.1
-    or LICENSE.txt.  See the License for the specific
-    language governing permissions and limitations under the License.
-
-    When distributing the software, include this License Header Notice in each
-    file and include the License file at LICENSE.txt.
-
-    GPL Classpath Exception:
-    Oracle designates this particular file as subject to the "Classpath"
-    exception as provided by Oracle in the GPL Version 2 section of the License
-    file that accompanied this code.
-
-    Modifications:
-    If applicable, add the following below the License Header, with the fields
-    enclosed by brackets [] replaced by your own identifying information:
-    "Portions Copyright [year] [name of copyright owner]"
-
-    Contributor(s):
-    If you wish your version of this file to be governed by only the CDDL or
-    only the GPL Version 2, indicate your decision by adding "[Contributor]
-    elects to include this software in this distribution under the [CDDL or GPL
-    Version 2] license."  If you don't indicate a single choice of license, a
-    recipient has the option to distribute your version of this file under
-    either the CDDL, the GPL Version 2 or to extend the choice of license to
-    its licensees as provided above.  However, if you add GPL Version 2 code
-    and therefore, elected the GPL Version 2 license, then the option applies
-    only if the new code is made subject to such option by the copyright
-    holder.
-
+    SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>net.java</groupId>
-        <artifactId>jvnet-parent</artifactId>
-        <version>5</version>
-    </parent>
-
-    <groupId>javax.json.bind</groupId>
-    <artifactId>javax.json.bind-docs</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <groupId>jakarta.json.bind</groupId>
+    <artifactId>jakarta.json.bind-docs</artifactId>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <name>JSON Binding Docs</name>
 
-    <url>https://javaee.github.io/jsonb-spec</url>
-
-    <organization>
-        <name>Oracle Corporation</name>
-        <url>http://www.oracle.com</url>
-    </organization>
-
-    <issueManagement>
-        <system>github</system>
-        <url>https://github.com/javaee/jsonb-spec/issues</url>
-    </issueManagement>
-
-    <mailingLists>
-        <mailingList>
-            <name>JSON-B Discussion Group </name>
-            <archive>jsonb-spec@javaee.groups.io</archive>
-        </mailingList>
-    </mailingLists>
-
-    <licenses>
-        <license>
-            <name>Dual license consisting of the CDDL v1.1 and GPL v2</name>
-            <url>https://oss.oracle.com/licenses/CDDL+GPL-1.1</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <scm>
-        <connection>scm:git:git://github.com/javaee/jsonb-spec.git</connection>
-        <developerConnection>scm:git:git@github.com:javaee/jsonb-spec.git</developerConnection>
-        <url>https://github.com/javaee/jsonb-spec</url>
-        <tag>HEAD</tag>
-    </scm>
-
-    <developers>
-        <developer>
-            <email>dmitry.kornilov@oracle.com</email>
-            <id>maiden168</id>
-            <name>Dmitry Kornilov</name>
-            <organization>Oracle</organization>
-            <roles>
-                <role>Spec Lead</role>
-            </roles>
-            <timezone>CET</timezone>
-        </developer>
-        <developer>
-            <email>roman.grigoriadi@oracle.com</email>
-            <id>roman.grigoriadi</id>
-            <name>Roman Grigoriadi</name>
-            <organization>Oracle</organization>
-            <roles>
-                <role>Developer</role>
-            </roles>
-            <timezone>CET</timezone>
-        </developer>
-    </developers>
-
     <properties>
         <asciidoctor.maven.plugin.version>1.6.0</asciidoctor.maven.plugin.version>
-        <asciidoctorj.pdf.version>1.5.0-alpha.15</asciidoctorj.pdf.version>
         <asciidoctorj.version>1.6.2</asciidoctorj.version>
         <jruby.version>9.2.6.0</jruby.version>
         <rubygems.prawn.version>2.0.2</rubygems.prawn.version>
@@ -147,27 +57,6 @@
     <build>
         <defaultGoal>process-resources</defaultGoal>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>1.4.1</version>
-                <executions>
-                    <execution>
-                        <id>enforce-versions</id>
-                        <goals> 
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <requireJavaVersion>
-                                    <version>[1.8.0,1.9.0)</version>
-                                    <message>You need JDK8 or lower</message>
-                                </requireJavaVersion>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>de.saumya.mojo</groupId>
                 <artifactId>gem-maven-plugin</artifactId>
@@ -235,48 +124,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>pdf</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.asciidoctor</groupId>
-                        <artifactId>asciidoctor-maven-plugin</artifactId>
-                        <version>${asciidoctor.maven.plugin.version}</version>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.asciidoctor</groupId>
-                                <artifactId>asciidoctorj-pdf</artifactId>
-                                <version>${asciidoctorj.pdf.version}</version>
-                            </dependency>
-                        </dependencies>
-                        <executions>
-                            <execution>
-                                <id>generate-pdf-doc-default-theme</id>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>process-asciidoc</goal>
-                                </goals>
-                                <configuration>
-                                    <backend>pdf</backend>
-                                    <outputDirectory>${project.build.directory}/generated-docs-default-theme</outputDirectory>
-                                    <sourceHighlighter>rouge</sourceHighlighter>
-                                    <doctype>book</doctype>
-                                    <attributes>
-                                        <icons>font</icons>
-                                        <pagenums/>
-                                        <toc/>
-                                        <idprefix/>
-                                        <idseparator>-</idseparator>
-                                    </attributes>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>

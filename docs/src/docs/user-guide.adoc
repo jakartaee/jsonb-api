@@ -14,7 +14,7 @@ JSON-B is a standard binding layer for converting Java objects to/from JSON mess
 .Maven Dependencies
 ----
 <dependencies>
-    <!-- JSON-P RI -->
+    <!-- JSON-P -->
     <dependency>
         <groupId>org.glassfish</groupId>
         <artifactId>jakarta.json</artifactId>
@@ -29,7 +29,7 @@ JSON-B is a standard binding layer for converting Java objects to/from JSON mess
         <version>1.0.1</version>
     </dependency>
 
-    <!-- Yasson (JSON-B RI) -->
+    <!-- Yasson (JSON-B implementation) -->
     <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>yasson</artifactId>
@@ -51,6 +51,9 @@ Default Jsonb engine can be created like this:
 
 [source,java]
 ----
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
+// ...
 Jsonb jsonb = JsonbBuilder.create();
 ----
 
@@ -61,7 +64,7 @@ The sample below demonstrates serialization and deserialization of a simple POJO
 
 [source,java]
 ----
-public class Dog {
+public static class Dog {
     public String name;
     public int age;
     public boolean bitable;
@@ -78,7 +81,7 @@ Jsonb jsonb = JsonbBuilder.create();
 String result = jsonb.toJson(dog);
 
 // Deserialize back
-dog = jsonb.fromJson("{name:\"Falco\",age:4,bitable:false}", Dog.class);
+dog = jsonb.fromJson("{\"name\":\"Falco\",\"age\":4,\"bitable\":false}", Dog.class);
 ----
 
 ==== Mapping a collection
@@ -167,9 +170,9 @@ In the sample below property property name will be serialized as 'person-name'.
 ----
 public class Person {
     @JsonbProperty("person-name")
-    private String name;
+    public String name;
 
-    private String profession;
+    public String profession;
 }
 ----
 
@@ -195,6 +198,12 @@ public class Person {
     public String getName() {
         return name;
     }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    // public setters ...
 }
 ----
 
@@ -215,6 +224,8 @@ public class Person {
     public void setName(String name) {
         this.name = name;
     }
+
+    // other public getters/setters ...
 }
 ----
 
@@ -282,6 +293,8 @@ or using @JsonbPropertyOrder annotation on class:
 public class Person {
     private String name;
     private String profession;
+
+    // public getters/setters ...
 }
 ----
 
@@ -303,6 +316,8 @@ public class Person {
     private String name;
 
     private String profession;
+
+    // public getters/setters ...
 }
 ----
 
@@ -331,6 +346,8 @@ public class Person {
     public void setName(String name) {
         this.name = name;
     }
+
+    // other public getters/setters ...
 }
 ----
 
@@ -349,6 +366,8 @@ There are three different ways to change default null handling.
 public class Person {
     private String name;
     private String profession;
+
+    // public getters/setters ...
 }
 ----
 
@@ -361,6 +380,8 @@ public class Person {
     private String name;
 
     private String profession;
+
+    // public getters/setters ...
 }
 ----
 
@@ -394,6 +415,8 @@ public class Person {
     public Person(@JsonbProperty("name") String name) {
         this.name = name;
     }
+
+    // public getters/setters ...
 }
 ----
 
@@ -404,13 +427,15 @@ By default JSON-B uses ISO formats to serialize and deserialize date and number 
 [source,java]
 ----
 public class Person {
-    public String name;
+    private String name;
 
     @JsonbDateFormat("dd.MM.yyyy")
-    private Date birthDate;
+    private LocalDate birthDate;
 
-    @JsonbNumberFormat(“#0.00")
-    public BigDecimal salary;
+    @JsonbNumberFormat("#0.00")
+    private BigDecimal salary;
+
+    // public getters/setters ...
 }
 ----
 
@@ -468,7 +493,7 @@ public class Customer {
     private String organization;
     private String position;
 
-    ...
+    // public getters/setters ...
 }
 
 public class CustomerAdapter implements JsonbAdapter<Customer, JsonObject> {
@@ -512,7 +537,7 @@ Result:
 ----
 {
     "id": 1,
-    "name": "Json Bourne",
+    "name": "Jason Bourne",
     "organization": "Super Agents",
     "position": "Super Agent"
 }
@@ -544,7 +569,7 @@ Result:
 ----
 {
     "id": 1,
-    "name": "Json Bourne"
+    "name": "Jason Bourne"
 }
 ----
 
@@ -571,19 +596,19 @@ public abstract class Animal {
     private int age;
     private Boolean furry;
 
-    ...
+    // public getters/setters ...
 }
 
 public class Cat extends Animal {
     private Boolean cuddly;
 
-    ...
+    // public getters/setters ...
 }
 
 public class Dog extends Animal {
     private Boolean barking;
 
-    ...
+    // public getters/setters ...
 }
 
 public class Carrier<P extends Pet> {
@@ -600,7 +625,7 @@ public class Carrier<P extends Pet> {
         this.carriedPet = carriedPet;
     }
 
-    ...
+    // public getters/setters ...
 }
 ----
 

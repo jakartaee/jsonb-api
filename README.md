@@ -38,14 +38,14 @@ bob.name = "Bob";
 bob.age = 42;
 
 String bobJson = jsonb.toJson(bob);
-System.out.println(bobJson); // {"id":1234,"name":Bob","age":42}
+System.out.println(bobJson); // {"id":1234,"name":"Bob","age":42}
 ```
 
 Likewise, JSON data can be deserialized back into Java objects:
 ```java
 Jsonb jsonb = JsonbBuilder.create();
 
-String aliceJson = "{\"id\":5678,\"name\":Alice\",\"age\":42}";
+String aliceJson = "{\"id\":5678,\"name\":\"Alice\",\"age\":42}";
 User alice = jsonb.fromJson(aliceJson, User.class);
 ```
 

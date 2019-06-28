@@ -86,7 +86,7 @@ dog = jsonb.fromJson("{\"name\":\"Falco\",\"age\":4,\"bitable\":false}", Dog.cla
 
 ==== Mapping a collection
 
-JSON-B supports collections and generic collections handling. For proper deserialization the runtime type of resulting object needs to be passed to JSON-B during deserialization. It can be done a way shown below.
+JSON-B supports raw collections serialization.
 
 [source,java]
 ----
@@ -99,7 +99,8 @@ dogs.add(cassidy);
 Jsonb jsonb = JsonbBuilder.create();
 String result = jsonb.toJson(dogs);
 
-// Deserialize back
+// We can also deserialize back into a raw collection, but since there is no way to infer a type here,
+// the result will be a list of java.util.Map instances with string keys.
 dogs = jsonb.fromJson(result, ArrayList.getClass());
 ----
 
@@ -300,7 +301,12 @@ public class Person {
 
 ==== Ignoring properties
 
-Class properties annotated with @JsonbTransient annotation are ignored by JSON Binding engine. The behavior is different depending on where @JsonbTransient annotation is placed.
+By default, JSONB ignores properties with a non public access. All public properties - either public fields or
+non public fields with public getters are serialized into JSON text.
+
+Excluding properties can be done with a @JsonbTransient annotation. Class properties annotated with
+@JsonbTransient annotation are ignored by JSON Binding engine. The behavior is different depending on
+where @JsonbTransient annotation is placed.
 
 - On field: Property is ignored during serialization and deserialization.
 - On getter: Property is ignored during serialization only.
@@ -496,23 +502,33 @@ public class Customer {
     // public getters/setters ...
 }
 
-public class CustomerAdapter implements JsonbAdapter<Customer, JsonObject> {
+public class CustomerAnnotated {
+    @JsonbProperty("customer_id")
+    private int id;
+    @JsonbProperty("customer_name")
+    private String name;
+
+    // public getters/setters ...
+}
+
+public class CustomerAdapter implements JsonbAdapter<Customer, CustomerAnnotated> {
     @Override
-    public JsonObject adaptToJson(Customer c) throws Exception {
-        return Json.createObjectBuilder()
-            .add("id", c.getId())
-            .add("name", c.getName())
-            .build();
+    public CustomerAnnotated adaptToJson(Customer c) throws Exception {
+        CustomerAnnotated customer = new Customer();
+        customer.setId(c.getId());
+        customer.setName(c.getName());
+        return customer;
     }
 
     @Override
-    public Customer adaptFromJson(JsonObject adapted) throws Exception {
-        Customer c = new Customer();
-        c.setId(adapted.getInt("id"));
-        c.setName(adapted.getString("name"));
-        return c;
+    public Customer adaptFromJson(CustomerAnnotated adapted) throws Exception {
+        Customer customer = new Customer();
+        customer.setId(adapted.getId());
+        customer.setName(adapted.getName());
+        return customer;
     }
 }
+
 ----
 
 First scenario:
@@ -568,8 +584,8 @@ Result:
 [source,json]
 ----
 {
-    "id": 1,
-    "name": "Jason Bourne"
+    "customer_id": 1,
+    "customer_name": "Jason Bourne",
 }
 ----
 
@@ -591,41 +607,13 @@ Model:
 
 [source,java]
 ----
-public abstract class Animal {
+public static class Customer {
+    private int id;
     private String name;
-    private int age;
-    private Boolean furry;
+    private String organization;
+    private String position;
 
-    // public getters/setters ...
-}
-
-public class Cat extends Animal {
-    private Boolean cuddly;
-
-    // public getters/setters ...
-}
-
-public class Dog extends Animal {
-    private Boolean barking;
-
-    // public getters/setters ...
-}
-
-public class Carrier<P extends Pet> {
-    public enum TYPE {
-        BAG, CRATE, TROLLEY
-    }
-
-    private TYPE carrierType;
-    private P carriedPet;
-
-    @JsonbCreator
-    public Carrier(TYPE carrierType, A carriedPet) {
-        this.carrierType = carrierType;
-        this.carriedPet = carriedPet;
-    }
-
-    // public getters/setters ...
+    //public setters and getters
 }
 ----
 
@@ -633,32 +621,35 @@ Serializer/Deserializer:
 
 [source,java]
 ----
-public class AnimalSerializer implements JsonbSerializer<Animal> {
-    public void serialize(Animal animal, JsonGenerator jsonGenerator, SerializationContext serializationContext) {
-        if (animal != null) {
-            serializationContext.serialize(animal.getClass().getName(), animal, jsonGenerator);
-        } else {
-            serializationContext.serialize(null, jsonGenerator);
-        }
+public static class CustomerSerializer implements JsonbSerializer<Customer> {
+    @Override
+    public void serialize(Customer customer, JsonGenerator generator, SerializationContext ctx) {
+        generator.writeStartObject();
+        generator.write("customer_id", customer.getId());
+        generator.write("customer_name", customer.getName());
+        generator.writeEnd();
     }
 }
 
-public class AnimalDeserializer implements JsonbDeserializer<Animal> {
-    public Animal deserialize(JsonParser jsonParser, DeserializationContext deserializationContext, Type type) {
-        Animal animal = null;
-        while (jsonParser.hasNext()) {
-            JsonParser.Event event = jsonParser.next();
-            if (event == JsonParser.Event.KEY_NAME) {
-                String className = jsonParser.getString();
-                jsonParser.next();
-                try {
-                    animal = deserializationContext.deserialize(Class.forName(className).asSubclass(Animal.class), jsonParser);
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+public static class CustomerDeserializer implements JsonbDeserializer<Customer> {
+    @Override
+    public Customer deserialize(JsonParser parser, DeserializationContext ctx, Type rtType) {
+        Customer customer = new Customer();
+        JsonParser.Event next;
+        //Moving parser by hand looking for customer_id and customer_name properties
+        while ((next = parser.next()) != JsonParser.Event.END_OBJECT) {
+            if (next == JsonParser.Event.KEY_NAME) {
+                String jsonKeyName = parser.getString();
+                //Move to json value
+                parser.next();
+                if ("customer_id".equals(jsonKeyName)) {
+                    customer.setId(parser.getInt());
+                } else if ("customer_name".equals(jsonKeyName)) {
+                    customer.setName(parser.getString());
                 }
             }
         }
-        return animal;
+        return customer;
     }
 }
 ----
@@ -667,24 +658,19 @@ Usage:
 
 [source,java]
 ----
-// Create a list of carrier objects
-List<Carrier<Pet>> carriers = new ArrayList<>();
-carriers.add(new Carrier<>(Carrier.TYPE.BAG, new Cat("Harris", 10, true, true)));
-carriers.add(new Carrier<>(Carrier.TYPE.CRATE, new Dog("Falco", 4, false, false)));
-Type carrierListType = new ArrayList<Carrier<Pet>>() {}.getClass().getGenericSuperclass();
+//Create pojo
+Customer customer = new Customer();
+customer.setId(1);
+customer.setName("Freddie");
 
+//Also configurable with @JsonbSerializer / JsonbDeserializer on properties and class.
 JsonbConfig config = new JsonbConfig()
-        .withFormatting(true)
-        .withSerializers(new PetSerializer())
-        .withDeserializers(new PetDeserializer());
+        .withSerializers(new CustomerSerializer())
+        .withDeserializers(new CustomerDeserializer());
 
 Jsonb jsonb = JsonbBuilder.create(config);
-
-String json = jsonb.toJson(carriers, carrierListType);
-System.out.println(json);
-
-List<Carrier<Pet>> list = jsonb.fromJson(json, carrierListType);
-System.out.println(list.get(0).getCarriedPet().getClass().getName());
+String json = jsonb.toJson(customer);
+Customer result = jsonb.fromJson(json, Customer.class);
 ----
 
 ==== Strict I-JSON support

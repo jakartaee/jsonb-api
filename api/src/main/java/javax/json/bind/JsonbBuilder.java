@@ -45,8 +45,8 @@ public interface JsonbBuilder {
     JsonbBuilder withConfig(JsonbConfig config);
 
     /**
-     * Provides a <a href="https://jcp.org/en/jsr/detail?id=353">JSON-P</a> provider
-     * to be used for all <a href="https://jcp.org/en/jsr/detail?id=353">JSON-P</a> related operations.
+     * Provides a <a href="https://projects.eclipse.org/projects/ee4j.jsonp/">JSON-P</a> provider
+     * to be used for all <a href="https://projects.eclipse.org/projects/ee4j.jsonp/">JSON-P</a> related operations.
      *
      * @param jsonpProvider
      *      {@link javax.json.spi.JsonProvider JsonProvider} instance

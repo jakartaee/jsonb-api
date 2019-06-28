@@ -351,7 +351,7 @@ public class Person {
 }
 ----
 
-'name' property won't gbe serialized, but will be deserialized.
+'name' property won't be serialized, but will be deserialized.
 
 ==== Null handling
 
@@ -481,7 +481,7 @@ Jsonb jsonb = JsonbBuilder.create(config);
 
 In some cases it may be difficult to serialize/deserialize a class the desired way. Sometimes it's not possible to put custom annotations on the source code because you don't have access to it or custom annotations don't solve the problem. In this case adapters is another option to try.
 
-Adapter is a class implementing javax.json.bind.adapter.JsonbAdapter interface. It has a custom code to convert the “unmappable” type (Original) into another one (Adapted) that is serialized/deserialized the desired way. It's sililar how type adapters in JAXB work.
+Adapter is a class implementing javax.json.bind.adapter.JsonbAdapter interface. It has a custom code to convert the “unmappable” type (Original) into another one (Adapted) that is serialized/deserialized the desired way. It's similar to how type adapters in JAXB work.
 
 Let's take a look at the sample. Imagine that you have a Customer object with all customer details. In one scenario you need to serialize the whole object, in another you need to provide only its id and name. The solution could be to to serialize it as it is for the first scenario and create an adapter to JsonObject which has only data required for the second scenario.
 

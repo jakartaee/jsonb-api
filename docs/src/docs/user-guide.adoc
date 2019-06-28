@@ -67,21 +67,21 @@ The sample below demonstrates serialization and deserialization of a simple POJO
 public static class Dog {
     public String name;
     public int age;
-    public boolean bitable;
+    public boolean bites;
 }
 
 // Create a dog instance
 Dog dog = new Dog();
 dog.name = "Falco";
 dog.age = 4;
-dog.bitable = false;
+dog.bites = false;
 
 // Create Jsonb and serialize
 Jsonb jsonb = JsonbBuilder.create();
 String result = jsonb.toJson(dog);
 
 // Deserialize back
-dog = jsonb.fromJson("{\"name\":\"Falco\",\"age\":4,\"bitable\":false}", Dog.class);
+dog = jsonb.fromJson("{\"name\":\"Falco\",\"age\":4,\"bites\":false}", Dog.class);
 ----
 
 ==== Mapping a collection
@@ -505,6 +505,7 @@ public class Customer {
 public class CustomerAnnotated {
     @JsonbProperty("customer_id")
     private int id;
+
     @JsonbProperty("customer_name")
     private String name;
 
@@ -613,7 +614,7 @@ public static class Customer {
     private String organization;
     private String position;
 
-    //public setters and getters
+    // public getters/setters
 }
 ----
 
@@ -636,12 +637,15 @@ public static class CustomerDeserializer implements JsonbDeserializer<Customer> 
     public Customer deserialize(JsonParser parser, DeserializationContext ctx, Type rtType) {
         Customer customer = new Customer();
         JsonParser.Event next;
-        //Moving parser by hand looking for customer_id and customer_name properties
+
+        // Moving parser by hand looking for customer_id and customer_name properties
         while ((next = parser.next()) != JsonParser.Event.END_OBJECT) {
             if (next == JsonParser.Event.KEY_NAME) {
                 String jsonKeyName = parser.getString();
-                //Move to json value
+
+                // Move to json value
                 parser.next();
+
                 if ("customer_id".equals(jsonKeyName)) {
                     customer.setId(parser.getInt());
                 } else if ("customer_name".equals(jsonKeyName)) {
@@ -658,12 +662,12 @@ Usage:
 
 [source,java]
 ----
-//Create pojo
+// Create pojo
 Customer customer = new Customer();
 customer.setId(1);
 customer.setName("Freddie");
 
-//Also configurable with @JsonbSerializer / JsonbDeserializer on properties and class.
+// Also configurable with @JsonbSerializer / JsonbDeserializer on properties and class.
 JsonbConfig config = new JsonbConfig()
         .withSerializers(new CustomerSerializer())
         .withDeserializers(new CustomerDeserializer());
@@ -699,7 +703,6 @@ Jsonb jsonb = JsonbBuilder.create(config);
 == Further Information
 
 - JSON-B official web site: https://eclipse-ee4j.github.io/jsonb-api
-- Eclipse Project for JSON-B: https://projects.eclipse.org/projects/ee4j.jsonb
-- Discussion groups: jsonb-dev@eclipse.org
-- JSR-367 page on JCP site: https://jcp.org/en/jsr/detail?id=367
+- Jakarta JSON Binding: https://projects.eclipse.org/projects/ee4j.jsonb
+- Mailing list: jsonb-dev@eclipse.org
 - Yasson (Compatible Implementation): https://github.com/eclipse-ee4j/yasson

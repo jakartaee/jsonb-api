@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (c) 2016, 2018 Oracle and/or its affiliates. All rights reserved.
+    Copyright (c) 2016, 2019 Oracle and/or its affiliates. All rights reserved.
 
     This program and the accompanying materials are made available under the
     terms of the Eclipse Public License v. 2.0, which is available at
@@ -126,35 +126,6 @@
 
     <profiles>
         <profile>
-          <id>jdk9</id>
-          <activation>
-              <jdk>9</jdk>
-          </activation>
-          <build>
-              <plugins>
-                  <plugin>
-                      <groupId>org.apache.maven.plugins</groupId>
-                      <artifactId>maven-compiler-plugin</artifactId>
-                      <executions>
-                          <execution>
-                              <id>jdk-9</id>
-                              <goals>
-                                  <goal>compile</goal>
-                              </goals>
-                              <configuration>
-                                  <source>9</source>
-                                  <target>9</target>
-                                  <includes>
-                                      <include>module-info.java</include>
-                                  </includes>
-                              </configuration>
-                          </execution>
-                      </executions>
-                  </plugin>
-              </plugins>
-          </build>
-        </profile>
-        <profile>
             <id>jdk11</id>
             <activation>
                 <jdk>[11,)</jdk>
@@ -171,8 +142,8 @@
                                     <goal>compile</goal>
                                 </goals>
                                 <configuration>
-                                    <source>11</source>
-                                    <target>11</target>
+                                    <source>9</source>
+                                    <target>9</target>
                                     <includes>
                                         <include>module-info.java</include>
                                     </includes>
@@ -183,12 +154,9 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.1.0</version>
                         <configuration>
                             <detectJavaApiLink>false</detectJavaApiLink>
-                            <links>
-                                <link>https://docs.oracle.com/en/java/javase/11/docs/api</link>
-                            </links>
+                            <detectOfflineLinks>false</detectOfflineLinks>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -212,7 +180,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.1.0</version>
                         <configuration>
                             <sourceFileExcludes>
                                 <sourceFileExclude>**/module-info.java</sourceFileExclude>
@@ -407,7 +374,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.0.1</version>
+                    <version>3.1.0</version>
                     <configuration>
                         <failOnError>true</failOnError>
                         <doctitle>Jakarta JSON Binding ${project.version} API Specification</doctitle>

@@ -1,13 +1,13 @@
-# Notices for Eclipse Project for JSON-B
+# Notices for Jakarta JSON Binding
 
-This content is produced and maintained by the Eclipse Project for JSON-B
+This content is produced and maintained by the Jakarta JSON Binding
 project.
 
 * Project home: https://projects.eclipse.org/projects/ee4j.jsonb
 
 ## Trademarks
 
-Eclipse Project for JSON-B is a trademark of the Eclipse Foundation.
+Jakarta JSON Binding is a trademark of the Eclipse Foundation.
 
 ## Copyright
 

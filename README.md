@@ -51,7 +51,8 @@ User alice = jsonb.fromJson(aliceJson, User.class);
 
 ## Links
 
-- Official web site: https://eclipse-ee4j.github.io/jsonb-api
-- Jakarta JSON Binding: https://projects.eclipse.org/projects/ee4j.jsonb
-- Mailing list: jsonb-dev@eclipse.org
-- Yasson (Compatible Implementation): https://github.com/eclipse-ee4j/yasson
+- [Official web site](https://eclipse-ee4j.github.io/jsonb-api)
+- [Eclipse project](https://projects.eclipse.org/projects/ee4j.jsonb)
+- [User's Guide](http://json-b.net/docs/user-guide.html)
+- [Mailing list](jsonb-dev@eclipse.org)
+- [Yasson (Compatible Implementation)](https://github.com/eclipse-ee4j/yasson)

@@ -32,9 +32,9 @@
     <packaging>jar</packaging>
 
     <name>JSON-B API</name>
-	<description>JSON Binding (JSON-B) is a standard binding layer for converting Java objects to/from JSON documents.</description>
+    <description>Jakarta JSON Binding is a standard binding layer for converting Java objects to/from JSON documents.</description>
     <inceptionYear>2016</inceptionYear>
-    <url>http://json-b.net</url>
+    <url>https://eclipse-ee4j.github.io/jsonb-api</url>
 
     <issueManagement>
         <system>github</system>
@@ -43,7 +43,7 @@
 
     <mailingLists>
         <mailingList>
-            <name>JSON-B Discussion Group </name>
+            <name>Mailing list</name>
             <archive>jsonb-dev@eclipse.org</archive>
         </mailingList>
     </mailingLists>
@@ -72,21 +72,11 @@
         <developer>
         	<id>dmitry.kornilov</id>
             <name>Dmitry Kornilov</name>
-            <email>dmitry.kornilov@oracle.com</email>  
-            <url>https://dmitrykornilov.net</url>          
+            <email>dmitry.kornilov@oracle.com</email>
+            <url>https://dmitrykornilov.net</url>
             <organization>Oracle</organization>
             <roles>
-                <role>Spec Lead</role>
-            </roles>
-            <timezone>CET</timezone>
-        </developer>
-        <developer>
-            <id>roman.grigoriadi</id>
-            <name>Roman Grigoriadi</name>
-            <email>roman.grigoriadi@oracle.com</email>
-            <organization>Oracle</organization>
-            <roles>
-                <role>Developer</role>
+                <role>Project Lead</role>
             </roles>
             <timezone>CET</timezone>
         </developer>
@@ -136,9 +126,9 @@
 
     <profiles>
         <profile>
-            <id>jdk9</id>
+            <id>jdk11</id>
             <activation>
-                <jdk>[9,)</jdk>
+                <jdk>[11,)</jdk>
             </activation>
             <build>
                 <plugins>
@@ -147,7 +137,7 @@
                         <artifactId>maven-compiler-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>jdk-9</id>
+                                <id>jdk-11</id>
                                 <goals>
                                     <goal>compile</goal>
                                 </goals>
@@ -161,11 +151,19 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <configuration>
+                            <detectJavaApiLink>false</detectJavaApiLink>
+                            <detectOfflineLinks>false</detectOfflineLinks>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
         <profile>
-            <id>non-jdk9</id>
+            <id>jdk8</id>
             <activation>
                 <jdk>(,9)</jdk>
             </activation>
@@ -391,7 +389,7 @@
                     <version>3.1.0</version>
                     <configuration>
                         <failOnError>true</failOnError>
-                        <doctitle>JSON-Binding ${project.version} API Specification</doctitle>
+                        <doctitle>Jakarta JSON Binding ${project.version} API Specification</doctitle>
                         <javaApiLinks>
                             <property>
                                 <name>api_1.3</name>
@@ -596,5 +594,5 @@ All rights reserved.<br>Comments to: <a href="mailto:${release.spec.feedback}">$
                 <version>3.0.5</version>
             </plugin>
         </plugins>
-    </reporting>  
+    </reporting>
 </project>

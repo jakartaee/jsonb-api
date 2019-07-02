@@ -5,7 +5,7 @@ description: [JSON-B is a standard binding layer for converting Java objects to/
 
 links:
   source: https://github.com/eclipse-ee4j/jsonb-api
-  docs: docs/
+  docs: docs/user-guide.html
   javadocs: docs/api/
   download: https://github.com/eclipse-ee4j/jsonb-api/releases
   mailinglist: https://accounts.eclipse.org/mailing-list/jsonb-dev

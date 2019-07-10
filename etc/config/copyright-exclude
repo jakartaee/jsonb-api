@@ -30,3 +30,4 @@ spec-license.html
 copyright-exclude
 api/etc/config/copyright.txt
 nb-configuration.xml
+api/src/main/javadoc/doc-files/EFSL.html

@@ -39,6 +39,8 @@
         <jruby.version>9.2.6.0</jruby.version>
         <!-- status: DRAFT, BETA, etc., or blank for final -->
         <status>DRAFT</status>
+        <maven.build.timestamp.format>MMMM dd, yyyy</maven.build.timestamp.format>
+        <revisiondate>${maven.build.timestamp}</revisiondate>
     </properties>
 
     <scm>
@@ -107,7 +109,8 @@
                             <goal>process-asciidoc</goal>
                         </goals>
                         <configuration>
-                            <backend>xhtml</backend>
+                            <backend>html5</backend>
+                            <outputFile>${project.build.directory}/generated-docs/jsonb-spec-${project.version}.html</outputFile>
                             <attributes>
                                 <doctype>book</doctype>
                                 <status>${status}</status>
@@ -130,6 +133,7 @@
                         </goals>
                         <configuration>
                             <backend>pdf</backend>
+                            <outputFile>${project.build.directory}/generated-docs/jsonb-spec-${project.version}.pdf</outputFile>
                             <attributes>
                                 <pdf-stylesdir>${project.basedir}/src/theme</pdf-stylesdir>
                                 <pdf-style>jakartaee</pdf-style>
@@ -149,6 +153,16 @@
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <sourceDocumentName>jsonb-spec.adoc</sourceDocumentName>
+                    <sourceHighlighter>coderay</sourceHighlighter>
+                    <attributes>
+                        <revnumber>${project.version}</revnumber>
+                        <revremark>${status}</revremark>
+                        <revdate>${revisiondate}</revdate>
+                    </attributes>
+                </configuration>
+
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

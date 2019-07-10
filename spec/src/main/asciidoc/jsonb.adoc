@@ -1,0 +1,3 @@
+== Introduction
+
+Jakarta JSON Binding defines a binding framework for converting Java(R) objects to and from JSON documents.

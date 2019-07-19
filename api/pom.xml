@@ -404,6 +404,7 @@
                                 <value>http://download.oracle.com/javase/8/docs/api/</value>
                             </property>
                         </javaApiLinks>
+                        <docfilessubdirs>true</docfilessubdirs>
                         <header><![CDATA[<br>Jakarta JSON Binding API v${project.version}]]>
                         </header>
                         <bottom><![CDATA[

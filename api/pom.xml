@@ -172,11 +172,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <configuration>
-                            <sourceFileExcludes>
-                                <sourceFileExclude>**/module-info.java</sourceFileExclude>
-                            </sourceFileExcludes>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>

@@ -15,8 +15,12 @@ Run the full build:
 
 `mvn clean install`
 
+Generate specification with given status:
+
+`mvn clean install -Dstatus="Final Release"`
+
 Locate the html files:
-- target/generated-docs/jsonb-spec.html
+- target/generated-docs/jsonb-spec-XXX.html
 
 Locate the PDF files:
-- target/generated-docs/jsonb-spec.pdf
+- target/generated-docs/jsonb-spec-XXX.pdf

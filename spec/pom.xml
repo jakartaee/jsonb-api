@@ -27,7 +27,7 @@
     <groupId>jakarta.json.bind</groupId>
     <artifactId>jsonb-spec</artifactId>
     <packaging>pom</packaging>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
     <name>Jakarta JSON Binding Specification</name>
 
     <properties>

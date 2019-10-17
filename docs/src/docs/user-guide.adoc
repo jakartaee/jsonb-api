@@ -515,6 +515,8 @@ public class CustomerAnnotated {
 public class CustomerAdapter implements JsonbAdapter<Customer, CustomerAnnotated> {
     @Override
     public CustomerAnnotated adaptToJson(Customer c) throws Exception {
+        if (c == null)
+            return null;
         CustomerAnnotated customer = new Customer();
         customer.setId(c.getId());
         customer.setName(c.getName());
@@ -523,6 +525,8 @@ public class CustomerAdapter implements JsonbAdapter<Customer, CustomerAnnotated
 
     @Override
     public Customer adaptFromJson(CustomerAnnotated adapted) throws Exception {
+        if (adapted == null)
+            return null;
         Customer customer = new Customer();
         customer.setId(adapted.getId());
         customer.setName(adapted.getName());

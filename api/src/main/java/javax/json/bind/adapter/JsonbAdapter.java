@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2019 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -71,8 +71,8 @@ public interface JsonbAdapter<Original, Adapted> {
      * After conversion Adapted type will be mapped to JSON the standard way.
      *
      * @param obj
-     *      Object to convert.
-     * @return Converted object which will be serialized to JSON.
+     *      Object to convert or {@code null}.
+     * @return Converted object which will be serialized to JSON or {@code null}.
      * @throws Exception if there is an error during the conversion.
      */
     Adapted adaptToJson(Original obj) throws Exception;
@@ -81,8 +81,8 @@ public interface JsonbAdapter<Original, Adapted> {
      * This method is used on deserialization only. It contains a conversion logic from type Adapted to type Original.
      *
      * @param obj
-     *      Object to convert.
-     * @return Converted object representing pojo to be set into object graph.
+     *      Object to convert or {@code null}.
+     * @return Converted object representing pojo to be set into object graph or {@code null}.
      * @throws Exception if there is an error during the conversion.
      */
     Original adaptFromJson(Adapted obj) throws Exception;

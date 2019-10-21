@@ -1,3 +1,1230 @@
+:sectnums:
+= Jakarta JSON Binding Specification, Version 1.0
+
+Copyright (c) 2016, 2019 Oracle and/or its affiliates. All rights reserved.
+
+Oracle and Java are registered trademarks of Oracle and/or its 
+affiliates. Other names may be trademarks of their respective owners. 
+
 == Introduction
 
-Jakarta JSON Binding defines a binding framework for converting Java(R) objects to and from JSON documents.
+This specification defines binding API between Java objects and JSON [1]
+documents. Readers are assumed to be familiar with JSON; for more
+information about JSON, see:
+
+* Architectural Styles and the Design of Network-based Software
+Architectures [2]
+* The REST Wiki [3]
+* JSON on Wikipedia [4]
+
+=== Status
+
+A list of open issues can be found at:
+
+____
+https://github.com/javaee/jsonb-spec/issues
+____
+
+The corresponding source code can be found online at:
+
+____
+https://github.com/javaee/jsonb-spec
+____
+
+The reference implementation is obtainable from:
+
+____
+https://projects.eclipse.org/projects/rt.yasson
+____
+
+The expert group is seeking feedback from the community on any aspect of
+this specification. Please join our discussion groups at:
+
+____
+https://javaee.groups.io/g/jsonb-spec
+____
+
+=== Goals
+
+The goals of the API are as follows:
+
+* *JSON* +
+Support binding (serialization and deserialization) for all RFC
+7159-compatible JSON documents.
+* *Relationships to JSON Related specifications* +
+JSON-related specifications will be surveyed to determine their
+relationship to JSON-Binding.
+* *Consistency* +
+Maintain consistency with JAXB (Java API for XML Binding) and other Java
+EE and SE APIs where appropriate.
+* *Convention* +
+Define default mapping of Java classes and instances to JSON document
+counterparts.
+* *Customization* +
+Allow customization of the default mapping definition.
+* *Ease of Use* +
+Default use of the APIs should not require prior knowledge of the JSON
+document format and specification.
+* *Partial Mapping* +
+In many use cases, only a subset of JSON Document is required to be
+mapped to a Java object instance.
+* *Integration* +
+Define or enable integration with JSR 374: Java API for JSON Processing
+(JSON-P) 1.1.
+
+=== Non-Goals
+
+The following are non-goals:
+
+* *Preserving equivalence (Round-trip)* +
+The specification recommends, but does not require equivalence of
+content for deserialized and serialized JSON documents.
+* *JSON Schema* +
+Generation of JSON Schema from Java classes, as well as validation based
+on JSON schema.
+* *JEP 198 Lightweight JSON API* +
+Support and integration with Lightweight JSON API as defined within JEP
+198 is out of scope of this specification. Will be reconsidered in
+future specification revisions.
+
+=== Conventions
+
+The keywords ‘MUST’, ‘MUST NOT’, ‘REQUIRED’, ‘SHALL’, ‘SHALL NOT’,
+‘SHOULD’, ‘SHOULD NOT’, ‘RECOMMENDED’, ‘MAY’, and ‘OPTIONAL’ in this
+document are to be interpreted as described in RFC 2119 [5].
+
+Java code and sample data fragments are formatted as shown in Figure 1:
+
+*package* com.example.hello; +
+ +
+*public class* Hello \{ +
+*public static void* main(String args[]) \{ +
+System._*out*_.println(*"Hello World"*); +
+} +
+}
+
+[#_Ref449712849 .anchor]##Figure 1: Example Java Code
+
+URIs of the general form ‘http://example.org/...’ and
+‘http://example.com/...’ represent application or context-dependent
+URIs.
+
+All parts of this specification are normative, with the exception of
+examples, notes and sections explicitly marked as ‘Non-Normative’.
+Non-normative notes are formatted as shown below:
+
+*Note:* _This is a note._
+
+=== Terminology
+
+*Data binding* +
+Process which defines the representation of information in a JSON
+document as an object instance, and vice versa.
+
+*Deserialization* +
+Process of reading a JSON document and constructing a tree of content
+objects, where each object corresponds to part of JSON document, thus
+the content tree reflects the document’s content.
+
+*Serialization* +
+Inverse process to deserialization. Process of traversing content object
+tree and writing a JSON document that reflects the tree’s content.
+
+=== Expert Group Members
+
+This specification is being developed as part of JSR 367 under the Java
+Community Process. It is the result of the collaborative work of the
+members of the JSR 367 Expert Group. The following are the present
+expert group members:
+
+* Dmitry Kornilov (Oracle)
+* Roman Grigoriadi (Oracle)
+* Lukas Jungmann (Oracle)
+* Martin Vojtek (Datlowe)
+* Hendrik Saly (Individual Member)
+* Gregor Zurowski (Individual Member)
+* Inderjeet Singh (Individual Member)
+* Eugen Cepoi (Individual Member)
+* Przemyslaw Bielicki (Individual Member)
+* Kyung Koo Yoon (TmaxSoft, Inc.)
+* Otavio Santana (Individual Member)
+* Nathan Rauh (IBM)
+* Alexander Salvanos (Individual Member)
+* Romain Manni-Bucau (Tomitribe)
+
+=== Acknowledgements
+
+During the course of this JSR we received many excellent suggestions.
+Special thanks to Heather VanCura, David Delabassee and Reza Rahman for
+feedback and help with evangelizing the specification, and John Clingan
+for feedback and language corrections.
+
+During the course of this JSR we also received many excellent
+suggestions. Thanks in particular to Mark Struberg, Olena Syrota, Oleg
+Tsal-Tsalko and whole JUG UA for their contributions.
+
+== Runtime API
+
+The JSON-B runtime API provides access to serialization and
+deserialization operations for manipulating JSON documents and mapped
+JSON-B classes and instances. The full specification of the binding
+framework is available in the javadoc for the _javax.json.bind_ package
+accompanied with this specification.
+
+== Default Mapping
+
+This section defines the default binding (representation) of Java
+components and classes to JSON documents. The default binding defined
+here can be further customized as specified in Customizing Mapping.
+
+=== General
+
+JSON Binding implementations (’implementations’ in further text) MUST
+support binding of JSON documents as defined in RFC 7159 JSON Grammar
+[1]. Serialized JSON output MUST conform to the RFC 7159 JSON Grammar
+[1] and be encoded in UTF-8 encoding as defined in Section 8.1
+(Character Encoding) of RFC 7159 [1]. Implementations MUST support
+deserialization of documents conforming to RFC 7159 JSON Grammar [1]. In
+addition, implementations SHOULD NOT allow deserialization of RFC 7159
+[1] non-conforming text (e.g. unsupported encoding, ...) and report
+error in such cases. Detection of UTF encoding of a deserialized
+document MUST follow the encoding process defined in the Section 3
+(Encoding) of RFC 4627 [6]. Implementations SHOULD ignore the presence
+of an UTF byte order mark (BOM) and not treat it as an error.
+
+=== Errors
+
+Implementations SHOULD NOT allow deserialization of RFC 7159 [1]
+non-conforming text (e.g. unsupported encoding, ...) and report an error
+in such case. Implementations SHOULD also report an error during a
+deserialization operation, if it is not possible to represent a JSON
+document value with the expected Java type.
+
+=== Basic Java Types
+
+Implementations MUST support binding of the following basic Java classes
+and their corresponding primitive types:
+
+* java.lang.String
+* java.lang.Character
+* java.lang.Byte
+* java.lang.Short
+* java.lang.Integer
+* java.lang.Long
+* java.lang.Float
+* java.lang.Double
+* java.lang.Boolean
+
+==== java.lang.String, Character
+
+Instances of type _java.lang.String_ and _java.lang.Character_ are
+serialized to JSON String values as defined within RFC 7159 Section 7
+(Strings) [1] in UTF-8 encoding without a byte order mark. [JSB-3.3.1-1]
+Implementations SHOULD support deserialization of JSON text in other
+(than UTF-8) UTF encodings into _java.lang.String_ instances.
+
+==== java.lang.Byte, Short, Integer, Long, Float, Double
+
+Serialization of type _java.lang.Byte_, _Short_, _Integer_, _Long_,
+_Float_ or _Double_ (and their corresponding primitive types) to a JSON
+Number MUST follow the conversion process defined in the javadoc
+specification for the corresponding type’s _toString()_ method
+[JSB-3.3.2-1]. Deserialization of a JSON value into _java.lang.Byte_,
+_Short_, _Integer_, _Long_, _Float_ or _Double_ instance (or their
+corresponding primitive types) MUST follow the conversion process
+defined in the javadoc specification for the corresponding _parse$Type_
+method, such as _java.lang.Byte.parseByte()_ for _Byte_.
+
+==== java.lang.Boolean
+
+Serialization of type _java.lang.Boolean_ and its corresponding
+_boolean_ primitive type to a JSON value MUST follow the conversion
+process defined in the javadoc specification for
+_java.lang.Boolean.toString()_ method. Deserialization of a JSON value
+into _java.lang.Boolean_ instance or _boolean_ primitive type MUST
+follow the conversion process defined in the javadoc specification for
+_java.lang.Boolean.parseBoolean()_ method.
+
+==== java.lang.Number
+
+Serialization of _java.lang.Number_ instances (if their more concrete
+type is not defined elsewhere in this chapter) to a JSON string MUST
+retrieve double value from _java.lang.Number.doubleValue()_ method and
+convert it to a JSON Number as defined in section 3.3.2. Deserialization
+of a JSON value into _java.lang.Number_ type MUST return an instance of
+_java.math.BigDecimal_ by using conversion process defined in the
+javadoc specification for constructor of _java.math.BigDecimal_ with
+_java.lang.String_ argument.
+
+=== Specific Standard Java SE Types
+
+Implementations MUST support binding of the following standard Java SE
+classes:
+
+* java.math.BigInteger
+* java.math.BigDecimal
+* java.net.URL
+* java.net.URI
+* java.util.Optional
+* java.util.OptionalInt
+* java.util.OptionalLong
+* java.util.OptionalDouble
+
+==== java.math.BigInteger, BigDecimal
+
+Serialization of type _java.math.BigInteger_ or _BigDecimal_ to a JSON
+Number MUST follow the conversion process defined in the javadoc
+specification for the corresponding type’s _toString()_ method.
+Deserialization of a JSON value into _java.math.BigInteger_ or
+_BigDecimal_ instance MUST follow the conversion process defined in the
+javadoc specification for the constructor of _java.math.BigInteger_ or
+_BigDecimal_ with _java.lang.String_ argument.
+
+==== java.net.URL, URI
+
+Serialization of type _java.net.URL_ or _URI_ to a JSON String MUST
+follow the conversion process defined in the javadoc specification for
+the corresponding type’s _toString()_ method. Deserialization of a JSON
+value into _java.net.URL_ or _URI_ instance MUST follow the conversion
+process defined in the javadoc specification for the constructor of
+_java.net.URL_ or _URI_ with _java.lang.String_ argument.
+
+==== java.util.Optional, OptionalInt, OptionalLong, OptionalDouble
+
+Non-empty instances of type java.util.Optional, OptionalInt,
+OptionalLong, OptionalDouble are serialized to a JSON value by
+retrieving their contained instance and converting it to JSON value
+based on its type and corresponding mapping definitions within this
+chapter. Class fields containing empty optional instances are treated as
+having a null value and serialized based on 3.14.1.
+
+Empty optional instances in array items are serialized as null.
+
+Deserializing into _Optional_, _OptionalInt_, _OptionalLong_,
+_OptionalDouble_ return empty optional value for properties containing a
+null value. Otherwise any non-empty _Optional_, _OptionalInt_,
+_OptionalLong_, _OptionalDouble_ value is constructed of type which
+deserialized based on mappings defined in this chapter.
+
+Instances of type _java.util.Optional<T>_ are serialized to a JSON value
+as JSON objects when T alone would be serialized as JSON object. When T
+would be serialized as a JSON value (e.g. _java.lang.String_,
+_java.lang.Integer_), an instance of _java.util.Optional<T>_ is
+serialized as a JSON value (without curly brackets).
+
+Deserialization of a JSON value into _java.util.Optional<T>_ MUST be
+supported if deserialization of a JSON value into instance of T is
+supported.
+
+=== Dates
+
+Implementations MUST support binding of the following standard Java
+date/time classes:
+
+* java.util.Date
+* java.util.Calendar
+* java.util.GregorianCalendar
+* java.util.TimeZone
+* java.util.SimpleTimeZone
+* java.time.Instant
+* java.time.Duration
+* java.time.Period
+* java.time.LocalDate
+* java.time.LocalTime
+* java.time.LocalDateTime
+* java.time.ZonedDateTime
+* java.time.ZoneId
+* java.time.ZoneOffset
+* java.time.OffsetDateTime
+* java.time.OffsetTime
+
+If not specified otherwise in this section, GMT standard time zone and
+offset specified from UTC Greenwich is used. If not specified otherwise,
+the date time format for serialization and deserialization is ISO 8601
+without offset, as specified in
+_java.time.format.DateTimeFormatter.ISO_DATE_.
+
+Implementations MUST report an error if the date/time string in a JSON
+document does not correspond to the expected date/time format.
+
+If in strict I-JSON compliance mode, default date format is changed as
+it’s described in 4.4.1.
+
+==== java.util.Date, Calendar, GregorianCalendar
+
+The serialization format of _java.util.Date_, _Calendar_,
+_GregorianCalendar_ instances with no time information is _ISO_DATE_.
+
+If time information is present, the format is _ISO_DATE_TIME_.
+
+Implementations MUST support deserialization of both _ISO_DATE_ and
+_ISO_DATE_TIME_ into _java.util.Date_, _Calendar_ and
+_GregorianCalendar_ instances.
+
+==== java.util.TimeZone, SimpleTimeZone
+
+Implementations MUST support deserialization of any time zone format
+specified in _java.util.TimeZone_ into a field or property of type
+_java.util.TimeZone_ and _SimpleTimeZone_.
+
+Implementations MUST report an error for deprecated three-letter time
+zone IDs as specified in _java.util.Timezone_.
+
+The serialization format of _java.util.TimeZone_ and _SimpleTimeZone_ is
+_NormalizedCustomID_ as specified in _java.util.TimeZone_.
+
+==== java.time.*
+
+The serialization output for a java.time.Instant instance MUST be in a
+_ISO_INSTANT_ format, as specified in
+_java.time.format.DateTimeFormatter_. Implementations MUST support the
+deserialization of an _ISO_INSTANT_ formatted JSON string to a
+_java.time.Instant_ instance.
+
+For other _java.time.*_ classes, the following mapping table maps Java
+types to their corresponding formats:
+
+[cols=",",options="header",]
+|===
+|Java Type |Format
+|java.time.Instant |ISO_INSTANT
+|java.time.LocalDate |ISO_LOCAL_DATE
+|java.time.LocalTime |ISO_LOCAL_TIME
+|java.time.LocalDateTime |ISO_LOCAL_DATE_TIME
+|java.time.ZonedDateTime |ISO_ZONED_DATE_TIME
+|java.time.OffsetDateTime |ISO_OFFSET_DATE_TIME
+|java.time.OffsetTime |ISO_OFFSET_TIME
+|===
+
+Table 1: Date/time formats for java.time.* types
+
+Implementations MUST support the deserialization of any time zone ID
+format specified in _java.time.ZoneId_ into a field or property of type
+_java.time.ZoneId_. The serialization format of _java.time.ZoneId_ is
+the normalized zone ID as specified in _java.time.ZoneId_.
+
+Implementations MUST support the deserialization of any time zone ID
+format specified in _java.time.ZoneOffset_ into a field or property of
+_type java.time.ZoneOffset_. The serialization format of
+_java.time.ZoneOffset_ is the normalized zone ID as specified in
+_java.time.ZoneOffset_.
+
+Implementations MUST support the deserialization of any duration format
+specified in _java.time.Duration_ into a field or property of type
+_java.time.Duration_. This is super-set of ISO 8601 duration format. The
+serialization format of _java.time.Duration_ is the ISO 8601 seconds
+based representation, such as PT8H6M12.345S.
+
+Implementations MUST support the deserialization of any period format
+specified in _java.time.Period_ into a field or property of type
+_java.time.Period_. This is a super-set of ISO 8601 period format. The
+serialization format of _java.time.Period_ is ISO 8601 period
+representation. A zero-length period is represented as zero days 'P0D'.
+
+=== Untyped mapping
+
+For an unspecified output type of a deserialization operation, as well
+as where output type is specified as _Object.class_, implementations
+MUST deserialize a JSON document using Java runtime types specified in
+table below:
+
+[cols=",",options="header",]
+|===
+|JSON Value |Java Type
+|object |java.util.Map<String, Object>
+|array |java.util.List<Object>
+|string |java.lang.String
+|number |java.math.BigDecimal
+|true, false |java.lang.Boolean
+|null |null
+|===
+
+Table 2: Untyped Mapping
+
+JSON object values are deserialized into an implementation of
+_java.util.Map<String, Object>_ with a predictable iteration order.
+
+=== Java Class
+
+Any instance passed to a deserialization operation must have a public or
+protected no-argument constructor. Implementations SHOULD throw an error
+if this condition is not met. This limitation does not apply to
+serialization operations, as well as to classes which specify explicit
+instantiation methods as described in section 4.5.
+
+==== Scope and Field access strategy
+
+For a deserialization operation of a Java property, if a matching public
+setter method exists, the method is called to set the value of the
+property. If a matching setter method with private, protected, or
+defaulted to package-only access exists, then this field is ignored. If
+no matching setter method exists and the field is public, then direct
+field assignment is used.
+
+For a serialization operation, if a matching public getter method
+exists, the method is called to obtain the value of the property. If a
+matching getter method with private, protected, or defaulted to
+package-only access exists, then this field is ignored. If no matching
+getter method exists and the field is public, then the value is obtained
+directly from the field.
+
+JSON Binding implementations MUST NOT deserialize into transient, final
+or static fields and MUST ignore name/value pairs corresponding to such
+fields.
+
+Implementations MUST support serialization of final fields. Transient
+and static fields MUST be ignored during serialization operation.
+
+If a JSON document contains a name/value pair not corresponding to field
+or setter method then this name/value pair is skipped (see 3.18).
+
+Public getter/setter methods without a corresponding field MUST be
+supported. When only public getter/setter methods without corresponding
+fields are present in the class, the getter method is called to obtain
+the value to serialize, and the setter method is called during
+deserialization operation.
+
+==== Nested Classes
+
+Implementations MUST support the binding of public and protected nested
+classes. For deserialization operations, both nested and encapsulating
+classes MUST fulfill the same instantiation requirements as specified in
+3.7.1.
+
+==== Static Nested Classes
+
+Implementations MUST support the binding of public and protected static
+nested classes. For deserialization operations, the nested class MUST
+fulfill the same instantiation requirements as specified in 3.7.1.
+
+==== Anonymous Classes
+
+Deserialization into anonymous classes is not supported. Serialization
+of anonymous classes is supported by default object mapping.
+
+=== Polymorphic Types
+
+Deserialization into polymorphic types is not supported by default
+mapping.
+
+=== Enum
+
+Serialization of an Enum instance to a JSON String value MUST follow the
+conversion process defined in javadoc specification for their _name()_.
+
+Deserialization of a JSON value into an enum instance MUST be done by
+calling the enum’s _valueOf(String)_ method.
+
+=== Interfaces
+
+Implementations MUST support the deserialization of specific interfaces
+defined in 3.11 and 3.3.4.
+
+Deserialization to other interfaces is not supported and implementations
+SHOULD report error in such case.
+
+If a class property is defined with an interface and not concrete type,
+then the mapping for a serialized property is resolved based on its
+runtime type.
+
+=== Collections
+
+Implementations MUST support the binding of the following collection
+interfaces, classes and their implementations:
+
+* java.util.Collection
+* java.util.Map
+* java.util.Set
+* java.util.HashSet
+* java.util.NavigableSet
+* java.util.SortedSet
+* java.util.TreeSet
+* java.util.LinkedHashSet
+* java.util.HashMap
+* java.util.NavigableMap
+* java.util.SortedMap
+* java.util.TreeMap
+* java.util.LinkedHashMap
+* java.util.List
+* java.util.ArrayList
+* java.util.LinkedList
+* java.util.Deque
+* java.util.ArrayDeque
+* java.util.Queue
+* java.util.PriorityQueue
+
+Implementations of these interfaces must provide an accessible default
+constructor.
+
+JSON Binding implementations MUST report a deserialization error if a
+default constructor is not present or is not in accessible scope.
+
+=== Arrays
+
+JSON Binding implementations MUST support the binding of Java arrays of
+all supported Java types from this chapter into/from JSON array
+structures as defined in Section 5 of RFC 7159 [1].
+
+Arrays of primitive types and multi-dimensional arrays MUST be
+supported.
+
+=== Attribute order
+
+Class properties MUST be serialized in lexicographical order into the
+resulting JSON document. In case of inheritance, properties declared in
+super class MUST be serialized before properties declared in a child
+class.
+
+When deserializing a JSON document, field values MUST be set in the
+order of attributes present in the JSON document.
+
+=== Null value handling
+
+==== Null Java field
+
+The result of serializing a java field with a null value is the absence
+of the property in the resulting JSON document.
+
+The deserialization operation of a property absent in JSON document MUST
+not set the value of the field, the setter (if available) MUST not be
+called, and thus original value of the field MUST be preserved.
+
+The deserialization operation of a property with a null value in a JSON
+document MUST set the value of the field to null value (or call setter
+with null value if setter is present). The exception is
+_java.util.Optional_, _OptionalInt_, _OptionalLong_, _OptionalDouble_
+instances. In this case the value of the field is set to an empty
+optional value.
+
+==== Null Array Values
+
+The result of deserialization n-ary array represented in JSON document
+is n-ary Java array.
+
+Null value in JSON array is represented by null value in Java array.
+
+Serialization operation on Java array with null value at index _i_ MUST
+output null value at index _i_ of the array in resulting JSON document.
+
+=== Names and identifiers
+
+According to RFC 7159 Section 7 [1], every Java identifier name can be
+transformed using identity function into a valid JSON String. Identity
+function MUST be used for transforming Java identifier names into
+Strings in JSON document.
+
+For deserialization operations defined in 3.6 section, identity function
+is used to transform JSON name strings into Java _String_ instances in
+the resulting map _Map<String, Object>_.
+
+Naming strategy can be further customized in customization.
+
+=== Big numbers
+
+JSON Binding implementation MUST serialize/deserialize numbers that
+express greater magnitude or precision than an IEEE 754 double precision
+number as strings.
+
+=== Generics
+
+JSON Binding implementations MUST support binding of generic types.
+
+Due to type erasure, there are situations when it is not possible to
+obtain generic type information. There are two ways for JSON Binding
+implementations to obtain generic type information.
+
+If there is a class file available (in the following text referred as
+static type information), it is possible to obtain generic type
+information (effectively generic type declaration) from Signature
+attribute (if this information is present).
+
+The second option is to provide generic type information at runtime. To
+provide generic type information at runtime, an argument of
+_java.lang.reflect.Type_ MUST be passed to _Jsonb::toJson_ or to
+_Jsonb::fromJson_ method.
+
+==== Type resolution algorithm
+
+There are several levels of information JSON Binding implementations may
+obtain about the type of field/class/interface:
+
+[arabic]
+. runtime type provided _via java.lang.reflect.Type_ parameter passed to
+_Jsonb::toJson_ or _Jsonb::fromJson_ method
+. static type provided in class file (effectively stored in Signature
+attribute)
+. raw type
+. no information about the type
+
+If there is no information about the type, JSON Binding implementation
+MUST treat this type as _java.lang.Object_.
+
+If only raw type of given field/class/interface is known, then the type
+MUST be treated like raw type. For example, if the only available
+information is that given field/class/interface is of type
+_java.util.ArrayList_, then the type MUST be treated as
+_java.util.ArrayList<Object>_.
+
+JSON Binding implementations MUST use the most specific type derived
+from the information available.
+
+Let’s consider situation when there is only a static type information of
+a given field/class/interface known, and there is no runtime type
+information available.
+
+Let GenericClass< _T~1~…T~n~_ > be part of generic type
+declaration, where GenericClass is name of the generic type and
+_T~1~…T~n~_ are type parameters. For every , where _i_
+in _1…n_, there are 3 possible options:
+
+[arabic]
+. is concrete parameter type
+. is bounded parameter type
+. is wildcard parameter type without bounds
+
+In case 1, the most specific parameter type MUST be given concrete
+parameter type .
+
+For bounded parameter type, let’s use bounds
+_B~1~,…,B~m~_.
+
+If _m = 1_, then the most specific parameter type MUST be derived from
+the given bound .
+
+If is class or interface, the most specific parameter type MUST be the
+class or interface.
+
+Otherwise, the most specific parameter type SHOULD be
+_java.lang.Object_.
+
+If multiple bounds are specified, the first step is to resolve every
+bound separately. Let’s define result of such resolution as
+_S~1~,…,S~m~_ specific parameter types.
+
+If _S~1~,…,S~m~_ are _java.lang.Object_, then the
+bounded parameter type MUST be _java.lang.Object_.
+
+If there is exactly one , where _1<=k<=m_ is different than
+_java.lang.Object_, then the most specific parameter type for this
+bounded parameter type MUST be .
+
+If there exists _S~k1~,S~k2~_, where _1<=k1<=k2<=m_,
+then the most specific parameter type is .
+
+For wildcard parameter type without bounds, the most specific parameter
+type MUST be _java.lang.Object_.
+
+Any unresolved type parameter MUST be treated as _java.lang.Object_.
+
+If runtime type is provided via _java.lang.reflect.Type_ parameter
+passed to _Jsonb::toJson_ or _Jsonb::fromJson_ method, then that runtime
+type overrides static type declaration wherever applicable.
+
+There are situations when it is necessary to use combination of runtime
+and static type information.
+
+*public class* MyGenericType<T,U> \{ +
+*public* T *field1*; +
+*public* U *field2*; +
+}
+
+[#_Toc450577071 .anchor]##Figure 2: Example Type resolution
+
+To resolve type of _field1_, runtime type of _MyGenericType_ and static
+type of _field1_ is required.
+
+=== Must-Ignore policy
+
+When JSON Binding implementation during deserialization encounters key
+in key/value pair that it does not recognize, it should treat the rest
+of the JSON document as if the element simply did not appear, and in
+particular, the implementation MUST NOT treat this as an error
+condition.
+
+=== Uniqueness of properties
+
+JSON Binding implementations MUST NOT produce JSON documents with
+members with duplicate names. In this context, "duplicate" means that
+the names, after processing any escaped characters, are identical
+sequences of Unicode characters.
+
+When non-unique property (after override and rename) is found,
+implementation MUST throw an exception. This doesn’t apply for
+customized user serialization behavior implemented with the usage of
+_JsonbAdapter_ and _JsonbSerializer/JsonbDeserializer_ mechanisms.
+
+=== JSON Processing integration
+
+JSON Binding implementations MUST support binding of the following JSON
+Processing types:
+
+* javax.json.JsonObject
+* javax.json.JsonArray
+* javax.json.JsonStructure
+* javax.json.JsonValue
+* javax.json.JsonString
+* javax.json.JsonNumber
+
+Serialization of supported _javax.json.*_ objects/interfaces/fields MUST
+have the same result as serialization these objects with
+_javax.json.JsonWriter_.
+
+Deserialization into supported _javax.json.*_ objects/interfaces/fields
+MUST have the same result as deserialization into such objects with
+_javax.json.JsonReader_.
+
+== Customizing Mapping
+
+This section defines several ways how to customize the default behavior.
+The default behavior can be customized annotating a given field,
+JavaBean property, type or package, or by providing an implementation of
+particular strategy, e.g. _PropertyOrderStrategy_. JSON Binding provider
+MUST support these customization options.
+
+=== Customizing Property Names
+
+There are two standard ways how to customize serialization of field (or
+JavaBean property) to JSON document. The same applies to
+deserialization. The first way is to annotate field (or JavaBean
+property) with _javax.json.bind.annotation.JsonbProperty_ annotation.
+The second option is to set
+_javax.json.bind.config.PropertyNamingStrategy_.
+
+==== javax.json.bind.annotation.JsonbTransient
+
+JSON Binding implementations MUST NOT process fields, JavaBean
+properties or types annotated with
+_javax.json.bind.annotation.JsonbTransient_.
+
+_JsonbTransient_ annotation is mutually exclusive with all other JSON
+Binding defined annotations. Implementations must throw _JsonbException_
+in the following cases:
+
+* Class field is annotated with @JsonbTransient
+** Exception must be thrown when this field, getter or setter is
+annotated with other JSON Binding annotations.
+* Getter is annotated with @JsonbTransient
+** Exception is thrown if when the field or this getter are annotated
+with other JSON Binding annotations. Exception is not thrown if JSON
+Binding annotations are presented on the setter.
+* Setter is annotated with @JsonbTransient
+** Exception is thrown if when the field or this setter are annotated
+with other JSON Binding annotations. Exception is not thrown if JSON
+Binding annotations are presented on the getter.
+
+==== javax.json.bind.annotation.JsonbProperty
+
+According to default mapping 3.15, property names are serialized
+unchanged to JSON document (identity transformation). To provide custom
+name for given field (or JavaBean property),
+_javax.json.bind.annotation.JsonbProperty_ may be used. _JsonbProperty_
+annotation may be specified on field, getter or setter method.
+
+If specified on field, custom name is used both for serialization and
+deserialization.
+
+If _javax.json.bind.annotation.JsonbProperty_ is specified on getter
+method, it is used only for serialization. If
+_javax.json.bind.annotation.JsonbProperty_ is specified on setter
+method, it is used only for deserialization.
+
+It is possible to specify different values for getter and setter method
+for _javax.json.bind.annotation.JsonbProperty_ annotation. In such case
+the different custom name will be used for serialization and
+deserialization.
+
+==== javax.json.bind.config.PropertyNamingStrategy
+
+To customize name translation of properties, JSON Binding provides
+_javax.json.bind.config.PropertyNamingStrategy_ interface.
+
+Interface _javax.json.bind.config.PropertyNamingStrategy_ provides the
+most common property naming strategies.
+
+* IDENTITY
+* LOWER_CASE_WITH_DASHES
+* LOWER_CASE_WITH_UNDERSCORES
+* UPPER_CAMEL_CASE
+* UPPER_CAMEL_CASE_WITH_SPACES
+* CASE_INSENSITIVE
+
+The detailed description of property naming strategies can be found in
+javadoc.
+
+The way to set custom property naming strategy is to use
+_javax.json.bind.JsonbConfig::withPropertyNamingStrategy_ method.
+
+==== Property names resolution
+
+Property name resolution consists of two phases:
+
+[arabic]
+. Standard override mechanism
+. Applying property name resolution, which involves the value of
+_@JsonbProperty_
+
+If duplicate name is found exception MUST be thrown. The definition of
+duplicate (non-unique) property can be found in 3.19.
+
+=== Customizing Property Order
+
+To customize the order of serialized properties, JSON Binding provides
+_javax.json.bind.config.PropertyOrderStrategy_ class.
+
+Class _javax.json.bind.config.PropertyOrderStrategy_ provides the most
+common property order strategies.
+
+* LEXICOGRAPHICAL
+* ANY
+* REVERSE
+
+The detailed description of property order strategies can be found in
+javadoc.
+
+The way to set custom property order strategy is to use
+_javax.json.bind.JsonbConfig::withPropertyOrderStrategy_ method.
+
+To customize the order of serialized properties only for one specific
+type, JSON Binding provides
+_javax.json.bind.annotation.JsonbPropertyOrder_ annotation. Order
+specified by _JsonbPropertyOrder_ annotation overrides order specified
+by _PropertyOrderStrategy_.
+
+The order is applied to already renamed properties as stated in 4.1.
+
+=== Customizing Null Handling
+
+There are three ways how to change default null handling. The first
+option is to annotate type or package with
+_javax.json.bind.annotation.JsonbNillable_ annotation. The second option
+is to annotate field or JavaBean property with
+_javax.json.bind.annotation.JsonbProperty_ and to set nillable parameter
+to true. The third option is to set config-wide configuration via
+_JsonbConfig::withNullValues_ method.
+
+If annotations (_JsonbNillable_ or _JsonbProperty_) on different level
+apply to the same field (or JavaBean property) or if there is config
+wide configuration and some annotation (_JsonbNillable_ or
+_JsonbProperty_) which apply to the same field (or JavaBean property),
+the annotation with the smallest scope applies. For example, if there is
+type level _JsonbNillable_ annotation applied to some class with field
+which is annotated with _JsonbProperty_ annotation with nillable =
+false, then _JsonbProperty_ annotation overrides _JsonbNillable_
+annotation.
+
+==== javax.json.bind.annotation.JsonbNillable
+
+To customize the result of serializing field (or JavaBean property) with
+null value, JSON Binding provides
+_javax.json.bind.annotation.JsonbNillable_ and
+_javax.json.bind.annotation.JsonbProperty_ annotations.
+
+When given object (type or package) is annotated with
+_javax.json.bind.annotation.JsonbNillable_ annotation, the result of
+null value will be presence of associated property in JSON document with
+explicit null value.
+
+The same behavior as _JsonbNillable_, but only at field, parameter and
+method (JavaBean property) level is provided by
+_javax.json.bind.annotation.JsonbProperty_ annotation with its
+_nillable_ parameter.
+
+JSON Binding implementations MUST implement override of annotations
+according to target of the annotation (FIELD, PARAMETER, METHOD, TYPE,
+PACKAGE). Type level annotation overrides behavior set at the package
+level. Method, parameter or field level annotation overrides behavior
+set at the type level.
+
+==== Global null handling configuration
+
+Null handling behavior can be customized via
+_javax.json.bind.JsonbConfig::withNullValues_ method.
+
+The way to enforce serialization of null values, is to call method
+_javax.json.bind.JsonbConfig::withNullValues_ with parameter true.
+
+The way to skip serialization of null values is to call method
+_javax.json.bind.JsonbConfig::withNullValues_ with parameter _false_.
+
+=== I-JSON support
+
+I-JSON (short for "Internet JSON") is a restricted profile of JSON
+designed to maximize interoperability and increase confidence that
+software can process it successfully with predictable results. The
+profile is defined in [7].
+
+JSON Binding provides full support for I-JSON standard. Without any
+configuration, JSON Binding produces JSON documents which are compliant
+with I-JSON with three exceptions.
+
+* JSON Binding does not restrict the serialization of top-level JSON
+texts that are neither objects nor arrays. The restriction should happen
+at application level.
+* JSON Binding does not serialize binary data with base64url encoding.
+* JSON Binding does not enforce additional restrictions on
+dates/times/duration.
+
+These exceptions refer only to recommended areas of I-JSON.
+
+To enforce strict compliance of serialized JSON documents, JSON Binding
+implementations MUST implement configuration option
+"jsonb.strict-ijson".
+
+The way to enable strict compliance of serialized JSON documents, is to
+call method _JsonbConfig::withStrictIJSON_ with parameter _true_.
+
+Strict I-JSON compliance changes only default mapping behavior (see
+Section 3).
+
+==== Strict date serialization
+
+Uppercase rather than lowercase letters MUST be used.
+
+The time zone MUST always be included and optional trailing seconds MUST
+be included even when their value is "00".
+
+JSON Binding implementations MUST serialize _java.util.Date,
+java.util.Calendar, java.util.GregorianCalendar, java.time.LocalDate,
+java.time.LocalDateTime_ and _java.time.Instant_ in the same format as
+_java.time.ZonedDateTime_.
+
+The result of serialization of duration must conform to the "duration"
+production in Appendix A of RFC 3339, with the same additional
+restrictions.
+
+=== Custom instantiation
+
+In many scenarios instantiation with the use of default constructor is
+not enough. To support these scenarios, JSON Binding provides
+_javax.json.bind.annotation.JsonbCreator_ annotation.
+
+At most one _JsonbCreator_ annotation can be used to annotate custom
+constructor or static factory method in a class, otherwise
+_JsonbException_ MUST be thrown.
+
+Factory method annotated with _JsonbCreator_ annotation should return
+instance of a particular class this annotation is used for, otherwise
+_JsonbException_ MUST be thrown.
+
+Mapping between parameters of constructor/factory method annotated with
+_JsonbCreator_ and JSON fields is defined using _JsonbProperty_
+annotation on all parameters.
+
+In case _JsonbProperty_ annotation on parameters is not used, parameters
+should be mapped from JSON fields with the same name. In this case the
+proper mapping is NOT guaranteed.
+
+In case a field required for a parameter mapping doesn’t exist in JSON
+document, _JsonbException_ MUST be thrown.
+
+=== Custom visibility
+
+To customize scope and field access strategy as specified in section
+3.7.1, it is possible to specify
+_javax.json.bind.annotation.JsonbVisibility_ annotation or to override
+default behavior globally calling
+_JsonbConfig::withPropertyVisibilityStrategy_ method with given custom
+property visibility strategy.
+
+=== Custom mapping
+
+Some Java types do not map naturally to a JSON representation and
+annotations cannot be used to customize mapping. An example can be some
+third party classes or classes without no-arg constructor. To customize
+mapping in this case JSON Binding has two mechanisms: Adapters and
+Serializers.
+
+==== Adapters
+
+Adapter is a class implementing _javax.json.bind.adapter.JsonbAdapter_
+interface. It has a custom code to convert the “unmappable” type
+(Original) into another one that JSONB can handle (Adapted).
+
+On serialization of Original type JSONB calls
+_JsonbAdapter::adaptToJson_ method of the adapter to convert Original to
+Adapted and serializes Adapted the standard way.
+
+On deserialization JSONB deserializes Adapted from JSON and converts it
+to Original using _JsonbAdapter::adaptFromJson_ method.
+
+There are two ways how to register _JsonbAdapter_:
+
+[arabic]
+. Using _JsonbConfig::withAdapters_ method;
+. Annotating a class field with _JsonbTypeAdapter_ annotation.
+
+_JsonbAdapter_ registered via _JsonbConfig::withAdapters_ is visible to
+all serialize/deserialize operations performed with given _JsonbConfig_.
+_JsonbAdapter_ registered with annotation is visible to
+serialize/deserialize operation used only for annotated field.
+
+Implementations must provide a CDI support in adapters to allow
+injection of CDI managed beans into it.
+
+==== Serializers/Deserializers
+
+Sometimes adapters mechanism is not enough and low level access to JSONP
+parser/generator is needed.
+
+Serializer is a class implementing
+_javax.json.bind.serializers.JsonbSerializer_ interface. It is used to
+serialize the type it’s registered on (Original). On serializing of
+Original type JSONB calls _JsonbSerializer::serialize_ method. This
+method has to contain a custom code to serialize Original type using
+provided _JsonpGenerator_.
+
+Deserializer is a class implementing
+_javax.json.bind.serializers.JsonbDeserializer_ interface. It is used to
+deserialize the type it’s registered on (Original). On deserialization
+of Original type JSONB calls _JsonbDeserializer::deserialize_ method.
+This method has to contain a custom code to deserialize Original type
+using provided _JsonpParser_.
+
+There are two ways how to register _JsonbSerializer/JsonbDeserializer_:
+
+[arabic]
+. Using _JsonbConfig::withSerializers/ JsonbConfig::withDeserializers_
+method;
+. Annotating a type with _JsonbSerializer/JsonbDeserializer_ annotation.
+
+Implementations must provide a CDI support in serializers/deserializers
+to allow injection of CDI managed beans into it.
+
+=== Custom date format
+
+To specify custom date format, it is necessary to annotate given
+annotation target with _javax.json.bind.annotation.JsonbDateFormat_
+annotation. _JsonbDateFormat_ annotation can be applied to the following
+targets:
+
+* field
+* getter/setter
+* type
+* parameter
+* package
+
+Default date format and default locale can be customized globally using
+_javax.json.bind.JsonbConfig::withDateFormat_ and
+_javax.json.bind.JsonbConfig::withLocale_ methods.
+
+If _javax.json.bind.annotation. JsonbDateFormat_ is specified on a
+getter method, it is used only for serialization. If
+_javax.json.bind.annotation. JsonbDateFormat_ is specified on a setter
+method, it is used only for deserialization.
+
+Annotation applied to more specific target overrides the same annotation
+applied to target with wider scope and global configuration. For
+example, annotation applied to type target will override the same
+annotation applied to package target.
+
+=== Custom number format
+
+To specify custom number format, it is necessary to annotate given
+annotation target with _javax.json.bind.annotation.JsonbNumberFormat_
+annotation. _JsonbNumberFormat_ annotation can be applied to the
+following targets:
+
+* field
+* getter/setter
+* type
+* parameter
+* package
+
+If _javax.json.bind.annotation. JsonbNumberFormat_ is specified on a
+getter method, it is used only for serialization. If
+_javax.json.bind.annotation. JsonbNumberFormat_ is specified on a setter
+method, it is used only for deserialization.
+
+Annotation applied to more specific target overrides the same annotation
+applied to target with wider scope. For example, annotation applied to
+type target will override the same annotation applied to package target.
+
+=== Custom binary data handling
+
+To customize encoding of binary data, JSON Binding provides
+_javax.json.bind.config.BinaryDataStrategy_ class.
+
+Class _javax.json.bind.config.BinaryDataStrategy_ provides the most
+common binary data encodings.
+
+* BYTE
+* BASE_64
+* BASE_64_URL
+
+The detailed description of binary encoding strategies can be found in
+javadoc.
+
+The way to set custom binary data handling strategy is to use
+_javax.json.bind.JsonbConfig::withBinaryDataStrategy_ method.
+
+== Appendix
+
+=== Change Log
+
+==== Changes Since 1.0 Early Draft
+
+* Section 3.7: Clarified that default constructor is not needed in case
+of _JsonbCreator_.
+* Chapters 3 and 4: Synchronized vocabulary to serialization and
+deserialization.
+* Section 3.9: Conversion method changed from _toString()_ to _name()_.
+* Section 3.4.3: Changed serialization rules of object properties with
+_Optional_ type and _null_ value.
+* Section 3.14.1: Added an exception for _Optional_ fields.
+* Section 3.6: Removed ’smallest possible type’ rule for number types.
+JSON number type is always mapped to _BigDecimal_ in case target type is
+not specified.
+* Removed ’Simple Value’ customization _(@JsonbValue_). Adapters should
+be used instead.
+* Adapters section (4.7.1) changed.
+* Serializers/Deserializers section (4.7.2) added.
+
+==== Changes Since 1.0 Public Draft
+
+* Section 3.17.1: Sample fixed.
+* Section 4.4: Method name is changed from
+_JsonbConfig::withStrictIJSONSerializationCompliance_ to
+_JsonbConfig::withStrictIJSON_. Config property name is changed from
+_jsonb.i-json.strict-ser-compliance_ to _jsonb.strict-ijson_.
+* Sections 4.7.1 and 4.7.2: Added CDI support.
+* Section 4.8: Added a paragrath explicitly explaining the use case when
+_JsonbDateFormat_ annotation is placed on getter or setter.
+* Section 4.9: Added a paragrath explicitly explaining the use case when
+_JsonbNumberFormat_ annotation is placed on getter or setter.
+* Section 4.5: _JsonbProperty_ on parameters is required for proper
+mapping. If not present mapping is is done by matching names, but is not
+guaranteed. Clarified condition when exception is raised.
+* Section 4.1.1: Clarified conditions when exceptions are throwed.
+* Section 4.4: Clarified that strict I_JSON compliance affects only
+default mapping mechanism.
+* Section 3.13: Declared fields changed to class properties.
+
+== Bibliography
+
+[cols=",",]
+|===
+| |
+| |
+| |
+| |
+| |
+| |
+| |
+| |
+|===
+
+[1] E. T. Bray, "The JavaScript Object Notation (JSON) Data Interchange
+Format," March 2014. [Online]. Available:
+https://tools.ietf.org/html/rfc7159.[2] R. Fielding, "Architectural
+Styles and the Design of Network-based Software Architectures," 2000.[3]
+"REST Wiki," [Online]. Available:
+http://rest.blueoxen.net/cgi-bin/wiki.pl.[4] "JSON," [Online].
+Available: http://en.wikipedia.org/wiki/JSON.[5] S. Bradner, "Key words
+for use in RFCs to Indicate Requirement Levels," March 1997. [Online].
+Available: https://www.ietf.org/rfc/rfc2119.txt.[6] D. Crockford, "The
+application/json Media Type for JavaScript Object Notation (JSON)," July
+2006. [Online]. Available: https://tools.ietf.org/html/rfc4627.[7] E. T.
+Bray, "The I-JSON Message Format," March 2015. [Online]. Available:
+https://tools.ietf.org/html/rfc7493.[8] K. Kawaguchi, "The Java
+Architecture for XML Binding (JAXB)," 2009.[9] K.-M. Chung, "Java API
+for JSON Processing," 2015.

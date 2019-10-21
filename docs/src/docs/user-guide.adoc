@@ -101,7 +101,7 @@ String result = jsonb.toJson(dogs);
 
 // We can also deserialize back into a raw collection, but since there is no way to infer a type here,
 // the result will be a list of java.util.Map instances with string keys.
-dogs = jsonb.fromJson(result, ArrayList.getClass());
+dogs = jsonb.fromJson(result, ArrayList.class);
 ----
 
 ==== Mapping a generic collection
@@ -517,7 +517,7 @@ public class CustomerAdapter implements JsonbAdapter<Customer, CustomerAnnotated
     public CustomerAnnotated adaptToJson(Customer c) throws Exception {
         if (c == null)
             return null;
-        CustomerAnnotated customer = new Customer();
+        CustomerAnnotated customer = new CustomerAnnotated();
         customer.setId(c.getId());
         customer.setName(c.getName());
         return customer;
@@ -544,7 +544,7 @@ First scenario:
 Jsonb jsonb = JsonbBuilder.create();
 
 // Create customer
-Customer c = new Customer();
+Customer customer = new Customer();
 
 // Initialization code is skipped
 
@@ -576,7 +576,7 @@ JsonbConfig config = new JsonbConfig()
 Jsonb jsonb = JsonbBuilder.create(config);
 
 // Create customer
-Customer c = new Customer();
+Customer customer = new Customer();
 
 // Initialization code is skipped
 

@@ -1,6 +1,8 @@
 # Jakarta JSON Binding (JSON-B)
 
 [![Maven Central](https://img.shields.io/maven-central/v/jakarta.json.bind/jakarta.json.bind-api.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:jakarta.json.bind%20a:jakarta.json.bind-api)
+[![javadoc.io](https://javadoc.io/badge2/jakarta.json.bind/jakarta.json.bind-api/javadoc.io.svg)](https://javadoc.io/doc/jakarta.json.bind/jakarta.json.bind-api)
+[![Gitter](https://badges.gitter.im/eclipse/jsonb.svg)](https://gitter.im/eclipse/jsonb)
 [![License](https://img.shields.io/badge/License-EPL%202.0-green.svg)](https://opensource.org/licenses/EPL-2.0)
 
 JSON-B is a standard binding layer for converting Java objects to/from JSON messages. It defines a default mapping algorithm for converting existing Java classes to JSON, while enabling developers to customize the mapping process through the use of Java annotations.

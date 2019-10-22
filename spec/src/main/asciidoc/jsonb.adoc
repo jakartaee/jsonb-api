@@ -1,16 +1,13 @@
 :sectnums:
 = Jakarta JSON Binding Specification, Version 1.0
 
-Copyright (c) 2016, 2019 Oracle and/or its affiliates. All rights reserved.
-
-Oracle and Java are registered trademarks of Oracle and/or its affiliates. Other names may be trademarks of their respective owners. 
+Copyright (c) 2019 Eclipse Foundation 
 
 == Introduction
 
 This specification defines binding API between Java objects and https://tools.ietf.org/html/rfc7159[JSON] documents. Readers are assumed to be familiar with JSON; for more information about JSON, see:
 
 * https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf[Architectural Styles and the Design of Network-based Software Architectures]
-* http://rest.blueoxen.net/cgi-bin/wiki.pl[The REST Wiki]
 * http://en.wikipedia.org/wiki/JSON[JSON on Wikipedia]
 
 === Status
@@ -18,25 +15,19 @@ This specification defines binding API between Java objects and https://tools.ie
 A list of open issues can be found at:
 
 ____
-https://github.com/javaee/jsonb-spec/issues
+https://github.com/eclipse-ee4j/jsonb-api/issues
 ____
 
 The corresponding source code can be found online at:
 
 ____
-https://github.com/javaee/jsonb-spec
+https://github.com/eclipse-ee4j/jsonb-api
 ____
 
-The reference implementation is obtainable from:
+The committer group is seeking feedback from the community on any aspect of this specification. Please join our discussion groups at:
 
 ____
-https://projects.eclipse.org/projects/rt.yasson
-____
-
-The expert group is seeking feedback from the community on any aspect of this specification. Please join our discussion groups at:
-
-____
-https://javaee.groups.io/g/jsonb-spec
+https://gitter.im/eclipse/jsonb
 ____
 
 === Goals
@@ -48,7 +39,7 @@ Support binding (serialization and deserialization) for all RFC 7159-compatible 
 * *Relationships to JSON Related specifications* +
 JSON-related specifications will be surveyed to determine their relationship to JSON-Binding.
 * *Consistency* +
-Maintain consistency with JAXB (Java API for XML Binding) and other Java EE and SE APIs where appropriate.
+Maintain consistency with JAXB (Java API for XML Binding) and other Jakarta EE and Java SE APIs where appropriate.
 * *Convention* +
 Define default mapping of Java classes and instances to JSON document counterparts.
 * *Customization* +
@@ -58,7 +49,7 @@ Default use of the APIs should not require prior knowledge of the JSON document 
 * *Partial Mapping* +
 In many use cases, only a subset of JSON Document is required to be mapped to a Java object instance.
 * *Integration* +
-Define or enable integration with JSR 374: Java API for JSON Processing (JSON-P) 1.1.
+Define or enable integration with Jakarta JSON Processing (JSON-P) 1.1.
 
 === Non-Goals
 
@@ -106,9 +97,9 @@ Process of reading a JSON document and constructing a tree of content objects, w
 *Serialization* +
 Inverse process to deserialization. Process of traversing content object tree and writing a JSON document that reflects the tree’s content.
 
-=== Expert Group Members
+=== Acknowledgements
 
-This specification is being developed as part of JSR 367 under the Java Community Process. It is the result of the collaborative work of the members of the JSR 367 Expert Group. The following are the present expert group members:
+This specification was originally developed as part of JSR 367 under the Java Community Process. It was the result of the collaborative work of the members of the JSR 367 Expert Group. The following were the expert group members:
 
 * Dmitry Kornilov (Oracle)
 * Roman Grigoriadi (Oracle)
@@ -125,11 +116,9 @@ This specification is being developed as part of JSR 367 under the Java Communit
 * Alexander Salvanos (Individual Member)
 * Romain Manni-Bucau (Tomitribe)
 
-=== Acknowledgements
+During the course of JSR 367 we received many excellent suggestions. Special thanks to Heather VanCura, David Delabassee and Reza Rahman for feedback and help with evangelizing the specification, and John Clingan for feedback and language corrections.
 
-During the course of this JSR we received many excellent suggestions. Special thanks to Heather VanCura, David Delabassee and Reza Rahman for feedback and help with evangelizing the specification, and John Clingan for feedback and language corrections.
-
-During the course of this JSR we also received many excellent suggestions. Thanks in particular to Mark Struberg, Olena Syrota, Oleg Tsal-Tsalko and whole JUG UA for their contributions.
+During the course of JSR 367 we also received many excellent suggestions. Thanks in particular to Mark Struberg, Olena Syrota, Oleg Tsal-Tsalko and whole JUG UA for their contributions.
 
 == Runtime API
 
@@ -766,8 +755,8 @@ The way to set custom binary data handling strategy is to use `javax.json.bind.J
 * Section 3.17.1: Sample fixed.
 * Section 4.4: Method name is changed from `JsonbConfig::withStrictIJSONSerializationCompliance` to `JsonbConfig::withStrictIJSON`. Config property name is changed from `jsonb.i-json.strict-ser-compliance` to `jsonb.strict-ijson`.
 * Sections 4.7.1 and 4.7.2: Added CDI support.
-* Section 4.8: Added a paragrath explicitly explaining the use case when `JsonbDateFormat` annotation is placed on getter or setter.
-* Section 4.9: Added a paragrath explicitly explaining the use case when `JsonbNumberFormat` annotation is placed on getter or setter.
+* Section 4.8: Added a paragraph explicitly explaining the use case when `JsonbDateFormat` annotation is placed on getter or setter.
+* Section 4.9: Added a paragraph explicitly explaining the use case when `JsonbNumberFormat` annotation is placed on getter or setter.
 * Section 4.5: `JsonbProperty` on parameters is required for proper mapping. If not present mapping is is done by matching names, but is not guaranteed. Clarified condition when exception is raised.
 * Section 4.1.1: Clarified conditions when exceptions are throwed.
 * Section 4.4: Clarified that strict I_JSON compliance affects only default mapping mechanism.

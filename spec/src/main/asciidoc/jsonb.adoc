@@ -80,7 +80,8 @@ public class Hello {
 }
 ----
 
-URIs of the general form `http://example.org/...` and `http://example.com/...` represent application or context-dependent URIs.
+URIs of the general form link:http://example.org/...[http://example.org/...] and link:http://example.com/...[http://example.com/...] represent
+application or context-dependent URIs.
 
 All parts of this specification are normative, with the exception of examples, notes and sections explicitly marked as ‘Non-Normative’. Non-normative notes are formatted as shown below:
 

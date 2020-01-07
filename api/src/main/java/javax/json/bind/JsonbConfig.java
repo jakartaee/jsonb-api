@@ -190,7 +190,7 @@ public class JsonbConfig {
      * Property used to specify whether or not the serialized JSON data is formatted
      * with linefeeds and indentation.
      *
-     * Configures value of {@code FORMATTING} property.
+     * Configures value of {@link #FORMATTING} property.
      *
      * @param formatted
      *      True means serialized data is formatted, false (default)
@@ -205,7 +205,7 @@ public class JsonbConfig {
     /**
      * Property used to specify whether null values should be serialized to JSON document or skipped.
      *
-     * Configures value of {@code NULL_VALUES} property.
+     * Configures value of {@link #NULL_VALUES} property.
      *
      * @param serializeNullValues
      *      True means that null values will be serialized into JSON document,
@@ -222,7 +222,7 @@ public class JsonbConfig {
      * for encoding of JSON data. For input data (fromJson), selected encoding is used if
      * the encoding cannot be detected automatically. Default value is 'UTF-8'.
      *
-     * Configures value of {@code ENCODING} property.
+     * Configures value of {@link #ENCODING} property.
      *
      * @param encoding
      *      Valid character encoding as defined in the
@@ -238,7 +238,7 @@ public class JsonbConfig {
     /**
      * Property used to specify whether strict I-JSON serialization compliance should be enforced.
      *
-     * Configures value of {@code STRICT_IJSON} property.
+     * Configures value of {@link #STRICT_IJSON} property.
      *
      * @param enabled
      *      True means data is serialized in strict compliance according to RFC 7493.
@@ -252,7 +252,7 @@ public class JsonbConfig {
     /**
      * Property used to specify custom naming strategy.
      *
-     * Configures value of {@code JSONB_PROPERTY_NAMING_STRATEGY} property.
+     * Configures value of {@link #PROPERTY_NAMING_STRATEGY} property.
      *
      * @param propertyNamingStrategy
      *      Custom naming strategy which affects serialization and deserialization.
@@ -266,7 +266,7 @@ public class JsonbConfig {
     /**
      * Property used to specify custom naming strategy.
      *
-     * Configures value of {@code JSONB_PROPERTY_NAMING_STRATEGY} property.
+     * Configures value of {@link #PROPERTY_NAMING_STRATEGY} property.
      *
      * @param propertyNamingStrategy
      *      Predefined naming strategy which affects serialization and deserialization.
@@ -280,7 +280,7 @@ public class JsonbConfig {
     /**
      * Property used to specify property order strategy.
      *
-     * Configures values of {@code JSONB_PROPERTY_ORDER_STRATEGY} property.
+     * Configures values of {@link #PROPERTY_ORDER_STRATEGY} property.
      *
      * @param propertyOrderStrategy
      *      Predefined property order strategy which affects serialization.
@@ -294,7 +294,7 @@ public class JsonbConfig {
     /**
      * Property used to specify custom property visibility strategy.
      *
-     * Configures value of {@code PROPERTY_VISIBILITY_STRATEGY} property.
+     * Configures value of {@link #PROPERTY_VISIBILITY_STRATEGY} property.
      *
      * @param propertyVisibilityStrategy
      *      Custom property visibility strategy which affects serialization and deserialization.
@@ -309,7 +309,7 @@ public class JsonbConfig {
     /**
      * Property used to specify custom mapping adapters.
      *
-     * Configures value of {@code ADAPTERS} property.
+     * Configures value of {@link #ADAPTERS} property.
      *
      * Calling withAdapters more than once will merge the adapters with previous value.
      *
@@ -326,7 +326,7 @@ public class JsonbConfig {
     /**
      * Property used to specify custom serializers.
      *
-     * Configures value of {@code SERIALIZERS} property.
+     * Configures value of {@link #SERIALIZERS} property.
      *
      * Calling withSerializers more than once will merge the serializers with previous value.
      *
@@ -343,7 +343,7 @@ public class JsonbConfig {
     /**
      * Property used to specify custom deserializers.
      *
-     * Configures value of {@code DESERIALIZERS} property.
+     * Configures value of {@link #DESERIALIZERS} property.
      *
      * Calling withDeserializers more than once will merge the deserializers with previous value.
      *
@@ -360,7 +360,7 @@ public class JsonbConfig {
     /**
      * Property used to specify custom binary data strategy.
      *
-     * Configures value of {@code BINARY_DATA_STRATEGY} property.
+     * Configures value of {@link #BINARY_DATA_STRATEGY} property.
      *
      * @param binaryDataStrategy
      *      Custom binary data strategy which affects serialization and deserialization.
@@ -375,10 +375,12 @@ public class JsonbConfig {
      * Property used to specify custom date format. This format will be used by default for all date classes
      * serialization and deserialization.
      *
+     * Configures values of {@link #DATE_FORMAT} and {@link #LOCALE} properties.
+     *
      * @param dateFormat
      *      Custom date format as specified in {@link java.time.format.DateTimeFormatter}.
      * @param locale
-     *      Locale, default is null.
+     *      Locale, if null is specified {@link Locale#getDefault} will be used.
      * @return This JsonbConfig instance.
      */
     public final JsonbConfig withDateFormat(final String dateFormat, final Locale locale) {
@@ -388,6 +390,8 @@ public class JsonbConfig {
 
     /**
      * Property used to specify custom locale.
+     *
+     * Configures value of {@link #LOCALE} property.
      *
      * @param locale
      *      Locale, must not be null.

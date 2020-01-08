@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
  * </p>
  *
  * <p><b>Usage</b></p>
- * <p> The {@code @JsonbDeserializer} annotation can be used with the following
+ * <p> The {@code @JsonbTypeDeserializer} annotation can be used with the following
  *     program elements:
  * <ul>
  *   <li> type </li>

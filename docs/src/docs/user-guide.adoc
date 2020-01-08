@@ -671,7 +671,7 @@ Customer customer = new Customer();
 customer.setId(1);
 customer.setName("Freddie");
 
-// Also configurable with @JsonbSerializer / JsonbDeserializer on properties and class.
+// Also configurable with @JsonbTypeSerializer / @JsonbTypeDeSerializer on properties and class.
 JsonbConfig config = new JsonbConfig()
         .withSerializers(new CustomerSerializer())
         .withDeserializers(new CustomerDeserializer());

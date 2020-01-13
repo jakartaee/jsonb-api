@@ -51,8 +51,8 @@ Default Jsonb engine can be created like this:
 
 [source,java]
 ----
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
 // ...
 Jsonb jsonb = JsonbBuilder.create();
 ----
@@ -487,7 +487,7 @@ Jsonb jsonb = JsonbBuilder.create(config);
 
 In some cases it may be difficult to serialize/deserialize a class the desired way. Sometimes it's not possible to put custom annotations on the source code because you don't have access to it or custom annotations don't solve the problem. In this case adapters is another option to try.
 
-Adapter is a class implementing javax.json.bind.adapter.JsonbAdapter interface. It has a custom code to convert the “unmappable” type (Original) into another one (Adapted) that is serialized/deserialized the desired way. It's similar to how type adapters in JAXB work.
+Adapter is a class implementing jakarta.json.bind.adapter.JsonbAdapter interface. It has a custom code to convert the “unmappable” type (Original) into another one (Adapted) that is serialized/deserialized the desired way. It's similar to how type adapters in JAXB work.
 
 Let's take a look at the sample. Imagine that you have a Customer object with all customer details. In one scenario you need to serialize the whole object, in another you need to provide only its id and name. The solution could be to to serialize it as it is for the first scenario and create an adapter to JsonObject which has only data required for the second scenario.
 
@@ -601,9 +601,9 @@ Sometimes adapters mechanism is not enough and low level access to JSONP parser/
 
 From the spec:
 
-Serializer is a class implementing javax.json.bind.serializers.JsonbSerializer interface. It is used to serialize the type it’s registered on (Original). On serializing of Original type JSONB calls JsonbSerializer::serialize method. This method has to contain a custom code to serialize Original type using provided JsonpGenerator.
+Serializer is a class implementing jakarta.json.bind.serializers.JsonbSerializer interface. It is used to serialize the type it’s registered on (Original). On serializing of Original type JSONB calls JsonbSerializer::serialize method. This method has to contain a custom code to serialize Original type using provided JsonpGenerator.
 
-Deserializer is a class implementing javax.json.bind.serializers.JsonbDeserializer interface. It is used to deserialize the type it’s registered on (Original). On deserialization of Original type JSONB calls JsonbDeserializer::deserialize method. This method has to contain a custom code to deserialize Original type using provided JsonpParser.
+Deserializer is a class implementing jakarta.json.bind.serializers.JsonbDeserializer interface. It is used to deserialize the type it’s registered on (Original). On deserialization of Original type JSONB calls JsonbDeserializer::deserialize method. This method has to contain a custom code to deserialize Original type using provided JsonpParser.
 
 Let's take a look at the sample. Imagine that we would like to serialize and deserialize a list of pet carriers. A carried pet defined by an abstract class Animal. It can be any of its subclasses. We would like to properly serialize and deserialize it. In order to do it we need to preserve a type information in JSON document and use it on deserialization. It can be done using custom serializer/deserializer pair.
 

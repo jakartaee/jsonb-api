@@ -123,7 +123,7 @@ During the course of JSR 367 we also received many excellent suggestions. Thanks
 
 == Runtime API
 
-The JSON-B runtime API provides access to serialization and deserialization operations for manipulating JSON documents and mapped JSON-B classes and instances. The full specification of the binding framework is available in the javadoc for the `javax.json.bind` package accompanied with this specification.
+The JSON-B runtime API provides access to serialization and deserialization operations for manipulating JSON documents and mapped JSON-B classes and instances. The full specification of the binding framework is available in the javadoc for the `jakarta.json.bind` package accompanied with this specification.
 
 == Default Mapping
 
@@ -495,16 +495,16 @@ When non-unique property (after override and rename) is found, implementation MU
 
 JSON Binding implementations MUST support binding of the following JSON Processing types:
 
-* javax.json.JsonObject
-* javax.json.JsonArray
-* javax.json.JsonStructure
-* javax.json.JsonValue
-* javax.json.JsonString
-* javax.json.JsonNumber
+* jakarta.json.JsonObject
+* jakarta.json.JsonArray
+* jakarta.json.JsonStructure
+* jakarta.json.JsonValue
+* jakarta.json.JsonString
+* jakarta.json.JsonNumber
 
-Serialization of supported `javax.json.*` objects/interfaces/fields MUST have the same result as serialization these objects with `javax.json.JsonWriter`.
+Serialization of supported `jakarta.json.*` objects/interfaces/fields MUST have the same result as serialization these objects with `jakarta.json.JsonWriter`.
 
-Deserialization into supported `javax.json.*` objects/interfaces/fields MUST have the same result as deserialization into such objects with `javax.json.JsonReader`.
+Deserialization into supported `jakarta.json.*` objects/interfaces/fields MUST have the same result as deserialization into such objects with `jakarta.json.JsonReader`.
 
 == Customizing Mapping
 
@@ -512,11 +512,11 @@ This section defines several ways how to customize the default behavior. The def
 
 === Customizing Property Names
 
-There are two standard ways how to customize serialization of field (or JavaBean property) to JSON document. The same applies to deserialization. The first way is to annotate field (or JavaBean property) with `javax.json.bind.annotation.JsonbProperty` annotation. The second option is to set `javax.json.bind.config.PropertyNamingStrategy`.
+There are two standard ways how to customize serialization of field (or JavaBean property) to JSON document. The same applies to deserialization. The first way is to annotate field (or JavaBean property) with `jakarta.json.bind.annotation.JsonbProperty` annotation. The second option is to set `jakarta.json.bind.config.PropertyNamingStrategy`.
 
-==== javax.json.bind.annotation.JsonbTransient
+==== jakarta.json.bind.annotation.JsonbTransient
 
-JSON Binding implementations MUST NOT process fields, JavaBean properties or types annotated with `javax.json.bind.annotation.JsonbTransient`.
+JSON Binding implementations MUST NOT process fields, JavaBean properties or types annotated with `jakarta.json.bind.annotation.JsonbTransient`.
 
 `JsonbTransient` annotation is mutually exclusive with all other JSON Binding defined annotations. Implementations must throw `JsonbException` in the following cases:
 
@@ -527,21 +527,21 @@ JSON Binding implementations MUST NOT process fields, JavaBean properties or typ
 * Setter is annotated with `@JsonbTransient`
 ** Exception is thrown if when the field or this setter are annotated with other JSON Binding annotations. Exception is not thrown if JSON Binding annotations are presented on the getter.
 
-==== javax.json.bind.annotation.JsonbProperty
+==== jakarta.json.bind.annotation.JsonbProperty
 
-According to default mapping 3.15, property names are serialized unchanged to JSON document (identity transformation). To provide custom name for given field (or JavaBean property), `javax.json.bind.annotation.JsonbProperty` may be used. `JsonbProperty` annotation may be specified on field, getter or setter method.
+According to default mapping 3.15, property names are serialized unchanged to JSON document (identity transformation). To provide custom name for given field (or JavaBean property), `jakarta.json.bind.annotation.JsonbProperty` may be used. `JsonbProperty` annotation may be specified on field, getter or setter method.
 
 If specified on field, custom name is used both for serialization and deserialization.
 
-If `javax.json.bind.annotation.JsonbProperty` is specified on getter method, it is used only for serialization. If `javax.json.bind.annotation.JsonbProperty` is specified on setter method, it is used only for deserialization.
+If `jakarta.json.bind.annotation.JsonbProperty` is specified on getter method, it is used only for serialization. If `jakarta.json.bind.annotation.JsonbProperty` is specified on setter method, it is used only for deserialization.
 
-It is possible to specify different values for getter and setter method for `javax.json.bind.annotation.JsonbProperty` annotation. In such case the different custom name will be used for serialization and deserialization.
+It is possible to specify different values for getter and setter method for `jakarta.json.bind.annotation.JsonbProperty` annotation. In such case the different custom name will be used for serialization and deserialization.
 
-==== javax.json.bind.config.PropertyNamingStrategy
+==== jakarta.json.bind.config.PropertyNamingStrategy
 
-To customize name translation of properties, JSON Binding provides `javax.json.bind.config.PropertyNamingStrategy` interface.
+To customize name translation of properties, JSON Binding provides `jakarta.json.bind.config.PropertyNamingStrategy` interface.
 
-Interface `javax.json.bind.config.PropertyNamingStrategy` provides the most common property naming strategies.
+Interface `jakarta.json.bind.config.PropertyNamingStrategy` provides the most common property naming strategies.
 
 * IDENTITY
 * LOWER_CASE_WITH_DASHES
@@ -552,7 +552,7 @@ Interface `javax.json.bind.config.PropertyNamingStrategy` provides the most comm
 
 The detailed description of property naming strategies can be found in javadoc.
 
-The way to set custom property naming strategy is to use `javax.json.bind.JsonbConfig::withPropertyNamingStrategy` method.
+The way to set custom property naming strategy is to use `jakarta.json.bind.JsonbConfig::withPropertyNamingStrategy` method.
 
 ==== Property names resolution
 
@@ -567,9 +567,9 @@ If duplicate name is found exception MUST be thrown. The definition of duplicate
 
 === Customizing Property Order
 
-To customize the order of serialized properties, JSON Binding provides `javax.json.bind.config.PropertyOrderStrategy` class.
+To customize the order of serialized properties, JSON Binding provides `jakarta.json.bind.config.PropertyOrderStrategy` class.
 
-Class `javax.json.bind.config.PropertyOrderStrategy` provides the most common property order strategies.
+Class `jakarta.json.bind.config.PropertyOrderStrategy` provides the most common property order strategies.
 
 * LEXICOGRAPHICAL
 * ANY
@@ -577,35 +577,35 @@ Class `javax.json.bind.config.PropertyOrderStrategy` provides the most common pr
 
 The detailed description of property order strategies can be found in javadoc.
 
-The way to set custom property order strategy is to use `javax.json.bind.JsonbConfig::withPropertyOrderStrategy` method.
+The way to set custom property order strategy is to use `jakarta.json.bind.JsonbConfig::withPropertyOrderStrategy` method.
 
-To customize the order of serialized properties only for one specific type, JSON Binding provides `javax.json.bind.annotation.JsonbPropertyOrder` annotation. Order specified by `JsonbPropertyOrder` annotation overrides order specified by `PropertyOrderStrategy`.
+To customize the order of serialized properties only for one specific type, JSON Binding provides `jakarta.json.bind.annotation.JsonbPropertyOrder` annotation. Order specified by `JsonbPropertyOrder` annotation overrides order specified by `PropertyOrderStrategy`.
 
 The order is applied to already renamed properties as stated in 4.1.
 
 === Customizing Null Handling
 
-There are three ways how to change default null handling. The first option is to annotate type or package with `javax.json.bind.annotation.JsonbNillable` annotation. The second option is to annotate field or JavaBean property with `javax.json.bind.annotation.JsonbProperty` and to set nillable parameter to true. The third option is to set config-wide configuration via `JsonbConfig::withNullValues` method.
+There are three ways how to change default null handling. The first option is to annotate type or package with `jakarta.json.bind.annotation.JsonbNillable` annotation. The second option is to annotate field or JavaBean property with `jakarta.json.bind.annotation.JsonbProperty` and to set nillable parameter to true. The third option is to set config-wide configuration via `JsonbConfig::withNullValues` method.
 
 If annotations (`JsonbNillable` or `JsonbProperty`) on different level apply to the same field (or JavaBean property) or if there is config wide configuration and some annotation (`JsonbNillable` or `JsonbProperty`) which apply to the same field (or JavaBean property), the annotation with the smallest scope applies. For example, if there is type level `JsonbNillable` annotation applied to some class with field which is annotated with `JsonbProperty` annotation with nillable = false, then `JsonbProperty` annotation overrides `JsonbNillable` annotation.
 
-==== javax.json.bind.annotation.JsonbNillable
+==== jakarta.json.bind.annotation.JsonbNillable
 
-To customize the result of serializing field (or JavaBean property) with null value, JSON Binding provides `javax.json.bind.annotation.JsonbNillable` and `javax.json.bind.annotation.JsonbProperty` annotations.
+To customize the result of serializing field (or JavaBean property) with null value, JSON Binding provides `jakarta.json.bind.annotation.JsonbNillable` and `jakarta.json.bind.annotation.JsonbProperty` annotations.
 
-When given object (type or package) is annotated with `javax.json.bind.annotation.JsonbNillable` annotation, the result of null value will be presence of associated property in JSON document with explicit null value.
+When given object (type or package) is annotated with `jakarta.json.bind.annotation.JsonbNillable` annotation, the result of null value will be presence of associated property in JSON document with explicit null value.
 
-The same behavior as `JsonbNillable`, but only at field, parameter and method (JavaBean property) level is provided by `javax.json.bind.annotation.JsonbProperty` annotation with its `nillable` parameter.
+The same behavior as `JsonbNillable`, but only at field, parameter and method (JavaBean property) level is provided by `jakarta.json.bind.annotation.JsonbProperty` annotation with its `nillable` parameter.
 
 JSON Binding implementations MUST implement override of annotations according to target of the annotation (FIELD, PARAMETER, METHOD, TYPE, PACKAGE). Type level annotation overrides behavior set at the package level. Method, parameter or field level annotation overrides behavior set at the type level.
 
 ==== Global null handling configuration
 
-Null handling behavior can be customized via `javax.json.bind.JsonbConfig::withNullValues` method.
+Null handling behavior can be customized via `jakarta.json.bind.JsonbConfig::withNullValues` method.
 
-The way to enforce serialization of null values, is to call method `javax.json.bind.JsonbConfig::withNullValues` with parameter true.
+The way to enforce serialization of null values, is to call method `jakarta.json.bind.JsonbConfig::withNullValues` with parameter true.
 
-The way to skip serialization of null values is to call method `javax.json.bind.JsonbConfig::withNullValues` with parameter `false`.
+The way to skip serialization of null values is to call method `jakarta.json.bind.JsonbConfig::withNullValues` with parameter `false`.
 
 === I-JSON support
 
@@ -637,7 +637,7 @@ The result of serialization of duration must conform to the "duration" productio
 
 === Custom instantiation
 
-In many scenarios instantiation with the use of default constructor is not enough. To support these scenarios, JSON Binding provides `javax.json.bind.annotation.JsonbCreator` annotation.
+In many scenarios instantiation with the use of default constructor is not enough. To support these scenarios, JSON Binding provides `jakarta.json.bind.annotation.JsonbCreator` annotation.
 
 At most one `JsonbCreator` annotation can be used to annotate custom constructor or static factory method in a class, otherwise `JsonbException` MUST be thrown.
 
@@ -651,7 +651,7 @@ In case a field required for a parameter mapping doesn’t exist in JSON documen
 
 === Custom visibility
 
-To customize scope and field access strategy as specified in section 3.7.1, it is possible to specify `javax.json.bind.annotation.JsonbVisibility` annotation or to override default behavior globally calling `JsonbConfig::withPropertyVisibilityStrategy` method with given custom property visibility strategy.
+To customize scope and field access strategy as specified in section 3.7.1, it is possible to specify `jakarta.json.bind.annotation.JsonbVisibility` annotation or to override default behavior globally calling `JsonbConfig::withPropertyVisibilityStrategy` method with given custom property visibility strategy.
 
 === Custom mapping
 
@@ -659,7 +659,7 @@ Some Java types do not map naturally to a JSON representation and annotations ca
 
 ==== Adapters
 
-Adapter is a class implementing `javax.json.bind.adapter.JsonbAdapter` interface. It has a custom code to convert the “unmappable” type (Original) into another one that JSONB can handle (Adapted).
+Adapter is a class implementing `jakarta.json.bind.adapter.JsonbAdapter` interface. It has a custom code to convert the “unmappable” type (Original) into another one that JSONB can handle (Adapted).
 
 On serialization of Original type JSONB calls `JsonbAdapter::adaptToJson` method of the adapter to convert Original to Adapted and serializes Adapted the standard way.
 
@@ -679,9 +679,9 @@ Implementations must provide a CDI support in adapters to allow injection of CDI
 
 Sometimes adapters mechanism is not enough and low level access to JSONP parser/generator is needed.
 
-Serializer is a class implementing `javax.json.bind.serializers.JsonbSerializer` interface. It is used to serialize the type it’s registered on (Original). On serializing of Original type JSONB calls `JsonbSerializer::serialize` method. This method has to contain a custom code to serialize Original type using provided `JsonpGenerator`.
+Serializer is a class implementing `jakarta.json.bind.serializers.JsonbSerializer` interface. It is used to serialize the type it’s registered on (Original). On serializing of Original type JSONB calls `JsonbSerializer::serialize` method. This method has to contain a custom code to serialize Original type using provided `JsonpGenerator`.
 
-Deserializer is a class implementing `javax.json.bind.serializers.JsonbDeserializer` interface. It is used to deserialize the type it’s registered on (Original). On deserialization of Original type JSONB calls `JsonbDeserializer::deserialize` method. This method has to contain a custom code to deserialize Original type using provided `JsonpParser`.
+Deserializer is a class implementing `jakarta.json.bind.serializers.JsonbDeserializer` interface. It is used to deserialize the type it’s registered on (Original). On deserialization of Original type JSONB calls `JsonbDeserializer::deserialize` method. This method has to contain a custom code to deserialize Original type using provided `JsonpParser`.
 
 There are two ways how to register `JsonbSerializer/JsonbDeserializer`:
 
@@ -701,15 +701,15 @@ To specify custom date format, it is necessary to annotate given annotation. `Js
 * parameter
 * package
 
-Default date format and default locale can be customized globally using `javax.json.bind.JsonbConfig::withDateFormat` and `javax.json.bind.JsonbConfig::withLocale` methods.
+Default date format and default locale can be customized globally using `jakarta.json.bind.JsonbConfig::withDateFormat` and `jakarta.json.bind.JsonbConfig::withLocale` methods.
 
-If `javax.json.bind.annotation. JsonbDateFormat` is specified on a getter method, it is used only for serialization. If `javax.json.bind.annotation. JsonbDateFormat` is specified on a setter method, it is used only for deserialization.
+If `jakarta.json.bind.annotation.JsonbDateFormat` is specified on a getter method, it is used only for serialization. If `jakarta.json.bind.annotation.JsonbDateFormat` is specified on a setter method, it is used only for deserialization.
 
 Annotation applied to more specific target overrides the same annotation applied to target with wider scope and global configuration. For example, annotation applied to type target will override the same annotation applied to package target.
 
 === Custom number format
 
-To specify custom number format, it is necessary to annotate given annotation target with `javax.json.bind.annotation.JsonbNumberFormat` annotation. `JsonbNumberFormat` annotation can be applied to the following targets:
+To specify custom number format, it is necessary to annotate given annotation target with `jakarta.json.bind.annotation.JsonbNumberFormat` annotation. `JsonbNumberFormat` annotation can be applied to the following targets:
 
 * field
 * getter/setter
@@ -717,15 +717,15 @@ To specify custom number format, it is necessary to annotate given annotation ta
 * parameter
 * package
 
-If `javax.json.bind.annotation.JsonbNumberFormat` is specified on a getter method, it is used only for serialization. If `javax.json.bind.annotation.JsonbNumberFormat` is specified on a setter method, it is used only for deserialization. 
+If `jakarta.json.bind.annotation.JsonbNumberFormat` is specified on a getter method, it is used only for serialization. If `jakarta.json.bind.annotation.JsonbNumberFormat` is specified on a setter method, it is used only for deserialization.
 
 Annotation applied to more specific target overrides the same annotation applied to target with wider scope. For example, annotation applied to type target will override the same annotation applied to package target.
 
 === Custom binary data handling
 
-To customize encoding of binary data, JSON Binding provides `javax.json.bind.config.BinaryDataStrategy` class.
+To customize encoding of binary data, JSON Binding provides `jakarta.json.bind.config.BinaryDataStrategy` class.
 
-Class `javax.json.bind.config.BinaryDataStrategy` provides the most common binary data encodings.
+Class `jakarta.json.bind.config.BinaryDataStrategy` provides the most common binary data encodings.
 
 * BYTE
 * BASE_64
@@ -733,7 +733,7 @@ Class `javax.json.bind.config.BinaryDataStrategy` provides the most common binar
 
 The detailed description of binary encoding strategies can be found in javadoc.
 
-The way to set custom binary data handling strategy is to use `javax.json.bind.JsonbConfig::withBinaryDataStrategy` method.
+The way to set custom binary data handling strategy is to use `jakarta.json.bind.JsonbConfig::withBinaryDataStrategy` method.
 
 == Appendix
 

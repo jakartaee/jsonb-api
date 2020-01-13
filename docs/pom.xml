@@ -22,8 +22,8 @@
     <properties>
         <asciidoctor.maven.plugin.version>1.6.0</asciidoctor.maven.plugin.version>
         <asciidoctorj.version>1.6.2</asciidoctorj.version>
-        <jruby.version>9.2.6.0</jruby.version>
-        <rubygems.prawn.version>2.0.2</rubygems.prawn.version>
+        <jruby.version>9.2.9.0</jruby.version>
+        <rubygems.prawn.version>2.2.2</rubygems.prawn.version>
     </properties>
 
     <repositories>

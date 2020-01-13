@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2020 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2020 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,16 +14,13 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-module jakarta.json.bind {
-    exports jakarta.json.bind;
-    exports jakarta.json.bind.adapter;
-    exports jakarta.json.bind.annotation;
-    exports jakarta.json.bind.config;
-    exports jakarta.json.bind.serializer;
-    exports jakarta.json.bind.spi;
-
-    requires java.json;
-    requires java.logging;
-
-    uses jakarta.json.bind.spi.JsonbProvider;
-}
+/**
+ * Provides JSON Binding API, which enables binding Java objects from and to
+ * JSON documents.
+ *
+ * Main user entry points to the API is {@link jakarta.json.bind.JsonbBuilder JsonbBuilder}
+ * which builds {@link jakarta.json.bind.Jsonb Jsonb} instances.
+ *
+ * @since JSON Binding 1.0
+ */
+package jakarta.json.bind;

@@ -22,7 +22,7 @@ module jakarta.json.bind {
     exports jakarta.json.bind.serializer;
     exports jakarta.json.bind.spi;
 
-    requires java.json;
+    requires jakarta.json;
     requires java.logging;
 
     uses jakarta.json.bind.spi.JsonbProvider;

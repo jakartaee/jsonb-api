@@ -18,17 +18,17 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.serializers.model.serializer;
+package jakarta.json.bind.customizedmapping.serializers.model.serializer;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.json.bind.serializer.DeserializationContext;
-import javax.json.bind.serializer.JsonbDeserializer;
-import javax.json.stream.JsonParser;
+import jakarta.json.bind.serializer.DeserializationContext;
+import jakarta.json.bind.serializer.JsonbDeserializer;
+import jakarta.json.stream.JsonParser;
 
-import com.sun.ts.tests.jsonb.customizedmapping.serializers.model.Animal;
+import jakarta.json.bind.customizedmapping.serializers.model.Animal;
 
 public class AnimalListDeserializer implements JsonbDeserializer<List<Animal>> {
   private AnimalDeserializer animalDeserializer = new AnimalDeserializer();

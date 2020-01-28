@@ -18,7 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.dates;
+package jakarta.json.bind.defaultmapping.dates;
+
+import static org.junit.Assert.fail;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -35,44 +37,40 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Properties;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 import java.util.function.BiPredicate;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.MappingTester;
-import com.sun.ts.tests.jsonb.defaultmapping.dates.model.CalendarContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.dates.model.DateContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.dates.model.DurationContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.dates.model.GregorianCalendarContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.dates.model.InstantContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.dates.model.LocalDateContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.dates.model.LocalDateTimeContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.dates.model.LocalTimeContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.dates.model.OffsetDateTimeContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.dates.model.OffsetTimeContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.dates.model.PeriodContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.dates.model.SimpleTimeZoneContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.dates.model.TimeZoneContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.dates.model.ZoneIdContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.dates.model.ZoneOffsetContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.dates.model.ZonedDateTimeContainer;
+import org.junit.Ignore;
+import org.junit.Test;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
-import javax.json.bind.JsonbException;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.JsonbException;
+import jakarta.json.bind.MappingTester;
+import jakarta.json.bind.defaultmapping.dates.model.CalendarContainer;
+import jakarta.json.bind.defaultmapping.dates.model.DateContainer;
+import jakarta.json.bind.defaultmapping.dates.model.DurationContainer;
+import jakarta.json.bind.defaultmapping.dates.model.GregorianCalendarContainer;
+import jakarta.json.bind.defaultmapping.dates.model.InstantContainer;
+import jakarta.json.bind.defaultmapping.dates.model.LocalDateContainer;
+import jakarta.json.bind.defaultmapping.dates.model.LocalDateTimeContainer;
+import jakarta.json.bind.defaultmapping.dates.model.LocalTimeContainer;
+import jakarta.json.bind.defaultmapping.dates.model.OffsetDateTimeContainer;
+import jakarta.json.bind.defaultmapping.dates.model.OffsetTimeContainer;
+import jakarta.json.bind.defaultmapping.dates.model.PeriodContainer;
+import jakarta.json.bind.defaultmapping.dates.model.SimpleTimeZoneContainer;
+import jakarta.json.bind.defaultmapping.dates.model.TimeZoneContainer;
+import jakarta.json.bind.defaultmapping.dates.model.ZoneIdContainer;
+import jakarta.json.bind.defaultmapping.dates.model.ZoneOffsetContainer;
+import jakarta.json.bind.defaultmapping.dates.model.ZonedDateTimeContainer;
 
 /**
  * @test
  * @sources DatesMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.dates.DatesMappingTest
  **/
-public class DatesMappingTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
+public class DatesMappingTest {
   private static final String OFFSET_HOURS = getHoursFromUTCRegExp(
       new GregorianCalendar(1970, 0, 1));
 
@@ -88,20 +86,6 @@ public class DatesMappingTest extends ServiceEETest {
     };
   }
 
-  public static void main(String[] args) {
-    EETest t = new DatesMappingTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
-
   /*
    * @testName: testDate
    *
@@ -111,14 +95,15 @@ public class DatesMappingTest extends ServiceEETest {
    * the same value;
    */
   @SuppressWarnings("deprecation")
-  public void testDate() throws Fault {
+  @Test
+  public void testDate() {
     Date date = new Date(70, 0, 1);
     Jsonb jsonb = JsonbBuilder.create();
     Date mixin = jsonb.fromJson(
         jsonb.toJson(jsonb.fromJson(jsonb.toJson(date), Date.class)),
         Date.class);
     if (date.getTime() != mixin.getTime())
-      throw new Fault(
+      fail(
           "Serializing and deserializing Date results in different value");
   }
 
@@ -132,7 +117,8 @@ public class DatesMappingTest extends ServiceEETest {
    * unmarshalled from ISO_DATE_TIME
    */
   @SuppressWarnings("deprecation")
-  public Status testDateNoTimeMapping() throws Fault {
+  @Test
+  public void testDateNoTimeMapping() {
     // Date takes time zone from the default timezone which is set by user
     // environment
     Date date = new Date(70, 0, 1);
@@ -143,7 +129,7 @@ public class DatesMappingTest extends ServiceEETest {
     DateTimeFormatter dtf = DateTimeFormatter.ISO_DATE_TIME;
     String toMatch = dtf.format(calendar.toZonedDateTime()).replace("]", "\\]")
         .replace("[", "\\[").replace("+", "\\+");
-    return new MappingTester<>(DateContainer.class) //
+    new MappingTester<>(DateContainer.class) //
         .setMarshallExpectedRegExp("\"" + toMatch + "\"")
         .setUnmarshallTestPredicate((a, b) -> {
           Calendar orig = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
@@ -162,10 +148,11 @@ public class DatesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that Calendar with no time is marshalled as and
    * unmarshalled from ISO_DATE
    */
-  public Status testCalendarNoTimeMapping() throws Fault {
+  @Test
+  public void testCalendarNoTimeMapping() {
     Calendar calendarProperty = Calendar.getInstance();
     calendarProperty.clear();
-    return new MappingTester<>(CalendarContainer.class)//
+    new MappingTester<>(CalendarContainer.class)//
         .setMarshallExpectedRegExp("\"1970-01-01" + OFFSET_HOURS + "\"") //
         .setUnmarshallTestPredicate((a, b) -> {
           Calendar orig = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
@@ -185,14 +172,15 @@ public class DatesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that GregorianCalendar with no time is marshalled as
    * and unmarshalled from ISO_DATE
    */
-  public Status testGregorianCalendarNoTimeMapping() throws Fault {
+  @Test
+  public void testGregorianCalendarNoTimeMapping() {
     GregorianCalendar calendar = new GregorianCalendar(1970, 0, 1);
     for (int i = Calendar.DATE + 1; i != Calendar.MILLISECOND + 1; i++)
       calendar.clear(i);
     DateTimeFormatter dtf = DateTimeFormatter.ISO_DATE;
     String toMatch = "\""
         + dtf.format(calendar.toZonedDateTime()).replace("+", "\\+") + "\"";
-    return new MappingTester<>(GregorianCalendarContainer.class) //
+    new MappingTester<>(GregorianCalendarContainer.class) //
         .setMarshallExpectedRegExp(toMatch) //
         .setUnmarshallTestPredicate((a, b) -> {
           Calendar orig = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
@@ -213,7 +201,8 @@ public class DatesMappingTest extends ServiceEETest {
    * unmarshalled from ISO_DATE_TIME
    */
   @SuppressWarnings("deprecation")
-  public Status testDateWithTimeMapping() throws Fault {
+  @Test
+  public void testDateWithTimeMapping() {
     Date date = new Date(70, 0, 1, 0, 0, 0);
     GregorianCalendar calendar = new GregorianCalendar();
     calendar.setTime(date);
@@ -221,7 +210,7 @@ public class DatesMappingTest extends ServiceEETest {
     DateTimeFormatter dtf = DateTimeFormatter.ISO_DATE_TIME;
     String toMatch = dtf.format(calendar.toZonedDateTime()).replace("]", "\\]")
         .replace("[", "\\[");
-    return new MappingTester<>(DateContainer.class) //
+    new MappingTester<>(DateContainer.class) //
         .setMarshallExpectedRegExp("\"" + toMatch + "\"")
         .setUnmarshallTestPredicate((a, b) -> {
           Calendar orig = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
@@ -240,12 +229,13 @@ public class DatesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that Calendar with time information is marshalled as
    * and unmarshalled from ISO_DATE_TIME
    */
-  public Status testCalendarWithTimeMapping() throws Fault {
+  @Test
+  public void testCalendarWithTimeMapping() {
     Calendar calendarProperty = Calendar.getInstance();
     calendarProperty.set(1970, 0, 1, 1, 0, 0);
     calendarProperty.set(Calendar.MILLISECOND, 0);
     calendarProperty.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
-    return new MappingTester<>(CalendarContainer.class)
+    new MappingTester<>(CalendarContainer.class)
         .setMarshallExpectedRegExp(
             "\"1970-01-01T01:00:00(\\.\\d{1,3})?\\+01:00\\[Europe/Paris\\]\"")
         .setUnmarshallTestPredicate((a, b) -> {
@@ -264,10 +254,12 @@ public class DatesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that GregorianCalendar with time information is
    * marshalled as and unmarshalled from ISO_DATE_TIME
    */
-  public Status testGregorianCalendarWithTimeMapping() throws Fault {
+  @Test
+  @Ignore("See: https://github.com/eclipse-ee4j/jakartaee-tck/issues/102")
+  public void testGregorianCalendarWithTimeMapping() {
     GregorianCalendar calendar = GregorianCalendar.from(ZonedDateTime
         .of(LocalDateTime.of(1970, 1, 1, 1, 0, 0), ZoneId.of("GMT")));
-    return new MappingTester<>(GregorianCalendarContainer.class).test(calendar,
+    new MappingTester<>(GregorianCalendarContainer.class).test(calendar,
         "\"1970-01-01T01:00:00Z[GMT]\"");
   }
 
@@ -279,8 +271,9 @@ public class DatesMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that java.util.TimeZone is correctly handled
    */
-  public Status testShortTimeZoneMapping() throws Fault {
-    return new MappingTester<>(TimeZoneContainer.class) //
+  @Test
+  public void testShortTimeZoneMapping() {
+    new MappingTester<>(TimeZoneContainer.class) //
         .setUnmarshallTestPredicate(timezoneTest(false)) //
         .test(TimeZone.getTimeZone("GMT+10"), "\"GMT+10:00\"");
   }
@@ -293,8 +286,9 @@ public class DatesMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that java.util.TimeZone is correctly handled
    */
-  public Status testLongTimeZoneMapping() throws Fault {
-    return new MappingTester<>(TimeZoneContainer.class) //
+  @Test
+  public void testLongTimeZoneMapping() {
+    new MappingTester<>(TimeZoneContainer.class) //
         .setUnmarshallTestPredicate(timezoneTest(true)) //
         .test(TimeZone.getTimeZone("America/Los_Angeles"),
             "\"America/Los_Angeles\"");
@@ -308,8 +302,9 @@ public class DatesMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that java.util.SimpleTimeZone is correctly handled
    */
-  public Status testSimpleTimeZoneMapping() throws Fault {
-    return new MappingTester<>(SimpleTimeZoneContainer.class) //
+  @Test
+  public void testSimpleTimeZoneMapping() {
+    new MappingTester<>(SimpleTimeZoneContainer.class) //
         .setUnmarshallTestPredicate(timezoneTest(false)) //
         .test(new SimpleTimeZone(75 * 60 * 1000, "GMT+01:15"), "\"GMT+01:15\"");
   }
@@ -323,8 +318,9 @@ public class DatesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that java.time.Instant is correctly marshalled as
    * and unmarshalled from ISO_INSTANT
    */
-  public Status testInstantMapping() throws Fault {
-    return new MappingTester<>(InstantContainer.class)
+  @Test
+  public void testInstantMapping() {
+    new MappingTester<>(InstantContainer.class)
         .test(Instant.ofEpochMilli(0), "\"1970-01-01T00:00:00Z\"");
   }
 
@@ -336,8 +332,9 @@ public class DatesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that Duration is correctly marshalled as and
    * umarshalled from ISO 8601 seconds based representation
    */
-  public Status testDurationMapping() throws Fault {
-    return new MappingTester<>(DurationContainer.class)
+  @Test
+  public void testDurationMapping() {
+    new MappingTester<>(DurationContainer.class)
         .test(Duration.ofHours(1), "\"PT1H\"");
   }
 
@@ -350,8 +347,9 @@ public class DatesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that Duration is correctly marshalled as and
    * umarshalled from ISO 8601 seconds based representation
    */
-  public Status testDurationWithSecondsMapping() throws Fault {
-    return new MappingTester<>(DurationContainer.class)
+  @Test
+  public void testDurationWithSecondsMapping() {
+    new MappingTester<>(DurationContainer.class)
         .test(Duration.ofHours(1).plus(Duration.ofSeconds(1)), "\"PT1H1S\"");
   }
 
@@ -364,8 +362,9 @@ public class DatesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that Period is correctly marshalled as and
    * umarshalled from ISO 8601 period representation
    */
-  public Status testPeriodMapping() throws Fault {
-    return new MappingTester<>(PeriodContainer.class).test(Period.of(1, 1, 1),
+  @Test
+  public void testPeriodMapping() {
+    new MappingTester<>(PeriodContainer.class).test(Period.of(1, 1, 1),
         "\"P1Y1M1D\"");
   }
 
@@ -378,8 +377,9 @@ public class DatesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that a zero length Period is correctly marshalled as
    * and umarshalled from "P0D"
    */
-  public Status testZeroDaysPeriodMapping() throws Fault {
-    return new MappingTester<>(PeriodContainer.class).test(Period.of(0, 0, 0),
+  @Test
+  public void testZeroDaysPeriodMapping() {
+    new MappingTester<>(PeriodContainer.class).test(Period.of(0, 0, 0),
         "\"P0D\"");
   }
 
@@ -391,8 +391,9 @@ public class DatesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that java.time.LocalDate is correctly marshalled as
    * and umarshalled from ISO_LOCAL_DATE
    */
-  public Status testLocalDateMapping() throws Fault {
-    return new MappingTester<>(LocalDateContainer.class)
+  @Test
+  public void testLocalDateMapping() {
+    new MappingTester<>(LocalDateContainer.class)
         .test(LocalDate.of(2000, 1, 1), "\"2000-01-01\"");
   }
 
@@ -404,8 +405,9 @@ public class DatesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that java.time.LocalTime is correctly marshalled as
    * and umarshalled from ISO_LOCAL_TIME
    */
-  public Status testLocalTimeMapping() throws Fault {
-    return new MappingTester<>(LocalTimeContainer.class)
+  @Test
+  public void testLocalTimeMapping() {
+    new MappingTester<>(LocalTimeContainer.class)
         .test(LocalTime.of(1, 1, 1), "\"01:01:01\"");
   }
 
@@ -417,8 +419,9 @@ public class DatesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that java.time.LocalDateTime is correctly marshalled
    * as and umarshalled from ISO_LOCAL_DATE_TIME
    */
-  public Status testLocalDateTimeMapping() throws Fault {
-    return new MappingTester<>(LocalDateTimeContainer.class)
+  @Test
+  public void testLocalDateTimeMapping() {
+    new MappingTester<>(LocalDateTimeContainer.class)
         .test(LocalDateTime.of(2000, 1, 1, 1, 1, 1), "\"2000-01-01T01:01:01\"");
   }
 
@@ -430,8 +433,9 @@ public class DatesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that java.time.ZonedDateTime is correctly marshalled
    * as and umarshalled from ISO_ZONED_DATE_TIME
    */
-  public Status testZonedDateTimeMapping() throws Fault {
-    return new MappingTester<>(ZonedDateTimeContainer.class).test(
+  @Test
+  public void testZonedDateTimeMapping() {
+    new MappingTester<>(ZonedDateTimeContainer.class).test(
         ZonedDateTime.of(2000, 1, 1, 1, 1, 1, 0, ZoneId.of("Europe/Paris")),
         "\"2000-01-01T01:01:01+01:00[Europe/Paris]\"");
   }
@@ -444,8 +448,9 @@ public class DatesMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that java.time.ZoneId is correctly handled
    */
-  public Status testZoneIdMapping() throws Fault {
-    return new MappingTester<>(ZoneIdContainer.class).test(ZoneId.of("UTC"),
+  @Test
+  public void testZoneIdMapping() {
+    new MappingTester<>(ZoneIdContainer.class).test(ZoneId.of("UTC"),
         "\"UTC\"");
   }
 
@@ -457,8 +462,9 @@ public class DatesMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that java.time.ZoneOffset is correctly handled
    */
-  public Status testZoneOffsetMapping() throws Fault {
-    return new MappingTester<>(ZoneOffsetContainer.class)
+  @Test
+  public void testZoneOffsetMapping() {
+    new MappingTester<>(ZoneOffsetContainer.class)
         .test(ZoneOffset.of("+01:00"), "\"+01:00\"");
   }
 
@@ -470,8 +476,9 @@ public class DatesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that java.time.OffsetDateTime is correctly
    * marshalled as and umarshalled from ISO_OFFSET_DATE_TIME
    */
-  public Status testOffsetDateTimeMapping() throws Fault {
-    return new MappingTester<>(OffsetDateTimeContainer.class)
+  @Test
+  public void testOffsetDateTimeMapping() {
+    new MappingTester<>(OffsetDateTimeContainer.class)
         .test(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 1, 1, 1),
             ZoneOffset.of("+01:00")), "\"2000-01-01T01:01:01+01:00\"");
   }
@@ -484,8 +491,9 @@ public class DatesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that java.time.OffsetTime is correctly marshalled as
    * and umarshalled from ISO_OFFSET_TIME
    */
-  public Status testOffsetTimeMapping() throws Fault {
-    return new MappingTester<>(OffsetTimeContainer.class).test(
+  @Test
+  public void testOffsetTimeMapping() {
+    new MappingTester<>(OffsetTimeContainer.class).test(
         OffsetTime.of(LocalTime.of(1, 1, 1), ZoneOffset.of("+01:00")),
         "\"01:01:01+01:00\"");
   }
@@ -498,14 +506,15 @@ public class DatesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that an error is reported if the date/time string
    * does not correspond to the expected datetime format
    */
-  public Status testUnmarshallingUnknownFormat() throws Fault {
+  @Test
+  public void testUnmarshallingUnknownFormat() {
     try {
       JsonbBuilder.create().fromJson(
           "{ \"instance\" : \"01/01/1970 00:00:00\" }", DateContainer.class);
-      throw new Fault(
+      fail(
           "An exception is expected if the date/time string does not correspond to the expected datetime format.");
     } catch (JsonbException x) {
-      return Status.passed("OK");
+      return; // passed
     }
   }
 
@@ -517,11 +526,12 @@ public class DatesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that error is reported for deprecated three-letter
    * time zone IDs as specified in java.util.Timezone
    */
-  public void testUnmarshallingDeprecatedTimezoneIds() throws Fault {
+  @Test
+  public void testUnmarshallingDeprecatedTimezoneIds() {
     try {
       JsonbBuilder.create().fromJson("{ \"instance\" : \"CST\" }",
           TimeZoneContainer.class);
-      throw new Fault(
+      fail(
           "An exception is expected for deprecated three-letter time zone IDs.");
     } catch (JsonbException x) {
 
@@ -530,7 +540,7 @@ public class DatesMappingTest extends ServiceEETest {
     try {
       JsonbBuilder.create().fromJson("{ \"instance\" : \"CST\" }",
           SimpleTimeZoneContainer.class);
-      throw new Fault(
+      fail(
           "An exception is expected for deprecated three-letter time zone IDs.");
     } catch (JsonbException x) {
 

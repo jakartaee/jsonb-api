@@ -18,16 +18,16 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.cdi.customizedmapping.adapters.model.adapter;
+package jakarta.json.bind.cdi.customizedmapping.adapters.model.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.json.bind.adapter.JsonbAdapter;
+import jakarta.json.bind.adapter.JsonbAdapter;
 
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.Animal;
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.adapter.AnimalJson;
+import jakarta.json.bind.customizedmapping.adapters.model.Animal;
+import jakarta.json.bind.customizedmapping.adapters.model.adapter.AnimalJson;
 
 public class InjectedListAdapter
     implements JsonbAdapter<List<Animal>, List<AnimalJson>> {

@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.propertynames.model;
+package jakarta.json.bind.customizedmapping.propertynames.model;
 
 public class StringContainer {
   private String stringInstance;

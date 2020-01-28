@@ -18,9 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.basictypes.model;
+package jakarta.json.bind.defaultmapping.basictypes.model;
 
-import com.sun.ts.tests.jsonb.TypeContainer;
+import jakarta.json.bind.TypeContainer;
 
 public class BooleanContainer implements TypeContainer<Boolean> {
   private Boolean instance;

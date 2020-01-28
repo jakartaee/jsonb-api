@@ -18,9 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.propertyorder.model;
+package jakarta.json.bind.customizedmapping.propertyorder.model;
 
-import javax.json.bind.annotation.JsonbPropertyOrder;
+import jakarta.json.bind.annotation.JsonbPropertyOrder;
 
 @JsonbPropertyOrder({ "longInstance", "intInstance", "stringInstance" })
 public class CustomOrderContainer {

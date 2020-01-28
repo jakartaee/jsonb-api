@@ -18,11 +18,11 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.numberformat.model;
+package jakarta.json.bind.customizedmapping.numberformat.model;
 
-import javax.json.bind.annotation.JsonbNumberFormat;
+import jakarta.json.bind.annotation.JsonbNumberFormat;
 
-import com.sun.ts.tests.jsonb.TypeContainer;
+import jakarta.json.bind.TypeContainer;
 
 @JsonbNumberFormat(value = "###,###.##")
 public class TypeCustomizedFieldOverriddenDoubleContainer

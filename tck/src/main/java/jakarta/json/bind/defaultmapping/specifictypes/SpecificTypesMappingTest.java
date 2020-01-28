@@ -18,56 +18,40 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.specifictypes;
+package jakarta.json.bind.defaultmapping.specifictypes;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
-import java.util.Properties;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.MappingTester;
-import com.sun.ts.tests.jsonb.SimpleMappingTester;
-import com.sun.ts.tests.jsonb.defaultmapping.specifictypes.model.BigDecimalContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.specifictypes.model.BigIntegerContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.specifictypes.model.OptionalArrayContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.specifictypes.model.OptionalContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.specifictypes.model.OptionalDoubleContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.specifictypes.model.OptionalIntContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.specifictypes.model.OptionalLongContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.specifictypes.model.OptionalTypeContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.specifictypes.model.SimpleContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.specifictypes.model.URIContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.specifictypes.model.URLContainer;
+import org.junit.Test;
+
+import jakarta.json.bind.MappingTester;
+import jakarta.json.bind.SimpleMappingTester;
+import jakarta.json.bind.defaultmapping.specifictypes.model.BigDecimalContainer;
+import jakarta.json.bind.defaultmapping.specifictypes.model.BigIntegerContainer;
+import jakarta.json.bind.defaultmapping.specifictypes.model.OptionalArrayContainer;
+import jakarta.json.bind.defaultmapping.specifictypes.model.OptionalContainer;
+import jakarta.json.bind.defaultmapping.specifictypes.model.OptionalDoubleContainer;
+import jakarta.json.bind.defaultmapping.specifictypes.model.OptionalIntContainer;
+import jakarta.json.bind.defaultmapping.specifictypes.model.OptionalLongContainer;
+import jakarta.json.bind.defaultmapping.specifictypes.model.OptionalTypeContainer;
+import jakarta.json.bind.defaultmapping.specifictypes.model.SimpleContainer;
+import jakarta.json.bind.defaultmapping.specifictypes.model.URIContainer;
+import jakarta.json.bind.defaultmapping.specifictypes.model.URLContainer;
 
 /**
  * @test
  * @sources SpecificTypesMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.specifictypes.SpecificTypesMappingTest
  **/
-public class SpecificTypesMappingTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
-  public static void main(String[] args) {
-    EETest t = new SpecificTypesMappingTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
+public class SpecificTypesMappingTest {
 
   /*
    * @testName: testBigIntegerMapping
@@ -79,8 +63,9 @@ public class SpecificTypesMappingTest extends ServiceEETest {
    * java.math.BigInteger type are performed according to the toString method
    * and applicable String argument constructor
    */
-  public Status testBigIntegerMapping() throws Fault {
-    return new MappingTester<>(BigIntegerContainer.class)
+  @Test
+  public void testBigIntegerMapping() {
+    new MappingTester<>(BigIntegerContainer.class)
         .test(new BigInteger("0"), "0");
   }
 
@@ -94,8 +79,9 @@ public class SpecificTypesMappingTest extends ServiceEETest {
    * java.math.BigDecimal type are performed according to the toString method
    * and applicable String argument constructor
    */
-  public Status testBigDecimalMapping() throws Fault {
-    return new MappingTester<>(BigDecimalContainer.class)
+  @Test
+  public void testBigDecimalMapping() {
+    new MappingTester<>(BigDecimalContainer.class)
         .test(new BigDecimal("0.0"), "0.0");
   }
 
@@ -109,8 +95,9 @@ public class SpecificTypesMappingTest extends ServiceEETest {
    * are performed according to the toString method and applicable String
    * argument constructor
    */
-  public Status testURLMapping() throws Exception {
-    return new MappingTester<>(URLContainer.class)
+  @Test
+  public void testURLMapping() throws Exception {
+    new MappingTester<>(URLContainer.class)
         .test(new URL("http://www.host.com:80"), "\"http://www.host.com:80\"");
   }
 
@@ -124,8 +111,9 @@ public class SpecificTypesMappingTest extends ServiceEETest {
    * type are performed according to the toString method and applicable String
    * argument constructor
    */
-  public Status testURIMapping() throws Exception {
-    return new MappingTester<>(URIContainer.class)
+  @Test
+  public void testURIMapping() throws URISyntaxException {
+    new MappingTester<>(URIContainer.class)
         .test(new URI("http://www.host.com:80"), "\"http://www.host.com:80\"");
   }
 
@@ -138,8 +126,9 @@ public class SpecificTypesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that non-empty java.util.Optional is correctly
    * handled as defined for each type
    */
-  public Status testOptionalMapping() throws Fault {
-    return new MappingTester<>(OptionalContainer.class)
+  @Test
+  public void testOptionalMapping() {
+    new MappingTester<>(OptionalContainer.class)
         .test(Optional.of("String Value"), "\"String Value\"");
   }
 
@@ -152,13 +141,14 @@ public class SpecificTypesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that non-empty java.util.Optional of a complex type
    * is correctly handled
    */
-  public Status testOptionalObjectMapping() throws Fault {
+  @Test
+  public void testOptionalObjectMapping() {
     OptionalTypeContainer container = new OptionalTypeContainer();
     SimpleContainer simpleContainer = new SimpleContainer();
     simpleContainer.setStringInstance("String Value");
     container.setInstance(Optional.of(simpleContainer));
 
-    return new SimpleMappingTester<>(OptionalTypeContainer.class).test(
+    new SimpleMappingTester<>(OptionalTypeContainer.class).test(
         container,
         "\\{\\s*\"instance\"\\s*:\\s*\\{\\s*\"stringInstance\"\\s*:\\s*\"String Value\"\\s*}\\s*}",
         "{ \"instance\" : { \"stringInstance\" : \"String Value\" } }",
@@ -175,10 +165,11 @@ public class SpecificTypesMappingTest extends ServiceEETest {
    * marshalling and null value is returned as empty Optional value during
    * unmarshalling
    */
-  public Status testEmptyOptionalMapping() throws Fault {
+  @Test
+  public void testEmptyOptionalMapping() {
     OptionalContainer optionalContainer = new OptionalContainer();
     optionalContainer.setInstance(Optional.empty());
-    return new SimpleMappingTester<>(OptionalContainer.class).test(
+    new SimpleMappingTester<>(OptionalContainer.class).test(
         optionalContainer, "\\{\\s*}", "{ \"instance\" : null }",
         optionalContainer);
   }
@@ -194,10 +185,11 @@ public class SpecificTypesMappingTest extends ServiceEETest {
    * value during unmarshalling
    */
   @SuppressWarnings("unchecked")
-  public Status testEmptyOptionalArrayMapping() throws Fault {
+  @Test
+  public void testEmptyOptionalArrayMapping() {
     OptionalArrayContainer optionalContainer = new OptionalArrayContainer();
     optionalContainer.setInstance(new Optional[] { Optional.empty() });
-    return new SimpleMappingTester<>(OptionalArrayContainer.class).test(
+    new SimpleMappingTester<>(OptionalArrayContainer.class).test(
         optionalContainer, "\\{\\s*\"instance\"\\s*:\\s*\\[\\s*null\\s*]\\s*}",
         "{ \"instance\" : [ null ] }", optionalContainer);
   }
@@ -211,8 +203,9 @@ public class SpecificTypesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that non-empty java.util.OptionalInt is correctly
    * handled as defined for Integer type
    */
-  public Status testOptionalIntMapping() throws Fault {
-    return new MappingTester<>(OptionalIntContainer.class)
+  @Test
+  public void testOptionalIntMapping() {
+    new MappingTester<>(OptionalIntContainer.class)
         .test(OptionalInt.of(0), "0");
   }
 
@@ -226,10 +219,11 @@ public class SpecificTypesMappingTest extends ServiceEETest {
    * marshalling and null value is returned as empty OptionalInt value during
    * unmarshalling
    */
-  public Status testEmptyOptionalIntMapping() throws Fault {
+  @Test
+  public void testEmptyOptionalIntMapping() {
     OptionalIntContainer optionalContainer = new OptionalIntContainer();
     optionalContainer.setInstance(OptionalInt.empty());
-    return new SimpleMappingTester<>(OptionalIntContainer.class).test(
+    new SimpleMappingTester<>(OptionalIntContainer.class).test(
         optionalContainer, "\\{\\s*}", "{ \"instance\" : null }",
         optionalContainer);
   }
@@ -243,8 +237,9 @@ public class SpecificTypesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that non-empty java.util.OptionalLong is correctly
    * handled as defined for Long type
    */
-  public Status testOptionalLongMapping() throws Fault {
-    return new MappingTester<>(OptionalLongContainer.class)
+  @Test
+  public void testOptionalLongMapping() {
+    new MappingTester<>(OptionalLongContainer.class)
         .test(OptionalLong.of(0), "0");
   }
 
@@ -258,10 +253,11 @@ public class SpecificTypesMappingTest extends ServiceEETest {
    * marshalling and null value is returned as empty OptionalLong value during
    * unmarshalling
    */
-  public Status testEmptyOptionalLongMapping() throws Fault {
+  @Test
+  public void testEmptyOptionalLongMapping() {
     OptionalLongContainer optionalContainer = new OptionalLongContainer();
     optionalContainer.setInstance(OptionalLong.empty());
-    return new SimpleMappingTester<>(OptionalLongContainer.class).test(
+    new SimpleMappingTester<>(OptionalLongContainer.class).test(
         optionalContainer, "\\{\\s*}", "{ \"instance\" : null }",
         optionalContainer);
   }
@@ -275,8 +271,9 @@ public class SpecificTypesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that non-empty java.util.OptionalDouble is correctly
    * handled as defined for Double type
    */
-  public Status testOptionalDoubleMapping() throws Fault {
-    return new MappingTester<>(OptionalDoubleContainer.class)
+  @Test
+  public void testOptionalDoubleMapping() {
+    new MappingTester<>(OptionalDoubleContainer.class)
         .test(OptionalDouble.of(0.0), "0.0");
   }
 
@@ -290,10 +287,11 @@ public class SpecificTypesMappingTest extends ServiceEETest {
    * during marshalling and null value is returned as empty OptionalDouble value
    * during unmarshalling
    */
-  public Status testEmptyOptionalDoubleMapping() throws Fault {
+  @Test
+  public void testEmptyOptionalDoubleMapping() {
     OptionalDoubleContainer optionalContainer = new OptionalDoubleContainer();
     optionalContainer.setInstance(OptionalDouble.empty());
-    return new SimpleMappingTester<>(OptionalDoubleContainer.class).test(
+    new SimpleMappingTester<>(OptionalDoubleContainer.class).test(
         optionalContainer, "\\{\\s*}", "{ \"instance\" : null }",
         optionalContainer);
   }

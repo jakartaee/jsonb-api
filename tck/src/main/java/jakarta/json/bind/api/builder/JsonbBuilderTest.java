@@ -18,42 +18,25 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.api.builder;
+package jakarta.json.bind.api.builder;
 
-import java.util.Properties;
+import static org.junit.Assert.fail;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
-import javax.json.bind.JsonbConfig;
-import javax.json.bind.spi.JsonbProvider;
-import javax.json.spi.JsonProvider;
+import org.junit.Test;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.api.model.SimpleContainer;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.JsonbConfig;
+import jakarta.json.bind.api.model.SimpleContainer;
+import jakarta.json.bind.spi.JsonbProvider;
+import jakarta.json.spi.JsonProvider;
 
 /**
  * @test
  * @sources JsonbBuilderTest.java
  * @executeClass com.sun.ts.tests.jsonb.api.JsonbBuilderTest
  **/
-public class JsonbBuilderTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
-  public static void main(String[] args) {
-    EETest t = new JsonbBuilderTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
+public class JsonbBuilderTest {
 
   /*
    * @testName: testBuild
@@ -63,14 +46,15 @@ public class JsonbBuilderTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbBuilder.build returns a new instance of
    * javax.json.bind.Jsonb
    */
-  public Status testBuild() throws Fault {
+  @Test
+  public void testBuild() {
     Jsonb jsonb = JsonbBuilder.newBuilder().build();
     if (jsonb == null) {
-      throw new Fault(
+      fail(
           "Failed to create a new Jsonb instance using JsonBuilder.build method.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -81,10 +65,11 @@ public class JsonbBuilderTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbBuilder.create returns a new instance of
    * javax.json.bind.Jsonb
    */
-  public void testCreate() throws Fault {
+  @Test
+  public void testCreate() {
     Jsonb jsonb = JsonbBuilder.create();
     if (jsonb == null) {
-      throw new Fault(
+      fail(
           "Failed to create a new Jsonb instance using JsonBuilder.create method.");
     }
   }
@@ -98,7 +83,8 @@ public class JsonbBuilderTest extends ServiceEETest {
    * returns a new instance of javax.json.bind.Jsonb configured with provided
    * configuration
    */
-  public void testCreateConfig() throws Fault {
+  @Test
+  public void testCreateConfig() {
     JsonbConfig jsonbConfig = new JsonbConfig().withNullValues(true);
     Jsonb jsonb = JsonbBuilder.create(jsonbConfig);
 
@@ -108,7 +94,7 @@ public class JsonbBuilderTest extends ServiceEETest {
       }
     });
     if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*null\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to create a new Jsonb instance using JsonBuilder.create method with Config argument configured with provided configuration.");
     }
   }
@@ -122,11 +108,12 @@ public class JsonbBuilderTest extends ServiceEETest {
    * JsonbBuilder instance as returned by
    * javax.json.bind.spi.JsonbProvider#provider method
    */
-  public void testNewBuilder() throws Fault {
+  @Test
+  public void testNewBuilder() {
     JsonbBuilder jsonbBuilder = JsonbBuilder.newBuilder();
     if (jsonbBuilder == null || !jsonbBuilder.getClass()
         .equals(JsonbProvider.provider().create().getClass())) {
-      throw new Fault(
+      fail(
           "Failed to create a new Jsonb instance as returned by javax.json.bind.spi.JsonbProvider#provider method using JsonBuilder.newBuilder method.");
     }
   }
@@ -140,14 +127,15 @@ public class JsonbBuilderTest extends ServiceEETest {
    * argument returns a new JsonbBuilder instance as returned by
    * javax.json.bind.spi.JsonbProvider#provider(String) method
    */
-  public void testNewBuilderString() throws Fault {
+  @Test
+  public void testNewBuilderString() {
     JsonbBuilder jsonbBuilder = JsonbBuilder
         .newBuilder(JsonbProvider.provider().getClass().getName());
     if (jsonbBuilder == null || !jsonbBuilder.getClass()
         .equals(JsonbProvider
             .provider(JsonbProvider.provider().getClass().getName()).create()
             .getClass())) {
-      throw new Fault(
+      fail(
           "Failed to create a new Jsonb instance as returned by javax.json.bind.spi.JsonbProvider#provider(String) method using JsonBuilder.newBuilder method with String argument.");
     }
   }
@@ -161,12 +149,13 @@ public class JsonbBuilderTest extends ServiceEETest {
    * JsonbProvider argument returns a new JsonbBuilder instance as returned by
    * provider#create method
    */
-  public void testNewBuilderProvider() throws Fault {
+  @Test
+  public void testNewBuilderProvider() {
     JsonbBuilder jsonbBuilder = JsonbBuilder
         .newBuilder(JsonbProvider.provider());
     if (jsonbBuilder == null || !jsonbBuilder.getClass()
         .equals(JsonbProvider.provider().create().getClass())) {
-      throw new Fault(
+      fail(
           "Failed to create a new Jsonb instance as returned by provider#create method using JsonBuilder.newBuilder method with JsonbProvider argument.");
     }
   }
@@ -180,7 +169,8 @@ public class JsonbBuilderTest extends ServiceEETest {
    * argument returns a new JsonbBuilder instance configured with configuration
    * passed as an argument
    */
-  public void testWithConfig() throws Fault {
+  @Test
+  public void testWithConfig() {
     JsonbConfig jsonbConfig = new JsonbConfig().withNullValues(true);
     Jsonb jsonb = JsonbBuilder.newBuilder().withConfig(jsonbConfig).build();
 
@@ -190,7 +180,7 @@ public class JsonbBuilderTest extends ServiceEETest {
       }
     });
     if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*null\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to apply configuration passed as an argument to JsonbBuilder.withConfig method.");
     }
   }
@@ -204,11 +194,12 @@ public class JsonbBuilderTest extends ServiceEETest {
    * JsonProvider argument returns a new JsonbBuilder instance using the
    * JsonProvider passed as an argument
    */
-  public void testWithProvider() throws Fault {
+  @Test
+  public void testWithProvider() {
     JsonbBuilder jsonbBuilder = JsonbBuilder.newBuilder()
         .withProvider(JsonProvider.provider());
     if (jsonbBuilder == null) {
-      throw new Fault(
+      fail(
           "Failed to create a new JsonbBuilder instance using a specific JsonProvider using JsonbBuilder.withProvider method.");
     }
   }

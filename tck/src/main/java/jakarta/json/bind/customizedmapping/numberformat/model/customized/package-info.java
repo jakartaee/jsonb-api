@@ -19,6 +19,6 @@
  */
 
 @JsonbNumberFormat(value = "###,###.#", locale = "de")
-package com.sun.ts.tests.jsonb.customizedmapping.numberformat.model.customized;
+package jakarta.json.bind.customizedmapping.numberformat.model.customized;
 
-import javax.json.bind.annotation.JsonbNumberFormat;
+import jakarta.json.bind.annotation.JsonbNumberFormat;

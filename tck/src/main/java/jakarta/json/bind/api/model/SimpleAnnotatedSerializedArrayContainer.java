@@ -18,12 +18,12 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.api.model;
+package jakarta.json.bind.api.model;
 
-import javax.json.bind.annotation.JsonbTypeDeserializer;
-import javax.json.bind.annotation.JsonbTypeSerializer;
+import jakarta.json.bind.annotation.JsonbTypeDeserializer;
+import jakarta.json.bind.annotation.JsonbTypeSerializer;
 
-import com.sun.ts.tests.jsonb.TypeContainer;
+import jakarta.json.bind.TypeContainer;
 
 public class SimpleAnnotatedSerializedArrayContainer
     implements TypeContainer<SimpleContainer[]> {

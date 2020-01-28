@@ -18,9 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.arrays.model;
+package jakarta.json.bind.defaultmapping.arrays.model;
 
-import com.sun.ts.tests.jsonb.TypeContainer;
+import jakarta.json.bind.TypeContainer;
 
 public class MultiDimensionalArrayContainer
     implements TypeContainer<Integer[][]> {

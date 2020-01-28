@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.propertyorder.model;
+package jakarta.json.bind.customizedmapping.propertyorder.model;
 
 public class SimpleContainer {
   private int intInstance;

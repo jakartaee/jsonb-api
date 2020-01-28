@@ -18,13 +18,13 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.dateformat.model;
+package jakarta.json.bind.customizedmapping.dateformat.model;
 
 import java.util.Date;
 
-import javax.json.bind.annotation.JsonbDateFormat;
+import jakarta.json.bind.annotation.JsonbDateFormat;
 
-import com.sun.ts.tests.jsonb.TypeContainer;
+import jakarta.json.bind.TypeContainer;
 
 public class AnnotatedAccessorsDateContainer implements TypeContainer<Date> {
   private Date instance;

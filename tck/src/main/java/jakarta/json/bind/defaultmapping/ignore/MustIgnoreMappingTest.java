@@ -18,42 +18,24 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.ignore;
+package jakarta.json.bind.defaultmapping.ignore;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+import static org.junit.Assert.fail;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.defaultmapping.ignore.model.StringContainer;
+import org.junit.Test;
 
-import java.util.Properties;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.defaultmapping.ignore.model.StringContainer;
 
 /**
  * @test
  * @sources MustIgnoreMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.ignore.MustIgnoreMappingTest
  **/
-public class MustIgnoreMappingTest extends ServiceEETest {
-
-  private static final long serialVersionUID = 10L;
+public class MustIgnoreMappingTest {
 
   private final Jsonb jsonb = JsonbBuilder.create();
-
-  public static void main(String[] args) {
-    EETest t = new MustIgnoreMappingTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
 
   /*
    * @testName: testIgnoreUnknownAttribute
@@ -63,20 +45,21 @@ public class MustIgnoreMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that unknown attributes are ignored during
    * unmarshalling
    */
-  public Status testIgnoreUnknownAttribute() throws Fault {
+  @Test
+  public void testIgnoreUnknownAttribute() {
     try {
       StringContainer unmarshalledObject = jsonb.fromJson(
           "{ \"instance\" : \"Test String\", \"newInstance\" : 0 }",
           StringContainer.class);
       if (!"Test String".equals(unmarshalledObject.getInstance())) {
-        throw new Fault(
+        fail(
             "Failed to deserialize into a class with less attributes than exist in the JSON string.");
       }
     } catch (Exception x) {
-      throw new Fault(
+      fail(
           "An exception is not expected when coming across a non existent attribute during deserialization.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 }

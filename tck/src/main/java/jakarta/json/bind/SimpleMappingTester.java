@@ -14,11 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
+package jakarta.json.bind;
 
-package com.sun.ts.tests.jsonb;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -27,14 +25,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
-
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
-
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest.Fault;
-
-import static com.sun.ts.tests.jsonb.MappingTester.combine;
 
 public class SimpleMappingTester<T> {
   private final Jsonb jsonb = JsonbBuilder.create();
@@ -45,55 +35,54 @@ public class SimpleMappingTester<T> {
     this.typeClass = typeClass;
   }
 
-  public Status test(T value, String expectedRepresentationPattern,
-      String expectedRepresentation, Object expectedOutput) throws Fault {
-    return combine(testMarshalling(value, expectedRepresentationPattern),
-        testMarshallingToStream(value, expectedRepresentationPattern),
-        testMarshallingToWriter(value, expectedRepresentationPattern),
-        testMarshallingByType(value, expectedRepresentationPattern),
-        testMarshallingByTypeToStream(value, expectedRepresentationPattern),
-        testMarshallingByTypeToWriter(value, expectedRepresentationPattern),
-        testUnmarshallingByClass(expectedRepresentation, expectedOutput),
+  public void test(T value, String expectedRepresentationPattern,
+      String expectedRepresentation, Object expectedOutput) {
+    testMarshalling(value, expectedRepresentationPattern);
+        testMarshallingToStream(value, expectedRepresentationPattern);
+        testMarshallingToWriter(value, expectedRepresentationPattern);
+        testMarshallingByType(value, expectedRepresentationPattern);
+        testMarshallingByTypeToStream(value, expectedRepresentationPattern);
+        testMarshallingByTypeToWriter(value, expectedRepresentationPattern);
+        testUnmarshallingByClass(expectedRepresentation, expectedOutput);
         testUnmarshallingByClassFromStream(expectedRepresentation,
-            expectedOutput),
+            expectedOutput);
         testUnmarshallingByClassFromReader(expectedRepresentation,
-            expectedOutput),
-        testUnmarshallingByType(expectedRepresentation, expectedOutput),
+            expectedOutput);
+        testUnmarshallingByType(expectedRepresentation, expectedOutput);
         testUnmarshallingByTypeFromStream(expectedRepresentation,
-            expectedOutput),
+            expectedOutput);
         testUnmarshallingByTypeFromReader(expectedRepresentation,
-            expectedOutput));
+            expectedOutput);
   }
 
-  private Status testMarshalling(T value, String expectedRepresentation) {
+  private void testMarshalling(T value, String expectedRepresentation) {
     String jsonString = jsonb.toJson(value);
     if (jsonString.matches(expectedRepresentation)) {
-      return Status.passed("OK");
+      return; // passed
     } else {
-      return Status.failed("[testMarshalling] - Failed to correctly marshal "
+      fail("[testMarshalling] - Failed to correctly marshal "
           + value.getClass().getName() + " object");
     }
   }
 
-  private Status testMarshallingToStream(T value,
+  private void testMarshallingToStream(T value,
       String expectedRepresentation) {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
       jsonb.toJson(value, stream);
       String jsonString = new String(stream.toByteArray(),
           StandardCharsets.UTF_8);
       if (jsonString.matches(expectedRepresentation)) {
-        return Status.passed("OK");
+        return; // passed
       } else {
-        return Status
-            .failed("[testMarshallingToStream] - Failed to correctly marshal "
+        fail("[testMarshallingToStream] - Failed to correctly marshal "
                 + value.getClass().getName() + " object");
       }
     } catch (IOException e) {
-      return Status.error(e.getMessage());
+      fail(e.getMessage());
     }
   }
 
-  private Status testMarshallingToWriter(T value,
+  private void testMarshallingToWriter(T value,
       String expectedRepresentation) {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(stream)) {
@@ -101,47 +90,45 @@ public class SimpleMappingTester<T> {
       String jsonString = new String(stream.toByteArray(),
           StandardCharsets.UTF_8);
       if (jsonString.matches(expectedRepresentation)) {
-        return Status.passed("OK");
+        return; // passed
       } else {
-        return Status
-            .failed("[testMarshallingToWriter] - Failed to correctly marshal "
+        fail("[testMarshallingToWriter] - Failed to correctly marshal "
                 + value.getClass().getName() + " object");
       }
     } catch (IOException e) {
-      return Status.error(e.getMessage());
+      fail(e.getMessage());
     }
   }
 
-  private Status testMarshallingByType(T value, String expectedRepresentation) {
+  private void testMarshallingByType(T value, String expectedRepresentation) {
     String jsonString = jsonb.toJson(value, TypeContainer.class);
     if (jsonString.matches(expectedRepresentation)) {
-      return Status.passed("OK");
+      return; // passed
     } else {
-      return Status
-          .failed("[testMarshallingByType] - Failed to correctly marshal "
+      fail("[testMarshallingByType] - Failed to correctly marshal "
               + value.getClass().getName() + " object");
     }
   }
 
-  private Status testMarshallingByTypeToStream(T value,
+  private void testMarshallingByTypeToStream(T value,
       String expectedRepresentation) {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
       jsonb.toJson(value, TypeContainer.class, stream);
       String jsonString = new String(stream.toByteArray(),
           StandardCharsets.UTF_8);
       if (jsonString.matches(expectedRepresentation)) {
-        return Status.passed("OK");
+        return; // passed
       } else {
-        return Status.failed(
+        fail(
             "[testMarshallingByTypeToStream] - Failed to correctly marshal "
                 + value.getClass().getName() + " object");
       }
     } catch (IOException e) {
-      return Status.error(e.getMessage());
+      fail(e.getMessage());
     }
   }
 
-  private Status testMarshallingByTypeToWriter(T value,
+  private void testMarshallingByTypeToWriter(T value,
       String expectedRepresentation) {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(stream)) {
@@ -150,48 +137,47 @@ public class SimpleMappingTester<T> {
       String jsonString = new String(stream.toByteArray(),
           StandardCharsets.UTF_8);
       if (jsonString.matches(expectedRepresentation)) {
-        return Status.passed("OK");
+        return; // passed
       } else {
-        return Status.failed(
+        fail(
             "[testMarshallingByTypeToWriter] - Failed to correctly marshal "
                 + value.getClass().getName() + " object");
       }
     } catch (IOException e) {
-      return Status.error(e.getMessage());
+      fail(e.getMessage());
     }
   }
 
-  private Status testUnmarshallingByClass(String expectedRepresentation,
+  private void testUnmarshallingByClass(String expectedRepresentation,
       Object value) {
     Object unmarshalledObject = jsonb.fromJson(expectedRepresentation,
         typeClass);
     if (value.equals(unmarshalledObject)) {
-      return Status.passed("OK");
+      return; // passed
     } else {
-      return Status
-          .failed("[testUnmarshallingByClass] - Failed to correctly unmarshal "
+      fail("[testUnmarshallingByClass] - Failed to correctly unmarshal "
               + value.getClass().getName() + " object");
     }
   }
 
-  private Status testUnmarshallingByClassFromStream(
+  private void testUnmarshallingByClassFromStream(
       String expectedRepresentation, Object value) {
     try (ByteArrayInputStream stream = new ByteArrayInputStream(
         expectedRepresentation.getBytes(StandardCharsets.UTF_8))) {
       Object unmarshalledObject = jsonb.fromJson(stream, typeClass);
       if (value.equals(unmarshalledObject)) {
-        return Status.passed("OK");
+        return; // passed
       } else {
-        return Status.failed(
+        fail(
             "[testUnmarshallingByClassFromStream] - Failed to correctly unmarshal "
                 + value.getClass().getName() + " object");
       }
     } catch (IOException e) {
-      return Status.error(e.getMessage());
+      fail(e.getMessage());
     }
   }
 
-  private Status testUnmarshallingByClassFromReader(
+  private void testUnmarshallingByClassFromReader(
       String expectedRepresentation, Object value) {
     try (
         ByteArrayInputStream stream = new ByteArrayInputStream(
@@ -200,48 +186,47 @@ public class SimpleMappingTester<T> {
 
       Object unmarshalledObject = jsonb.fromJson(reader, typeClass);
       if (value.equals(unmarshalledObject)) {
-        return Status.passed("OK");
+        return; // passed
       } else {
-        return Status.failed(
+        fail(
             "[testUnmarshallingByClassFromReader] - Failed to correctly unmarshal "
                 + value.getClass().getName() + " object");
       }
     } catch (IOException e) {
-      return Status.error(e.getMessage());
+      fail(e.getMessage());
     }
   }
 
-  private Status testUnmarshallingByType(String expectedRepresentation,
+  private void testUnmarshallingByType(String expectedRepresentation,
       Object value) {
     Object unmarshalledObject = jsonb.fromJson(expectedRepresentation,
         (Type) typeClass);
     if (value.equals(unmarshalledObject)) {
-      return Status.passed("OK");
+      return; // passed
     } else {
-      return Status
-          .failed("[testUnmarshallingByType] - Failed to correctly unmarshal "
+      fail("[testUnmarshallingByType] - Failed to correctly unmarshal "
               + value.getClass().getName() + " object");
     }
   }
 
-  private Status testUnmarshallingByTypeFromStream(
+  private void testUnmarshallingByTypeFromStream(
       String expectedRepresentation, Object value) {
     try (ByteArrayInputStream stream = new ByteArrayInputStream(
         expectedRepresentation.getBytes(StandardCharsets.UTF_8))) {
       Object unmarshalledObject = jsonb.fromJson(stream, (Type) typeClass);
       if (value.equals(unmarshalledObject)) {
-        return Status.passed("OK");
+        return; // passed
       } else {
-        return Status.failed(
+        fail(
             "[testUnmarshallingByTypeFromStream] - Failed to correctly unmarshal "
                 + value.getClass().getName() + " object");
       }
     } catch (IOException e) {
-      return Status.error(e.getMessage());
+      fail(e.getMessage());
     }
   }
 
-  private Status testUnmarshallingByTypeFromReader(
+  private void testUnmarshallingByTypeFromReader(
       String expectedRepresentation, Object value) {
     try (
         ByteArrayInputStream stream = new ByteArrayInputStream(
@@ -250,14 +235,14 @@ public class SimpleMappingTester<T> {
 
       Object unmarshalledObject = jsonb.fromJson(reader, (Type) typeClass);
       if (value.equals(unmarshalledObject)) {
-        return Status.passed("OK");
+        return; // passed
       } else {
-        return Status.failed(
+        fail(
             "[testUnmarshallingByTypeFromReader] - Failed to correctly unmarshal "
                 + value.getClass().getName() + " object");
       }
     } catch (IOException e) {
-      return Status.error(e.getMessage());
+      fail(e.getMessage());
     }
   }
 }

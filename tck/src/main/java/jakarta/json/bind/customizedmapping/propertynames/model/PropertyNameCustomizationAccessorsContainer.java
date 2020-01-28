@@ -18,11 +18,11 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.propertynames.model;
+package jakarta.json.bind.customizedmapping.propertynames.model;
 
-import javax.json.bind.annotation.JsonbProperty;
+import jakarta.json.bind.annotation.JsonbProperty;
 
-import com.sun.ts.tests.jsonb.TypeContainer;
+import jakarta.json.bind.TypeContainer;
 
 public class PropertyNameCustomizationAccessorsContainer
     implements TypeContainer<String> {

@@ -18,9 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.numberformat.model.customized;
+package jakarta.json.bind.customizedmapping.numberformat.model.customized;
 
-import com.sun.ts.tests.jsonb.TypeContainer;
+import jakarta.json.bind.TypeContainer;
 
 public class PackageCustomizedDoubleContainer implements TypeContainer<Double> {
   private Double instance;

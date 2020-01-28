@@ -18,11 +18,11 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.jsonptypes.model;
+package jakarta.json.bind.defaultmapping.jsonptypes.model;
 
-import com.sun.ts.tests.jsonb.TypeContainer;
+import jakarta.json.bind.TypeContainer;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 public class JsonObjectContainer implements TypeContainer<JsonObject> {
   private JsonObject instance;

@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.adapters.model;
+package jakarta.json.bind.customizedmapping.adapters.model;
 
 import java.util.ArrayList;
 import java.util.List;

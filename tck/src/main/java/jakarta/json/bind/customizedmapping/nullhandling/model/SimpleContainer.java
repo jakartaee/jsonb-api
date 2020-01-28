@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.nullhandling.model;
+package jakarta.json.bind.customizedmapping.nullhandling.model;
 
 public class SimpleContainer {
   private String stringInstance;

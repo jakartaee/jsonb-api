@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.serializers.model;
+package jakarta.json.bind.customizedmapping.serializers.model;
 
 public class Dog extends Animal {
   private boolean barking;

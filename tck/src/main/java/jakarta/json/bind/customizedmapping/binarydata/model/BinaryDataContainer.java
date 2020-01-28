@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.binarydata.model;
+package jakarta.json.bind.customizedmapping.binarydata.model;
 
 public class BinaryDataContainer {
   private byte[] data = "Test String".getBytes();

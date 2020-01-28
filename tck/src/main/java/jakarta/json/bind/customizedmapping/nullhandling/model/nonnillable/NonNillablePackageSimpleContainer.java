@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.nullhandling.model.nonnillable;
+package jakarta.json.bind.customizedmapping.nullhandling.model.nonnillable;
 
 public class NonNillablePackageSimpleContainer {
   private String stringInstance;

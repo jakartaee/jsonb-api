@@ -18,11 +18,11 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.api.model;
+package jakarta.json.bind.api.model;
 
-import javax.json.bind.annotation.JsonbNillable;
+import jakarta.json.bind.annotation.JsonbNillable;
 
-import com.sun.ts.tests.jsonb.TypeContainer;
+import jakarta.json.bind.TypeContainer;
 
 @JsonbNillable
 public class SimpleAnnotatedNillableContainer implements TypeContainer<Object> {

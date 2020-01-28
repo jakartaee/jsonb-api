@@ -18,43 +18,26 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.arrays;
+package jakarta.json.bind.defaultmapping.arrays;
+
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
-import java.util.Properties;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+import org.junit.Test;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.defaultmapping.arrays.model.MultiDimensionalArrayContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.arrays.model.PrimitiveArrayContainer;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.defaultmapping.arrays.model.MultiDimensionalArrayContainer;
+import jakarta.json.bind.defaultmapping.arrays.model.PrimitiveArrayContainer;
 
 /**
  * @test
  * @sources ArraysMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.arrays.ArraysMappingTest
  **/
-public class ArraysMappingTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
+public class ArraysMappingTest {
   private final Jsonb jsonb = JsonbBuilder.create();
-
-  public static void main(String[] args) {
-    EETest t = new ArraysMappingTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
 
   /*
    * @testName: testPrimitiveArray
@@ -64,7 +47,8 @@ public class ArraysMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that a simple array of primitives is handled
    * correctly
    */
-  public Status testPrimitiveArray() throws Fault {
+  @Test
+  public void testPrimitiveArray() {
     int[] instance = { Integer.MIN_VALUE, Integer.MAX_VALUE };
     String jsonString = jsonb.toJson(new PrimitiveArrayContainer() {
       {
@@ -74,17 +58,17 @@ public class ArraysMappingTest extends ServiceEETest {
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*\\:\\s*\\[\\s*" + Integer.MIN_VALUE
             + "\\s*,\\s*" + Integer.MAX_VALUE + "\\s*\\]\\s*\\}")) {
-      throw new Fault("Failed to marshal object with int[] attribute value.");
+      fail("Failed to marshal object with int[] attribute value.");
     }
 
     PrimitiveArrayContainer unmarshalledObject = jsonb
         .fromJson("{ \"instance\" : [ " + Integer.MIN_VALUE + ", "
             + Integer.MAX_VALUE + " ] }", PrimitiveArrayContainer.class);
     if (!Arrays.equals(instance, unmarshalledObject.getInstance())) {
-      throw new Fault("Failed to unmarshal object with int[] attribute value.");
+      fail("Failed to unmarshal object with int[] attribute value.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -97,7 +81,8 @@ public class ArraysMappingTest extends ServiceEETest {
    * deserialized as a multi-dimensional array and null array values are
    * correctly serialized and deserialized
    */
-  public Status testMultiDimensionalArray() throws Fault {
+  @Test
+  public void testMultiDimensionalArray() {
     Integer[][] instance = { { 1, null, 3 },
         { Integer.MIN_VALUE, Integer.MAX_VALUE } };
     String jsonString = jsonb.toJson(new MultiDimensionalArrayContainer() {
@@ -109,7 +94,7 @@ public class ArraysMappingTest extends ServiceEETest {
         "\\{\\s*\"instance\"\\s*\\:\\s*\\[\\s*\\[\\s*1\\s*,\\s*null\\s*,\\s*3\\s*\\]\\s*,\\s*\\[\\s*"
             + Integer.MIN_VALUE + "\\s*,\\s*" + Integer.MAX_VALUE
             + "\\s*\\]\\s*\\]\\s*\\}")) {
-      throw new Fault("Failed to marshal object with int[][] attribute value.");
+      fail("Failed to marshal object with int[][] attribute value.");
     }
 
     MultiDimensionalArrayContainer unmarshalledObject = jsonb.fromJson(
@@ -117,10 +102,10 @@ public class ArraysMappingTest extends ServiceEETest {
             + Integer.MAX_VALUE + " ] ] }",
         MultiDimensionalArrayContainer.class);
     if (!Arrays.deepEquals(instance, unmarshalledObject.getInstance())) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal object with int[][] attribute value.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 }

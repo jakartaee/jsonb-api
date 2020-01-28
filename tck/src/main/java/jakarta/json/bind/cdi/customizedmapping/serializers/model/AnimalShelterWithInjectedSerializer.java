@@ -18,14 +18,14 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.cdi.customizedmapping.serializers.model;
+package jakarta.json.bind.cdi.customizedmapping.serializers.model;
 
-import com.sun.ts.tests.jsonb.cdi.customizedmapping.serializers.model.serializer.AnimalListDeserializerInjected;
-import com.sun.ts.tests.jsonb.customizedmapping.serializers.model.Animal;
-import com.sun.ts.tests.jsonb.customizedmapping.serializers.model.serializer.AnimalListSerializer;
+import jakarta.json.bind.cdi.customizedmapping.serializers.model.serializer.AnimalListDeserializerInjected;
+import jakarta.json.bind.customizedmapping.serializers.model.Animal;
+import jakarta.json.bind.customizedmapping.serializers.model.serializer.AnimalListSerializer;
 
-import javax.json.bind.annotation.JsonbTypeDeserializer;
-import javax.json.bind.annotation.JsonbTypeSerializer;
+import jakarta.json.bind.annotation.JsonbTypeDeserializer;
+import jakarta.json.bind.annotation.JsonbTypeSerializer;
 import java.util.ArrayList;
 import java.util.List;
 

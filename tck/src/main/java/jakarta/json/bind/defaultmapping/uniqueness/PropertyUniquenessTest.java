@@ -18,42 +18,24 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.uniqueness;
+package jakarta.json.bind.defaultmapping.uniqueness;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
-import javax.json.bind.JsonbException;
+import static org.junit.Assert.fail;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.defaultmapping.uniqueness.model.SimpleContainer;
+import org.junit.Test;
 
-import java.util.Properties;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.JsonbException;
+import jakarta.json.bind.defaultmapping.uniqueness.model.SimpleContainer;
 
 /**
  * @test
  * @sources PropertyUniquenessTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.uniqueness.PropertyUniquenessTest
  **/
-public class PropertyUniquenessTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
+public class PropertyUniquenessTest {
   private final Jsonb jsonb = JsonbBuilder.create();
-
-  public static void main(String[] args) {
-    EETest t = new PropertyUniquenessTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
 
   /*
    * @testName: testUniqueProperties
@@ -63,13 +45,14 @@ public class PropertyUniquenessTest extends ServiceEETest {
    * @test_Strategy: Assert that an exception is thrown when duplicate property
    * names exist
    */
-  public Status testUniqueProperties() throws Fault {
+  @Test
+  public void testUniqueProperties() {
     try {
       jsonb.toJson(new SimpleContainer());
-      throw new Fault(
+      fail(
           "An exception is expected when marshalling a class with duplicate attribute names.");
     } catch (JsonbException x) {
-      return Status.passed("OK");
+      return; // passed
     }
   }
 }

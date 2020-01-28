@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.generics.model;
+package jakarta.json.bind.defaultmapping.generics.model;
 
 public class NumberContainer<T extends Number> extends GenericContainer<T> {
   protected T instance;

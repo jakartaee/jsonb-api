@@ -18,63 +18,46 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.classes;
+package jakarta.json.bind.defaultmapping.classes;
+
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
-import java.util.Properties;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
-import javax.json.bind.JsonbException;
+import org.junit.Test;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerAccessorsWithoutMatchingField;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerFinalField;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerFinalPublicField;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerNoAccessorsPackagePrivateField;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerNoAccessorsPrivateField;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerNoAccessorsProtectedField;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerNoAccessorsPublicField;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerPackagePrivateAccessors;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerPackagePrivateConstructor;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerPrivateAccessors;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerPrivateAccessorsPublicField;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerPrivateConstructor;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerProtectedAccessors;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerProtectedConstructor;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerProtectedStaticNestedClass;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerPublicAccessors;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerPublicAccessorsPublicField;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerPublicConstructor;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerPublicStaticNestedClass;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerStaticField;
-import com.sun.ts.tests.jsonb.defaultmapping.classes.model.StringContainerTransientField;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.JsonbException;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerAccessorsWithoutMatchingField;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerFinalField;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerFinalPublicField;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerNoAccessorsPackagePrivateField;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerNoAccessorsPrivateField;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerNoAccessorsProtectedField;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerNoAccessorsPublicField;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerPackagePrivateAccessors;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerPackagePrivateConstructor;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerPrivateAccessors;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerPrivateAccessorsPublicField;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerPrivateConstructor;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerProtectedAccessors;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerProtectedConstructor;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerProtectedStaticNestedClass;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerPublicAccessors;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerPublicAccessorsPublicField;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerPublicConstructor;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerPublicStaticNestedClass;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerStaticField;
+import jakarta.json.bind.defaultmapping.classes.model.StringContainerTransientField;
 
 /**
  * @test
  * @sources ClassesMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.classes.ClassesMappingTest
  **/
-public class ClassesMappingTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
+public class ClassesMappingTest {
   private final Jsonb jsonb = JsonbBuilder.create();
-
-  public static void main(String[] args) {
-    EETest t = new ClassesMappingTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
 
   /*
    * @testName: testPublicConstructorAccess
@@ -84,25 +67,26 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that a class with a public constructor can be
    * marshalled and unmarshalled
    */
-  public Status testPublicConstructorAccess() throws Fault {
+  @Test
+  public void testPublicConstructorAccess() {
     try {
       String jsonString = jsonb.toJson(new StringContainerPublicConstructor());
       if (!jsonString
           .matches("\\{\\s*\"instance\"\\s*:\\s*\"Test String\"\\s*\\}")) {
-        throw new Fault(
+        fail(
             "Failed to get attribute value when marshalling a class with a public constructor.");
       }
     } catch (JsonbException x) {
-      throw new Fault(
+      fail(
           "An exception is not expected when marshalling a class with a public constructor.");
     }
 
     try {
       jsonb.fromJson("{ \"instance\" : \"Test String\" }",
           StringContainerPublicConstructor.class);
-      return Status.passed("OK");
+      return; // passed
     } catch (JsonbException x) {
-      throw new Fault(
+      fail(
           "An exception is not expected when unmarshalling a class with a public constructor.");
     }
   }
@@ -115,26 +99,27 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that a class with a protected constructor can be
    * marshalled and unmarshalled
    */
-  public Status testProtectedConstructorAccess() throws Fault {
+  @Test
+  public void testProtectedConstructorAccess() {
     try {
       String jsonString = jsonb
           .toJson(StringContainerProtectedConstructor.getClassInstance());
       if (!jsonString
           .matches("\\{\\s*\"instance\"\\s*:\\s*\"Test String\"\\s*\\}")) {
-        throw new Fault(
+        fail(
             "Failed to get attribute value when marshalling a class with a protected constructor.");
       }
     } catch (JsonbException x) {
-      throw new Fault(
+      fail(
           "An exception is not expected when marshalling a class with a protected constructor.");
     }
 
     try {
       jsonb.fromJson("{ \"instance\" : \"Test String\" }",
           StringContainerProtectedConstructor.class);
-      return Status.passed("OK");
+      return; // passed
     } catch (JsonbException x) {
-            throw new Fault("An exception is not expected when unmarshalling a class with a protected constructor.");
+            fail("An exception is not expected when unmarshalling a class with a protected constructor.");
    }
   }
 
@@ -146,27 +131,28 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that a class with a private constructor can be
    * marshalled but not unmarshalled
    */
-  public Status testPrivateConstructorAccess() throws Fault {
+  @Test
+  public void testPrivateConstructorAccess() {
     try {
       String jsonString = jsonb
           .toJson(StringContainerPrivateConstructor.getClassInstance());
       if (!jsonString
           .matches("\\{\\s*\"instance\"\\s*:\\s*\"Test String\"\\s*\\}")) {
-        throw new Fault(
+        fail(
             "Failed to get attribute value when marshalling a class with a private constructor.");
       }
     } catch (JsonbException x) {
-      throw new Fault(
+      fail(
           "An exception is not expected when marshalling a class with a private constructor.");
     }
 
     try {
       jsonb.fromJson("{ \"instance\" : \"Test String\" }",
           StringContainerPrivateConstructor.class);
-      throw new Fault(
+      fail(
           "An exception is expected when unmarshalling a class with a private constructor.");
     } catch (JsonbException x) {
-      return Status.passed("OK");
+      return; // passed
     }
   }
 
@@ -178,27 +164,28 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that a class with a package private constructor can
    * be marshalled but not unmarshalled
    */
-  public Status testPackagePrivateConstructorAccess() throws Fault {
+  @Test
+  public void testPackagePrivateConstructorAccess() {
     try {
       String jsonString = jsonb
           .toJson(StringContainerPackagePrivateConstructor.getClassInstance());
       if (!jsonString
           .matches("\\{\\s*\"instance\"\\s*:\\s*\"Test String\"\\s*\\}")) {
-        throw new Fault(
+        fail(
             "Failed to get attribute value when marshalling a class with a package private constructor.");
       }
     } catch (JsonbException x) {
-      throw new Fault(
+      fail(
           "An exception is not expected when marshalling a class with a package private constructor.");
     }
 
     try {
       jsonb.fromJson("{ \"instance\" : \"Test String\" }",
           StringContainerPackagePrivateConstructor.class);
-      throw new Fault(
+      fail(
           "An exception is expected when unmarshalling a class with a package private constructor.");
     } catch (JsonbException x) {
-      return Status.passed("OK");
+      return; // passed
     }
   }
 
@@ -210,11 +197,12 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that private field with public accessors can be
    * managed and unmanaged
    */
-  public Status testPublicAccessors() throws Fault {
+  @Test
+  public void testPublicAccessors() {
     String jsonString = jsonb.toJson(new StringContainerPublicAccessors());
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*:\\s*\"Test String\"\\s*\\}")) {
-      throw new Fault("Failed to get attribute value using public getter.");
+      fail("Failed to get attribute value using public getter.");
     }
 
     try {
@@ -226,15 +214,15 @@ public class ClassesMappingTest extends ServiceEETest {
       instanceField.setAccessible(true);
       try {
         if (!instanceField.get(unmarshalledObject).equals("New Test String")) {
-          throw new Fault("Failed to set attribute value using public setter.");
+          fail("Failed to set attribute value using public setter.");
         }
       } finally {
         instanceField.setAccessible(false);
       }
     } catch (Exception x) {
-      throw new Fault(x.getMessage(), x);
+      fail(x.getMessage());
     }
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -245,10 +233,11 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that private field with protected accessors is
    * ignored
    */
-  public Status testProtectedAccessors() throws Fault {
+  @Test
+  public void testProtectedAccessors() {
     String jsonString = jsonb.toJson(new StringContainerProtectedAccessors());
     if (!jsonString.matches("\\{\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to ignore attribute value using protected getter.");
     }
 
@@ -261,17 +250,17 @@ public class ClassesMappingTest extends ServiceEETest {
       instanceField.setAccessible(true);
       try {
         if (!instanceField.get(unmarshalledObject).equals("Test String")) {
-          throw new Fault(
+          fail(
               "Failed to ignore setting attribute value using protected setter.");
         }
       } finally {
         instanceField.setAccessible(false);
       }
     } catch (Exception x) {
-      throw new Fault(x.getMessage(), x);
+      fail(x.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -281,10 +270,11 @@ public class ClassesMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that private field with private accessors is ignored
    */
-  public Status testPrivateAccessors() throws Fault {
+  @Test
+  public void testPrivateAccessors() {
     String jsonString = jsonb.toJson(new StringContainerPrivateAccessors());
     if (!jsonString.matches("\\{\\s*\\}")) {
-      throw new Fault("Failed to ignore private value using private getter.");
+      fail("Failed to ignore private value using private getter.");
     }
 
     try {
@@ -296,17 +286,17 @@ public class ClassesMappingTest extends ServiceEETest {
       instanceField.setAccessible(true);
       try {
         if (!instanceField.get(unmarshalledObject).equals("Test String")) {
-          throw new Fault(
+          fail(
               "Failed to ignore setting attribute value using private setter.");
         }
       } finally {
         instanceField.setAccessible(false);
       }
     } catch (Exception x) {
-      throw new Fault(x.getMessage(), x);
+      fail(x.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -317,11 +307,12 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that private field with package private accessors is
    * ignored
    */
-  public Status testPackagePrivateAccessors() throws Fault {
+  @Test
+  public void testPackagePrivateAccessors() {
     String jsonString = jsonb
         .toJson(new StringContainerPackagePrivateAccessors());
     if (!jsonString.matches("\\{\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to ignore private value using package private getter.");
     }
 
@@ -334,17 +325,17 @@ public class ClassesMappingTest extends ServiceEETest {
       instanceField.setAccessible(true);
       try {
         if (!instanceField.get(unmarshalledObject).equals("Test String")) {
-          throw new Fault(
+          fail(
               "Failed to ignore setting attribute value using package private setter.");
         }
       } finally {
         instanceField.setAccessible(false);
       }
     } catch (Exception x) {
-      throw new Fault(x.getMessage(), x);
+      fail(x.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -355,22 +346,23 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that public field with public accessors is
    * marshalled and unmarshalled using the accessor
    */
-  public Status testPublicAccessorsPublicField() throws Fault {
+  @Test
+  public void testPublicAccessorsPublicField() {
     String jsonString = jsonb
         .toJson(new StringContainerPublicAccessorsPublicField());
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*:\\s*\"Getter String\"\\s*\\}")) {
-      throw new Fault("Failed to get attribute value using public getter.");
+      fail("Failed to get attribute value using public getter.");
     }
 
     StringContainerPublicAccessorsPublicField unmarshalledObject = jsonb
         .fromJson("{ \"instance\" : \"New Test String\" }",
             StringContainerPublicAccessorsPublicField.class);
     if (!unmarshalledObject.instance.equals("Setter String")) {
-      throw new Fault("Failed to set attribute value using public setter.");
+      fail("Failed to set attribute value using public setter.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -381,11 +373,12 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that public field with private accessors is
    * marshalled and unmarshalled using direct field access
    */
-  public Status testPrivateAccessorsPublicField() throws Fault {
+  @Test
+  public void testPrivateAccessorsPublicField() {
     String jsonString = jsonb
         .toJson(new StringContainerPrivateAccessorsPublicField());
     if (!jsonString.matches("\\{\\s*\\}")) {
-      throw new Fault("Failed to ignore public value using private getter.");
+      fail("Failed to ignore public value using private getter.");
     }
 
     try {
@@ -397,17 +390,17 @@ public class ClassesMappingTest extends ServiceEETest {
       instanceField.setAccessible(true);
       try {
         if (!instanceField.get(unmarshalledObject).equals("Test String")) {
-          throw new Fault(
+          fail(
               "Failed to ignore setting public value using private setter.");
         }
       } finally {
         instanceField.setAccessible(false);
       }
     } catch (Exception x) {
-      throw new Fault(x.getMessage(), x);
+      fail(x.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -418,22 +411,23 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that public field with no accessors is marshalled
    * and unmarshalled using direct field access
    */
-  public Status testNoAccessorsPublicField() throws Fault {
+  @Test
+  public void testNoAccessorsPublicField() {
     String jsonString = jsonb
         .toJson(new StringContainerNoAccessorsPublicField());
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*:\\s*\"Test String\"\\s*\\}")) {
-      throw new Fault("Failed to get public field value.");
+      fail("Failed to get public field value.");
     }
 
     StringContainerNoAccessorsPublicField unmarshalledObject = jsonb.fromJson(
         "{ \"instance\" : \"New Test String\" }",
         StringContainerNoAccessorsPublicField.class);
     if (!unmarshalledObject.instance.equals("New Test String")) {
-      throw new Fault("Failed to set public field value.");
+      fail("Failed to set public field value.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -443,11 +437,12 @@ public class ClassesMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that protected field with no accessors is ignored
    */
-  public Status testNoAccessorsProtectedField() throws Fault {
+  @Test
+  public void testNoAccessorsProtectedField() {
     String jsonString = jsonb
         .toJson(new StringContainerNoAccessorsProtectedField());
     if (!jsonString.matches("\\{\\s*\\}")) {
-      throw new Fault("Failed to ignore getting protected field value.");
+      fail("Failed to ignore getting protected field value.");
     }
 
     try {
@@ -459,16 +454,16 @@ public class ClassesMappingTest extends ServiceEETest {
       instanceField.setAccessible(true);
       try {
         if (!instanceField.get(unmarshalledObject).equals("Test String")) {
-          throw new Fault("Failed to ignore setting protected field value.");
+          fail("Failed to ignore setting protected field value.");
         }
       } finally {
         instanceField.setAccessible(false);
       }
     } catch (Exception x) {
-      throw new Fault(x.getMessage(), x);
+      fail(x.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -478,11 +473,12 @@ public class ClassesMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that private field with no accessors is ignored
    */
-  public Status testNoAccessorsPrivateField() throws Fault {
+  @Test
+  public void testNoAccessorsPrivateField() {
     String jsonString = jsonb
         .toJson(new StringContainerNoAccessorsPrivateField());
     if (!jsonString.matches("\\{\\s*\\}")) {
-      throw new Fault("Failed to ignore getting private field value.");
+      fail("Failed to ignore getting private field value.");
     }
 
     try {
@@ -494,16 +490,16 @@ public class ClassesMappingTest extends ServiceEETest {
       instanceField.setAccessible(true);
       try {
         if (!instanceField.get(unmarshalledObject).equals("Test String")) {
-          throw new Fault("Failed to ignore setting private field value.");
+          fail("Failed to ignore setting private field value.");
         }
       } finally {
         instanceField.setAccessible(false);
       }
     } catch (Exception x) {
-      throw new Fault(x.getMessage(), x);
+      fail(x.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -514,11 +510,12 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that package private field with no accessors is
    * ignored
    */
-  public Status testNoAccessorsPackagePrivateField() throws Fault {
+  @Test
+  public void testNoAccessorsPackagePrivateField() {
     String jsonString = jsonb
         .toJson(new StringContainerNoAccessorsPackagePrivateField());
     if (!jsonString.matches("\\{\\s*\\}")) {
-      throw new Fault("Failed to ignore getting package private field value.");
+      fail("Failed to ignore getting package private field value.");
     }
 
     try {
@@ -530,17 +527,17 @@ public class ClassesMappingTest extends ServiceEETest {
       instanceField.setAccessible(true);
       try {
         if (!instanceField.get(unmarshalledObject).equals("Test String")) {
-          throw new Fault(
+          fail(
               "Failed to ignore setting package private field value.");
         }
       } finally {
         instanceField.setAccessible(false);
       }
     } catch (Exception x) {
-      throw new Fault(x.getMessage(), x);
+      fail(x.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -551,10 +548,11 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that transient fields are ignored during marshalling
    * and unmarshalling
    */
-  public Status testTransientField() throws Fault {
+  @Test
+  public void testTransientField() {
     String jsonString = jsonb.toJson(new StringContainerTransientField());
     if (!jsonString.matches("\\{\\s*\\}")) {
-      throw new Fault("Failed to ignore getting transient field value.");
+      fail("Failed to ignore getting transient field value.");
     }
 
     try {
@@ -566,16 +564,16 @@ public class ClassesMappingTest extends ServiceEETest {
       instanceField.setAccessible(true);
       try {
         if (!instanceField.get(unmarshalledObject).equals("Test String")) {
-          throw new Fault("Failed to ignore setting transient field value.");
+          fail("Failed to ignore setting transient field value.");
         }
       } finally {
         instanceField.setAccessible(false);
       }
     } catch (Exception x) {
-      throw new Fault(x.getMessage(), x);
+      fail(x.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -586,10 +584,11 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that static fields are ignored during marshalling
    * and unmarshalling
    */
-  public Status testStaticField() throws Fault {
+  @Test
+  public void testStaticField() {
     String jsonString = jsonb.toJson(new StringContainerStaticField());
     if (!jsonString.matches("\\{\\s*\\}")) {
-      throw new Fault("Failed to ignore getting static field value.");
+      fail("Failed to ignore getting static field value.");
     }
 
     try {
@@ -601,16 +600,16 @@ public class ClassesMappingTest extends ServiceEETest {
       instanceField.setAccessible(true);
       try {
         if (!instanceField.get(unmarshalledObject).equals("Test String")) {
-          throw new Fault("Failed to ignore setting static field value.");
+          fail("Failed to ignore setting static field value.");
         }
       } finally {
         instanceField.setAccessible(false);
       }
     } catch (Exception x) {
-      throw new Fault(x.getMessage(), x);
+      fail(x.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -621,11 +620,12 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that final fields are correctly marshalled but not
    * unmarshalled
    */
-  public Status testFinalField() throws Fault {
+  @Test
+  public void testFinalField() {
     String jsonString = jsonb.toJson(new StringContainerFinalField());
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*:\\s*\"Test String\"\\s*\\}")) {
-      throw new Fault("Failed to get final field value.");
+      fail("Failed to get final field value.");
     }
 
     try {
@@ -637,16 +637,16 @@ public class ClassesMappingTest extends ServiceEETest {
       instanceField.setAccessible(true);
       try {
         if (!instanceField.get(unmarshalledObject).equals("Test String")) {
-          throw new Fault("Failed to ignore setting final field value.");
+          fail("Failed to ignore setting final field value.");
         }
       } finally {
         instanceField.setAccessible(false);
       }
     } catch (Exception x) {
-      throw new Fault(x.getMessage(), x);
+      fail(x.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -657,11 +657,12 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that final public fields are correctly marshalled
    * but not unmarshalled
    */
-  public Status testFinalPublicField() throws Fault {
+  @Test
+  public void testFinalPublicField() {
     String jsonString = jsonb.toJson(new StringContainerFinalPublicField());
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*:\\s*\"Test String\"\\s*\\}")) {
-      throw new Fault("Failed to get final public field value.");
+      fail("Failed to get final public field value.");
     }
 
     try {
@@ -673,16 +674,16 @@ public class ClassesMappingTest extends ServiceEETest {
       instanceField.setAccessible(true);
       try {
         if (!instanceField.get(unmarshalledObject).equals("Test String")) {
-          throw new Fault("Failed to ignore setting final public field value.");
+          fail("Failed to ignore setting final public field value.");
         }
       } finally {
         instanceField.setAccessible(false);
       }
     } catch (Exception x) {
-      throw new Fault(x.getMessage(), x);
+      fail(x.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -693,12 +694,13 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that public accessor methods without a corresponding
    * field are supported
    */
-  public Status testAccessorsWithoutCorrespondingField() throws Fault {
+  @Test
+  public void testAccessorsWithoutCorrespondingField() {
     String jsonString = jsonb
         .toJson(new StringContainerAccessorsWithoutMatchingField());
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*:\\s*\"Test String\"\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to get value from getter without corresponding field.");
     }
 
@@ -711,17 +713,17 @@ public class ClassesMappingTest extends ServiceEETest {
       instanceField.setAccessible(true);
       try {
         if (!instanceField.get(unmarshalledObject).equals("New Test String")) {
-          throw new Fault(
+          fail(
               "Failed to set value using setter without corresponding field.");
         }
       } finally {
         instanceField.setAccessible(false);
       }
     } catch (Exception x) {
-      throw new Fault(x.getMessage(), x);
+      fail(x.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -732,7 +734,8 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that an attribute without a corresponding field or
    * accessor is ignored during unmarshalling
    */
-  public Status testDeserialisationOfNonExistentField() throws Fault {
+  @Test
+  public void testDeserialisationOfNonExistentField() {
     try {
       StringContainerPublicAccessors unmarshalledObject = jsonb.fromJson(
           "{ \"field\" : \"New Test String\" }",
@@ -742,17 +745,17 @@ public class ClassesMappingTest extends ServiceEETest {
       instanceField.setAccessible(true);
       try {
         if (!instanceField.get(unmarshalledObject).equals("Test String")) {
-          throw new Fault(
+          fail(
               "Failed to ignore setting value to non existent field.");
         }
       } finally {
         instanceField.setAccessible(false);
       }
     } catch (Exception x) {
-      throw new Fault(x.getMessage(), x);
+      fail(x.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -762,12 +765,13 @@ public class ClassesMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that public static nested class is correctly handled
    */
-  public Status testPublicStaticNestedClass() throws Fault {
+  @Test
+  public void testPublicStaticNestedClass() {
     String jsonString = jsonb
         .toJson(new StringContainerPublicStaticNestedClass());
     if (!jsonString.matches(
         "\\{\\s*\"nestedClass\"\\s*:\\s*\\{\\s*\"instance\"\\s*:\\s*\"Test String\"\\s*\\}\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to get attribute value from public nested class.");
     }
 
@@ -782,16 +786,16 @@ public class ClassesMappingTest extends ServiceEETest {
       try {
         if (!instanceField.get(unmarshalledObject.nestedClass)
             .equals("New Test String")) {
-          throw new Fault(
+          fail(
               "Failed to set attribute value to public nested class.");
         }
       } finally {
         instanceField.setAccessible(false);
       }
     } catch (Exception x) {
-      throw new Fault(x.getMessage(), x);
+      fail(x.getMessage());
     }
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -802,12 +806,13 @@ public class ClassesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that protected static nested class is correctly
    * handled
    */
-  public Status testProtectedStaticNestedClass() throws Fault {
+  @Test
+  public void testProtectedStaticNestedClass() {
     String jsonString = jsonb
         .toJson(new StringContainerProtectedStaticNestedClass());
     if (!jsonString.matches(
         "\\{\\s*\"nestedClass\"\\s*:\\s*\\{\\s*\"instance\"\\s*:\\s*\"Test String\"\\s*\\}\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to get attribute value from protected nested class.");
     }
 
@@ -823,16 +828,16 @@ public class ClassesMappingTest extends ServiceEETest {
       try {
         if (!instanceField.get(unmarshalledObject.nestedClass)
             .equals("New Test String")) {
-          throw new Fault(
+          fail(
               "Failed to set attribute value to protected nested class.");
         }
       } finally {
         instanceField.setAccessible(false);
       }
     } catch (Exception x) {
-      throw new Fault(x.getMessage(), x);
+      fail(x.getMessage());
     }
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -844,16 +849,18 @@ public class ClassesMappingTest extends ServiceEETest {
    * using default object mapping. Unmarshalling is not supported by the spec so
    * not tested.
    */
-  public Status testAnonymousClass() throws Fault {
+  @Test
+  public void testAnonymousClass() {
     Object anonymousInstance = new Object() {
+      @SuppressWarnings("unused")
       public String newInstance = "Anonymous";
     };
     String jsonString = jsonb.toJson(anonymousInstance);
     if (!jsonString
         .matches("\\{\\s*\"newInstance\"\\s*:\\s*\"Anonymous\"\\s*\\}")) {
-      throw new Fault("Failed to get attribute value from anonymous class.");
+      fail("Failed to get attribute value from anonymous class.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 }

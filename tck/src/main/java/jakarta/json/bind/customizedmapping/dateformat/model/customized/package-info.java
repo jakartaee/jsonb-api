@@ -19,6 +19,6 @@
  */
 
 @JsonbDateFormat(value = "E DD MMM yyyy HH:mm:ss z", locale = "it")
-package com.sun.ts.tests.jsonb.customizedmapping.dateformat.model.customized;
+package jakarta.json.bind.customizedmapping.dateformat.model.customized;
 
-import javax.json.bind.annotation.JsonbDateFormat;
+import jakarta.json.bind.annotation.JsonbDateFormat;

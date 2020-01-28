@@ -18,43 +18,25 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.polymorphictypes;
+package jakarta.json.bind.defaultmapping.polymorphictypes;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+import static org.junit.Assert.fail;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.defaultmapping.polymorphictypes.model.StringContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.polymorphictypes.model.StringContainerSubClass;
+import org.junit.Test;
 
-import java.util.Properties;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.defaultmapping.polymorphictypes.model.StringContainer;
+import jakarta.json.bind.defaultmapping.polymorphictypes.model.StringContainerSubClass;
 
 /**
  * @test
  * @sources PolymorphicMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.polymorphictypes.PolymorphicMappingTest
  **/
-public class PolymorphicMappingTest extends ServiceEETest {
-
-  private static final long serialVersionUID = 10L;
+public class PolymorphicMappingTest {
 
   private final Jsonb jsonb = JsonbBuilder.create();
-
-  public static void main(String[] args) {
-    EETest t = new PolymorphicMappingTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
 
   /*
    * @testName: testPolymorphicTypes
@@ -64,11 +46,12 @@ public class PolymorphicMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that unmarshalling into polymorphic types is not
    * supported
    */
-  public Status testPolymorphicTypes() throws Fault {
+  @Test
+  public void testPolymorphicTypes() {
     String jsonString = jsonb.toJson(new StringContainerSubClass());
     if (!jsonString.matches(
         "\\{\\s*\"instance\"\\s*:\\s*\"Test String\"\\s*,\\s*\"newInstance\"\\s*:\\s*\"SubClass Test String\"\\s*\\}")) {
-      throw new Fault("Failed to get attribute value from subclass.");
+      fail("Failed to get attribute value from subclass.");
     }
 
     StringContainer unmarshalledObject = jsonb.fromJson(
@@ -76,8 +59,8 @@ public class PolymorphicMappingTest extends ServiceEETest {
         StringContainer.class);
     if (StringContainerSubClass.class
         .isAssignableFrom(unmarshalledObject.getClass())) {
-      throw new Fault("Polymorphic types support is not expected.");
+      fail("Polymorphic types support is not expected.");
     }
-    return Status.passed("OK");
+    return; // passed
   }
 }

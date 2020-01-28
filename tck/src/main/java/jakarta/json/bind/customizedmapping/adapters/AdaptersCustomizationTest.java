@@ -18,47 +18,29 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.adapters;
+package jakarta.json.bind.customizedmapping.adapters;
 
-import java.util.Properties;
+import static org.junit.Assert.fail;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
-import javax.json.bind.JsonbConfig;
+import org.junit.Test;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.Animal;
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.AnimalShelter;
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.AnimalShelterAdapted;
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.Cat;
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.Dog;
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.adapter.AnimalAdapter;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.JsonbConfig;
+import jakarta.json.bind.customizedmapping.adapters.model.Animal;
+import jakarta.json.bind.customizedmapping.adapters.model.AnimalShelter;
+import jakarta.json.bind.customizedmapping.adapters.model.AnimalShelterAdapted;
+import jakarta.json.bind.customizedmapping.adapters.model.Cat;
+import jakarta.json.bind.customizedmapping.adapters.model.Dog;
+import jakarta.json.bind.customizedmapping.adapters.model.adapter.AnimalAdapter;
 
 /**
  * @test
  * @sources AdaptersCustomizationTest.java
  * @executeClass com.sun.ts.tests.jsonb.customizedmapping.adapters.AdaptersCustomizationTest
  **/
-public class AdaptersCustomizationTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
+public class AdaptersCustomizationTest {
   private final Jsonb jsonb = JsonbBuilder.create();
-
-  public static void main(String[] args) {
-    EETest t = new AdaptersCustomizationTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
 
   /*
    * @testName: testAdapterConfiguration
@@ -68,7 +50,8 @@ public class AdaptersCustomizationTest extends ServiceEETest {
    * @test_Strategy: Assert that JSONB adapters can be configured using
    * JsonbConfig.withAdapters and are working as expected
    */
-  public Status testAdapterConfiguration() throws Fault {
+  @Test
+  public void testAdapterConfiguration() {
     Jsonb jsonb = JsonbBuilder
         .create(new JsonbConfig().withAdapters(new AnimalAdapter()));
 
@@ -83,7 +66,7 @@ public class AdaptersCustomizationTest extends ServiceEETest {
         + "\\{\\s*\"age\"\\s*:\\s*3\\s*,\\s*\"barking\"\\s*:\\s*true\\s*,\\s*\"furry\"\\s*:\\s*false\\s*,\\s*\"name\"\\s*:\\s*\"Milo\"\\s*,\\s*\"type\"\\s*:\\s*\"DOG\"\\s*,\\s*\"weight\"\\s*:\\s*5.5\\s*}\\s*,\\s*"
         + "\\{\\s*\"age\"\\s*:\\s*6\\s*,\\s*\"furry\"\\s*:\\s*false\\s*,\\s*\"name\"\\s*:\\s*\"Tweety\"\\s*,\\s*\"type\"\\s*:\\s*\"GENERIC\"\\s*,\\s*\"weight\"\\s*:\\s*0.5\\s*}\\s*"
         + "]\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to correctly marshall complex type hierarchy using an adapter configured using JsonbConfig.withAdapters to a simpler class.");
     }
 
@@ -93,11 +76,11 @@ public class AdaptersCustomizationTest extends ServiceEETest {
         + "{ \"age\" : 6, \"furry\" : false, \"name\" : \"Tweety\", \"type\" : \"GENERIC\", \"weight\" : 0.5}"
         + " ] }", AnimalShelter.class);
     if (!animalShelter.equals(unmarshalledObject)) {
-      throw new Fault(
+      fail(
           "Failed to correctly unmarshall complex type hierarchy using an adapter configured using JsonbConfig.withAdapters to a simpler class.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -108,7 +91,8 @@ public class AdaptersCustomizationTest extends ServiceEETest {
    * @test_Strategy: Assert that JSONB adapters can be configured using
    * JsonbTypeAdapter annotation and are working as expected
    */
-  public Status testAdapterAnnotation() throws Fault {
+  @Test
+  public void testAdapterAnnotation() {
     AnimalShelterAdapted animalShelter = new AnimalShelterAdapted();
     animalShelter.addAnimal(new Cat(5, "Garfield", 10.5f, true, true));
     animalShelter.addAnimal(new Dog(3, "Milo", 5.5f, false, true));
@@ -120,7 +104,7 @@ public class AdaptersCustomizationTest extends ServiceEETest {
         + "\\{\\s*\"age\"\\s*:\\s*3\\s*,\\s*\"barking\"\\s*:\\s*true\\s*,\\s*\"furry\"\\s*:\\s*false\\s*,\\s*\"name\"\\s*:\\s*\"Milo\"\\s*,\\s*\"type\"\\s*:\\s*\"DOG\"\\s*,\\s*\"weight\"\\s*:\\s*5.5\\s*}\\s*,\\s*"
         + "\\{\\s*\"age\"\\s*:\\s*6\\s*,\\s*\"furry\"\\s*:\\s*false\\s*,\\s*\"name\"\\s*:\\s*\"Tweety\"\\s*,\\s*\"type\"\\s*:\\s*\"GENERIC\"\\s*,\\s*\"weight\"\\s*:\\s*0.5\\s*}\\s*"
         + "]\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to correctly marshall complex type hierarchy using an adapter configured using JsonbTypeAdapter annotation to a simpler class.");
     }
 
@@ -131,10 +115,10 @@ public class AdaptersCustomizationTest extends ServiceEETest {
             + "{ \"age\" : 6, \"furry\" : false, \"name\" : \"Tweety\", \"type\" : \"GENERIC\", \"weight\" : 0.5}"
             + " ] }", AnimalShelterAdapted.class);
     if (!animalShelter.equals(unmarshalledObject)) {
-      throw new Fault(
+      fail(
           "Failed to correctly unmarshall complex type hierarchy using an adapter configured using JsonbTypeAdapter annotation to a simpler class.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 }

@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.nullvalue.model;
+package jakarta.json.bind.defaultmapping.nullvalue.model;
 
 public class NullValueContainer {
   private Object instance = "Test String";

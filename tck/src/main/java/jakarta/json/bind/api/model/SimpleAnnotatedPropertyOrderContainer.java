@@ -18,9 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.api.model;
+package jakarta.json.bind.api.model;
 
-import javax.json.bind.annotation.JsonbPropertyOrder;
+import jakarta.json.bind.annotation.JsonbPropertyOrder;
 
 @JsonbPropertyOrder({ "secondInstance", "firstInstance" })
 public class SimpleAnnotatedPropertyOrderContainer {

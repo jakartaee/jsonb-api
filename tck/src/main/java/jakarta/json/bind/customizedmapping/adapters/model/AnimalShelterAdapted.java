@@ -18,11 +18,11 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.adapters.model;
+package jakarta.json.bind.customizedmapping.adapters.model;
 
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.adapter.AnimalListAdapter;
+import jakarta.json.bind.customizedmapping.adapters.model.adapter.AnimalListAdapter;
 
-import javax.json.bind.annotation.JsonbTypeAdapter;
+import jakarta.json.bind.annotation.JsonbTypeAdapter;
 import java.util.ArrayList;
 import java.util.List;
 

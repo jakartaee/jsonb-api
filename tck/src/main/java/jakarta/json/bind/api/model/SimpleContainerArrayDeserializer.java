@@ -18,15 +18,15 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.api.model;
+package jakarta.json.bind.api.model;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.json.bind.serializer.DeserializationContext;
-import javax.json.bind.serializer.JsonbDeserializer;
-import javax.json.stream.JsonParser;
+import jakarta.json.bind.serializer.DeserializationContext;
+import jakarta.json.bind.serializer.JsonbDeserializer;
+import jakarta.json.stream.JsonParser;
 
 public class SimpleContainerArrayDeserializer
     implements JsonbDeserializer<SimpleContainer[]> {

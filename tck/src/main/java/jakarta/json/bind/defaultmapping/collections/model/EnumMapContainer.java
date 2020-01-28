@@ -18,9 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.collections.model;
+package jakarta.json.bind.defaultmapping.collections.model;
 
-import com.sun.ts.tests.jsonb.TypeContainer;
+import jakarta.json.bind.TypeContainer;
 
 import java.util.EnumMap;
 

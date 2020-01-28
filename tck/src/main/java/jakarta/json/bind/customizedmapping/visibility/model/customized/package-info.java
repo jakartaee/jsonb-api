@@ -19,8 +19,8 @@
  */
 
 @JsonbVisibility(CustomVisibilityStrategy.class)
-package com.sun.ts.tests.jsonb.customizedmapping.visibility.model.customized;
+package jakarta.json.bind.customizedmapping.visibility.model.customized;
 
-import com.sun.ts.tests.jsonb.customizedmapping.visibility.model.CustomVisibilityStrategy;
+import jakarta.json.bind.customizedmapping.visibility.model.CustomVisibilityStrategy;
 
-import javax.json.bind.annotation.JsonbVisibility;
+import jakarta.json.bind.annotation.JsonbVisibility;

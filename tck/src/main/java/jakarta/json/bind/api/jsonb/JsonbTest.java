@@ -18,7 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.api.jsonb;
+package jakarta.json.bind.api.jsonb;
+
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -26,39 +28,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.Properties;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+import org.junit.Test;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.api.model.SimpleContainer;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.api.model.SimpleContainer;
 
 /**
  * @test
  * @sources JsonbTest.java
  * @executeClass com.sun.ts.tests.jsonb.api.JsonbTest
  **/
-public class JsonbTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
+public class JsonbTest {
   private Jsonb jsonb = JsonbBuilder.create();
-
-  public static void main(String[] args) {
-    EETest t = new JsonbTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
 
   /*
    * @testName: testFromJsonStringClass
@@ -68,15 +51,16 @@ public class JsonbTest extends ServiceEETest {
    * @test_Strategy: Assert that Jsonb.fromJson method with String and Class
    * arguments is working as expected
    */
-  public Status testFromJsonStringClass() throws Fault {
+  @Test
+  public void testFromJsonStringClass() {
     SimpleContainer unmarshalledObject = jsonb
         .fromJson("{ \"instance\" : \"Test String\" }", SimpleContainer.class);
     if (!"Test String".equals(unmarshalledObject.getInstance())) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal using Jsonb.fromJson method with String and Class arguments.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -87,16 +71,17 @@ public class JsonbTest extends ServiceEETest {
    * @test_Strategy: Assert that Jsonb.fromJson method with String and Type
    * arguments is working as expected
    */
-  public Status testFromJsonStringType() throws Fault {
+  @Test
+  public void testFromJsonStringType() {
     SimpleContainer unmarshalledObject = jsonb
         .fromJson("{ \"instance\" : \"Test String\" }", new SimpleContainer() {
         }.getClass().getGenericSuperclass());
     if (!"Test String".equals(unmarshalledObject.getInstance())) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal using Jsonb.fromJson method with String and Type arguments.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -107,7 +92,8 @@ public class JsonbTest extends ServiceEETest {
    * @test_Strategy: Assert that Jsonb.fromJson method with Reader and Class
    * arguments is working as expected
    */
-  public Status testFromJsonReaderClass() throws Fault {
+  @Test
+  public void testFromJsonReaderClass() {
     try (ByteArrayInputStream stream = new ByteArrayInputStream(
         "{ \"instance\" : \"Test String\" }".getBytes(StandardCharsets.UTF_8));
         InputStreamReader reader = new InputStreamReader(stream)) {
@@ -115,14 +101,14 @@ public class JsonbTest extends ServiceEETest {
       SimpleContainer unmarshalledObject = jsonb.fromJson(reader,
           SimpleContainer.class);
       if (!"Test String".equals(unmarshalledObject.getInstance())) {
-        throw new Fault(
+        fail(
             "Failed to unmarshal using Jsonb.fromJson method with Reader and Class arguments.");
       }
     } catch (IOException e) {
-      throw new Fault(e);
+      fail(e.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -133,7 +119,8 @@ public class JsonbTest extends ServiceEETest {
    * @test_Strategy: Assert that Jsonb.fromJson method with Reader and Type
    * arguments is working as expected
    */
-  public Status testFromJsonReaderType() throws Fault {
+  @Test
+  public void testFromJsonReaderType() {
     try (ByteArrayInputStream stream = new ByteArrayInputStream(
         "{ \"instance\" : \"Test String\" }".getBytes(StandardCharsets.UTF_8));
         InputStreamReader reader = new InputStreamReader(stream)) {
@@ -142,14 +129,14 @@ public class JsonbTest extends ServiceEETest {
           new SimpleContainer() {
           }.getClass().getGenericSuperclass());
       if (!"Test String".equals(unmarshalledObject.getInstance())) {
-        throw new Fault(
+        fail(
             "Failed to unmarshal using Jsonb.fromJson method with Reader and Type arguments.");
       }
     } catch (IOException e) {
-      throw new Fault(e);
+      fail(e.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -160,21 +147,22 @@ public class JsonbTest extends ServiceEETest {
    * @test_Strategy: Assert that Jsonb.fromJson method with InputStream and
    * Class arguments is working as expected
    */
-  public Status testFromJsonStreamClass() throws Fault {
+  @Test
+  public void testFromJsonStreamClass() {
     try (ByteArrayInputStream stream = new ByteArrayInputStream(
         "{ \"instance\" : \"Test String\" }"
             .getBytes(StandardCharsets.UTF_8))) {
       SimpleContainer unmarshalledObject = jsonb.fromJson(stream,
           SimpleContainer.class);
       if (!"Test String".equals(unmarshalledObject.getInstance())) {
-        throw new Fault(
+        fail(
             "Failed to unmarshal using Jsonb.fromJson method with InputStream and Class arguments.");
       }
     } catch (IOException e) {
-      throw new Fault(e);
+      fail(e.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -185,7 +173,8 @@ public class JsonbTest extends ServiceEETest {
    * @test_Strategy: Assert that Jsonb.fromJson method with InputStream and
    * Class arguments is working as expected
    */
-  public Status testFromJsonStreamType() throws Fault {
+  @Test
+  public void testFromJsonStreamType() {
     try (ByteArrayInputStream stream = new ByteArrayInputStream(
         "{ \"instance\" : \"Test String\" }"
             .getBytes(StandardCharsets.UTF_8))) {
@@ -193,14 +182,14 @@ public class JsonbTest extends ServiceEETest {
           new SimpleContainer() {
           }.getClass().getGenericSuperclass());
       if (!"Test String".equals(unmarshalledObject.getInstance())) {
-        throw new Fault(
+        fail(
             "Failed to unmarshal using Jsonb.fromJson method with InputStream and Type arguments.");
       }
     } catch (IOException e) {
-      throw new Fault(e);
+      fail(e.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -211,14 +200,15 @@ public class JsonbTest extends ServiceEETest {
    * @test_Strategy: Assert that Jsonb.toJson method with Object argument is
    * working as expected
    */
-  public Status testToJsonObject() throws Fault {
+  @Test
+  public void testToJsonObject() {
     String jsonString = jsonb.toJson(new SimpleContainer());
     if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*\"Test\"\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to marshal using Jsonb.toJson method with Object argument.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -229,16 +219,17 @@ public class JsonbTest extends ServiceEETest {
    * @test_Strategy: Assert that Jsonb.toJson method with Object and Type
    * arguments is working as expected
    */
-  public Status testToJsonObjectType() throws Fault {
+  @Test
+  public void testToJsonObjectType() {
     String jsonString = jsonb.toJson(new SimpleContainer(),
         new SimpleContainer() {
         }.getClass().getGenericSuperclass());
     if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*\"Test\"\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to marshal using Jsonb.toJson method with Object and Type arguments.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -249,7 +240,8 @@ public class JsonbTest extends ServiceEETest {
    * @test_Strategy: Assert that Jsonb.toJson method with Object and Writer
    * arguments is working as expected
    */
-  public Status testToJsonObjectWriter() throws Fault {
+  @Test
+  public void testToJsonObjectWriter() {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(stream)) {
 
@@ -257,14 +249,14 @@ public class JsonbTest extends ServiceEETest {
       String jsonString = new String(stream.toByteArray(),
           StandardCharsets.UTF_8);
       if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*\"Test\"\\s*}")) {
-        throw new Fault(
+        fail(
             "Failed to marshal using Jsonb.toJson method with Object and Writer arguments.");
       }
     } catch (IOException e) {
-      throw new Fault(e);
+      fail(e.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -275,7 +267,8 @@ public class JsonbTest extends ServiceEETest {
    * @test_Strategy: Assert that Jsonb.toJson method with Object, Type and
    * Writer arguments is working as expected
    */
-  public Status testToJsonObjectTypeWriter() throws Fault {
+  @Test
+  public void testToJsonObjectTypeWriter() {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(stream)) {
 
@@ -284,14 +277,14 @@ public class JsonbTest extends ServiceEETest {
       String jsonString = new String(stream.toByteArray(),
           StandardCharsets.UTF_8);
       if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*\"Test\"\\s*}")) {
-        throw new Fault(
+        fail(
             "Failed to marshal using Jsonb.toJson method with Object, Type and Writer arguments.");
       }
     } catch (IOException e) {
-      throw new Fault(e);
+      fail(e.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -302,20 +295,21 @@ public class JsonbTest extends ServiceEETest {
    * @test_Strategy: Assert that Jsonb.toJson method with Object and
    * OutputStream arguments is working as expected
    */
-  public Status testToJsonObjectStream() throws Fault {
+  @Test
+  public void testToJsonObjectStream() {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
       jsonb.toJson(new SimpleContainer(), stream);
       String jsonString = new String(stream.toByteArray(),
           StandardCharsets.UTF_8);
       if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*\"Test\"\\s*}")) {
-        throw new Fault(
+        fail(
             "Failed to marshal using Jsonb.toJson method with Object and OutputStream arguments.");
       }
     } catch (IOException e) {
-      throw new Fault(e);
+      fail(e.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -326,20 +320,21 @@ public class JsonbTest extends ServiceEETest {
    * @test_Strategy: Assert that Jsonb.toJson method with Object, Type and
    * OutputStream arguments is working as expected
    */
-  public Status testToJsonObjectTypeStream() throws Fault {
+  @Test
+  public void testToJsonObjectTypeStream() {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
       jsonb.toJson(new SimpleContainer(), new SimpleContainer() {
       }.getClass().getGenericSuperclass(), stream);
       String jsonString = new String(stream.toByteArray(),
           StandardCharsets.UTF_8);
       if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*\"Test\"\\s*}")) {
-        throw new Fault(
+        fail(
             "Failed to marshal using Jsonb.toJson method with Object, Type and OutputStream arguments.");
       }
     } catch (IOException e) {
-      throw new Fault(e);
+      fail(e.getMessage());
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 }

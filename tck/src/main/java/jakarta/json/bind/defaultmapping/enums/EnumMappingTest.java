@@ -18,41 +18,20 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.enums;
+package jakarta.json.bind.defaultmapping.enums;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.MappingTester;
-import com.sun.ts.tests.jsonb.defaultmapping.enums.model.EnumContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.enums.model.EnumContainer.Enumeration;
+import org.junit.Test;
 
-import java.util.Properties;
-
-import static com.sun.ts.tests.jsonb.MappingTester.combine;
+import jakarta.json.bind.MappingTester;
+import jakarta.json.bind.defaultmapping.enums.model.EnumContainer;
+import jakarta.json.bind.defaultmapping.enums.model.EnumContainer.Enumeration;
 
 /**
  * @test
  * @sources EnumMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.enums.EnumMappingTest
  **/
-public class EnumMappingTest extends ServiceEETest {
-
-  private static final long serialVersionUID = 10L;
-
-  public static void main(String[] args) {
-    EETest t = new EnumMappingTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
+public class EnumMappingTest {
 
   /*
    * @testName: testEnum
@@ -61,10 +40,11 @@ public class EnumMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that enum is correctly handled
    */
-  public Status testEnum() throws Fault {
+  @Test
+  public void testEnum() {
     MappingTester<Enumeration> enumMappingTester = new MappingTester<>(
         EnumContainer.class);
-    return combine(enumMappingTester.test(Enumeration.ONE, "\"ONE\""),
-        enumMappingTester.test(Enumeration.TWO, "\"TWO\""));
+    enumMappingTester.test(Enumeration.ONE, "\"ONE\"");
+    enumMappingTester.test(Enumeration.TWO, "\"TWO\"");
   }
 }

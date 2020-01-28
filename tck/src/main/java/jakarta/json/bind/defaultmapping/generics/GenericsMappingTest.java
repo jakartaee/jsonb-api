@@ -18,7 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.generics;
+package jakarta.json.bind.defaultmapping.generics;
+
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -26,44 +28,25 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+import org.junit.Test;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.defaultmapping.generics.model.CollectionContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.generics.model.GenericContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.generics.model.MultipleBoundsContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.generics.model.NumberContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.generics.model.StringContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.generics.model.WildcardContainer;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.defaultmapping.generics.model.CollectionContainer;
+import jakarta.json.bind.defaultmapping.generics.model.GenericContainer;
+import jakarta.json.bind.defaultmapping.generics.model.MultipleBoundsContainer;
+import jakarta.json.bind.defaultmapping.generics.model.NumberContainer;
+import jakarta.json.bind.defaultmapping.generics.model.StringContainer;
+import jakarta.json.bind.defaultmapping.generics.model.WildcardContainer;
 
 /**
  * @test
  * @sources GenericsMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.generics.GenericsMappingTest
  **/
-public class GenericsMappingTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
+public class GenericsMappingTest {
   private final Jsonb jsonb = JsonbBuilder.create();
-
-  public static void main(String[] args) {
-    EETest t = new GenericsMappingTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
 
   /*
    * @testName: testClassInformationOnRuntime
@@ -74,7 +57,8 @@ public class GenericsMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that passing Type information on runtime is handled
    * as expected
    */
-  public Status testClassInformationOnRuntime() throws Fault {
+  @Test
+  public void testClassInformationOnRuntime() {
     String jsonString = jsonb.toJson(new GenericContainer<String>() {
       {
         setInstance("Test String");
@@ -82,7 +66,7 @@ public class GenericsMappingTest extends ServiceEETest {
     });
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*\\:\\s*\"Test String\"\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to marshal generic object with String attribute value.");
     }
 
@@ -90,11 +74,11 @@ public class GenericsMappingTest extends ServiceEETest {
         "{ \"instance\" : \"Test String\" }", new GenericContainer<String>() {
         }.getClass().getGenericSuperclass());
     if (!"Test String".equals(unmarshalledObject.getInstance())) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal generic object with String attribute value.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -105,7 +89,8 @@ public class GenericsMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that static type information is handled as expected
    */
-  public Status testClassFileAvailable() throws Fault {
+  @Test
+  public void testClassFileAvailable() {
     String jsonString = jsonb.toJson(new GenericContainer<String>() {
       {
         setInstance("Test String");
@@ -113,18 +98,18 @@ public class GenericsMappingTest extends ServiceEETest {
     });
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*\\:\\s*\"Test String\"\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to marshal generic object with String attribute value.");
     }
 
     GenericContainer unmarshalledObject = jsonb
         .fromJson("{ \"instance\" : \"Test String\" }", StringContainer.class);
     if (!"Test String".equals(unmarshalledObject.getInstance())) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal generic object with String attribute value.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -136,7 +121,8 @@ public class GenericsMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that raw type information is handled as expected
    */
   @SuppressWarnings("unchecked")
-  public Status testRawTypeInformation() throws Fault {
+  @Test
+  public void testRawTypeInformation() {
     final List<String> list = Arrays.asList("Test 1", "Test 2");
     String jsonString = jsonb.toJson(new CollectionContainer() {
       {
@@ -145,18 +131,18 @@ public class GenericsMappingTest extends ServiceEETest {
     });
     if (!jsonString.matches(
         "\\{\\s*\"instance\"\\s*\\:\\s*\\[\\s*\"Test 1\"\\s*,\\s*\"Test 2\"\\s*\\]\\s*\\}")) {
-      throw new Fault("Failed to marshal object with raw List attribute.");
+      fail("Failed to marshal object with raw List attribute.");
     }
 
     CollectionContainer unmarshalledObject = jsonb.fromJson(
         "{ \"instance\" : [ \"Test 1\", \"Test 2\" ] }",
         CollectionContainer.class);
     if (!list.equals(unmarshalledObject.getInstance())) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal object with raw List type attribute.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -169,7 +155,8 @@ public class GenericsMappingTest extends ServiceEETest {
    * treated as java.lang.Object
    */
   @SuppressWarnings("unchecked")
-  public Status testNoTypeInformation() throws Fault {
+  @Test
+  public void testNoTypeInformation() {
     String jsonString = jsonb.toJson(new GenericContainer<String>() {
       {
         setInstance("Test String");
@@ -177,7 +164,7 @@ public class GenericsMappingTest extends ServiceEETest {
     });
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*\\:\\s*\"Test String\"\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to marshal generic object with String attribute value.");
     }
 
@@ -188,11 +175,11 @@ public class GenericsMappingTest extends ServiceEETest {
         && !"Test String"
             .equals(((Map<String, Object>) unmarshalledObject.getInstance())
                 .get("instance"))) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal generic object without type information with String attribute value.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -203,7 +190,8 @@ public class GenericsMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that bounded type information is treated as expected
    */
-  public Status testBoundedTypeInformation() throws Fault {
+  @Test
+  public void testBoundedTypeInformation() {
     String jsonString = jsonb.toJson(new NumberContainer<Integer>() {
       {
         setInstance(Integer.MAX_VALUE);
@@ -211,7 +199,7 @@ public class GenericsMappingTest extends ServiceEETest {
     });
     if (!jsonString.matches(
         "\\{\\s*\"instance\"\\s*\\:\\s*" + Integer.MAX_VALUE + "\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to marshal object with bounded Number attribute.");
     }
 
@@ -220,11 +208,11 @@ public class GenericsMappingTest extends ServiceEETest {
         new NumberContainer<Integer>() {
         }.getClass().getGenericSuperclass());
     if (unmarshalledObject.getInstance() != Integer.MAX_VALUE) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal object with bounded Number attribute.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -237,7 +225,8 @@ public class GenericsMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that when multiple bounds exist, the most specific
    * type is used
    */
-  public Status testMultipleBoundsTypeInformation() throws Fault {
+  @Test
+  public void testMultipleBoundsTypeInformation() {
 
     final LinkedList<String> list = new LinkedList<>(
         Arrays.asList("Test 1", "Test 2"));
@@ -252,18 +241,18 @@ public class GenericsMappingTest extends ServiceEETest {
 
     if (!jsonString.matches(
         "\\{\\s*\"instance\"\\s*\\:\\s*\\[\\[\\s*\"Test 1\"\\s*,\\s*\"Test 2\"\\s*\\]\\]\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to marshal object with multiple bounded attribute.");
     }
 
     MultipleBoundsContainer unmarshalledObject = jsonb
         .fromJson("{ \"instance\" : [[ \"Test 1\", \"Test 2\" ]] }", type);
     if (!container.getInstance().equals(unmarshalledObject.getInstance())) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal object with multiple bounded attribute.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -274,7 +263,8 @@ public class GenericsMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that wildcard type is handled as java.lang.Object
    */
-  public Status testWildcardTypeInformation() throws Fault {
+  @Test
+  public void testWildcardTypeInformation() {
     final List<String> list = Arrays.asList("Test 1", "Test 2");
     String jsonString = jsonb.toJson(new WildcardContainer() {
       {
@@ -283,7 +273,7 @@ public class GenericsMappingTest extends ServiceEETest {
     });
     if (!jsonString.matches(
         "\\{\\s*\"instance\"\\s*\\:\\s*\\[\\s*\"Test 1\"\\s*,\\s*\"Test 2\"\\s*\\]\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to marshal object with unbound collection attribute.");
     }
 
@@ -291,10 +281,10 @@ public class GenericsMappingTest extends ServiceEETest {
         "{ \"instance\" : [ \"Test 1\", \"Test 2\" ] }",
         WildcardContainer.class);
     if (!list.equals(unmarshalledObject.getInstance())) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal object with unbound collection attribute.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 }

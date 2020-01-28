@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package com.sun.ts.tests.jsonb.api.model;
+package jakarta.json.bind.api.model;
 
-import javax.json.bind.annotation.JsonbPropertyOrder;
+import jakarta.json.bind.annotation.JsonbPropertyOrder;
 
 @JsonbPropertyOrder({ "thirdInstance", "fourthInstance" })
 public class SimplePartiallyAnnotatedPropertyOrderContainer {

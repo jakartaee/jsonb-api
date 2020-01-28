@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.classes.model;
+package jakarta.json.bind.defaultmapping.classes.model;
 
 public class StringContainerAccessorsWithoutMatchingField {
   private String field = "Test String";

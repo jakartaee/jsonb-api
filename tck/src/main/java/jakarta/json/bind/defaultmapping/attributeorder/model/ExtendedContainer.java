@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.attributeorder.model;
+package jakarta.json.bind.defaultmapping.attributeorder.model;
 
 public class ExtendedContainer extends SimpleContainer {
   private short shortInstance;

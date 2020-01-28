@@ -18,11 +18,11 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.ijson.model;
+package jakarta.json.bind.customizedmapping.ijson.model;
 
 import java.time.LocalDate;
 
-import com.sun.ts.tests.jsonb.TypeContainer;
+import jakarta.json.bind.TypeContainer;
 
 public class LocalDateContainer implements TypeContainer<LocalDate> {
   private LocalDate instance;

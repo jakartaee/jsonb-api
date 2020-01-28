@@ -18,9 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.propertynames.model;
+package jakarta.json.bind.customizedmapping.propertynames.model;
 
-import com.sun.ts.tests.jsonb.TypeContainer;
+import jakarta.json.bind.TypeContainer;
 
 public class TransientPropertyContainer implements TypeContainer<String> {
   private transient String instance;

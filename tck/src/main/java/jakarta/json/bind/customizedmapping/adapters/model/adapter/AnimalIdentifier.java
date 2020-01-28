@@ -18,15 +18,15 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.adapters.model.adapter;
+package jakarta.json.bind.customizedmapping.adapters.model.adapter;
 
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.Animal;
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.Cat;
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.Dog;
+import jakarta.json.bind.customizedmapping.adapters.model.Animal;
+import jakarta.json.bind.customizedmapping.adapters.model.Cat;
+import jakarta.json.bind.customizedmapping.adapters.model.Dog;
 
-import static com.sun.ts.tests.jsonb.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.CAT;
-import static com.sun.ts.tests.jsonb.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.DOG;
-import static com.sun.ts.tests.jsonb.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.GENERIC;
+import static jakarta.json.bind.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.CAT;
+import static jakarta.json.bind.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.DOG;
+import static jakarta.json.bind.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.GENERIC;
 
 public class AnimalIdentifier {
   public AnimalJson.TYPE getType(Animal animal) {

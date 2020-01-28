@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.adapters.model.adapter;
+package jakarta.json.bind.customizedmapping.adapters.model.adapter;
 
 public class AnimalJson {
   public enum TYPE {

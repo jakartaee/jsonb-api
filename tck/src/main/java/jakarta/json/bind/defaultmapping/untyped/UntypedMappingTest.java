@@ -18,44 +18,28 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.untyped;
+package jakarta.json.bind.defaultmapping.untyped;
+
+import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+import org.junit.Test;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.SimpleMappingTester;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.SimpleMappingTester;
 
 /**
  * @test
  * @sources UntypedMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.untyped.UntypedMappingTest
  **/
-public class UntypedMappingTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
-  public static void main(String[] args) {
-    EETest t = new UntypedMappingTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
+public class UntypedMappingTest {
 
   /*
    * @testName: testObjectMapping
@@ -67,7 +51,9 @@ public class UntypedMappingTest extends ServiceEETest {
    * with predictable iteration order, with java.lang.String,
    * java.math.BigDecimal, java.lang.Boolean and null values
    */
-  public void testObjectMapping() throws Fault {
+  @SuppressWarnings("serial")
+  @Test
+  public void testObjectMapping() {
     Jsonb jsonb = JsonbBuilder.create();
     @SuppressWarnings("unused")
     String jsonString = jsonb.toJson(new Object() {
@@ -97,7 +83,7 @@ public class UntypedMappingTest extends ServiceEETest {
     });
     if (!jsonString.matches(
         "\\{\\s*\"booleanProperty\"\\s*:\\s*false\\s*\\,\\s*\"numericProperty\"\\s*:\\s*0[\\.0]?+\\s*,\\s*\"stringProperty\"\\s*:\\s*\"Test String\"\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to correctly marshal object with String, Number, Boolean and null fields.");
     }
 
@@ -106,14 +92,13 @@ public class UntypedMappingTest extends ServiceEETest {
         Object.class);
     if (!Map.class.isInstance(unmarshalledObject)
         || !new LinkedHashMap<String, Object>() {
-          private static final long serialVersionUID = UntypedMappingTest.serialVersionUID;
           {
             put("numericProperty", BigDecimal.valueOf(0.0d));
             put("booleanProperty", false);
             put("stringProperty", "Test String");
           }
         }.equals(unmarshalledObject)) {
-      throw new Fault(
+      fail(
           "Failed to correctly unmarshal object with string, number, boolean and null JSON values into a predictable order Map<String,Object> with java.lang.String, java.math.BigDecimal, java.lang.Boolean and null values.");
     }
   }
@@ -126,8 +111,9 @@ public class UntypedMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that JSON arrays are correctly handled as
    * java.util.List<Object>
    */
-  public Status testArrayMapping() throws Fault {
-    return new SimpleMappingTester<>(List.class).test(
+  @Test
+  public void testArrayMapping() {
+    new SimpleMappingTester<>(List.class).test(
         Arrays.asList("Test String"), "\\[\\s*\"Test String\"s*\\]",
         "[ \"Test String\" ]", Arrays.asList("Test String"));
   }

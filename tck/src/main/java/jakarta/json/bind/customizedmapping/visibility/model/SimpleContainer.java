@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.visibility.model;
+package jakarta.json.bind.customizedmapping.visibility.model;
 
 public class SimpleContainer {
   private String stringInstance;

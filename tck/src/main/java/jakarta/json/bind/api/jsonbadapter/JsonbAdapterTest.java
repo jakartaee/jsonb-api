@@ -18,42 +18,25 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.api.jsonbadapter;
+package jakarta.json.bind.api.jsonbadapter;
 
-import java.util.Properties;
+import static org.junit.Assert.fail;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
-import javax.json.bind.JsonbConfig;
+import org.junit.Test;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.api.model.SimpleContainer;
-import com.sun.ts.tests.jsonb.api.model.SimpleContainerContainer;
-import com.sun.ts.tests.jsonb.api.model.SimpleStringAdapter;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.JsonbConfig;
+import jakarta.json.bind.api.model.SimpleContainer;
+import jakarta.json.bind.api.model.SimpleContainerContainer;
+import jakarta.json.bind.api.model.SimpleStringAdapter;
 
 /**
  * @test
  * @sources JsonbAdapterTest.java
  * @executeClass com.sun.ts.tests.jsonb.api.JsonbAdapterTest
  **/
-public class JsonbAdapterTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
-  public static void main(String[] args) {
-    EETest t = new JsonbAdapterTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
+public class JsonbAdapterTest {
 
   /*
    * @testName: testAdaptFromJson
@@ -64,18 +47,19 @@ public class JsonbAdapterTest extends ServiceEETest {
    * configured during object deserialization to provide conversion logic from
    * adapted object to original
    */
-  public Status testAdaptFromJson() throws Fault {
+  @Test
+  public void testAdaptFromJson() {
     Jsonb jsonb = JsonbBuilder
         .create(new JsonbConfig().withAdapters(new SimpleStringAdapter()));
     SimpleContainerContainer unmarshalledObject = jsonb.fromJson(
         "{ \"instance\" : { \"instance\" : \"Test String Adapted\" } }",
         SimpleContainerContainer.class);
     if (!"Test String".equals(unmarshalledObject.getInstance().getInstance())) {
-      throw new Fault(
+      fail(
           "Failed to use JsonbAdapter.adaptFromJson method to provide conversion logic from adapted object to original during object deserialization.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -87,7 +71,8 @@ public class JsonbAdapterTest extends ServiceEETest {
    * configured during object serialization to provide conversion logic from
    * original object to adapted
    */
-  public Status testAdaptToJson() throws Fault {
+  @Test
+  public void testAdaptToJson() {
     Jsonb jsonb = JsonbBuilder
         .create(new JsonbConfig().withAdapters(new SimpleStringAdapter()));
     String jsonString = jsonb.toJson(new SimpleContainerContainer() {
@@ -101,10 +86,10 @@ public class JsonbAdapterTest extends ServiceEETest {
     });
     if (!jsonString.matches(
         "\\{\\s*\"instance\"\\s*:\\s*\\{\\s*\"instance\"\\s*:\\s*\"Test String Adapted\"\\s*}\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to use JsonbAdapter.adaptToJson method to provide conversion logic from original object to adapted during object serialization.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 }

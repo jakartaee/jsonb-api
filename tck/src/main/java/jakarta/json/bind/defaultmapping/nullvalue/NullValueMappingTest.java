@@ -18,42 +18,24 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.nullvalue;
+package jakarta.json.bind.defaultmapping.nullvalue;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+import static org.junit.Assert.fail;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.defaultmapping.nullvalue.model.NullArrayContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.nullvalue.model.NullValueContainer;
+import org.junit.Test;
 
-import java.util.Properties;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.defaultmapping.nullvalue.model.NullArrayContainer;
+import jakarta.json.bind.defaultmapping.nullvalue.model.NullValueContainer;
 
 /**
  * @test
  * @sources NullValueMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.nullvalue.NullValueMappingTest
  **/
-public class NullValueMappingTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
+public class NullValueMappingTest {
   private final Jsonb jsonb = JsonbBuilder.create();
-
-  public static void main(String[] args) {
-    EETest t = new NullValueMappingTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
 
   /*
    * @testName: testNullAttributeValue
@@ -65,30 +47,31 @@ public class NullValueMappingTest extends ServiceEETest {
    * marshalling and that during unmarshalling missing attributes are not set,
    * maintaining original value, and null attributes are correctly unmarshalled
    */
-  public Status testNullAttributeValue() throws Fault {
+  @Test
+  public void testNullAttributeValue() {
     String jsonString = jsonb.toJson(new NullValueContainer() {
       {
         setInstance(null);
       }
     });
     if (!jsonString.matches("\\{\\s*\\}")) {
-      throw new Fault("Failed to ignore displaying property with null value.");
+      fail("Failed to ignore displaying property with null value.");
     }
 
     NullValueContainer unmarshalledObject = jsonb.fromJson("{ }",
         NullValueContainer.class);
     if (!"Test String".equals(unmarshalledObject.getInstance())) {
-      throw new Fault(
+      fail(
           "Failed to ignore calling setter of absent property during unmarshalling.");
     }
 
     unmarshalledObject = jsonb.fromJson("{ \"instance\" : null }",
         NullValueContainer.class);
     if (unmarshalledObject.getInstance() != null) {
-      throw new Fault("Failed to set property to null.");
+      fail("Failed to set property to null.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -101,7 +84,8 @@ public class NullValueMappingTest extends ServiceEETest {
    * marshalling and a null value is set to the appropriate array index during
    * unmrashalling of an array containing a null value
    */
-  public Status testNullArrayValue() throws Fault {
+  @Test
+  public void testNullArrayValue() {
     String jsonString = jsonb.toJson(new NullArrayContainer() {
       {
         setInstance(new String[] { "Test 1", null, "Test 2" });
@@ -109,7 +93,7 @@ public class NullValueMappingTest extends ServiceEETest {
     });
     if (!jsonString.matches(
         "\\{\\s*\"instance\"\\s*:\\s*\\[\\s*\"Test 1\"\\s*,\\s*null\\s*,\\s*\"Test 2\"\\s*\\]\\s*\\}")) {
-      throw new Fault("Failed to correctly display null array value.");
+      fail("Failed to correctly display null array value.");
     }
 
     NullArrayContainer unmarshalledObject = jsonb.fromJson(
@@ -118,9 +102,9 @@ public class NullValueMappingTest extends ServiceEETest {
     Object[] instance = unmarshalledObject.getInstance();
     if (instance.length != 3 || !"Test 1".equals(instance[0])
         || instance[1] != null || !"Test 2".equals(instance[2])) {
-      throw new Fault("Failed to correctly set null array value.");
+      fail("Failed to correctly set null array value.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 }

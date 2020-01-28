@@ -18,55 +18,38 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.api.config;
+package jakarta.json.bind.api.config;
+
+import static org.junit.Assert.fail;
 
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Properties;
 
-import javax.json.bind.JsonbConfig;
-import javax.json.bind.adapter.JsonbAdapter;
-import javax.json.bind.config.BinaryDataStrategy;
-import javax.json.bind.config.PropertyNamingStrategy;
-import javax.json.bind.config.PropertyOrderStrategy;
-import javax.json.bind.serializer.JsonbDeserializer;
-import javax.json.bind.serializer.JsonbSerializer;
+import org.junit.Test;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.api.model.SimpleContainerDeserializer;
-import com.sun.ts.tests.jsonb.api.model.SimpleContainerSerializer;
-import com.sun.ts.tests.jsonb.api.model.SimpleIntegerAdapter;
-import com.sun.ts.tests.jsonb.api.model.SimpleIntegerDeserializer;
-import com.sun.ts.tests.jsonb.api.model.SimpleIntegerSerializer;
-import com.sun.ts.tests.jsonb.api.model.SimplePropertyNamingStrategy;
-import com.sun.ts.tests.jsonb.api.model.SimplePropertyVisibilityStrategy;
-import com.sun.ts.tests.jsonb.api.model.SimpleStringAdapter;
+import jakarta.json.bind.JsonbConfig;
+import jakarta.json.bind.adapter.JsonbAdapter;
+import jakarta.json.bind.api.model.SimpleContainerDeserializer;
+import jakarta.json.bind.api.model.SimpleContainerSerializer;
+import jakarta.json.bind.api.model.SimpleIntegerAdapter;
+import jakarta.json.bind.api.model.SimpleIntegerDeserializer;
+import jakarta.json.bind.api.model.SimpleIntegerSerializer;
+import jakarta.json.bind.api.model.SimplePropertyNamingStrategy;
+import jakarta.json.bind.api.model.SimplePropertyVisibilityStrategy;
+import jakarta.json.bind.api.model.SimpleStringAdapter;
+import jakarta.json.bind.config.BinaryDataStrategy;
+import jakarta.json.bind.config.PropertyNamingStrategy;
+import jakarta.json.bind.config.PropertyOrderStrategy;
+import jakarta.json.bind.serializer.JsonbDeserializer;
+import jakarta.json.bind.serializer.JsonbSerializer;
 
 /**
  * @test
  * @sources JsonbConfigTest.java
  * @executeClass com.sun.ts.tests.jsonb.api.JsonbConfigTest
  **/
-public class JsonbConfigTest extends ServiceEETest {
-
-  private static final long serialVersionUID = 10L;
-
-  public static void main(String[] args) {
-    EETest t = new JsonbConfigTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
+public class JsonbConfigTest {
 
   /*
    * @testName: testGetAsMap
@@ -76,20 +59,21 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbConfig.getAsMap returns all configuration
    * properties as an unmodifiable map
    */
-  public void testGetAsMap() throws Fault {
+  @Test
+  public void testGetAsMap() {
     JsonbConfig jsonbConfig = new JsonbConfig().withFormatting(true)
         .withNullValues(true);
     Map<String, Object> configMap = jsonbConfig.getAsMap();
     if (configMap.size() != 2 || !configMap.containsKey(JsonbConfig.FORMATTING)
         || !configMap.containsKey(JsonbConfig.NULL_VALUES)) {
-      throw new Fault(
+      fail(
           "Failed to get configuration properties as a map using JsonbConfig.getAsMap method.");
     }
 
     try {
       configMap.put(JsonbConfig.BINARY_DATA_STRATEGY,
           BinaryDataStrategy.BASE_64);
-      throw new Fault(
+      fail(
           "Failed to get configuration properties as an unmodifiable map using JsonbConfig.getAsMap method.");
     } catch (UnsupportedOperationException x) {
     }
@@ -103,13 +87,14 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbConfig.getProperty returns the value of a
    * specific configuration property
    */
-  public void testGetProperty() throws Fault {
+  @Test
+  public void testGetProperty() {
     JsonbConfig jsonbConfig = new JsonbConfig().withFormatting(true)
         .withNullValues(true);
     Optional<Object> property = jsonbConfig.getProperty(JsonbConfig.FORMATTING);
 
     if (!property.isPresent() || !(boolean) property.get()) {
-      throw new Fault(
+      fail(
           "Failed to get a configuration property using JsonbConfig.getProperty method.");
     }
   }
@@ -122,13 +107,14 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbConfig.getProperty returns the value of a
    * specific configuration property
    */
-  public void testGetUnsetProperty() throws Fault {
+  @Test
+  public void testGetUnsetProperty() {
     JsonbConfig jsonbConfig = new JsonbConfig().withFormatting(true)
         .withNullValues(true);
     Optional<Object> property = jsonbConfig.getProperty(JsonbConfig.ADAPTERS);
 
     if (property.isPresent()) {
-      throw new Fault(
+      fail(
           "Failed to get Optional.empty for an unset configuration property using JsonbConfig.getProperty method.");
     }
   }
@@ -141,14 +127,15 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbConfig.setProperty sets the value of a
    * specific configuration property
    */
-  public void testSetProperty() throws Fault {
+  @Test
+  public void testSetProperty() {
     JsonbConfig jsonbConfig = new JsonbConfig().setProperty(
         JsonbConfig.PROPERTY_NAMING_STRATEGY,
         PropertyNamingStrategy.UPPER_CAMEL_CASE_WITH_SPACES);
 
     if (!jsonbConfig.getProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY).get()
         .equals(PropertyNamingStrategy.UPPER_CAMEL_CASE_WITH_SPACES)) {
-      throw new Fault(
+      fail(
           "Failed to set a property value using JsonbConfig.setProperty method.");
     }
   }
@@ -161,7 +148,8 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbConfig.withAdapters configures custom
    * mapping adapters
    */
-  public void testWithAdapters() throws Fault {
+  @Test
+  public void testWithAdapters() {
     SimpleStringAdapter simpleStringAdapter = new SimpleStringAdapter();
     JsonbConfig jsonbConfig = new JsonbConfig()
         .withAdapters(simpleStringAdapter);
@@ -169,7 +157,7 @@ public class JsonbConfigTest extends ServiceEETest {
     Object adapters = jsonbConfig.getProperty(JsonbConfig.ADAPTERS).get();
     if (!JsonbAdapter[].class.isAssignableFrom(adapters.getClass())
         || simpleStringAdapter != ((JsonbAdapter[]) adapters)[0]) {
-      throw new Fault(
+      fail(
           "Failed to configure a custom adapter using JsonbConfig.withAdapters method.");
     }
   }
@@ -182,19 +170,20 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that multiple JsonbConfig.withAdapters calls result
    * in a merge of adapter values configured
    */
-  public void testWithAdaptersMultipleCalls() throws Fault {
+  @Test
+  public void testWithAdaptersMultipleCalls() {
     JsonbConfig jsonbConfig = new JsonbConfig()
         .withAdapters(new SimpleIntegerAdapter())
         .withAdapters(new SimpleStringAdapter());
 
     Object adapters = jsonbConfig.getProperty(JsonbConfig.ADAPTERS).get();
     if (!JsonbAdapter[].class.isAssignableFrom(adapters.getClass())) {
-      throw new Fault(
+      fail(
           "Not expected JsobAdapter array but " + adapters.getClass());
     }
 
     if (((JsonbAdapter[]) adapters).length != 2) {
-      throw new Fault(
+      fail(
           "Failed to configure multiple custom adapters using multiple JsonbConfig.withAdapters method calls.");
     }
   }
@@ -207,17 +196,18 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that multiple JsonbConfig.withAdapters calls result
    * in a merge of adapter values configured
    */
-  public void testWithMultipleAdapters() throws Fault {
+  @Test
+  public void testWithMultipleAdapters() {
     JsonbConfig jsonbConfig = new JsonbConfig()
         .withAdapters(new SimpleIntegerAdapter(), new SimpleStringAdapter());
 
     Object adapters = jsonbConfig.getProperty(JsonbConfig.ADAPTERS).get();
     if (!JsonbAdapter[].class.isAssignableFrom(adapters.getClass())) {
-      throw new Fault(
+      fail(
           "Not expected JsobAdapter array but " + adapters.getClass());
     }
     if (((JsonbAdapter[]) adapters).length != 2) {
-      throw new Fault(
+      fail(
           "Failed to configure multiple custom adapters using multiple JsonbConfig.withAdapters method calls.");
     }
   }
@@ -230,7 +220,8 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbConfig.withBinaryDataStrategy configures
    * custom binary data strategy
    */
-  public void testWithBinaryDataStrategy() throws Fault {
+  @Test
+  public void testWithBinaryDataStrategy() {
     JsonbConfig jsonbConfig = new JsonbConfig()
         .withBinaryDataStrategy(BinaryDataStrategy.BASE_64_URL);
 
@@ -238,7 +229,7 @@ public class JsonbConfigTest extends ServiceEETest {
         .getProperty(JsonbConfig.BINARY_DATA_STRATEGY);
     if (!property.isPresent()
         || !BinaryDataStrategy.BASE_64_URL.equals(property.get())) {
-      throw new Fault(
+      fail(
           "Failed to configure a custom binary data strategy using JsonbConfig.withBinaryDataStrategy method.");
     }
   }
@@ -251,14 +242,15 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbConfig.withDateFormat configures custom
    * date format
    */
-  public void testWithDateFormat() throws Fault {
+  @Test
+  public void testWithDateFormat() {
     JsonbConfig jsonbConfig = new JsonbConfig().withDateFormat("YYYYMMDD",
         Locale.GERMAN);
 
     Optional<Object> property = jsonbConfig
         .getProperty(JsonbConfig.DATE_FORMAT);
     if (!property.isPresent() || !"YYYYMMDD".equals(property.get())) {
-      throw new Fault(
+      fail(
           "Failed to configure a custom date format using JsonbConfig.withDateFormat method.");
     }
   }
@@ -271,7 +263,8 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbConfig.withDeserializers configures custom
    * deserializers
    */
-  public void testWithDeserializers() throws Fault {
+  @Test
+  public void testWithDeserializers() {
     SimpleContainerDeserializer deserializer = new SimpleContainerDeserializer();
     JsonbConfig jsonbConfig = new JsonbConfig().withDeserializers(deserializer);
 
@@ -279,7 +272,7 @@ public class JsonbConfigTest extends ServiceEETest {
         .get();
     if (!JsonbDeserializer[].class.isAssignableFrom(deserializers.getClass())
         || deserializer != ((JsonbDeserializer[]) deserializers)[0]) {
-      throw new Fault(
+      fail(
           "Failed to configure a custom deserializer using JsonbConfig.withDeserializers method.");
     }
   }
@@ -292,7 +285,8 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that multiple JsonbConfig.withDeserializers calls
    * result in a merge of deserializer values configured
    */
-  public void testWithDeserializersMultipleCalls() throws Fault {
+  @Test
+  public void testWithDeserializersMultipleCalls() {
     JsonbConfig jsonbConfig = new JsonbConfig()
         .withDeserializers(new SimpleIntegerDeserializer())
         .withDeserializers(new SimpleContainerDeserializer());
@@ -300,12 +294,12 @@ public class JsonbConfigTest extends ServiceEETest {
     Object deserializers = jsonbConfig.getProperty(JsonbConfig.DESERIALIZERS)
         .get();
     if (!JsonbDeserializer[].class.isAssignableFrom(deserializers.getClass())) {
-      throw new Fault("Not expected JsonbDeserializer array but "
+      fail("Not expected JsonbDeserializer array but "
           + deserializers.getClass());
     }
 
     if (((JsonbDeserializer[]) deserializers).length != 2) {
-      throw new Fault(
+      fail(
           "Failed to configure multiple custom deserializers using multiple JsonbConfig.withDeserializers method calls.");
     }
   }
@@ -318,12 +312,13 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbConfig.withEncoding configures custom
    * character encoding
    */
-  public void testWithEncoding() throws Fault {
+  @Test
+  public void testWithEncoding() {
     JsonbConfig jsonbConfig = new JsonbConfig().withEncoding("UCS2");
 
     Optional<Object> property = jsonbConfig.getProperty(JsonbConfig.ENCODING);
     if (!property.isPresent() || !"UCS2".equals(property.get())) {
-      throw new Fault(
+      fail(
           "Failed to configure a custom character encoding using JsonbConfig.withEncoding method.");
     }
   }
@@ -336,12 +331,13 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbConfig.withFormatting configures whether
    * JSON string formatting is enabled
    */
-  public void testWithFormatting() throws Fault {
+  @Test
+  public void testWithFormatting() {
     JsonbConfig jsonbConfig = new JsonbConfig().withFormatting(true);
 
     Optional<Object> property = jsonbConfig.getProperty(JsonbConfig.FORMATTING);
     if (!property.isPresent() || !(boolean) property.get()) {
-      throw new Fault(
+      fail(
           "Failed to configure JSON string formatting using JsonbConfig.withFormatting method.");
     }
   }
@@ -353,12 +349,13 @@ public class JsonbConfigTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that JsonbConfig.withLocale configures custom locale
    */
-  public void testWithLocale() throws Fault {
+  @Test
+  public void testWithLocale() {
     JsonbConfig jsonbConfig = new JsonbConfig().withLocale(Locale.GERMAN);
 
     Optional<Object> property = jsonbConfig.getProperty(JsonbConfig.LOCALE);
     if (!property.isPresent() || !Locale.GERMAN.equals(property.get())) {
-      throw new Fault(
+      fail(
           "Failed to configure a custom locale using JsonbConfig.withLocale method.");
     }
   }
@@ -371,13 +368,14 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbConfig.withNullValues configures
    * serialization of null values
    */
-  public void testWithNullValues() throws Fault {
+  @Test
+  public void testWithNullValues() {
     JsonbConfig jsonbConfig = new JsonbConfig().withNullValues(true);
 
     Optional<Object> property = jsonbConfig
         .getProperty(JsonbConfig.NULL_VALUES);
     if (!property.isPresent() || !(boolean) property.get()) {
-      throw new Fault(
+      fail(
           "Failed to configure serialization of null values using JsonbConfig.withNullValues method.");
     }
   }
@@ -390,7 +388,8 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbConfig.withPropertyNamingStrategy
    * configures custom property naming strategy
    */
-  public void testWithPropertyNamingStrategy() throws Fault {
+  @Test
+  public void testWithPropertyNamingStrategy() {
     SimplePropertyNamingStrategy propertyNamingStrategy = new SimplePropertyNamingStrategy();
     JsonbConfig jsonbConfig = new JsonbConfig()
         .withPropertyNamingStrategy(propertyNamingStrategy);
@@ -398,7 +397,7 @@ public class JsonbConfigTest extends ServiceEETest {
     Optional<Object> property = jsonbConfig
         .getProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY);
     if (!property.isPresent() || propertyNamingStrategy != property.get()) {
-      throw new Fault(
+      fail(
           "Failed to configure a custom property naming strategy using JsonbConfig.withPropertyNamingStrategy method.");
     }
   }
@@ -411,7 +410,8 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbConfig.withPropertyNamingStrategy with
    * String argument configures custom property naming strategy
    */
-  public void testWithPropertyNamingStrategyString() throws Fault {
+  @Test
+  public void testWithPropertyNamingStrategyString() {
     JsonbConfig jsonbConfig = new JsonbConfig()
         .withPropertyNamingStrategy(PropertyNamingStrategy.UPPER_CAMEL_CASE);
 
@@ -419,7 +419,7 @@ public class JsonbConfigTest extends ServiceEETest {
         .getProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY);
     if (!property.isPresent()
         || !PropertyNamingStrategy.UPPER_CAMEL_CASE.equals(property.get())) {
-      throw new Fault(
+      fail(
           "Failed to configure a custom property naming strategy using JsonbConfig.withPropertyNamingStrategy method with String argument.");
     }
   }
@@ -432,7 +432,8 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbConfig.withPropertyOrderStrategy
    * configures custom property order strategy
    */
-  public void testWithPropertyOrderStrategy() throws Fault {
+  @Test
+  public void testWithPropertyOrderStrategy() {
     JsonbConfig jsonbConfig = new JsonbConfig()
         .withPropertyOrderStrategy(PropertyOrderStrategy.LEXICOGRAPHICAL);
 
@@ -440,7 +441,7 @@ public class JsonbConfigTest extends ServiceEETest {
         .getProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY);
     if (!property.isPresent()
         || !PropertyOrderStrategy.LEXICOGRAPHICAL.equals(property.get())) {
-      throw new Fault(
+      fail(
           "Failed to configure a custom property order strategy using JsonbConfig.withPropertyOrderStrategy method.");
     }
   }
@@ -453,7 +454,8 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbConfig.withPropertyVisibilityStrategy
    * configures custom property visibility
    */
-  public void testWithPropertyVisibilityStrategy() throws Fault {
+  @Test
+  public void testWithPropertyVisibilityStrategy() {
     SimplePropertyVisibilityStrategy propertyVisibilityStrategy = new SimplePropertyVisibilityStrategy();
     JsonbConfig jsonbConfig = new JsonbConfig()
         .withPropertyVisibilityStrategy(propertyVisibilityStrategy);
@@ -461,7 +463,7 @@ public class JsonbConfigTest extends ServiceEETest {
     Optional<Object> property = jsonbConfig
         .getProperty(JsonbConfig.PROPERTY_VISIBILITY_STRATEGY);
     if (!property.isPresent() || propertyVisibilityStrategy != property.get()) {
-      throw new Fault(
+      fail(
           "Failed to configure a custom property visibility strategy using JsonbConfig.withPropertyVisibilityStrategy method.");
     }
   }
@@ -474,14 +476,15 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbConfig.withSerializers configures custom
    * serializers
    */
-  public void testWithSerializers() throws Fault {
+  @Test
+  public void testWithSerializers() {
     SimpleContainerSerializer serializer = new SimpleContainerSerializer();
     JsonbConfig jsonbConfig = new JsonbConfig().withSerializers(serializer);
 
     Object serializers = jsonbConfig.getProperty(JsonbConfig.SERIALIZERS).get();
     if (!JsonbSerializer[].class.isAssignableFrom(serializers.getClass())
         || serializer != ((JsonbSerializer[]) serializers)[0]) {
-      throw new Fault(
+      fail(
           "Failed to configure a custom serializer using JsonbConfig.withSerializers method.");
     }
   }
@@ -494,19 +497,20 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that multiple JsonbConfig.withSerializers calls
    * result in a merge of serializer values configured
    */
-  public void testWithSerializersMultipleCalls() throws Fault {
+  @Test
+  public void testWithSerializersMultipleCalls() {
     JsonbConfig jsonbConfig = new JsonbConfig()
         .withSerializers(new SimpleIntegerSerializer())
         .withSerializers(new SimpleContainerSerializer());
 
     Object serializers = jsonbConfig.getProperty(JsonbConfig.SERIALIZERS).get();
     if (!JsonbSerializer[].class.isAssignableFrom(serializers.getClass())) {
-      throw new Fault(
+      fail(
           "Not expected JsonbSerializer array but " + serializers.getClass());
     }
 
     if (((JsonbSerializer[]) serializers).length != 2) {
-      throw new Fault(
+      fail(
           "Failed to configure multiple custom serializers using multiple JsonbConfig.withSerializers method calls.");
     }
   }
@@ -519,13 +523,14 @@ public class JsonbConfigTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonbConfig.withStrictIJSON configures strict
    * I-JSON support
    */
-  public void testWithStrictIJson() throws Fault {
+  @Test
+  public void testWithStrictIJson() {
     JsonbConfig jsonbConfig = new JsonbConfig().withStrictIJSON(true);
 
     Optional<Object> property = jsonbConfig
         .getProperty(JsonbConfig.STRICT_IJSON);
     if (!property.isPresent() || !(boolean) property.get()) {
-      throw new Fault(
+      fail(
           "Failed to configure strict I-JSON support using JsonbConfig.withStrictIJSON method.");
     }
   }

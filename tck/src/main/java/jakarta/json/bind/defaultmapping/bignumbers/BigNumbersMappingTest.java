@@ -18,42 +18,26 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.bignumbers;
+package jakarta.json.bind.defaultmapping.bignumbers;
+
+import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+import org.junit.Ignore;
+import org.junit.Test;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
 
 /**
  * @test
  * @sources BigNumbersMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.bignumbers.BigNumbersMappingTest
  **/
-public class BigNumbersMappingTest extends ServiceEETest {
-
-  private static final long serialVersionUID = 10L;
+public class BigNumbersMappingTest {
 
   private final Jsonb jsonb = JsonbBuilder.create();
-
-  public static void main(String[] args) {
-    EETest t = new BigNumbersMappingTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
 
   /*
    * @testName: testBigNumberMarshalling
@@ -64,14 +48,16 @@ public class BigNumbersMappingTest extends ServiceEETest {
    * IEEE 754 are serialized as strings as specified by IJSON RFC 7493 (default
    * to JSON-B)
    */
-  @SuppressWarnings("unused")
-  public void testBigNumberMarshalling() throws Fault {
+  @Test
+  @Ignore("See https://github.com/eclipse-ee4j/jsonb-api/issues/180")
+  public void testBigNumberMarshalling() {
     String jsonString = jsonb.toJson(new Object() {
+      @SuppressWarnings("unused")
       public Number number = new BigDecimal("0.10000000000000001");
     });
     if (!jsonString
         .matches("\\{\\s*\"number\"\\s*:\\s*\"0.10000000000000001\"\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to correctly marshal number of greater precision than IEEE 754 as string.");
     }
   }

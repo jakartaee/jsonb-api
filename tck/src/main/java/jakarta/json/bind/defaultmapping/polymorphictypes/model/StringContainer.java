@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.polymorphictypes.model;
+package jakarta.json.bind.defaultmapping.polymorphictypes.model;
 
 public class StringContainer {
   private String instance = "Test String";

@@ -18,9 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.uniqueness.model;
+package jakarta.json.bind.defaultmapping.uniqueness.model;
 
-import javax.json.bind.annotation.JsonbProperty;
+import jakarta.json.bind.annotation.JsonbProperty;
 
 public class SimpleContainer {
   public String firstInstance = "First Instance";

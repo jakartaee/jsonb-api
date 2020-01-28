@@ -18,43 +18,25 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.interfaces;
+package jakarta.json.bind.defaultmapping.interfaces;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
-import javax.json.bind.JsonbException;
+import static org.junit.Assert.fail;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.TypeContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.interfaces.model.InterfaceContainer;
+import org.junit.Test;
 
-import java.util.Properties;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.JsonbException;
+import jakarta.json.bind.TypeContainer;
+import jakarta.json.bind.defaultmapping.interfaces.model.InterfaceContainer;
 
 /**
  * @test
  * @sources InterfaceMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.interfaces.InterfaceMappingTest
  **/
-public class InterfaceMappingTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
+public class InterfaceMappingTest {
   private final Jsonb jsonb = JsonbBuilder.create();
-
-  public static void main(String[] args) {
-    EETest t = new InterfaceMappingTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
 
   /*
    * @testName: testDeserializationToInterface
@@ -64,13 +46,14 @@ public class InterfaceMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that an error is reported when unmarshalling to an
    * arbitrary interface
    */
-  public Status testDeserializationToInterface() throws Fault {
+  @Test
+  public void testDeserializationToInterface() {
     try {
       jsonb.fromJson("{ \"instance\" : \"Test String\" }", TypeContainer.class);
-      throw new Fault(
+      fail(
           "An exception is expected when unmarshalling a class to an interface.");
     } catch (JsonbException x) {
-      return Status.passed("OK");
+      return; // passed
     }
   }
 
@@ -82,14 +65,15 @@ public class InterfaceMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that an error is reported when unmarshalling to an
    * arbitrary interface
    */
-  public Status testInterfaceField() throws Fault {
+  @Test
+  public void testInterfaceField() {
     try {
       jsonb.fromJson("{ \"instance\" : { \"instance\" : \"Test String\" } }",
           InterfaceContainer.class);
-      throw new Fault(
+      fail(
           "An exception is expected when unmarshalling a class with an interface property.");
     } catch (JsonbException x) {
-      return Status.passed("OK");
+      return; // passed
     }
   }
 }

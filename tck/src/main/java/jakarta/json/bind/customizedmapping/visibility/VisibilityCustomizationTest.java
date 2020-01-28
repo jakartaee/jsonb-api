@@ -18,46 +18,28 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.visibility;
+package jakarta.json.bind.customizedmapping.visibility;
 
-import java.util.Properties;
+import static org.junit.Assert.fail;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
-import javax.json.bind.JsonbConfig;
+import org.junit.Test;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.customizedmapping.visibility.model.CustomFieldVisibilityStrategy;
-import com.sun.ts.tests.jsonb.customizedmapping.visibility.model.CustomVisibilityAnnotatedContainer;
-import com.sun.ts.tests.jsonb.customizedmapping.visibility.model.SimpleContainer;
-import com.sun.ts.tests.jsonb.customizedmapping.visibility.model.customized.PackageCustomizedContainer;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.JsonbConfig;
+import jakarta.json.bind.customizedmapping.visibility.model.CustomFieldVisibilityStrategy;
+import jakarta.json.bind.customizedmapping.visibility.model.CustomVisibilityAnnotatedContainer;
+import jakarta.json.bind.customizedmapping.visibility.model.SimpleContainer;
+import jakarta.json.bind.customizedmapping.visibility.model.customized.PackageCustomizedContainer;
 
 /**
  * @test
  * @sources VisibilityCustomizationTest.java
  * @executeClass com.sun.ts.tests.jsonb.customizedmapping.visibility.VisibilityCustomizationTest
  **/
-public class VisibilityCustomizationTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
+public class VisibilityCustomizationTest {
   private final Jsonb jsonb = JsonbBuilder.create();
 
-  public static void main(String[] args) {
-    EETest t = new VisibilityCustomizationTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
-  
   /*
    * @testName: testCustomVisibilityConfig
    *
@@ -67,7 +49,8 @@ public class VisibilityCustomizationTest extends ServiceEETest {
    * PropertyVisibilityStrategy are available for marshalling and unmarshalling
    * if JsonbConfig.withPropertyVisibilityStrategy is used
    */
-  public Status testCustomVisibilityConfig() throws Fault {
+  @Test
+  public void testCustomVisibilityConfig() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig()
         .withPropertyVisibilityStrategy(new CustomFieldVisibilityStrategy()));
 
@@ -77,7 +60,7 @@ public class VisibilityCustomizationTest extends ServiceEETest {
       }
     });
     if (!jsonString.matches("\\{\\s*\"floatInstance\"\\s*:\\s*0.0\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to hide fields during marshalling by applying custom visibility strategy using configuration.");
     }
 
@@ -87,11 +70,11 @@ public class VisibilityCustomizationTest extends ServiceEETest {
     if (unmarshalledObject.getStringInstance() != null
         || unmarshalledObject.getIntegerInstance() != 1 
         || unmarshalledObject.getFloatInstance() != 1.0f) {
-      throw new Fault(
+      fail(
           "Failed to ignore fields during unmarshalling by applying custom visibility strategy using configuration.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -103,14 +86,15 @@ public class VisibilityCustomizationTest extends ServiceEETest {
    * PropertyVisibilityStrategy are available for marshalling and unmarshalling
    * if JsonbVisibility annotation is used on a type
    */
-  public Status testCustomVisibilityAnnotation() throws Fault {
+  @Test
+  public void testCustomVisibilityAnnotation() {
     String jsonString = jsonb.toJson(new CustomVisibilityAnnotatedContainer() {
       {
         setStringInstance("Test String");
       }
     });
     if (!jsonString.matches("\\{\\s*\"floatInstance\"\\s*:\\s*0.0\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to hide fields during marshalling by applying custom visibility strategy using JsonbVisibility annotation.");
     }
 
@@ -120,11 +104,11 @@ public class VisibilityCustomizationTest extends ServiceEETest {
     if (unmarshalledObject.getStringInstance() != null
         || unmarshalledObject.getIntegerInstance() != null
         || unmarshalledObject.getFloatInstance() != 0.0f) {
-      throw new Fault(
+      fail(
           "Failed to ignore fields during unmarshalling by applying custom visibility strategy using JsonbVisibility annotation.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -136,14 +120,15 @@ public class VisibilityCustomizationTest extends ServiceEETest {
    * PropertyVisibilityStrategy are available for marshalling and unmarshalling
    * if JsonbVisibility annotation is used on a package
    */
-  public Status testCustomVisibilityPackage() throws Fault {
+  @Test
+  public void testCustomVisibilityPackage() {
     String jsonString = jsonb.toJson(new PackageCustomizedContainer() {
       {
         setStringInstance("Test String");
       }
     });
     if (!jsonString.matches("\\{\\s*\"floatInstance\"\\s*:\\s*0.0\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to hide fields during marshalling by applying custom visibility strategy using JsonbVisibility annotation on package.");
     }
 
@@ -153,10 +138,10 @@ public class VisibilityCustomizationTest extends ServiceEETest {
     if (unmarshalledObject.getStringInstance() != null
         || unmarshalledObject.getIntegerInstance() != null
         || unmarshalledObject.getFloatInstance() != 0.0f) {
-      throw new Fault(
+      fail(
           "Failed to ignore fields during unmarshalling by applying custom visibility strategy using JsonbVisibility annotation on package.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 }

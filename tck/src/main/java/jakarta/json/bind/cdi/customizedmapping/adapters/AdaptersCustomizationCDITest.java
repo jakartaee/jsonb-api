@@ -18,20 +18,18 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.cdi.customizedmapping.adapters;
+package jakarta.json.bind.cdi.customizedmapping.adapters;
 
-import java.util.Properties;
+import static org.junit.Assert.fail;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+import org.junit.Test;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.cdi.customizedmapping.adapters.model.AnimalShelterInjectedAdapter;
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.Animal;
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.Cat;
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.Dog;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.cdi.customizedmapping.adapters.model.AnimalShelterInjectedAdapter;
+import jakarta.json.bind.customizedmapping.adapters.model.Animal;
+import jakarta.json.bind.customizedmapping.adapters.model.Cat;
+import jakarta.json.bind.customizedmapping.adapters.model.Dog;
 
 /**
  * @test
@@ -41,25 +39,9 @@ import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.Dog;
 /*
  * @class.setup_props: webServerHost; webServerPort; ts_home;
  */
-public class AdaptersCustomizationCDITest extends ServiceEETest {
-
-  private static final long serialVersionUID = 10L;
+public class AdaptersCustomizationCDITest {
 
   private final Jsonb jsonb = JsonbBuilder.create();
-
-  public static void main(String[] args) {
-    EETest t = new AdaptersCustomizationCDITest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
 
   /*
    * @testName: testCDISupport
@@ -68,7 +50,8 @@ public class AdaptersCustomizationCDITest extends ServiceEETest {
    *
    * @test_Strategy: Assert that CDI injection is supported in adapters
    */
-  public void testCDISupport() throws Fault {
+  @Test
+  public void testCDISupport() {
     AnimalShelterInjectedAdapter animalShelter = new AnimalShelterInjectedAdapter();
     animalShelter.addAnimal(new Cat(5, "Garfield", 10.5f, true, true));
     animalShelter.addAnimal(new Dog(3, "Milo", 5.5f, false, true));
@@ -80,7 +63,7 @@ public class AdaptersCustomizationCDITest extends ServiceEETest {
         + "\\{\\s*\"age\"\\s*:\\s*3\\s*,\\s*\"barking\"\\s*:\\s*true\\s*,\\s*\"furry\"\\s*:\\s*false\\s*,\\s*\"name\"\\s*:\\s*\"Milo\"\\s*,\\s*\"type\"\\s*:\\s*\"DOG\"\\s*,\\s*\"weight\"\\s*:\\s*5.5\\s*}\\s*,\\s*"
         + "\\{\\s*\"age\"\\s*:\\s*6\\s*,\\s*\"furry\"\\s*:\\s*false\\s*,\\s*\"name\"\\s*:\\s*\"Tweety\"\\s*,\\s*\"type\"\\s*:\\s*\"GENERIC\"\\s*,\\s*\"weight\"\\s*:\\s*0.5\\s*}\\s*"
         + "]\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to correctly marshall complex type hierarchy using an adapter with a CDI managed field configured using JsonbTypeAdapter annotation to a simpler class.");
     }
 
@@ -91,7 +74,7 @@ public class AdaptersCustomizationCDITest extends ServiceEETest {
             + "{ \"age\" : 6, \"furry\" : false, \"name\" : \"Tweety\", \"type\" : \"GENERIC\", \"weight\" : 0.5}"
             + " ] }", AnimalShelterInjectedAdapter.class);
     if (!animalShelter.equals(unmarshalledObject)) {
-      throw new Fault(
+      fail(
           "Failed to correctly unmarshall complex type hierarchy using an adapter with a CDI managed field configured using JsonbTypeAdapter annotation to a simpler class.");
     }
   }

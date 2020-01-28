@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.nullhandling.model.nillable;
+package jakarta.json.bind.customizedmapping.nullhandling.model.nillable;
 
 public class NillablePackageSimpleContainer {
   private String stringInstance;

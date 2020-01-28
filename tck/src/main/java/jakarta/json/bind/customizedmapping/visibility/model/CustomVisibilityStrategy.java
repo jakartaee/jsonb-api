@@ -18,9 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.visibility.model;
+package jakarta.json.bind.customizedmapping.visibility.model;
 
-import javax.json.bind.config.PropertyVisibilityStrategy;
+import jakarta.json.bind.config.PropertyVisibilityStrategy;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 

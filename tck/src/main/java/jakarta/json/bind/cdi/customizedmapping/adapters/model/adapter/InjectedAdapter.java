@@ -18,18 +18,20 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.cdi.customizedmapping.adapters.model.adapter;
+package jakarta.json.bind.cdi.customizedmapping.adapters.model.adapter;
 
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.Animal;
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.Cat;
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.Dog;
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.adapter.AnimalIdentifier;
-import com.sun.ts.tests.jsonb.customizedmapping.adapters.model.adapter.AnimalJson;
+import static jakarta.json.bind.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.CAT;
+import static jakarta.json.bind.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.DOG;
+import static jakarta.json.bind.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.GENERIC;
 
 import javax.inject.Inject;
-import javax.json.bind.adapter.JsonbAdapter;
 
-import static com.sun.ts.tests.jsonb.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.*;
+import jakarta.json.bind.adapter.JsonbAdapter;
+import jakarta.json.bind.customizedmapping.adapters.model.Animal;
+import jakarta.json.bind.customizedmapping.adapters.model.Cat;
+import jakarta.json.bind.customizedmapping.adapters.model.Dog;
+import jakarta.json.bind.customizedmapping.adapters.model.adapter.AnimalIdentifier;
+import jakarta.json.bind.customizedmapping.adapters.model.adapter.AnimalJson;
 
 public class InjectedAdapter implements JsonbAdapter<Animal, AnimalJson> {
   @Inject

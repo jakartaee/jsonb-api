@@ -18,42 +18,24 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.attributeorder;
+package jakarta.json.bind.defaultmapping.attributeorder;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+import static org.junit.Assert.fail;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.defaultmapping.attributeorder.model.ExtendedContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.attributeorder.model.SimpleContainer;
+import org.junit.Test;
 
-import java.util.Properties;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.defaultmapping.attributeorder.model.ExtendedContainer;
+import jakarta.json.bind.defaultmapping.attributeorder.model.SimpleContainer;
 
 /**
  * @test
  * @sources AttributeOrderMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.attributeorder.AttributeOrderMappingTest
  **/
-public class AttributeOrderMappingTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
+public class AttributeOrderMappingTest {
   private final Jsonb jsonb = JsonbBuilder.create();
-
-  public static void main(String[] args) {
-    EETest t = new AttributeOrderMappingTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
 
   /*
    * @testName: testClassAttributeOrder
@@ -64,7 +46,8 @@ public class AttributeOrderMappingTest extends ServiceEETest {
    * lexicographical order and unmarshalled in the order of appearance in the
    * JSON document
    */
-  public void testClassAttributeOrder() throws Fault {
+  @Test
+  public void testClassAttributeOrder() {
     String jsonString = jsonb.toJson(new SimpleContainer() {
       {
         setIntInstance(0);
@@ -76,14 +59,14 @@ public class AttributeOrderMappingTest extends ServiceEETest {
     if (!jsonString.matches(toMatch)) {
       System.out.append("serialized json string ").println(jsonString);
       System.out.append("does not match expected ").println(toMatch);
-      throw new Fault("Failed to lexicographically order class attributes.");
+      fail("Failed to lexicographically order class attributes.");
     }
 
     SimpleContainer unmarshalledObject = jsonb.fromJson(
         "{ \"intInstance\" : 1, \"stringInstance\" : \"Test String\", \"longInstance\" : 0 }",
         SimpleContainer.class);
     if (unmarshalledObject.getIntInstance() != 3) {
-      throw new Fault("Failed to set class attributes in order of appearance.");
+      fail("Failed to set class attributes in order of appearance.");
     }
   }
 
@@ -96,7 +79,8 @@ public class AttributeOrderMappingTest extends ServiceEETest {
    * before declared fields of child class and all are unmarshalled in the order
    * of appearance in the JSON document
    */
-  public Status testExtendedClassAttributeOrder() throws Fault {
+  @Test
+  public void testExtendedClassAttributeOrder() {
     String jsonString = jsonb.toJson(new ExtendedContainer() {
       {
         setIntInstance(0);
@@ -110,17 +94,17 @@ public class AttributeOrderMappingTest extends ServiceEETest {
     if (!jsonString.matches(toMatch)) {
       System.out.append("serialized json string ").println(jsonString);
       System.out.append("does not match expected ").println(toMatch);
-      throw new Fault("Failed to correctly order extended class attributes.");
+      fail("Failed to correctly order extended class attributes.");
     }
 
     jsonString = "{ \"intInstance\" : 1, \"shortInstance\" : 0, \"stringInstance\" : \"Test String\", \"floatInstance\" : 0.0, \"longInstance\" : 0 }";
     ExtendedContainer unmarshalledObject = jsonb.fromJson(jsonString,
         ExtendedContainer.class);
     if (unmarshalledObject.getIntInstance() != 5) {
-      throw new Fault(
+      fail(
           "Failed to set extended class attributes in order of appearance.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 }

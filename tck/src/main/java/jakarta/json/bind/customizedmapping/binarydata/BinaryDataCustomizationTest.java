@@ -18,41 +18,24 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.binarydata;
+package jakarta.json.bind.customizedmapping.binarydata;
 
-import java.util.Properties;
+import static org.junit.Assert.fail;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
-import javax.json.bind.JsonbConfig;
-import javax.json.bind.config.BinaryDataStrategy;
+import org.junit.Test;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.customizedmapping.binarydata.model.BinaryDataContainer;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.JsonbConfig;
+import jakarta.json.bind.config.BinaryDataStrategy;
+import jakarta.json.bind.customizedmapping.binarydata.model.BinaryDataContainer;
 
 /**
  * @test
  * @sources BinaryDataCustomizationTest.java
  * @executeClass com.sun.ts.tests.jsonb.customizedmapping.binarydata.BinaryDataCustomizationTest
  **/
-public class BinaryDataCustomizationTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
-  public static void main(String[] args) {
-    EETest t = new BinaryDataCustomizationTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
+public class BinaryDataCustomizationTest {
 
   /*
    * @testName: testByteBinaryDataEncoding
@@ -62,14 +45,15 @@ public class BinaryDataCustomizationTest extends ServiceEETest {
    * @test_Strategy: Assert that binary data is correctly encoded using BYTE
    * binary data encoding
    */
-  public Status testByteBinaryDataEncoding() throws Fault {
+  @Test
+  public void testByteBinaryDataEncoding() {
     Jsonb jsonb = JsonbBuilder.create(
         new JsonbConfig().withBinaryDataStrategy(BinaryDataStrategy.BYTE));
 
     String jsonString = jsonb.toJson(new BinaryDataContainer());
     if (!jsonString.matches(
         "\\{\\s*\"data\"\\s*:\\s*\\[\\s*84\\s*,\\s*101\\s*,\\s*115\\s*,\\s*116\\s*,\\s*32\\s*,\\s*83\\s*,\\s*116\\s*,\\s*114\\s*,\\s*105\\s*,\\s*110\\s*,\\s*103\\s*]\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to correctly marshal binary data using BYTE binary data encoding.");
     }
 
@@ -77,11 +61,11 @@ public class BinaryDataCustomizationTest extends ServiceEETest {
         "{ \"data\" : [ 84, 101, 115, 116, 32, 83, 116, 114, 105, 110, 103 ] }",
         BinaryDataContainer.class);
     if (!"Test String".equals(new String(unmarshalledObject.getData()))) {
-      throw new Fault(
+      fail(
           "Failed to correctly unmarshal binary data using BYTE binary data encoding.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -92,25 +76,26 @@ public class BinaryDataCustomizationTest extends ServiceEETest {
    * @test_Strategy: Assert that binary data is correctly encoded using BASE_64
    * binary data encoding
    */
-  public Status testBase64BinaryDataEncoding() throws Fault {
+  @Test
+  public void testBase64BinaryDataEncoding() {
     Jsonb jsonb = JsonbBuilder.create(
         new JsonbConfig().withBinaryDataStrategy(BinaryDataStrategy.BASE_64));
 
     String jsonString = jsonb.toJson(new BinaryDataContainer());
     if (!jsonString
         .matches("\\{\\s*\"data\"\\s*:\\s*\"VGVzdCBTdHJpbmc=\"\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to correctly marshal binary data using BASE_64 binary data encoding.");
     }
 
     BinaryDataContainer unmarshalledObject = jsonb.fromJson(
         "{ \"data\" : \"VGVzdCBTdHJpbmc\" }", BinaryDataContainer.class);
     if (!"Test String".equals(new String(unmarshalledObject.getData()))) {
-      throw new Fault(
+      fail(
           "Failed to correctly unmarshal binary data using BASE_64 binary data encoding.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -121,24 +106,25 @@ public class BinaryDataCustomizationTest extends ServiceEETest {
    * @test_Strategy: Assert that binary data is correctly encoded using
    * BASE_64_URL binary data encoding
    */
-  public Status testBase64UrlBinaryDataEncoding() throws Fault {
+  @Test
+  public void testBase64UrlBinaryDataEncoding() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig()
         .withBinaryDataStrategy(BinaryDataStrategy.BASE_64_URL));
 
     String jsonString = jsonb.toJson(new BinaryDataContainer());
     if (!jsonString
         .matches("\\{\\s*\"data\"\\s*:\\s*\"VGVzdCBTdHJpbmc=\"\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to correctly marshal binary data using BASE_64_URL binary data encoding.");
     }
 
     BinaryDataContainer unmarshalledObject = jsonb.fromJson(
         "{ \"data\" : \"VGVzdCBTdHJpbmc=\" }", BinaryDataContainer.class);
     if (!"Test String".equals(new String(unmarshalledObject.getData()))) {
-      throw new Fault(
+      fail(
           "Failed to correctly unmarshal binary data using BASE_64_URL binary data encoding.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 }

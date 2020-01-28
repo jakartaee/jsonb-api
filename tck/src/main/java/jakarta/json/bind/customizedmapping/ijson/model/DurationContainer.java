@@ -18,11 +18,11 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.ijson.model;
+package jakarta.json.bind.customizedmapping.ijson.model;
 
 import java.time.Duration;
 
-import com.sun.ts.tests.jsonb.TypeContainer;
+import jakarta.json.bind.TypeContainer;
 
 public class DurationContainer implements TypeContainer<Duration> {
   private Duration instance;

@@ -18,9 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.instantiation.model;
+package jakarta.json.bind.customizedmapping.instantiation.model;
 
-import javax.json.bind.annotation.JsonbCreator;
+import jakarta.json.bind.annotation.JsonbCreator;
 
 public class CreatorPlusFactoryContainer {
   private String stringInstance;

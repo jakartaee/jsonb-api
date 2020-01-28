@@ -18,9 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.visibility.model;
+package jakarta.json.bind.customizedmapping.visibility.model;
 
-import javax.json.bind.annotation.JsonbVisibility;
+import jakarta.json.bind.annotation.JsonbVisibility;
 
 @JsonbVisibility(CustomVisibilityStrategy.class)
 public class CustomVisibilityAnnotatedContainer {

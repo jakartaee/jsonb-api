@@ -18,49 +18,33 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.numberformat;
+package jakarta.json.bind.customizedmapping.numberformat;
 
-import java.util.Properties;
+import static org.junit.Assert.fail;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+import javax.net.ssl.SSLEngineResult.Status;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.customizedmapping.numberformat.model.AccessorCustomizedDoubleContainer;
-import com.sun.ts.tests.jsonb.customizedmapping.numberformat.model.FieldCustomizedDoubleContainer;
-import com.sun.ts.tests.jsonb.customizedmapping.numberformat.model.TypeCustomizedDoubleContainer;
-import com.sun.ts.tests.jsonb.customizedmapping.numberformat.model.TypeCustomizedFieldOverriddenDoubleContainer;
-import com.sun.ts.tests.jsonb.customizedmapping.numberformat.model.customized.PackageCustomizedDoubleContainer;
-import com.sun.ts.tests.jsonb.customizedmapping.numberformat.model.customized.PackageCustomizedTypeOverriddenDoubleContainer;
-import com.sun.ts.tests.jsonb.customizedmapping.numberformat.model.customized.PackageCustomizedTypeOverriddenFieldOverriddenDoubleContainer;
+import org.junit.Test;
+
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.customizedmapping.numberformat.model.AccessorCustomizedDoubleContainer;
+import jakarta.json.bind.customizedmapping.numberformat.model.FieldCustomizedDoubleContainer;
+import jakarta.json.bind.customizedmapping.numberformat.model.TypeCustomizedDoubleContainer;
+import jakarta.json.bind.customizedmapping.numberformat.model.TypeCustomizedFieldOverriddenDoubleContainer;
+import jakarta.json.bind.customizedmapping.numberformat.model.customized.PackageCustomizedDoubleContainer;
+import jakarta.json.bind.customizedmapping.numberformat.model.customized.PackageCustomizedTypeOverriddenDoubleContainer;
+import jakarta.json.bind.customizedmapping.numberformat.model.customized.PackageCustomizedTypeOverriddenFieldOverriddenDoubleContainer;
 
 /**
  * @test
  * @sources NumberFormatCustomizationTest.java
  * @executeClass com.sun.ts.tests.jsonb.customizedmapping.numberformat.NumberFormatCustomizationTest
  **/
-public class NumberFormatCustomizationTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
+public class NumberFormatCustomizationTest {
   private static final String FRENCH_NUMBER = "\"123\\u00a0456,789\"";
 
   private final Jsonb jsonb = JsonbBuilder.create();
-
-  public static void main(String[] args) {
-    EETest t = new NumberFormatCustomizationTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
 
   /*
    * @testName: testNumberFormatPackage
@@ -70,7 +54,8 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
    * @test_Strategy: Assert that package annotation with JsonbNumberFormat is
    * correctly applied
    */
-  public Status testNumberFormatPackage() throws Fault {
+  @Test
+  public void testNumberFormatPackage() {
     String jsonString = jsonb.toJson(new PackageCustomizedDoubleContainer() {
       {
         setInstance(123456.789);
@@ -78,7 +63,7 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
     });
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*:\\s*\"123.456,8\"\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to correctly customize number format during marshalling using JsonbNumberFormat annotation on package.");
     }
 
@@ -86,11 +71,11 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
         "{ \"instance\" : \"123.456,789\" }",
         PackageCustomizedDoubleContainer.class);
     if (unmarshalledObject.getInstance() != 123456.789) {
-      throw new Fault(
+      fail(
           "Failed to correctly customize number format during unmarshalling using JsonbNumberFormat annotation on package.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -101,7 +86,8 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
    * @test_Strategy: Assert that type annotation with JsonbNumberFormat is
    * correctly applied
    */
-  public Status testNumberFormatType() throws Fault {
+  @Test
+  public void testNumberFormatType() {
     String jsonString = jsonb.toJson(new TypeCustomizedDoubleContainer() {
       {
         setInstance(123456.789);
@@ -109,7 +95,7 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
     });
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*:\\s*\"123,456.79\"\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to correctly customize number format during marshalling using JsonbNumberFormat annotation on type.");
     }
 
@@ -117,11 +103,11 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
         "{ \"instance\" : \"123,456.789\" }",
         TypeCustomizedDoubleContainer.class);
     if (unmarshalledObject.getInstance() != 123456.789) {
-      throw new Fault(
+      fail(
           "Failed to correctly customize number format during unmarshalling using JsonbNumberFormat annotation on type.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -132,7 +118,8 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
    * @test_Strategy: Assert that field annotation with JsonbNumberFormat is
    * correctly applied
    */
-  public Status testNumberFormatField() throws Fault {
+  @Test
+  public void testNumberFormatField() {
     String jsonString = jsonb.toJson(new FieldCustomizedDoubleContainer() {
       {
         setInstance(123456.789);
@@ -140,7 +127,7 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
     });
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*:\\s*\"123\\u00a0456,789\"\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to correctly customize number format during marshalling using JsonbNumberFormat annotation on field.");
     }
 
@@ -148,11 +135,11 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
         "{ \"instance\" : " + FRENCH_NUMBER + " }",
         FieldCustomizedDoubleContainer.class);
     if (unmarshalledObject.getInstance() != 123456.789) {
-      throw new Fault(
+      fail(
           "Failed to correctly customize number format during unmarshalling using JsonbNumberFormat annotation on field.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -163,7 +150,8 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
    * @test_Strategy: Assert that accessor annotation with JsonbNumberFormat is
    * correctly individually applied for marshalling and unmarshalling
    */
-  public Status testNumberFormatAccessors() throws Fault {
+  @Test
+  public void testNumberFormatAccessors() {
     String jsonString = jsonb.toJson(new AccessorCustomizedDoubleContainer() {
       {
         setInstance(123456.789);
@@ -171,7 +159,7 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
     });
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*:\\s*\"123,456.79\"\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to correctly customize number format during marshalling using JsonbNumberFormat annotation on getter.");
     }
 
@@ -179,11 +167,11 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
         "{ \"instance\" : " + FRENCH_NUMBER + " }",
         AccessorCustomizedDoubleContainer.class);
     if (unmarshalledObject.getInstance() != 123456.789) {
-      throw new Fault(
+      fail(
           "Failed to correctly customize number format during unmarshalling using JsonbNumberFormat annotation on setter.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -194,7 +182,8 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
    * @test_Strategy: Assert that package annotation with JsonbNumberFormat is
    * correctly overridden by type annotation with JsonbNumberFormat
    */
-  public Status testNumberFormatPackageTypeOverride() throws Fault {
+  @Test
+  public void testNumberFormatPackageTypeOverride() {
     String jsonString = jsonb
         .toJson(new PackageCustomizedTypeOverriddenDoubleContainer() {
           {
@@ -203,7 +192,7 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
         });
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*:\\s*\"123,456.79\"\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to correctly override number format customization using JsonbNumberFormat annotation on package during marshalling using JsonbNumberFormat annotation on type.");
     }
 
@@ -211,11 +200,11 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
         .fromJson("{ \"instance\" : \"123,456.789\" }",
             PackageCustomizedTypeOverriddenDoubleContainer.class);
     if (unmarshalledObject.getInstance() != 123456.789) {
-      throw new Fault(
+      fail(
           "Failed to correctly override number format customization using JsonbNumberFormat annotation on package during unmarshalling using JsonbNumberFormat annotation on type.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -226,7 +215,8 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
    * @test_Strategy: Assert that type annotation with JsonbNumberFormat is
    * correctly overridden by field annotation with JsonbNumberFormat
    */
-  public Status testNumberFormatTypeFieldOverride() throws Fault {
+  @Test
+  public void testNumberFormatTypeFieldOverride() {
     String jsonString = jsonb
         .toJson(new TypeCustomizedFieldOverriddenDoubleContainer() {
           {
@@ -235,7 +225,7 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
         });
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*:\\s*\"123,456.8\"\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to correctly customize number format during marshalling using JsonbNumberFormat annotation on type.");
     }
 
@@ -243,11 +233,11 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
         .fromJson("{ \"instance\" : \"123,456.789\" }",
             TypeCustomizedFieldOverriddenDoubleContainer.class);
     if (unmarshalledObject.getInstance() != 123456.789) {
-      throw new Fault(
+      fail(
           "Failed to correctly customize number format during unmarshalling using JsonbNumberFormat annotation on type.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -259,8 +249,8 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
    * JsonbNumberFormat is correctly overridden by field annotation with
    * JsonbNumberFormat
    */
-  public Status testNumberFormatPackageTypeOverrideFieldOverride()
-      throws Fault {
+  @Test
+  public void testNumberFormatPackageTypeOverrideFieldOverride() {
     String jsonString = jsonb.toJson(
         new PackageCustomizedTypeOverriddenFieldOverriddenDoubleContainer() {
           {
@@ -269,7 +259,7 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
         });
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*:\\s*\"123.456,789\"\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to correctly override number format customization using JsonbNumberFormat annotation on package during marshalling using JsonbNumberFormat annotation on type.");
     }
 
@@ -277,10 +267,10 @@ public class NumberFormatCustomizationTest extends ServiceEETest {
         .fromJson("{ \"instance\" : \"123.456,789\" }",
             PackageCustomizedTypeOverriddenFieldOverriddenDoubleContainer.class);
     if (unmarshalledObject.getInstance() != 123456.789) {
-      throw new Fault(
+      fail(
           "Failed to correctly override number format customization using JsonbNumberFormat annotation on package during unmarshalling using JsonbNumberFormat annotation on type.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 }

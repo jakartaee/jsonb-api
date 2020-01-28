@@ -18,53 +18,35 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.jsonptypes;
+package jakarta.json.bind.defaultmapping.jsonptypes;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonNumber;
-import javax.json.JsonObject;
-import javax.json.JsonString;
-import javax.json.JsonStructure;
-import javax.json.JsonValue;
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+import static org.junit.Assert.fail;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.defaultmapping.jsonptypes.model.JsonArrayContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.jsonptypes.model.JsonNumberContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.jsonptypes.model.JsonObjectContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.jsonptypes.model.JsonStringContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.jsonptypes.model.JsonStructureContainer;
-import com.sun.ts.tests.jsonb.defaultmapping.jsonptypes.model.JsonValueContainer;
+import org.junit.Test;
 
-import java.util.Properties;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonNumber;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonString;
+import jakarta.json.JsonStructure;
+import jakarta.json.JsonValue;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.defaultmapping.jsonptypes.model.JsonArrayContainer;
+import jakarta.json.bind.defaultmapping.jsonptypes.model.JsonNumberContainer;
+import jakarta.json.bind.defaultmapping.jsonptypes.model.JsonObjectContainer;
+import jakarta.json.bind.defaultmapping.jsonptypes.model.JsonStringContainer;
+import jakarta.json.bind.defaultmapping.jsonptypes.model.JsonStructureContainer;
+import jakarta.json.bind.defaultmapping.jsonptypes.model.JsonValueContainer;
 
 /**
  * @test
  * @sources JSONPTypesMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.jsonptypes.JSONPTypesMappingTest
  **/
-public class JSONPTypesMappingTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
+public class JSONPTypesMappingTest {
   private final Jsonb jsonb = JsonbBuilder.create();
-
-  public static void main(String[] args) {
-    EETest t = new JSONPTypesMappingTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
 
   /*
    * @testName: testJsonObjectMapping
@@ -74,7 +56,8 @@ public class JSONPTypesMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that JsonObject type is correctly handled
    */
-  public Status testJsonObjectMapping() throws Fault {
+  @Test
+  public void testJsonObjectMapping() {
     JsonObject instance = Json.createObjectBuilder()
         .add("jsonObjectInstance",
             Json.createObjectBuilder().add("innerInstance",
@@ -106,7 +89,7 @@ public class JSONPTypesMappingTest extends ServiceEETest {
         + "\\s*\"jsonTrueInstance\"\\s*:\\s*true\\s*,"
         + "\\s*\"jsonFalseInstance\"\\s*:\\s*false\\s*,"
         + "\\s*\"jsonNullInstance\"\\s*:\\s*null\\s*" + "\\}\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to marshal object with JsonObject attribute value.");
     }
 
@@ -123,11 +106,11 @@ public class JSONPTypesMappingTest extends ServiceEETest {
             + "} }", JsonObjectContainer.class);
     if (!instance.toString()
         .equals(unmarshalledObject.getInstance().toString())) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal object with JsonObject attribute value.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -138,7 +121,8 @@ public class JSONPTypesMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that empty JsonObject is correctly handled
    */
-  public Status testEmptyJsonObjectMapping() throws Fault {
+  @Test
+  public void testEmptyJsonObjectMapping() {
     JsonObject instance = Json.createObjectBuilder().build();
     String jsonString = jsonb.toJson(new JsonObjectContainer() {
       {
@@ -146,7 +130,7 @@ public class JSONPTypesMappingTest extends ServiceEETest {
       }
     });
     if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*\\{\\s*\\}\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to marshal object with empty JsonObject attribute value.");
     }
 
@@ -154,11 +138,11 @@ public class JSONPTypesMappingTest extends ServiceEETest {
         .fromJson("{ \"instance\" : { } }", JsonObjectContainer.class);
     if (!instance.toString()
         .equals(unmarshalledObject.getInstance().toString())) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal object with empty JsonObject attribute value.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -169,7 +153,8 @@ public class JSONPTypesMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that JsonArray type is correctly handled
    */
-  public Status testJsonArrayMapping() throws Fault {
+  @Test
+  public void testJsonArrayMapping() {
     JsonArray instance = Json.createArrayBuilder()
         .add(Json.createObjectBuilder().add("arrayInstance1",
             "Array Test String 1"))
@@ -186,7 +171,7 @@ public class JSONPTypesMappingTest extends ServiceEETest {
         + "\\s*\\{\\s*\"arrayInstance1\"\\s*:\\s*\"Array Test String 1\"\\s*\\}\\s*,"
         + "\\s*\\{\\s*\"arrayInstance2\"\\s*:\\s*\"Array Test String 2\"\\s*\\}\\s*"
         + "\\]\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to marshal object with JsonArray attribute value.");
     }
 
@@ -197,11 +182,11 @@ public class JSONPTypesMappingTest extends ServiceEETest {
         JsonArrayContainer.class);
     if (!instance.toString()
         .equals(unmarshalledObject.getInstance().toString())) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal object with JsonArray attribute value.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -212,7 +197,8 @@ public class JSONPTypesMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that empty JsonArray is correctly handled
    */
-  public Status testEmptyJsonArrayMapping() throws Fault {
+  @Test
+  public void testEmptyJsonArrayMapping() {
     JsonArray instance = Json.createArrayBuilder().build();
     String jsonString = jsonb.toJson(new JsonArrayContainer() {
       {
@@ -220,7 +206,7 @@ public class JSONPTypesMappingTest extends ServiceEETest {
       }
     });
     if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*\\[\\s*\\]\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to marshal object with empty JsonArray attribute value.");
     }
 
@@ -228,11 +214,11 @@ public class JSONPTypesMappingTest extends ServiceEETest {
         .fromJson("{ \"instance\" : [ ] }", JsonArrayContainer.class);
     if (!instance.toString()
         .equals(unmarshalledObject.getInstance().toString())) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal object with empty JsonArray attribute value.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -244,7 +230,8 @@ public class JSONPTypesMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that JsonStructure of JsonObject is correctly
    * handled
    */
-  public Status testJsonObjectStructureMapping() throws Fault {
+  @Test
+  public void testJsonObjectStructureMapping() {
     JsonStructure instance = Json.createObjectBuilder()
         .add("jsonObjectInstance",
             Json.createObjectBuilder().add("innerInstance",
@@ -276,7 +263,7 @@ public class JSONPTypesMappingTest extends ServiceEETest {
         + "\\s*\"jsonTrueInstance\"\\s*:\\s*true\\s*,"
         + "\\s*\"jsonFalseInstance\"\\s*:\\s*false\\s*,"
         + "\\s*\"jsonNullInstance\"\\s*:\\s*null\\s*" + "\\}\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to marshal object with JsonObject JsonStructure attribute value.");
     }
 
@@ -293,11 +280,11 @@ public class JSONPTypesMappingTest extends ServiceEETest {
             + "} }", JsonStructureContainer.class);
     if (!instance.toString()
         .equals(unmarshalledObject.getInstance().toString())) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal object with JsonObject JsonStructure attribute value.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -308,7 +295,8 @@ public class JSONPTypesMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that JsonStructure of JsonArray is correctly handled
    */
-  public Status testJsonArrayStructureMapping() throws Fault {
+  @Test
+  public void testJsonArrayStructureMapping() {
     JsonStructure instance = Json.createArrayBuilder()
         .add(Json.createObjectBuilder().add("arrayInstance1",
             "Array Test String 1"))
@@ -325,7 +313,7 @@ public class JSONPTypesMappingTest extends ServiceEETest {
         + "\\s*\\{\\s*\"arrayInstance1\"\\s*:\\s*\"Array Test String 1\"\\s*\\}\\s*,"
         + "\\s*\\{\\s*\"arrayInstance2\"\\s*:\\s*\"Array Test String 2\"\\s*\\}\\s*"
         + "\\]\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to marshal object with JsonArray JsonStructure attribute value.");
     }
 
@@ -336,11 +324,11 @@ public class JSONPTypesMappingTest extends ServiceEETest {
         JsonStructureContainer.class);
     if (!instance.toString()
         .equals(unmarshalledObject.getInstance().toString())) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal object with JsonArray JsonStructure attribute value.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -351,7 +339,8 @@ public class JSONPTypesMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that JsonValue type is correctly handled
    */
-  public Status testJsonValueMapping() throws Fault {
+  @Test
+  public void testJsonValueMapping() {
     JsonValue instance = Json.createObjectBuilder()
         .add("stringInstance", "Test String").build();
     String jsonString = jsonb.toJson(new JsonValueContainer() {
@@ -361,7 +350,7 @@ public class JSONPTypesMappingTest extends ServiceEETest {
     });
     if (!jsonString.matches(
         "\\{\\s*\"instance\"\\s*:\\s*\\{\\s*\"stringInstance\"\\s*:\\s*\"Test String\"\\s*\\}\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to marshal object with JsonValue attribute value.");
     }
 
@@ -370,11 +359,11 @@ public class JSONPTypesMappingTest extends ServiceEETest {
         JsonValueContainer.class);
     if (!instance.toString()
         .equals(unmarshalledObject.getInstance().toString())) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal object with JsonValue attribute value.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -385,7 +374,8 @@ public class JSONPTypesMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that JsonString type is correctly handled
    */
-  public Status testJsonStringMapping() throws Fault {
+  @Test
+  public void testJsonStringMapping() {
     JsonString instance = Json.createObjectBuilder()
         .add("stringInstance", "Test String").build()
         .getJsonString("stringInstance");
@@ -396,7 +386,7 @@ public class JSONPTypesMappingTest extends ServiceEETest {
     });
     if (!jsonString
         .matches("\\{\\s*\"instance\"\\s*:\\s*\"Test String\"\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to marshal object with JsonString attribute value.");
     }
 
@@ -404,11 +394,11 @@ public class JSONPTypesMappingTest extends ServiceEETest {
         "{ \"instance\" : \"Test String\" }", JsonStringContainer.class);
     if (!instance.toString()
         .equals(unmarshalledObject.getInstance().toString())) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal object with JsonString attribute value.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -419,7 +409,8 @@ public class JSONPTypesMappingTest extends ServiceEETest {
    *
    * @test_Strategy: Assert that JsonNumber type is correctly handled
    */
-  public Status testJsonNumberMapping() throws Fault {
+  @Test
+  public void testJsonNumberMapping() {
     JsonNumber instance = Json.createObjectBuilder().add("intInstance", 0)
         .build().getJsonNumber("intInstance");
     String jsonString = jsonb.toJson(new JsonNumberContainer() {
@@ -428,7 +419,7 @@ public class JSONPTypesMappingTest extends ServiceEETest {
       }
     });
     if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*0\\s*\\}")) {
-      throw new Fault(
+      fail(
           "Failed to marshal object with JsonNumber attribute value.");
     }
 
@@ -436,10 +427,10 @@ public class JSONPTypesMappingTest extends ServiceEETest {
         .fromJson("{ \"instance\" : 0 }", JsonNumberContainer.class);
     if (!instance.toString()
         .equals(unmarshalledObject.getInstance().toString())) {
-      throw new Fault(
+      fail(
           "Failed to unmarshal object with JsonNumber attribute value.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 }

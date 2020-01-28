@@ -18,9 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.enums.model;
+package jakarta.json.bind.defaultmapping.enums.model;
 
-import com.sun.ts.tests.jsonb.TypeContainer;
+import jakarta.json.bind.TypeContainer;
 
 public class EnumContainer implements TypeContainer<EnumContainer.Enumeration> {
   public enum Enumeration {

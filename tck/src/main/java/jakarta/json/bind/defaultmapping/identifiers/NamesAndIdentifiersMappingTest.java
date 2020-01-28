@@ -18,41 +18,24 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.identifiers;
+package jakarta.json.bind.defaultmapping.identifiers;
 
-import java.util.Properties;
+import static org.junit.Assert.fail;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.MappingTester;
-import com.sun.ts.tests.jsonb.defaultmapping.identifiers.model.StringContainer;
+import org.junit.Test;
 
-import javax.json.bind.JsonbBuilder;
-import javax.json.bind.JsonbConfig;
-import javax.json.bind.JsonbException;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.JsonbConfig;
+import jakarta.json.bind.JsonbException;
+import jakarta.json.bind.MappingTester;
+import jakarta.json.bind.defaultmapping.identifiers.model.StringContainer;
 
 /**
  * @test
  * @sources NamesAndIdentifiersMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.identifiers.NamesAndIdentifiersMappingTest
  **/
-public class NamesAndIdentifiersMappingTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
-  public static void main(String[] args) {
-    EETest t = new NamesAndIdentifiersMappingTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
+public class NamesAndIdentifiersMappingTest {
 
   /*
    * @testName: testSimpleMapping
@@ -63,8 +46,9 @@ public class NamesAndIdentifiersMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that java field name can be correctly mapped to json
    * identifier and vice versa
    */
-  public Status testSimpleMapping() throws Fault {
-    return new MappingTester<>(StringContainer.class).test("Test String",
+  @Test
+  public void testSimpleMapping() {
+    new MappingTester<>(StringContainer.class).test("Test String",
         "\"Test String\"");
   }
 
@@ -77,17 +61,18 @@ public class NamesAndIdentifiersMappingTest extends ServiceEETest {
    * @test_Strategy: Assert that error is reported if a Java identifier with
    * corresponding name as in json document cannot be found or is not accessible
    */
-  public Status testSimpleMappingNoCorrespondingIdentifierWithFailOnUnknownProperties()
-      throws Fault {
+  @Test
+  public void testSimpleMappingNoCorrespondingIdentifierWithFailOnUnknownProperties()
+      {
     try {
       JsonbBuilder
           .create(new JsonbConfig()
               .setProperty("jsonb.fail-on-unknown-properties", true))
           .fromJson("{ \"data\" : \"Test String\" }", StringContainer.class);
-      throw new Fault(
+      fail(
           "A JsonbException is expected if a Java identifier with corresponding name as in json document cannot be found.");
     } catch (JsonbException x) {
-      return Status.passed("OK");
+      return; // passed
     }
   }
 }

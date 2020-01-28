@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb;
+package jakarta.json.bind;
 
 public interface TypeContainer<T> {
   T getInstance();

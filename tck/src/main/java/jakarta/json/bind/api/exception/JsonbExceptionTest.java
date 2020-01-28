@@ -18,38 +18,20 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.api.exception;
+package jakarta.json.bind.api.exception;
 
-import java.util.Properties;
+import static org.junit.Assert.fail;
 
-import javax.json.bind.JsonbException;
+import org.junit.Test;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
+import jakarta.json.bind.JsonbException;
 
 /**
  * @test
  * @sources JsonbExceptionTest.java
  * @executeClass com.sun.ts.tests.jsonb.api.JsonbExceptionTest
  **/
-public class JsonbExceptionTest extends ServiceEETest {
-
-  private static final long serialVersionUID = 10L;
-
-  public static void main(String[] args) {
-    EETest t = new JsonbExceptionTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
+public class JsonbExceptionTest {
 
   /*
    * @testName: testJsonbExceptionString
@@ -60,11 +42,12 @@ public class JsonbExceptionTest extends ServiceEETest {
    * a new RuntimeException with cause uninitialized and that subsequent call to
    * #initCause may initialize the cause
    */
-  public Status testJsonbExceptionString() throws Fault {
+  @Test
+  public void testJsonbExceptionString() {
     RuntimeException jsonbException = new JsonbException("Exception message");
     if (!"Exception message".equals(jsonbException.getMessage())
         || jsonbException.getCause() != null) {
-      throw new Fault(
+      fail(
           "Failed to create JsonbException with an exception message and empty cause.");
     }
 
@@ -72,11 +55,11 @@ public class JsonbExceptionTest extends ServiceEETest {
     jsonbException.initCause(exception);
     if (!"Exception message".equals(jsonbException.getMessage())
         || jsonbException.getCause() != exception) {
-      throw new Fault(
+      fail(
           "Failed to initialize the JsonbException cause with a call to initCause method.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -88,16 +71,17 @@ public class JsonbExceptionTest extends ServiceEETest {
    * arguments is creating a new RuntimeException with exception message and
    * cause initialized
    */
-  public Status testJsonbExceptionStringThrowable() throws Fault {
+  @Test
+  public void testJsonbExceptionStringThrowable() {
     RuntimeException cause = new RuntimeException();
     RuntimeException jsonbException = new JsonbException("Exception message",
         cause);
     if (!"Exception message".equals(jsonbException.getMessage())
         || jsonbException.getCause() != cause) {
-      throw new Fault(
+      fail(
           "Failed to create JsonbException with an exception message and cause.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 }

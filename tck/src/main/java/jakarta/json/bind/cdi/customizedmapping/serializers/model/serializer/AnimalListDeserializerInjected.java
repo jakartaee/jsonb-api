@@ -18,19 +18,19 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.cdi.customizedmapping.serializers.model.serializer;
+package jakarta.json.bind.cdi.customizedmapping.serializers.model.serializer;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.json.bind.serializer.DeserializationContext;
-import javax.json.bind.serializer.JsonbDeserializer;
-import javax.json.stream.JsonParser;
+import jakarta.json.bind.serializer.DeserializationContext;
+import jakarta.json.bind.serializer.JsonbDeserializer;
+import jakarta.json.stream.JsonParser;
 
-import com.sun.ts.tests.jsonb.customizedmapping.serializers.model.Animal;
-import com.sun.ts.tests.jsonb.customizedmapping.serializers.model.serializer.AnimalDeserializer;
+import jakarta.json.bind.customizedmapping.serializers.model.Animal;
+import jakarta.json.bind.customizedmapping.serializers.model.serializer.AnimalDeserializer;
 
 public class AnimalListDeserializerInjected
     implements JsonbDeserializer<List<Animal>> {

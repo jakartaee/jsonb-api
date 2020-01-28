@@ -18,7 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.ijson;
+package jakarta.json.bind.customizedmapping.ijson;
+
+import static org.junit.Assert.fail;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -26,47 +28,29 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Properties;
 import java.util.TimeZone;
 
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
-import javax.json.bind.JsonbConfig;
-import javax.json.bind.JsonbException;
+import org.junit.Test;
 
-import com.sun.javatest.Status;
-import com.sun.ts.lib.harness.EETest;
-import com.sun.ts.lib.harness.ServiceEETest;
-import com.sun.ts.tests.jsonb.customizedmapping.ijson.model.BinaryDataContainer;
-import com.sun.ts.tests.jsonb.customizedmapping.ijson.model.DateContainer;
-import com.sun.ts.tests.jsonb.customizedmapping.ijson.model.CalendarContainer;
-import com.sun.ts.tests.jsonb.customizedmapping.ijson.model.DurationContainer;
-import com.sun.ts.tests.jsonb.customizedmapping.ijson.model.GregorianCalendarContainer;
-import com.sun.ts.tests.jsonb.customizedmapping.ijson.model.InstantContainer;
-import com.sun.ts.tests.jsonb.customizedmapping.ijson.model.LocalDateContainer;
-import com.sun.ts.tests.jsonb.customizedmapping.ijson.model.LocalDateTimeContainer;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.JsonbConfig;
+import jakarta.json.bind.JsonbException;
+import jakarta.json.bind.customizedmapping.ijson.model.BinaryDataContainer;
+import jakarta.json.bind.customizedmapping.ijson.model.CalendarContainer;
+import jakarta.json.bind.customizedmapping.ijson.model.DateContainer;
+import jakarta.json.bind.customizedmapping.ijson.model.DurationContainer;
+import jakarta.json.bind.customizedmapping.ijson.model.GregorianCalendarContainer;
+import jakarta.json.bind.customizedmapping.ijson.model.InstantContainer;
+import jakarta.json.bind.customizedmapping.ijson.model.LocalDateContainer;
+import jakarta.json.bind.customizedmapping.ijson.model.LocalDateTimeContainer;
 
 /**
  * @test
  * @sources IJsonSupportTest.java
  * @executeClass com.sun.ts.tests.jsonb.customizedmapping.ijson.IJsonSupportTest
  **/
-public class IJsonSupportTest extends ServiceEETest {
-  private static final long serialVersionUID = 10L;
-
-  public static void main(String[] args) {
-    EETest t = new IJsonSupportTest();
-    Status s = t.run(args, System.out, System.err);
-    s.exit();
-  }
-
-  public void setup(String[] args, Properties p) throws Fault {
-    logMsg("setup ok");
-  }
-
-  public void cleanup() throws Fault {
-    logMsg("cleanup ok");
-  }
+public class IJsonSupportTest {
 
   /*
    * @testName: testStrictNonObjectOrArrayTopLevel
@@ -77,15 +61,16 @@ public class IJsonSupportTest extends ServiceEETest {
    * or arrays are restricted during marshalling if JsonbConfig.withStrictIJSON
    * is used
    */
-  public Status testStrictNonObjectOrArrayTopLevel() throws Fault {
+  @Test
+  public void testStrictNonObjectOrArrayTopLevel() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withStrictIJSON(true));
 
     try {
       jsonb.toJson("Test String");
-      throw new Fault(
+      fail(
           "Failed to restrict serialization of top-level JSON texts that are neither objects nor arrays when JsonbConfig.withStrictIJSON is used.");
     } catch (JsonbException x) {
-      return Status.passed("OK");
+      return; // passed
     }
   }
 
@@ -97,17 +82,18 @@ public class IJsonSupportTest extends ServiceEETest {
    * @test_Strategy: Assert that binary data is correctly encoded using
    * BASE_64_URL binary data encoding if JsonbConfig.withStrictIJSON is used
    */
-  public Status testStrictBinaryDataEncoding() throws Fault {
+  @Test
+  public void testStrictBinaryDataEncoding() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withStrictIJSON(true));
 
     String jsonString = jsonb.toJson(new BinaryDataContainer());
     if (!jsonString
         .matches("\\{\\s*\"data\"\\s*:\\s*\"VGVzdCBTdHJpbmc=\"\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to correctly marshal binary data using BASE_64_URL binary data encoding when JsonbConfig.withStrictIJSON is used.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -119,7 +105,8 @@ public class IJsonSupportTest extends ServiceEETest {
    * @test_Strategy: Assert that java.util.Date is serialized in the same format
    * as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON is used
    */
-  public Status testStrictDate() throws Fault {
+  @Test
+  public void testStrictDate() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withStrictIJSON(true));
     final Calendar instance = Calendar.getInstance();
     instance.clear();
@@ -132,11 +119,11 @@ public class IJsonSupportTest extends ServiceEETest {
     });
     if (!jsonString.matches(
         "\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T00:00:00Z\\+00:00\"\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to serialize java.util.Date in the same format as java.time.ZonedDateTime when JsonbConfig.withStrictIJSON is used.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -148,7 +135,8 @@ public class IJsonSupportTest extends ServiceEETest {
    * @test_Strategy: Assert that java.util.Calendar is serialized in the same
    * format as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON is used
    */
-  public Status testStrictCalendar() throws Fault {
+  @Test
+  public void testStrictCalendar() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withStrictIJSON(true));
 
     Calendar calendarProperty = Calendar.getInstance();
@@ -163,11 +151,11 @@ public class IJsonSupportTest extends ServiceEETest {
     });
     if (!jsonString.matches(
         "\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T00:00:00Z\\+01:00\"\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to serialize java.util.Calendar in the same format as java.time.ZonedDateTime when JsonbConfig.withStrictIJSON is used.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -180,7 +168,8 @@ public class IJsonSupportTest extends ServiceEETest {
    * the same format as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON
    * is used
    */
-  public Status testStrictGregorianCalendar() throws Fault {
+  @Test
+  public void testStrictGregorianCalendar() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withStrictIJSON(true));
 
     GregorianCalendar gregorianCalendar = new GregorianCalendar();
@@ -194,11 +183,11 @@ public class IJsonSupportTest extends ServiceEETest {
     });
     if (!jsonString.matches(
         "\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T00:00:00Z\\+01:00\"\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to serialize java.util.GregorianCalendar in the same format as java.time.ZonedDateTime when JsonbConfig.withStrictIJSON is used.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -210,7 +199,8 @@ public class IJsonSupportTest extends ServiceEETest {
    * @test_Strategy: Assert that java.time.LocalDate is serialized in the same
    * format as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON is used
    */
-  public Status testStrictLocalDate() throws Fault {
+  @Test
+  public void testStrictLocalDate() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withStrictIJSON(true));
 
     String jsonString = jsonb.toJson(new LocalDateContainer() {
@@ -220,11 +210,11 @@ public class IJsonSupportTest extends ServiceEETest {
     });
     if (!jsonString.matches(
         "\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T00:00:00Z\\+00:00\"\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to serialize java.time.LocalDate in the same format as java.time.ZonedDateTime when JsonbConfig.withStrictIJSON is used.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -236,7 +226,8 @@ public class IJsonSupportTest extends ServiceEETest {
    * @test_Strategy: Assert that java.time.LocalDate is serialized in the same
    * format as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON is used
    */
-  public Status testStrictLocalDateTime() throws Fault {
+  @Test
+  public void testStrictLocalDateTime() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withStrictIJSON(true));
 
     String jsonString = jsonb.toJson(new LocalDateTimeContainer() {
@@ -246,11 +237,11 @@ public class IJsonSupportTest extends ServiceEETest {
     });
     if (!jsonString.matches(
         "\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T01:01:01Z\\+00:00\"\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to serialize java.time.LocalDate in the same format as java.time.ZonedDateTime when JsonbConfig.withStrictIJSON is used.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -262,7 +253,8 @@ public class IJsonSupportTest extends ServiceEETest {
    * @test_Strategy: Assert that java.time.Instant is serialized in the same
    * format as java.time.ZonedDateTime if JsonbConfig.withStrictIJSON is used
    */
-  public Status testStrictInstant() throws Fault {
+  @Test
+  public void testStrictInstant() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withStrictIJSON(true));
 
     String jsonString = jsonb.toJson(new InstantContainer() {
@@ -272,11 +264,11 @@ public class IJsonSupportTest extends ServiceEETest {
     });
     if (!jsonString.matches(
         "\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T00:00:00Z\\+00:00\"\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to serialize java.time.Instant in the same format as java.time.ZonedDateTime when JsonbConfig.withStrictIJSON is used.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 
   /*
@@ -288,7 +280,8 @@ public class IJsonSupportTest extends ServiceEETest {
    * @test_Strategy: Assert that java.time.Duration is serialized in the same
    * format as in Appendix A of RFC 3339
    */
-  public Status testStrictDuration() throws Fault {
+  @Test
+  public void testStrictDuration() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withStrictIJSON(true));
 
     String jsonString = jsonb.toJson(new DurationContainer() {
@@ -298,10 +291,10 @@ public class IJsonSupportTest extends ServiceEETest {
       }
     });
     if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*\"PT25H1S\"\\s*}")) {
-      throw new Fault(
+      fail(
           "Failed to serialize java.time.Duration in the same format as in Appendix A of RFC 3339.");
     }
 
-    return Status.passed("OK");
+    return; // passed
   }
 }

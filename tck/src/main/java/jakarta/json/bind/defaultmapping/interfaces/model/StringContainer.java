@@ -18,9 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.interfaces.model;
+package jakarta.json.bind.defaultmapping.interfaces.model;
 
-import com.sun.ts.tests.jsonb.TypeContainer;
+import jakarta.json.bind.TypeContainer;
 
 public class StringContainer implements TypeContainer<String> {
   private String instance;

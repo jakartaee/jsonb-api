@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.specifictypes.model;
+package jakarta.json.bind.defaultmapping.specifictypes.model;
 
 public class SimpleContainer {
   public String stringInstance;

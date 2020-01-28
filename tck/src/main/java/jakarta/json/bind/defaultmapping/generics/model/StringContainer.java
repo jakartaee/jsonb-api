@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.generics.model;
+package jakarta.json.bind.defaultmapping.generics.model;
 
 public class StringContainer extends GenericContainer<String> {
   @Override

@@ -18,9 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.api.model;
+package jakarta.json.bind.api.model;
 
-import javax.json.bind.adapter.JsonbAdapter;
+import jakarta.json.bind.adapter.JsonbAdapter;
 
 public class SimpleStringAdapter
     implements JsonbAdapter<SimpleContainer, SimpleContainerAdapted> {

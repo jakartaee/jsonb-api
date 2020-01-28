@@ -18,9 +18,9 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.customizedmapping.nullhandling.model;
+package jakarta.json.bind.customizedmapping.nullhandling.model;
 
-import javax.json.bind.annotation.JsonbNillable;
+import jakarta.json.bind.annotation.JsonbNillable;
 
 @JsonbNillable(false)
 public class NonNillableContainer {

@@ -18,11 +18,11 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jsonb.defaultmapping.specifictypes.model;
+package jakarta.json.bind.defaultmapping.specifictypes.model;
 
 import java.util.Optional;
 
-import com.sun.ts.tests.jsonb.TypeContainer;
+import jakarta.json.bind.TypeContainer;
 
 public class OptionalTypeContainer
     implements TypeContainer<Optional<SimpleContainer>> {

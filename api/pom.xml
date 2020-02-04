@@ -91,6 +91,8 @@
         <skip.release.tests>false</skip.release.tests>
         <spec.version>1.1</spec.version>
         <jakarta.json.version>2.0.0-RC1</jakarta.json.version>
+        <!-- The version of JSON-B API to compare against to verify we follow semantic versioning rules -->
+        <baseline.compare.version>1.0.2</baseline.compare.version>
         <api_package>jakarta.json.bind</api_package>
         <legal.doc.source>${project.basedir}/..</legal.doc.source>
         <vendor.name>Oracle Corporation</vendor.name>
@@ -551,6 +553,25 @@
             <plugin>
                 <groupId>org.glassfish.build</groupId>
                 <artifactId>spec-version-maven-plugin</artifactId>
+            </plugin>
+            <!-- Ensures that we follow semantic versioning rules -->
+            <plugin>
+                <groupId>biz.aQute.bnd</groupId>
+                <artifactId>bnd-baseline-maven-plugin</artifactId>
+                <version>4.3.0</version>
+                <configuration>
+                    <base>
+                        <version>${baseline.compare.version}</version>
+                    </base>
+                 </configuration>
+                <executions>
+                    <execution>
+                        <id>baseline</id>
+                        <goals>
+                            <goal>baseline</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

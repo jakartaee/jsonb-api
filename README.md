@@ -52,6 +52,11 @@ String aliceJson = "{\"id\":5678,\"name\":\"Alice\",\"age\":42}";
 User alice = jsonb.fromJson(aliceJson, User.class);
 ```
 
+## How to run the TCK tests
+
+The JSON-B TCK tests are produced as a Maven artifact where the tests use Arquillian + JUnit. To run the TCK tests using your implementation,
+include the TCK module and apply the appropriate Arquillian container. See the [Eclipse Yasson](https://github.com/eclipse-ee4j/yasson) repository for an example of this.
+
 ## Links
 
 - [Official web site](https://eclipse-ee4j.github.io/jsonb-api)

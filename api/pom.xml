@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (c) 2016, 2018 Oracle and/or its affiliates. All rights reserved.
+    Copyright (c) 2016, 2020 Oracle and/or its affiliates. All rights reserved.
 
     This program and the accompanying materials are made available under the
     terms of the Eclipse Public License v. 2.0, which is available at
@@ -23,18 +23,18 @@
     <parent>
         <groupId>org.eclipse.ee4j</groupId>
         <artifactId>project</artifactId>
-        <version>1.0.5</version>
+        <version>1.0.6</version>
     </parent>
 
     <groupId>jakarta.json.bind</groupId>
     <artifactId>jakarta.json.bind-api</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>JSON-B API</name>
-	<description>JSON Binding (JSON-B) is a standard binding layer for converting Java objects to/from JSON documents.</description>
+    <description>Jakarta JSON Binding is a standard binding layer for converting Java objects to/from JSON documents.</description>
     <inceptionYear>2016</inceptionYear>
-    <url>http://json-b.net</url>
+    <url>https://eclipse-ee4j.github.io/jsonb-api</url>
 
     <issueManagement>
         <system>github</system>
@@ -43,7 +43,7 @@
 
     <mailingLists>
         <mailingList>
-            <name>JSON-B Discussion Group </name>
+            <name>Mailing list</name>
             <archive>jsonb-dev@eclipse.org</archive>
         </mailingList>
     </mailingLists>
@@ -70,23 +70,13 @@
 
     <developers>
         <developer>
-        	<id>dmitry.kornilov</id>
+          	<id>m0mus</id>
             <name>Dmitry Kornilov</name>
-            <email>dmitry.kornilov@oracle.com</email>  
-            <url>https://dmitrykornilov.net</url>          
+            <email>dmitry.kornilov@oracle.com</email>
+            <url>https://dmitrykornilov.net</url>
             <organization>Oracle</organization>
             <roles>
-                <role>Spec Lead</role>
-            </roles>
-            <timezone>CET</timezone>
-        </developer>
-        <developer>
-            <id>roman.grigoriadi</id>
-            <name>Roman Grigoriadi</name>
-            <email>roman.grigoriadi@oracle.com</email>
-            <organization>Oracle</organization>
-            <roles>
-                <role>Developer</role>
+                <role>Project Lead</role>
             </roles>
             <timezone>CET</timezone>
         </developer>
@@ -100,7 +90,9 @@
         <non.final>false</non.final>
         <skip.release.tests>false</skip.release.tests>
         <spec.version>1.1</spec.version>
-        <jakarta.json.version>1.1.5</jakarta.json.version>
+        <jakarta.json.version>2.0.0-RC1</jakarta.json.version>
+        <!-- The version of JSON-B API to compare against to verify we follow semantic versioning rules -->
+        <baseline.compare.version>1.0.2</baseline.compare.version>
         <api_package>jakarta.json.bind</api_package>
         <legal.doc.source>${project.basedir}/..</legal.doc.source>
         <vendor.name>Oracle Corporation</vendor.name>
@@ -136,9 +128,9 @@
 
     <profiles>
         <profile>
-            <id>jdk9</id>
+            <id>jdk11</id>
             <activation>
-                <jdk>[9,)</jdk>
+                <jdk>[11,)</jdk>
             </activation>
             <build>
                 <plugins>
@@ -147,7 +139,7 @@
                         <artifactId>maven-compiler-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>jdk-9</id>
+                                <id>jdk-11</id>
                                 <goals>
                                     <goal>compile</goal>
                                 </goals>
@@ -165,7 +157,7 @@
             </build>
         </profile>
         <profile>
-            <id>non-jdk9</id>
+            <id>jdk8</id>
             <activation>
                 <jdk>(,9)</jdk>
             </activation>
@@ -182,11 +174,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <configuration>
-                            <sourceFileExcludes>
-                                <sourceFileExclude>**/module-info.java</sourceFileExclude>
-                            </sourceFileExcludes>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
@@ -262,8 +249,6 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.8.0</version>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
                         <compilerArgs>
                             <arg>-Xlint:all</arg>
                         </compilerArgs>
@@ -272,12 +257,26 @@
                         <execution>
                             <id>default-compile</id>
                             <configuration>
+                                <release>11</release>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>base-compile</id>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                            <!-- recompile everything for 1.8 except the module-info.java -->
+                            <configuration>
+                                <release>8</release>
                                 <excludes>
                                     <exclude>module-info.java</exclude>
                                 </excludes>
-                                <compilerArgs>
-                                    <arg>-Xlint:all</arg>
-                                </compilerArgs>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>default-testCompile</id>
+                            <configuration>
+                                <release>11</release>
                             </configuration>
                         </execution>
                     </executions>
@@ -376,39 +375,26 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.0.1</version>
+                    <version>3.1.0</version>
                     <configuration>
-                        <failOnError>true</failOnError>
-                        <doctitle>JSON-Binding ${project.version} API Specification</doctitle>
-                        <javaApiLinks>
-                            <property>
-                                <name>api_1.3</name>
-                                <value>http://download.oracle.com/javase/1.3/docs/api/</value>
-                            </property>
-                            <property>
-                                <name>api_1.4</name>
-                                <value>http://download.oracle.com/javase/1.4.2/docs/api/</value>
-                            </property>
-                            <property>
-                                <name>api_1.5</name>
-                                <value>http://download.oracle.com/javase/1.5.0/docs/api/</value>
-                            </property>
-                            <property>
-                                <name>api_1.6</name>
-                                <value>http://download.oracle.com/javase/6/docs/api/</value>
-                            </property>
-                            <property>
-                                <name>api_1.7</name>
-                                <value>http://download.oracle.com/javase/7/docs/api/</value>
-                            </property>
-                            <property>
-                                <name>api_1.8</name>
-                                <value>http://download.oracle.com/javase/8/docs/api/</value>
-                            </property>
-                        </javaApiLinks>
-                        <bottom><![CDATA[<br>
-Copyright &#169; {inceptionYear}&#x2013;{currentYear} Oracle and/or its affiliates.
-All rights reserved.<br>Comments to: <a href="mailto:${release.spec.feedback}">${release.spec.feedback}</a>.]]>
+                        <source>8</source>
+                        <doctitle>Jakarta JSON Binding ${project.version} API Specification</doctitle>
+                        <sourceFileExcludes>
+                            <sourceFileExclude>**/module-info.java</sourceFileExclude>
+                            <sourceFileExclude>target/**/*.java</sourceFileExclude>
+                        </sourceFileExcludes>
+                        <docfilessubdirs>true</docfilessubdirs>
+                        <links>
+                            <link>http://docs.oracle.com/javase/8/docs/api/</link>
+                        </links>
+                        <detectJavaApiLink>false</detectJavaApiLink>
+                        <detectOfflineLinks>false</detectOfflineLinks>
+                        <header><![CDATA[<br>Jakarta JSON Binding API v${project.version}]]>
+                        </header>
+                        <bottom><![CDATA[
+                        Comments to: <a href="mailto:${release.spec.feedback}">${release.spec.feedback}</a>.<br>
+                        Copyright &#169; 2019 Eclipse Foundation. All Rights Reserved.<br>
+                        Use is subject to <a href="{@docRoot}/doc-files/EFSL.html" target="_top">license terms</a>.]]>
                         </bottom>
                     </configuration>
                     <executions>
@@ -449,16 +435,12 @@ All rights reserved.<br>Comments to: <a href="mailto:${release.spec.feedback}">$
                 <plugin>
                     <groupId>org.glassfish.copyright</groupId>
                     <artifactId>glassfish-copyright-maven-plugin</artifactId>
-                    <version>1.50</version>
+                    <version>2.3</version>
                     <configuration>
                         <excludeFile>${basedir}/../etc/config/copyright-exclude</excludeFile>
-                        <!--svn|mercurial|git - defaults to svn-->
                         <scm>git</scm>
-                        <!-- turn on/off debugging -->
                         <debug>false</debug>
-                        <!-- skip files not under SCM-->
                         <scmOnly>true</scmOnly>
-                        <!-- turn off warnings -->
                         <warn>false</warn>
                         <!-- for use with repair -->
                         <update>false</update>
@@ -484,7 +466,7 @@ All rights reserved.<br>Comments to: <a href="mailto:${release.spec.feedback}">$
                         <dependency>
                             <groupId>com.puppycrawl.tools</groupId>
                             <artifactId>checkstyle</artifactId>
-                            <version>8.14</version>
+                            <version>8.18</version>
                         </dependency>
                     </dependencies>
                     <configuration>
@@ -507,11 +489,6 @@ All rights reserved.<br>Comments to: <a href="mailto:${release.spec.feedback}">$
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>1.6</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>3.0.0-M2</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -573,6 +550,25 @@ All rights reserved.<br>Comments to: <a href="mailto:${release.spec.feedback}">$
                 <groupId>org.glassfish.build</groupId>
                 <artifactId>spec-version-maven-plugin</artifactId>
             </plugin>
+            <!-- Ensures that we follow semantic versioning rules -->
+            <plugin>
+                <groupId>biz.aQute.bnd</groupId>
+                <artifactId>bnd-baseline-maven-plugin</artifactId>
+                <version>4.3.0</version>
+                <configuration>
+                    <base>
+                        <version>${baseline.compare.version}</version>
+                    </base>
+                 </configuration>
+                <executions>
+                    <execution>
+                        <id>baseline</id>
+                        <goals>
+                            <goal>baseline</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -584,5 +580,5 @@ All rights reserved.<br>Comments to: <a href="mailto:${release.spec.feedback}">$
                 <version>3.0.5</version>
             </plugin>
         </plugins>
-    </reporting>  
+    </reporting>
 </project>

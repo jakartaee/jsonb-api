@@ -1,4 +1,4 @@
-# Contributing to Eclipse Project for JSON-B
+# Contributing to Jakarta JSON Binding
 
 Thanks for your interest in this project.
 

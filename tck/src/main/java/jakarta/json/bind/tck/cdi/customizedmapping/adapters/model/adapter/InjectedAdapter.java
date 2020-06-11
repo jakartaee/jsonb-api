@@ -24,7 +24,7 @@ import static jakarta.json.bind.tck.customizedmapping.adapters.model.adapter.Ani
 import static jakarta.json.bind.tck.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.DOG;
 import static jakarta.json.bind.tck.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.GENERIC;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import jakarta.json.bind.adapter.JsonbAdapter;
 import jakarta.json.bind.tck.customizedmapping.adapters.model.Animal;

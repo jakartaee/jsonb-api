@@ -24,7 +24,7 @@ import static jakarta.json.bind.tck.customizedmapping.serializers.model.serializ
 
 import java.lang.reflect.Type;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import jakarta.json.bind.serializer.DeserializationContext;
 import jakarta.json.bind.serializer.JsonbDeserializer;

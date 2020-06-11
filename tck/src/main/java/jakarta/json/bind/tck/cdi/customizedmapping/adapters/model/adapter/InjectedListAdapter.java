@@ -23,7 +23,7 @@ package jakarta.json.bind.tck.cdi.customizedmapping.adapters.model.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import jakarta.json.bind.adapter.JsonbAdapter;
 import jakarta.json.bind.tck.customizedmapping.adapters.model.Animal;
 import jakarta.json.bind.tck.customizedmapping.adapters.model.adapter.AnimalJson;

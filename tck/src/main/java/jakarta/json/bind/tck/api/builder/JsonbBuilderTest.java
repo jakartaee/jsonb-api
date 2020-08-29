@@ -56,7 +56,7 @@ public class JsonbBuilderTest {
    * @assertion_ids: JSONB:JAVADOC:25
    *
    * @test_Strategy: Assert that JsonbBuilder.build returns a new instance of
-   * javax.json.bind.Jsonb
+   * jakarta.json.bind.Jsonb
    */
   @Test
   public void testBuild() {
@@ -75,7 +75,7 @@ public class JsonbBuilderTest {
    * @assertion_ids: JSONB:JAVADOC:26
    *
    * @test_Strategy: Assert that JsonbBuilder.create returns a new instance of
-   * javax.json.bind.Jsonb
+   * jakarta.json.bind.Jsonb
    */
   @Test
   public void testCreate() {
@@ -92,7 +92,7 @@ public class JsonbBuilderTest {
    * @assertion_ids: JSONB:JAVADOC:27
    *
    * @test_Strategy: Assert that JsonbBuilder.create method with Config argument
-   * returns a new instance of javax.json.bind.Jsonb configured with provided
+   * returns a new instance of jakarta.json.bind.Jsonb configured with provided
    * configuration
    */
   @Test
@@ -118,7 +118,7 @@ public class JsonbBuilderTest {
    *
    * @test_Strategy: Assert that JsonbBuilder.newBuilder returns a new
    * JsonbBuilder instance as returned by
-   * javax.json.bind.spi.JsonbProvider#provider method
+   * jakarta.json.bind.spi.JsonbProvider#provider method
    */
   @Test
   public void testNewBuilder() {
@@ -126,7 +126,7 @@ public class JsonbBuilderTest {
     if (jsonbBuilder == null || !jsonbBuilder.getClass()
         .equals(JsonbProvider.provider().create().getClass())) {
       fail(
-          "Failed to create a new Jsonb instance as returned by javax.json.bind.spi.JsonbProvider#provider method using JsonBuilder.newBuilder method.");
+          "Failed to create a new Jsonb instance as returned by jakarta.json.bind.spi.JsonbProvider#provider method using JsonBuilder.newBuilder method.");
     }
   }
 
@@ -137,7 +137,7 @@ public class JsonbBuilderTest {
    *
    * @test_Strategy: Assert that JsonbBuilder.newBuilder method with String
    * argument returns a new JsonbBuilder instance as returned by
-   * javax.json.bind.spi.JsonbProvider#provider(String) method
+   * jakarta.json.bind.spi.JsonbProvider#provider(String) method
    */
   @Test
   public void testNewBuilderString() {
@@ -148,7 +148,7 @@ public class JsonbBuilderTest {
             .provider(JsonbProvider.provider().getClass().getName()).create()
             .getClass())) {
       fail(
-          "Failed to create a new Jsonb instance as returned by javax.json.bind.spi.JsonbProvider#provider(String) method using JsonBuilder.newBuilder method with String argument.");
+          "Failed to create a new Jsonb instance as returned by jakarta.json.bind.spi.JsonbProvider#provider(String) method using JsonBuilder.newBuilder method with String argument.");
     }
   }
 

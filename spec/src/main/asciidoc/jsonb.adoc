@@ -37,7 +37,7 @@ Support binding (serialization and deserialization) for all RFC 7159-compatible 
 * *Relationships to JSON Related specifications* +
 JSON-related specifications will be surveyed to determine their relationship to JSON-Binding.
 * *Consistency* +
-Maintain consistency with JAXB (Jakarta XML Binding) and other Jakarta EE and Java SE APIs where appropriate.
+Maintain consistency with Jakarta XML Binding and other Jakarta EE and Java SE APIs where appropriate.
 * *Convention* +
 Define default mapping of Java classes and instances to JSON document counterparts.
 * *Customization* +

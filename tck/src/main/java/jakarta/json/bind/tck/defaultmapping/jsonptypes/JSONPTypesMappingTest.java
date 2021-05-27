@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -448,4 +448,24 @@ public class JSONPTypesMappingTest {
 
     return; // passed
   }
+
+  /*
+   * @testName: testNullDeserializedToJsonValueNull
+   *
+   * @assertion_ids: JSONB:SPEC:JSB-3.20
+   *
+   * @test_Strategy: Assert that null is properly deserialized to the JsonValue.NULL
+   */
+  @Test
+  public void testNullDeserializedToJsonValueNull() {
+    JsonValueContainer unmarshalledValue = jsonb.fromJson("{ \"instance\" : null }", JsonValueContainer.class);
+    if (!JsonValue.NULL.equals(unmarshalledValue.getInstance())) {
+      fail("Failed to unmarshal null value to the JsonValue.NULL");
+    }
+    unmarshalledValue = jsonb.fromJson("{}", JsonValueContainer.class);
+    if (unmarshalledValue.getInstance() != null) {
+      fail("No value should have been deserialized.");
+    }
+  }
+
 }

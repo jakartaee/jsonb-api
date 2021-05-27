@@ -20,6 +20,8 @@
 
 package jakarta.json.bind.tck.defaultmapping.jsonptypes;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.lang.invoke.MethodHandles;
@@ -54,13 +56,13 @@ import jakarta.json.bind.tck.defaultmapping.jsonptypes.model.JsonValueContainer;
  **/
 @RunWith(Arquillian.class)
 public class JSONPTypesMappingTest {
-    
+
     @Deployment
     public static WebArchive createTestArchive() {
         return ShrinkWrap.create(WebArchive.class)
                 .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
     }
-    
+
   private final Jsonb jsonb = JsonbBuilder.create();
 
   /*
@@ -459,13 +461,9 @@ public class JSONPTypesMappingTest {
   @Test
   public void testNullDeserializedToJsonValueNull() {
     JsonValueContainer unmarshalledValue = jsonb.fromJson("{ \"instance\" : null }", JsonValueContainer.class);
-    if (!JsonValue.NULL.equals(unmarshalledValue.getInstance())) {
-      fail("Failed to unmarshal null value to the JsonValue.NULL");
-    }
+    assertEquals("Failed to unmarshal null value to the JsonValue.NULL", JsonValue.NULL, unmarshalledValue.getInstance());
     unmarshalledValue = jsonb.fromJson("{}", JsonValueContainer.class);
-    if (unmarshalledValue.getInstance() != null) {
-      fail("No value should have been deserialized.");
-    }
+    assertNull("No value should have been deserialized.", unmarshalledValue.getInstance());
   }
 
 }

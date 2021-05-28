@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -31,6 +31,7 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 
+import jakarta.json.bind.tck.TypeContainer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -161,7 +162,7 @@ public class SpecificTypesMappingTest {
     simpleContainer.setStringInstance("String Value");
     container.setInstance(Optional.of(simpleContainer));
 
-    new SimpleMappingTester<>(OptionalTypeContainer.class).test(
+    new SimpleMappingTester<>(OptionalTypeContainer.class, TypeContainer.class).test(
         container,
         "\\{\\s*\"instance\"\\s*:\\s*\\{\\s*\"stringInstance\"\\s*:\\s*\"String Value\"\\s*}\\s*}",
         "{ \"instance\" : { \"stringInstance\" : \"String Value\" } }",
@@ -182,7 +183,7 @@ public class SpecificTypesMappingTest {
   public void testEmptyOptionalMapping() {
     OptionalContainer optionalContainer = new OptionalContainer();
     optionalContainer.setInstance(Optional.empty());
-    new SimpleMappingTester<>(OptionalContainer.class).test(
+    new SimpleMappingTester<>(OptionalContainer.class, TypeContainer.class).test(
         optionalContainer, "\\{\\s*}", "{ \"instance\" : null }",
         optionalContainer);
   }
@@ -202,7 +203,7 @@ public class SpecificTypesMappingTest {
   public void testEmptyOptionalArrayMapping() {
     OptionalArrayContainer optionalContainer = new OptionalArrayContainer();
     optionalContainer.setInstance(new Optional[] { Optional.empty() });
-    new SimpleMappingTester<>(OptionalArrayContainer.class).test(
+    new SimpleMappingTester<>(OptionalArrayContainer.class, TypeContainer.class).test(
         optionalContainer, "\\{\\s*\"instance\"\\s*:\\s*\\[\\s*null\\s*]\\s*}",
         "{ \"instance\" : [ null ] }", optionalContainer);
   }
@@ -236,7 +237,7 @@ public class SpecificTypesMappingTest {
   public void testEmptyOptionalIntMapping() {
     OptionalIntContainer optionalContainer = new OptionalIntContainer();
     optionalContainer.setInstance(OptionalInt.empty());
-    new SimpleMappingTester<>(OptionalIntContainer.class).test(
+    new SimpleMappingTester<>(OptionalIntContainer.class, TypeContainer.class).test(
         optionalContainer, "\\{\\s*}", "{ \"instance\" : null }",
         optionalContainer);
   }
@@ -270,7 +271,7 @@ public class SpecificTypesMappingTest {
   public void testEmptyOptionalLongMapping() {
     OptionalLongContainer optionalContainer = new OptionalLongContainer();
     optionalContainer.setInstance(OptionalLong.empty());
-    new SimpleMappingTester<>(OptionalLongContainer.class).test(
+    new SimpleMappingTester<>(OptionalLongContainer.class, TypeContainer.class).test(
         optionalContainer, "\\{\\s*}", "{ \"instance\" : null }",
         optionalContainer);
   }
@@ -304,7 +305,7 @@ public class SpecificTypesMappingTest {
   public void testEmptyOptionalDoubleMapping() {
     OptionalDoubleContainer optionalContainer = new OptionalDoubleContainer();
     optionalContainer.setInstance(OptionalDouble.empty());
-    new SimpleMappingTester<>(OptionalDoubleContainer.class).test(
+    new SimpleMappingTester<>(OptionalDoubleContainer.class, TypeContainer.class).test(
         optionalContainer, "\\{\\s*}", "{ \"instance\" : null }",
         optionalContainer);
   }

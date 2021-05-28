@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
@@ -33,9 +34,11 @@ public class SimpleMappingTester<T> {
   private final Jsonb jsonb = JsonbBuilder.create();
 
   private final Class<T> typeClass;
+  private final Class<? super T> serializationType;
 
-  public SimpleMappingTester(Class<T> typeClass) {
-    this.typeClass = typeClass;
+  public SimpleMappingTester(Class<T> typeClass, Class<? super T> serializationType) {
+    this.typeClass = Objects.requireNonNull(typeClass);
+    this.serializationType = Objects.requireNonNull(serializationType);
   }
 
   public void test(T value, String expectedRepresentationPattern,
@@ -104,7 +107,7 @@ public class SimpleMappingTester<T> {
   }
 
   private void testMarshallingByType(T value, String expectedRepresentation) {
-    String jsonString = jsonb.toJson(value, TypeContainer.class);
+    String jsonString = jsonb.toJson(value, serializationType);
     if (jsonString.matches(expectedRepresentation)) {
       return; // passed
     } else {
@@ -116,7 +119,7 @@ public class SimpleMappingTester<T> {
   private void testMarshallingByTypeToStream(T value,
       String expectedRepresentation) {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
-      jsonb.toJson(value, TypeContainer.class, stream);
+      jsonb.toJson(value, serializationType, stream);
       String jsonString = new String(stream.toByteArray(),
           StandardCharsets.UTF_8);
       if (jsonString.matches(expectedRepresentation)) {
@@ -136,7 +139,7 @@ public class SimpleMappingTester<T> {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(stream)) {
 
-      jsonb.toJson(value, TypeContainer.class, writer);
+      jsonb.toJson(value, serializationType, writer);
       String jsonString = new String(stream.toByteArray(),
           StandardCharsets.UTF_8);
       if (jsonString.matches(expectedRepresentation)) {

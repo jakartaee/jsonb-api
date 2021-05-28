@@ -261,7 +261,7 @@ public interface Jsonb extends AutoCloseable {
      *
      * @param runtimeType
      *      Runtime type of the content tree's root object. Provided type needs to be
-     *      the same as the type of the root object or to be its supertype.
+     *      related to the type of the instance.
      *
      * @return String instance with serialized JSON data.
      *

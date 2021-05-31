@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,6 +20,8 @@
 
 package jakarta.json.bind.tck.defaultmapping.jsonptypes;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.lang.invoke.MethodHandles;
@@ -54,13 +56,13 @@ import jakarta.json.bind.tck.defaultmapping.jsonptypes.model.JsonValueContainer;
  **/
 @RunWith(Arquillian.class)
 public class JSONPTypesMappingTest {
-    
+
     @Deployment
     public static WebArchive createTestArchive() {
         return ShrinkWrap.create(WebArchive.class)
                 .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
     }
-    
+
   private final Jsonb jsonb = JsonbBuilder.create();
 
   /*
@@ -448,4 +450,20 @@ public class JSONPTypesMappingTest {
 
     return; // passed
   }
+
+  /*
+   * @testName: testNullDeserializedToJsonValueNull
+   *
+   * @assertion_ids: JSONB:SPEC:JSB-3.20
+   *
+   * @test_Strategy: Assert that null is properly deserialized to the JsonValue.NULL
+   */
+  @Test
+  public void testNullDeserializedToJsonValueNull() {
+    JsonValueContainer unmarshalledValue = jsonb.fromJson("{ \"instance\" : null }", JsonValueContainer.class);
+    assertEquals("Failed to unmarshal null value to the JsonValue.NULL", JsonValue.NULL, unmarshalledValue.getInstance());
+    unmarshalledValue = jsonb.fromJson("{}", JsonValueContainer.class);
+    assertNull("No value should have been deserialized.", unmarshalledValue.getInstance());
+  }
+
 }

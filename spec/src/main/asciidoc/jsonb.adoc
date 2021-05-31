@@ -504,6 +504,8 @@ Serialization of supported `jakarta.json.*` objects/interfaces/fields MUST have 
 
 Deserialization into supported `jakarta.json.*` objects/interfaces/fields MUST have the same result as deserialization into such objects with `jakarta.json.JsonReader`.
 
+If the null value is deserialized into the JsonValue, it is handled as `JsonValue.NULL`. `JsonValue.NULL` is not assigned as a default value if no value is set.
+
 == Customizing Mapping
 
 This section defines several ways how to customize the default behavior. The default behavior can be customized annotating a given field, JavaBean property, type or package, or by providing an implementation of particular strategy, e.g. `PropertyOrderStrategy`. JSON Binding provider MUST support these customization options.

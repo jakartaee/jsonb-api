@@ -299,7 +299,8 @@ public interface Jsonb extends AutoCloseable {
      *      The object content tree to be serialized.
      *
      * @param runtimeType
-     *      Runtime type of the content tree's root object.
+     *      Runtime type of the content tree's root object. Provided type needs to be
+     *      related to the type of the instance.
      *
      * @param writer
      *      The JSON will be sent as a character stream to the given
@@ -340,7 +341,8 @@ public interface Jsonb extends AutoCloseable {
      *      The object content tree to be serialized.
      *
      * @param runtimeType
-     *      Runtime type of the content tree's root object.
+     *      Runtime type of the content tree's root object. Provided type needs to be
+     *      related to the type of the instance.
      *
      * @param stream
      *      The JSON will be sent as a byte stream to the given

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -23,6 +23,7 @@ package jakarta.json.bind.tck.defaultmapping.basictypes;
 import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 
+import jakarta.json.bind.tck.TypeContainer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -250,7 +251,7 @@ public class BasicJavaTypesMappingTest {
    */
   @Test
   public void testNumberMapping() {
-    new SimpleMappingTester<>(NumberContainer.class).test(
+    new SimpleMappingTester<>(NumberContainer.class, TypeContainer.class).test(
       new NumberContainer(), "\\{\\s*\"instance\"\\s*:\\s*0[\\.0]?+\\s*}",
       "{ \"instance\" : 0 }", new NumberContainer() {
         {

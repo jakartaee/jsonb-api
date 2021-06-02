@@ -20,20 +20,12 @@
 
 package jakarta.json.bind.tck.defaultmapping.basictypes;
 
-import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
-
-import jakarta.json.bind.tck.TypeContainer;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import java.nio.charset.StandardCharsets;
 
 import jakarta.json.bind.tck.MappingTester;
 import jakarta.json.bind.tck.SimpleMappingTester;
+import jakarta.json.bind.tck.TypeContainer;
 import jakarta.json.bind.tck.defaultmapping.basictypes.model.BooleanContainer;
 import jakarta.json.bind.tck.defaultmapping.basictypes.model.ByteContainer;
 import jakarta.json.bind.tck.defaultmapping.basictypes.model.CharacterContainer;
@@ -44,20 +36,15 @@ import jakarta.json.bind.tck.defaultmapping.basictypes.model.LongContainer;
 import jakarta.json.bind.tck.defaultmapping.basictypes.model.NumberContainer;
 import jakarta.json.bind.tck.defaultmapping.basictypes.model.ShortContainer;
 import jakarta.json.bind.tck.defaultmapping.basictypes.model.StringContainer;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * @test
  * @sources BasicJavaTypesMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.basictypes.BasicJavaTypesMappingTest
  **/
-@RunWith(Arquillian.class)
 public class BasicJavaTypesMappingTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
 
   /*
    * @testName: testStringMapping
@@ -70,17 +57,12 @@ public class BasicJavaTypesMappingTest {
    */
   @Test
   public void testStringMapping() throws Exception {
-    MappingTester<String> stringMappingTester = new MappingTester<>(
-        StringContainer.class);
+    MappingTester<String> stringMappingTester = new MappingTester<>(StringContainer.class);
     stringMappingTester.test("Test String", "\"Test String\"");
-    stringMappingTester.test(
-        new String(new byte[] { (byte) 0xef, (byte) 0xbb, (byte) 0xbf },
-            "UTF-8"),
-        "\"" + new String(
-            new byte[] { (byte) 0xef, (byte) 0xbb, (byte) 0xbf }, "UTF-8")
-            + "\"");
-    stringMappingTester.test(new String("Test String".getBytes(), "UTF-8"),
-        "\"" + new String("Test String".getBytes(), "UTF-8") + "\"");
+    stringMappingTester.test(new String(new byte[] { (byte) 0xef, (byte) 0xbb, (byte) 0xbf }, StandardCharsets.UTF_8),
+        "\"" + new String(new byte[] { (byte) 0xef, (byte) 0xbb, (byte) 0xbf }, StandardCharsets.UTF_8) + "\"");
+    stringMappingTester.test(new String("Test String".getBytes(), StandardCharsets.UTF_8),
+        "\"" + new String("Test String".getBytes(), StandardCharsets.UTF_8) + "\"");
   }
 
   /*
@@ -92,14 +74,12 @@ public class BasicJavaTypesMappingTest {
    */
   @Test
   public void testCharacterMapping() {
-    MappingTester<Character> characterMappingTester = new MappingTester<>(
-        CharacterContainer.class);
+    MappingTester<Character> characterMappingTester = new MappingTester<>(CharacterContainer.class);
     characterMappingTester.test('c', "\"c\"");
     // RFC 4627, paragraph 2.5: the control characters U+0000 must be
     // escaped
     characterMappingTester.test(Character.MIN_VALUE, "\"\\u0000\"");
-    characterMappingTester.test(Character.MAX_VALUE,
-        "\"" + Character.MAX_VALUE + "\"");
+    characterMappingTester.test(Character.MAX_VALUE, "\"" + Character.MAX_VALUE + "\"");
   }
 
   /*
@@ -113,8 +93,7 @@ public class BasicJavaTypesMappingTest {
    */
   @Test
   public void testByteMapping() {
-    MappingTester<Byte> byteMappingTester = new MappingTester<>(
-        ByteContainer.class);
+    MappingTester<Byte> byteMappingTester = new MappingTester<>(ByteContainer.class);
     byteMappingTester.test((byte) 0, "0");
     byteMappingTester.test(Byte.MIN_VALUE, String.valueOf(Byte.MIN_VALUE));
     byteMappingTester.test(Byte.MAX_VALUE, String.valueOf(Byte.MAX_VALUE));
@@ -131,13 +110,10 @@ public class BasicJavaTypesMappingTest {
    */
   @Test
   public void testShortMapping() {
-    MappingTester<Short> shortMappingTester = new MappingTester<>(
-        ShortContainer.class);
+    MappingTester<Short> shortMappingTester = new MappingTester<>(ShortContainer.class);
     shortMappingTester.test((short) 0, "0");
-    shortMappingTester.test(Short.MIN_VALUE,
-        String.valueOf(Short.MIN_VALUE));
-    shortMappingTester.test(Short.MAX_VALUE,
-        String.valueOf(Short.MAX_VALUE));
+    shortMappingTester.test(Short.MIN_VALUE, String.valueOf(Short.MIN_VALUE));
+    shortMappingTester.test(Short.MAX_VALUE, String.valueOf(Short.MAX_VALUE));
   }
 
   /*
@@ -151,13 +127,10 @@ public class BasicJavaTypesMappingTest {
    */
   @Test
   public void testIntegerMapping() {
-    MappingTester<Integer> integerMappingTester = new MappingTester<>(
-        IntegerContainer.class);
+    MappingTester<Integer> integerMappingTester = new MappingTester<>(IntegerContainer.class);
     integerMappingTester.test(0, "0");
-    integerMappingTester.test(Integer.MIN_VALUE,
-        String.valueOf(Integer.MIN_VALUE));
-    integerMappingTester.test(Integer.MAX_VALUE,
-        String.valueOf(Integer.MAX_VALUE));
+    integerMappingTester.test(Integer.MIN_VALUE, String.valueOf(Integer.MIN_VALUE));
+    integerMappingTester.test(Integer.MAX_VALUE, String.valueOf(Integer.MAX_VALUE));
   }
 
   /*
@@ -170,10 +143,9 @@ public class BasicJavaTypesMappingTest {
    * with toString and parseLong methods
    */
   @Test
-  @Ignore("See https://github.com/eclipse-ee4j/jsonb-api/issues/180")
+  @Disabled("See https://github.com/eclipse-ee4j/jsonb-api/issues/180")
   public void testLongMapping() {
-    MappingTester<Long> longMappingTester = new MappingTester<>(
-        LongContainer.class);
+    MappingTester<Long> longMappingTester = new MappingTester<>(LongContainer.class);
     longMappingTester.test(0L, "0");
     longMappingTester.test(Long.MIN_VALUE, String.valueOf(Long.MIN_VALUE));
     longMappingTester.test(Long.MAX_VALUE, String.valueOf(Long.MAX_VALUE));
@@ -190,14 +162,11 @@ public class BasicJavaTypesMappingTest {
    */
   @Test
   public void testFloatMapping() {
-    MappingTester<Float> floatMappingTester = new MappingTester<>(
-        FloatContainer.class);
+    MappingTester<Float> floatMappingTester = new MappingTester<>(FloatContainer.class);
     floatMappingTester.test(0f, "0.0");
     floatMappingTester.test(0.5f, "0.5");
-    floatMappingTester.test(Float.MIN_VALUE,
-        String.valueOf(Float.MIN_VALUE));
-    floatMappingTester.test(Float.MAX_VALUE,
-        String.valueOf(Float.MAX_VALUE));
+    floatMappingTester.test(Float.MIN_VALUE, String.valueOf(Float.MIN_VALUE));
+    floatMappingTester.test(Float.MAX_VALUE, String.valueOf(Float.MAX_VALUE));
   }
 
   /*
@@ -211,13 +180,10 @@ public class BasicJavaTypesMappingTest {
    */
   @Test
   public void testDoubleMapping() {
-    MappingTester<Double> doubleMappingTester = new MappingTester<>(
-        DoubleContainer.class);
+    MappingTester<Double> doubleMappingTester = new MappingTester<>(DoubleContainer.class);
     doubleMappingTester.test(0.0, "0.0");
-    doubleMappingTester.test(Double.MIN_VALUE,
-        String.valueOf(Double.MIN_VALUE));
-    doubleMappingTester.test(Double.MAX_VALUE,
-        String.valueOf(Double.MAX_VALUE));
+    doubleMappingTester.test(Double.MIN_VALUE, String.valueOf(Double.MIN_VALUE));
+    doubleMappingTester.test(Double.MAX_VALUE, String.valueOf(Double.MAX_VALUE));
   }
 
   /*
@@ -231,8 +197,7 @@ public class BasicJavaTypesMappingTest {
    */
   @Test
   public void testBooleanMapping() {
-    MappingTester<Boolean> booleanMappingTester = new MappingTester<>(
-        BooleanContainer.class);
+    MappingTester<Boolean> booleanMappingTester = new MappingTester<>(BooleanContainer.class);
     booleanMappingTester.test(true, "true");
     booleanMappingTester.test(false, "false");
     booleanMappingTester.test(Boolean.TRUE, Boolean.TRUE.toString());

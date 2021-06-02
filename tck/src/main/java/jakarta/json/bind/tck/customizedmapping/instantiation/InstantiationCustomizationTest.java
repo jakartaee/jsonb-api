@@ -20,19 +20,6 @@
 
 package jakarta.json.bind.tck.customizedmapping.instantiation;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
-import java.lang.invoke.MethodHandles;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
@@ -46,21 +33,19 @@ import jakarta.json.bind.tck.customizedmapping.instantiation.model.SimpleCreator
 import jakarta.json.bind.tck.customizedmapping.instantiation.model.SimpleCreatorPlusFieldsContainer;
 import jakarta.json.bind.tck.customizedmapping.instantiation.model.SimpleCreatorRenameContainer;
 import jakarta.json.bind.tck.customizedmapping.instantiation.model.SimpleFactoryCreatorContainer;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @test
  * @sources InstantiationCustomizationTest.java
  * @executeClass com.sun.ts.tests.jsonb.customizedmapping.instantiation.InstantiationCustomizationTest
  **/
-@RunWith(Arquillian.class)
 public class InstantiationCustomizationTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
-    
+
   private final Jsonb jsonb = JsonbBuilder.create();
 
   /*
@@ -74,15 +59,13 @@ public class InstantiationCustomizationTest {
    */
   @Test
   public void testCustomConstructor() {
-    SimpleCreatorContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"stringInstance\" : \"Test String\", \"integerInstance\" : 1, \"floatInstance\" : 1.0 }",
-        SimpleCreatorContainer.class);
-    if (!"Constructor String".equals(unmarshalledObject.getStringInstance())
-        || unmarshalledObject.getIntegerInstance() != 2
-        || unmarshalledObject.getFloatInstance() != 2) {
-      fail(
-          "Failed to instantiate type using JsonbCreator annotated constructor during unmarshalling.");
-    }
+    String toDeserialize = "{ \"stringInstance\" : \"Test String\", \"integerInstance\" : 1, \"floatInstance\" : 1.0 }";
+    SimpleCreatorContainer unmarshalledObject = jsonb.fromJson(toDeserialize, SimpleCreatorContainer.class);
+
+    String validationMessage = "Failed to instantiate type using JsonbCreator annotated constructor during unmarshalling.";
+    assertThat(validationMessage, unmarshalledObject.getStringInstance(), is("Constructor String"));
+    assertThat(validationMessage, unmarshalledObject.getIntegerInstance(), is(2));
+    assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(2));
   }
 
   /*
@@ -96,15 +79,14 @@ public class InstantiationCustomizationTest {
    */
   @Test
   public void testCustomConstructorPlusFields() {
-    SimpleCreatorPlusFieldsContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"stringInstance\" : \"Test String\", \"integerInstance\" : 1, \"floatInstance\" : 1.0 }",
-        SimpleCreatorPlusFieldsContainer.class);
-    if (!"Constructor String".equals(unmarshalledObject.getStringInstance())
-        || unmarshalledObject.getIntegerInstance() != 2
-        || unmarshalledObject.getFloatInstance() != 1) {
-      fail(
-          "Failed to instantiate type using JsonbCreator annotated constructor and set remaining fields as normally during unmarshalling.");
-    }
+    String toDeserialize = "{ \"stringInstance\" : \"Test String\", \"integerInstance\" : 1, \"floatInstance\" : 1.0 }";
+    SimpleCreatorPlusFieldsContainer unmarshalledObject = jsonb.fromJson(toDeserialize, SimpleCreatorPlusFieldsContainer.class);
+
+    String validationMessage = "Failed to instantiate type using JsonbCreator annotated constructor and set remaining "
+            + "fields as normally during unmarshalling.";
+    assertThat(validationMessage, unmarshalledObject.getStringInstance(), is("Constructor String"));
+    assertThat(validationMessage, unmarshalledObject.getIntegerInstance(), is(2));
+    assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(1));
   }
 
   /*
@@ -117,15 +99,13 @@ public class InstantiationCustomizationTest {
    */
   @Test
   public void testFactoryMethod() {
-    SimpleFactoryCreatorContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"constructorString\" : \"Test String\" }",
-        SimpleFactoryCreatorContainer.class);
-    if (!"Factory String".equals(unmarshalledObject.getStringInstance())
-        || unmarshalledObject.getIntegerInstance() != 2
-        || unmarshalledObject.getFloatInstance() != 3f) {
-      fail(
-          "Failed to instantiate type using JsonbCreator annotated method during unmarshalling.");
-    }
+    String toDeserialize = "{ \"constructorString\" : \"Test String\" }";
+    SimpleFactoryCreatorContainer unmarshalledObject = jsonb.fromJson(toDeserialize, SimpleFactoryCreatorContainer.class);
+
+    String validationMessage = "Failed to instantiate type using JsonbCreator annotated method during unmarshalling.";
+    assertThat(validationMessage, unmarshalledObject.getStringInstance(), is("Factory String"));
+    assertThat(validationMessage, unmarshalledObject.getIntegerInstance(), is(2));
+    assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(3f));
   }
 
   /*
@@ -138,15 +118,12 @@ public class InstantiationCustomizationTest {
    */
   @Test
   public void testMultipleConstructors() {
-    try {
-      jsonb.fromJson(
-          "{ \"stringInstance\" : \"Test String\", \"integerInstance\" : 1, \"floatInstance\" : 1.0 }",
-          MultipleCreatorsContainer.class);
-    } catch (JsonbException x) {
-      return;
-    }
-    fail(
-        "A JsonbException is expected when unmarshalling to a class with multiple constructors annotated with JsonbCreator.");
+    assertThrows(JsonbException.class,
+                 () -> jsonb.fromJson("{ \"stringInstance\" : \"Test String\", "
+                                              + "\"integerInstance\" : 1, \"floatInstance\" : 1.0 }",
+                                   MultipleCreatorsContainer.class),
+                 "A JsonbException is expected when unmarshalling to a class with multiple constructors annotated "
+                         + "with JsonbCreator.");
   }
 
   /*
@@ -159,15 +136,12 @@ public class InstantiationCustomizationTest {
    */
   @Test
   public void testMultipleFactories() {
-    try {
-      jsonb.fromJson(
-          "{ \"stringInstance\" : \"Test String\", \"integerInstance\" : 1, \"floatInstance\" : 1.0 }",
-          MultipleFactoryCreatorsContainer.class);
-    } catch (JsonbException x) {
-      return;
-    }
-    fail(
-        "A JsonbException is expected when unmarshalling to a class with multiple methods annotated with JsonbCreator.");
+    assertThrows(JsonbException.class,
+                 () -> jsonb.fromJson("{ \"stringInstance\" : \"Test String\", "
+                                              + "\"integerInstance\" : 1, \"floatInstance\" : 1.0 }",
+                                      MultipleFactoryCreatorsContainer.class),
+                 "A JsonbException is expected when unmarshalling to a class with multiple methods annotated "
+                         + "with JsonbCreator.");
   }
 
   /*
@@ -180,15 +154,12 @@ public class InstantiationCustomizationTest {
    */
   @Test
   public void testConstructorPlusFactory() {
-    try {
-      jsonb.fromJson(
-          "{ \"stringInstance\" : \"Test String\", \"integerInstance\" : 1, \"floatInstance\" : 1.0 }",
-          CreatorPlusFactoryContainer.class);
-    } catch (JsonbException x) {
-      return;
-    }
-    fail(
-        "A JsonbException is expected when unmarshalling to a class with multiple JsonbCreator annotation instances.");
+    assertThrows(JsonbException.class,
+                 () -> jsonb.fromJson("{ \"stringInstance\" : \"Test String\", "
+                                              + "\"integerInstance\" : 1, \"floatInstance\" : 1.0 }",
+                                      CreatorPlusFactoryContainer.class),
+                 "A JsonbException is expected when unmarshalling to a class with multiple JsonbCreator "
+                         + "annotation instances.");
   }
 
   /*
@@ -202,15 +173,12 @@ public class InstantiationCustomizationTest {
    */
   @Test
   public void testIllegalFactoryType() {
-    try {
-      jsonb.fromJson(
-          "{ \"stringInstance\" : \"Test String\", \"integerInstance\" : 1, \"floatInstance\" : 1.0 }",
-          IllegalInstanceFactoryCreatorContainer.class);
-    } catch (JsonbException x) {
-      return;
-    }
-    fail(
-        "A JsonbException is expected when unmarshalling to a class with a method annotated with JsonbCreator returning a type different than the class type.");
+    assertThrows(JsonbException.class,
+                 () -> jsonb.fromJson("{ \"stringInstance\" : \"Test String\", "
+                                              + "\"integerInstance\" : 1, \"floatInstance\" : 1.0 }",
+                                      IllegalInstanceFactoryCreatorContainer.class),
+                 "A JsonbException is expected when unmarshalling to a class with a method annotated with JsonbCreator "
+                         + "returning a type different than the class type.");
   }
 
   /*
@@ -223,15 +191,14 @@ public class InstantiationCustomizationTest {
    */
   @Test
   public void testRenamedProperty() {
-    SimpleCreatorRenameContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"stringInstance\" : \"Test String\", \"intInstance\" : 1, \"floatInstance\" : 1.0 }",
-        SimpleCreatorRenameContainer.class);
-    if (!"Constructor String".equals(unmarshalledObject.getStringInstance())
-        || unmarshalledObject.getIntegerInstance() != 1
-        || unmarshalledObject.getFloatInstance() != 2) {
-      fail(
-          "Failed to instantiate type using JsonbCreator annotated constructor having a JsonbProperty annotated argument during unmarshalling.");
-    }
+    String toDeserialize = "{ \"stringInstance\" : \"Test String\", \"intInstance\" : 1, \"floatInstance\" : 1.0 }";
+    SimpleCreatorRenameContainer unmarshalledObject = jsonb.fromJson(toDeserialize, SimpleCreatorRenameContainer.class);
+
+    String validationMessage = "Failed to instantiate type using JsonbCreator annotated constructor having a JsonbProperty "
+            + "annotated argument during unmarshalling.";
+    assertThat(validationMessage, unmarshalledObject.getStringInstance(), is("Constructor String"));
+    assertThat(validationMessage, unmarshalledObject.getIntegerInstance(), is(1));
+    assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(2));
   }
 
   /*

@@ -20,39 +20,28 @@
 
 package jakarta.json.bind.tck.defaultmapping.untyped;
 
-import static org.junit.Assert.fail;
-
-import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.tck.SimpleMappingTester;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.matchesPattern;
 
 /**
  * @test
  * @sources UntypedMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.untyped.UntypedMappingTest
  **/
-@RunWith(Arquillian.class)
 public class UntypedMappingTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
 
   /*
    * @testName: testObjectMapping
@@ -64,7 +53,6 @@ public class UntypedMappingTest {
    * with predictable iteration order, with java.lang.String,
    * java.math.BigDecimal, java.lang.Boolean and null values
    */
-  @SuppressWarnings("serial")
   @Test
   public void testObjectMapping() {
     Jsonb jsonb = JsonbBuilder.create();
@@ -94,26 +82,25 @@ public class UntypedMappingTest {
         return nullProperty;
       }
     });
-    if (!jsonString.matches(
-        "\\{\\s*\"booleanProperty\"\\s*:\\s*false\\s*\\,\\s*\"numericProperty\"\\s*:\\s*0[\\.0]?+\\s*,\\s*\"stringProperty\"\\s*:\\s*\"Test String\"\\s*}")) {
-      fail(
-          "Failed to correctly marshal object with String, Number, Boolean and null fields.");
-    }
+    String validationRegexp = "\\{\\s*\"booleanProperty\"\\s*:\\s*false\\s*\\,\\s*\"numericProperty\"\\s*:\\s*0[\\.0]?+\\s*,"
+            + "\\s*\"stringProperty\"\\s*:\\s*\"Test String\"\\s*}";
+    assertThat("Failed to correctly marshal object with String, Number, Boolean and null fields.",
+               jsonString, matchesPattern(validationRegexp));
 
-    Object unmarshalledObject = jsonb.fromJson(
-        "{ \"numericProperty\" : 0.0, \"booleanProperty\" : false, \"stringProperty\" : \"Test String\" }",
-        Object.class);
-    if (!Map.class.isInstance(unmarshalledObject)
-        || !new LinkedHashMap<String, Object>() {
-          {
-            put("numericProperty", BigDecimal.valueOf(0.0d));
-            put("booleanProperty", false);
-            put("stringProperty", "Test String");
-          }
-        }.equals(unmarshalledObject)) {
-      fail(
-          "Failed to correctly unmarshal object with string, number, boolean and null JSON values into a predictable order Map<String,Object> with java.lang.String, java.math.BigDecimal, java.lang.Boolean and null values.");
-    }
+    String toDeserialize = "{ \"numericProperty\" : 0.0, \"booleanProperty\" : false, \"stringProperty\" : \"Test String\" }";
+    Object unmarshalledObject = jsonb.fromJson(toDeserialize, Object.class);
+
+    String validationMessage = "Failed to correctly unmarshal object with string, number, boolean and null JSON values into a "
+            + "predictable order Map<String,Object> with java.lang.String, java.math.BigDecimal, java.lang.Boolean and null "
+            + "values.";
+    LinkedHashMap<String, Object> instance = new LinkedHashMap<String, Object>() {{
+      put("numericProperty", BigDecimal.valueOf(0.0d));
+      put("booleanProperty", false);
+      put("stringProperty", "Test String");
+    }};
+
+    assertThat(validationMessage, unmarshalledObject, instanceOf(Map.class));
+    assertThat(validationMessage, unmarshalledObject, is(instance));
   }
 
   /*
@@ -127,7 +114,9 @@ public class UntypedMappingTest {
   @Test
   public void testArrayMapping() {
     new SimpleMappingTester<>(List.class, List.class).test(
-        Arrays.asList("Test String"), "\\[\\s*\"Test String\"s*\\]",
-        "[ \"Test String\" ]", Arrays.asList("Test String"));
+        Arrays.asList("Test String"),
+        "\\[\\s*\"Test String\"s*\\]",
+        "[ \"Test String\" ]",
+        Arrays.asList("Test String"));
   }
 }

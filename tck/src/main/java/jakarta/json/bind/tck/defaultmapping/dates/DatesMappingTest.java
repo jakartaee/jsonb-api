@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,14 +20,12 @@
 
 package jakarta.json.bind.tck.defaultmapping.dates;
 
-import static org.junit.Assert.fail;
-
-import java.lang.invoke.MethodHandles;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 import java.time.Period;
@@ -41,14 +39,6 @@ import java.util.GregorianCalendar;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 import java.util.function.BiPredicate;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
@@ -70,26 +60,23 @@ import jakarta.json.bind.tck.defaultmapping.dates.model.TimeZoneContainer;
 import jakarta.json.bind.tck.defaultmapping.dates.model.ZoneIdContainer;
 import jakarta.json.bind.tck.defaultmapping.dates.model.ZoneOffsetContainer;
 import jakarta.json.bind.tck.defaultmapping.dates.model.ZonedDateTimeContainer;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @test
  * @sources DatesMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.dates.DatesMappingTest
  **/
-@RunWith(Arquillian.class)
 public class DatesMappingTest {
     
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
-    
-  private static final String OFFSET_HOURS = getHoursFromUTCRegExp(
-      new GregorianCalendar(1970, 0, 1));
+  private static final String OFFSET_HOURS = getHoursFromUTCRegExp(new GregorianCalendar(1970, 0, 1));
 
-  private <T extends TimeZone> BiPredicate<T, T> timezoneTest(
-      final boolean canBeSaving) {
+  private <T extends TimeZone> BiPredicate<T, T> timezoneTest(final boolean canBeSaving) {
     return (a, b) -> {
       // Depending on when the timezone is created, it can differ by one hour
       // when serialized/deserialized
@@ -111,14 +98,11 @@ public class DatesMappingTest {
   @SuppressWarnings("deprecation")
   @Test
   public void testDate() {
-    Date date = new Date(70, 0, 1);
+    Date date = new Date(70, Calendar.JANUARY, 1);
     Jsonb jsonb = JsonbBuilder.create();
-    Date mixin = jsonb.fromJson(
-        jsonb.toJson(jsonb.fromJson(jsonb.toJson(date), Date.class)),
-        Date.class);
-    if (date.getTime() != mixin.getTime())
-      fail(
-          "Serializing and deserializing Date results in different value");
+    String json = jsonb.toJson(jsonb.fromJson(jsonb.toJson(date), Date.class));
+    Date mixin = jsonb.fromJson(json, Date.class);
+    assertThat("Serializing and deserializing Date results in different value", mixin, is(date));
   }
 
   /*
@@ -135,20 +119,22 @@ public class DatesMappingTest {
   public void testDateNoTimeMapping() {
     // Date takes time zone from the default timezone which is set by user
     // environment
-    Date date = new Date(70, 0, 1);
+    Date date = new Date(70, Calendar.JANUARY, 1);
 
     GregorianCalendar calendar = new GregorianCalendar();
     calendar.setTime(date);
     calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
     DateTimeFormatter dtf = DateTimeFormatter.ISO_DATE_TIME;
-    String toMatch = dtf.format(calendar.toZonedDateTime()).replace("]", "\\]")
-        .replace("[", "\\[").replace("+", "\\+");
+    String toMatch = dtf.format(calendar.toZonedDateTime())
+            .replace("]", "\\]")
+            .replace("[", "\\[")
+            .replace("+", "\\+");
     new MappingTester<>(DateContainer.class) //
         .setMarshallExpectedRegExp("\"" + toMatch + "\"")
         .setUnmarshallTestPredicate((a, b) -> {
           Calendar orig = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
           orig.clear();
-          orig.set(1970, 0, 1);
+          orig.set(1970, Calendar.JANUARY, 1);
           return b.equals(orig.getTime());
         }).test(date, "\"1970-01-01T00:00:00\"");
   }
@@ -171,7 +157,7 @@ public class DatesMappingTest {
         .setUnmarshallTestPredicate((a, b) -> {
           Calendar orig = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
           orig.clear();
-          orig.set(1970, 0, 1);
+          orig.set(1970, Calendar.JANUARY, 1);
           return b.getTime().equals(orig.getTime())
               && getHoursFromUTC(orig).equals(getHoursFromUTC(b));
         }).test(calendarProperty, "\"1970-01-01\"");
@@ -188,18 +174,18 @@ public class DatesMappingTest {
    */
   @Test
   public void testGregorianCalendarNoTimeMapping() {
-    GregorianCalendar calendar = new GregorianCalendar(1970, 0, 1);
-    for (int i = Calendar.DATE + 1; i != Calendar.MILLISECOND + 1; i++)
+    GregorianCalendar calendar = new GregorianCalendar(1970, Calendar.JANUARY, 1);
+    for (int i = Calendar.DATE + 1; i != Calendar.MILLISECOND + 1; i++) {
       calendar.clear(i);
+    }
     DateTimeFormatter dtf = DateTimeFormatter.ISO_DATE;
-    String toMatch = "\""
-        + dtf.format(calendar.toZonedDateTime()).replace("+", "\\+") + "\"";
+    String toMatch = "\"" + dtf.format(calendar.toZonedDateTime()).replace("+", "\\+") + "\"";
     new MappingTester<>(GregorianCalendarContainer.class) //
         .setMarshallExpectedRegExp(toMatch) //
         .setUnmarshallTestPredicate((a, b) -> {
           Calendar orig = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
           orig.clear();
-          orig.set(1970, 0, 1);
+          orig.set(1970, Calendar.JANUARY, 1);
           return b.getTime().equals(orig.getTime())
               && getHoursFromUTC(orig).equals(getHoursFromUTC(b));
         }).test(calendar, "\"1970-01-01\"");
@@ -217,19 +203,20 @@ public class DatesMappingTest {
   @SuppressWarnings("deprecation")
   @Test
   public void testDateWithTimeMapping() {
-    Date date = new Date(70, 0, 1, 0, 0, 0);
+    Date date = new Date(70, Calendar.JANUARY, 1, 0, 0, 0);
     GregorianCalendar calendar = new GregorianCalendar();
     calendar.setTime(date);
     calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
     DateTimeFormatter dtf = DateTimeFormatter.ISO_DATE_TIME;
-    String toMatch = dtf.format(calendar.toZonedDateTime()).replace("]", "\\]")
-        .replace("[", "\\[");
+    String toMatch = dtf.format(calendar.toZonedDateTime())
+            .replace("]", "\\]")
+            .replace("[", "\\[");
     new MappingTester<>(DateContainer.class) //
         .setMarshallExpectedRegExp("\"" + toMatch + "\"")
         .setUnmarshallTestPredicate((a, b) -> {
           Calendar orig = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
           orig.clear();
-          orig.set(1970, 0, 1);
+          orig.set(1970, Calendar.JANUARY, 1);
           return b.equals(orig.getTime());
         }).test(date, "\"1970-01-01T00:00:00\"");
   }
@@ -246,7 +233,7 @@ public class DatesMappingTest {
   @Test
   public void testCalendarWithTimeMapping() {
     Calendar calendarProperty = Calendar.getInstance();
-    calendarProperty.set(1970, 0, 1, 1, 0, 0);
+    calendarProperty.set(1970, Calendar.JANUARY, 1, 1, 0, 0);
     calendarProperty.set(Calendar.MILLISECOND, 0);
     calendarProperty.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
     new MappingTester<>(CalendarContainer.class)
@@ -269,10 +256,11 @@ public class DatesMappingTest {
    * marshalled as and unmarshalled from ISO_DATE_TIME
    */
   @Test
-  @Ignore("See: https://github.com/eclipse-ee4j/jakartaee-tck/issues/102")
+  @Disabled("See: https://github.com/eclipse-ee4j/jakartaee-tck/issues/102")
   public void testGregorianCalendarWithTimeMapping() {
-    GregorianCalendar calendar = GregorianCalendar.from(ZonedDateTime
-        .of(LocalDateTime.of(1970, 1, 1, 1, 0, 0), ZoneId.of("GMT")));
+    GregorianCalendar calendar = GregorianCalendar.from(
+            ZonedDateTime.of(LocalDateTime.of(1970, Month.FEBRUARY, 1, 1, 0, 0),
+                             ZoneId.of("GMT")));
     new MappingTester<>(GregorianCalendarContainer.class).test(calendar,
         "\"1970-01-01T01:00:00Z[GMT]\"");
   }
@@ -378,7 +366,7 @@ public class DatesMappingTest {
    */
   @Test
   public void testPeriodMapping() {
-    new MappingTester<>(PeriodContainer.class).test(Period.of(1, 1, 1),
+    new MappingTester<>(PeriodContainer.class).test(Period.of(1, Calendar.FEBRUARY, 1),
         "\"P1Y1M1D\"");
   }
 
@@ -408,7 +396,7 @@ public class DatesMappingTest {
   @Test
   public void testLocalDateMapping() {
     new MappingTester<>(LocalDateContainer.class)
-        .test(LocalDate.of(2000, 1, 1), "\"2000-01-01\"");
+        .test(LocalDate.of(2000, Calendar.FEBRUARY, 1), "\"2000-01-01\"");
   }
 
   /*
@@ -436,7 +424,7 @@ public class DatesMappingTest {
   @Test
   public void testLocalDateTimeMapping() {
     new MappingTester<>(LocalDateTimeContainer.class)
-        .test(LocalDateTime.of(2000, 1, 1, 1, 1, 1), "\"2000-01-01T01:01:01\"");
+        .test(LocalDateTime.of(2000, Calendar.FEBRUARY, 1, 1, 1, 1), "\"2000-01-01T01:01:01\"");
   }
 
   /*
@@ -450,7 +438,8 @@ public class DatesMappingTest {
   @Test
   public void testZonedDateTimeMapping() {
     new MappingTester<>(ZonedDateTimeContainer.class).test(
-        ZonedDateTime.of(2000, 1, 1, 1, 1, 1, 0, ZoneId.of("Europe/Paris")),
+        ZonedDateTime.of(2000, Calendar.FEBRUARY, 1, 1, 1, 1, 0,
+                         ZoneId.of("Europe/Paris")),
         "\"2000-01-01T01:01:01+01:00[Europe/Paris]\"");
   }
 
@@ -493,7 +482,7 @@ public class DatesMappingTest {
   @Test
   public void testOffsetDateTimeMapping() {
     new MappingTester<>(OffsetDateTimeContainer.class)
-        .test(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 1, 1, 1),
+        .test(OffsetDateTime.of(LocalDateTime.of(2000, Calendar.FEBRUARY, 1, 1, 1, 1),
             ZoneOffset.of("+01:00")), "\"2000-01-01T01:01:01+01:00\"");
   }
 
@@ -522,14 +511,9 @@ public class DatesMappingTest {
    */
   @Test
   public void testUnmarshallingUnknownFormat() {
-    try {
-      JsonbBuilder.create().fromJson(
-          "{ \"instance\" : \"01/01/1970 00:00:00\" }", DateContainer.class);
-      fail(
-          "An exception is expected if the date/time string does not correspond to the expected datetime format.");
-    } catch (JsonbException x) {
-      return; // passed
-    }
+    assertThrows(JsonbException.class,
+                 () -> JsonbBuilder.create().fromJson("{ \"instance\" : \"01/01/1970 00:00:00\" }", DateContainer.class),
+                 "An exception is expected if the date/time string does not correspond to the expected datetime format.");
   }
 
   /*
@@ -542,23 +526,13 @@ public class DatesMappingTest {
    */
   @Test
   public void testUnmarshallingDeprecatedTimezoneIds() {
-    try {
-      JsonbBuilder.create().fromJson("{ \"instance\" : \"CST\" }",
-          TimeZoneContainer.class);
-      fail(
-          "An exception is expected for deprecated three-letter time zone IDs.");
-    } catch (JsonbException x) {
-
-    }
-
-    try {
-      JsonbBuilder.create().fromJson("{ \"instance\" : \"CST\" }",
-          SimpleTimeZoneContainer.class);
-      fail(
-          "An exception is expected for deprecated three-letter time zone IDs.");
-    } catch (JsonbException x) {
-
-    }
+    Jsonb jsonb = JsonbBuilder.create();
+    assertThrows(JsonbException.class,
+                 () -> jsonb.fromJson("{ \"instance\" : \"CST\" }", TimeZoneContainer.class),
+                 "An exception is expected for deprecated three-letter time zone IDs.");
+    assertThrows(JsonbException.class,
+                 () -> jsonb.fromJson("{ \"instance\" : \"CST\" }", SimpleTimeZoneContainer.class),
+                 "An exception is expected for deprecated three-letter time zone IDs.");
   }
 
   private static String getHoursFromUTCRegExp(Calendar calendar) {

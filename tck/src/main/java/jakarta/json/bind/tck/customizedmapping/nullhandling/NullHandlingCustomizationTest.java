@@ -20,16 +20,7 @@
 
 package jakarta.json.bind.tck.customizedmapping.nullhandling;
 
-import static org.junit.Assert.fail;
-
-import java.lang.invoke.MethodHandles;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import java.util.regex.Pattern;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
@@ -48,20 +39,19 @@ import jakarta.json.bind.tck.customizedmapping.nullhandling.model.nillable.Nilla
 import jakarta.json.bind.tck.customizedmapping.nullhandling.model.nonnillable.NonNillablePackageNillableContainer;
 import jakarta.json.bind.tck.customizedmapping.nullhandling.model.nonnillable.NonNillablePackageNonNillablePropertyNillableContainer;
 import jakarta.json.bind.tck.customizedmapping.nullhandling.model.nonnillable.NonNillablePackageSimpleContainer;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.matchesPattern;
 
 /**
  * @test
  * @sources NullHandlingCustomizationTest.java
  * @executeClass com.sun.ts.tests.jsonb.customizedmapping.nullhandling.NullHandlingCustomizationTest
  **/
-@RunWith(Arquillian.class)
 public class NullHandlingCustomizationTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
+
+  private final static Pattern PATTERN_NULL = Pattern.compile("\\{\\s*\"stringInstance\"\\s*\\:\\s*null\\s*\\}");
     
   private final Jsonb jsonb = JsonbBuilder.create();
 
@@ -76,13 +66,8 @@ public class NullHandlingCustomizationTest {
   @Test
   public void testNillableType() {
     String jsonString = jsonb.toJson(new NillableContainer());
-    if (!jsonString
-        .matches("\\{\\s*\"stringInstance\"\\s*\\:\\s*null\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal null property of type annotated as JsonbNillable.");
-    }
-
-    return; // passed
+    assertThat("Failed to correctly marshal null property of type annotated as JsonbNillable.",
+               jsonString, matchesPattern(PATTERN_NULL));
   }
 
   /*
@@ -96,13 +81,8 @@ public class NullHandlingCustomizationTest {
   @Test
   public void testNillablePackage() {
     String jsonString = jsonb.toJson(new NillablePackageSimpleContainer());
-    if (!jsonString
-        .matches("\\{\\s*\"stringInstance\"\\s*\\:\\s*null\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal null property of type under package annotated as JsonbNillable.");
-    }
-
-    return; // passed
+    assertThat("Failed to correctly marshal null property of type under package annotated as JsonbNillable.",
+               jsonString, matchesPattern(PATTERN_NULL));
   }
 
   /*
@@ -116,13 +96,8 @@ public class NullHandlingCustomizationTest {
   @Test
   public void testNillableProperty() {
     String jsonString = jsonb.toJson(new NillablePropertyContainer());
-    if (!jsonString
-        .matches("\\{\\s*\"nillableStringInstance\"\\s*\\:\\s*null\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal null property annotated as JsonbProperty with nillable = true.");
-    }
-
-    return; // passed
+    assertThat("Failed to correctly marshal null property annotated as JsonbProperty with nillable = true.",
+               jsonString, matchesPattern("\\{\\s*\"nillableStringInstance\"\\s*\\:\\s*null\\s*\\}"));
   }
 
   /*
@@ -137,13 +112,8 @@ public class NullHandlingCustomizationTest {
   public void testNullValuesConfig() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withNullValues(true));
     String jsonString = jsonb.toJson(new SimpleContainer());
-    if (!jsonString
-        .matches("\\{\\s*\"stringInstance\"\\s*\\:\\s*null\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal null properties when using JsonbConfig().withNullValues(true).");
-    }
-
-    return; // passed
+    assertThat("Failed to correctly marshal null properties when using JsonbConfig().withNullValues(true).",
+               jsonString, matchesPattern(PATTERN_NULL));
   }
 
   /*
@@ -158,14 +128,10 @@ public class NullHandlingCustomizationTest {
    */
   @Test
   public void testNillableTypeNonNillableProperty() {
-    String jsonString = jsonb
-        .toJson(new NonNillablePropertyNillableContainer());
-    if (!jsonString.matches("\\{\\s*\\}")) {
-      fail(
-          "Failed to correctly ignore null property annotated as JsonbProperty with nillable = false of type annotated as JsonbNillable.");
-    }
-
-    return; // passed
+    String jsonString = jsonb.toJson(new NonNillablePropertyNillableContainer());
+    assertThat("Failed to correctly ignore null property annotated as JsonbProperty with nillable = false of type "
+                       + "annotated as JsonbNillable.",
+               jsonString, matchesPattern("\\{\\s*\\}"));
   }
 
   /*
@@ -180,14 +146,10 @@ public class NullHandlingCustomizationTest {
    */
   @Test
   public void testNillablePackageNonNillableProperty() {
-    String jsonString = jsonb
-        .toJson(new NillablePackageNonNillablePropertyContainer());
-    if (!jsonString.matches("\\{\\s*\\}")) {
-      fail(
-          "Failed to correctly ignore null property annotated as JsonbProperty(nillable = false) of type under package annotated as JsonbNillable.");
-    }
-
-    return; // passed
+    String jsonString = jsonb.toJson(new NillablePackageNonNillablePropertyContainer());
+    assertThat("Failed to correctly ignore null property annotated as JsonbProperty(nillable = false) of type under "
+                       + "package annotated as JsonbNillable.",
+               jsonString, matchesPattern("\\{\\s*\\}"));
   }
 
   /*
@@ -203,15 +165,10 @@ public class NullHandlingCustomizationTest {
    */
   @Test
   public void testNillablePackageNonNillableTypeNillableProperty() {
-    String jsonString = jsonb
-        .toJson(new NillablePackageNillablePropertyNonNillableContainer());
-    if (!jsonString
-        .matches("\\{\\s*\"nillableStringInstance\"\\s*\\:\\s*null\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal null property annotated as JsonbProperty(nillable = true) of type annotated as JsonbNillable(false) under package annotated as JsonbNillable.");
-    }
-
-    return; // passed
+    String jsonString = jsonb.toJson(new NillablePackageNillablePropertyNonNillableContainer());
+    assertThat("Failed to correctly marshal null property annotated as JsonbProperty(nillable = true) of type "
+                       + "annotated as JsonbNillable(false) under package annotated as JsonbNillable.",
+               jsonString, matchesPattern("\\{\\s*\"nillableStringInstance\"\\s*\\:\\s*null\\s*\\}"));
   }
 
   /*
@@ -228,12 +185,9 @@ public class NullHandlingCustomizationTest {
   public void testNullValuesConfigNonNillablePackage() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withNullValues(true));
     String jsonString = jsonb.toJson(new NonNillablePackageSimpleContainer());
-    if (!jsonString.matches("\\{\\s*\\}")) {
-      fail(
-          "Failed to correctly ignore null properties when using JsonbConfig().withNullValues(true) and type under package annotated as JsonbNillable(false).");
-    }
-
-    return; // passed
+    assertThat("Failed to correctly ignore null properties when using JsonbConfig().withNullValues(true) and type under "
+                       + "package annotated as JsonbNillable(false).",
+               jsonString, matchesPattern("\\{\\s*\\}"));
   }
 
   /*
@@ -250,13 +204,9 @@ public class NullHandlingCustomizationTest {
   public void testNullValuesConfigNonNillablePackageNillableType() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withNullValues(true));
     String jsonString = jsonb.toJson(new NonNillablePackageNillableContainer());
-    if (!jsonString
-        .matches("\\{\\s*\"stringInstance\"\\s*\\:\\s*null\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal null properties when using JsonbConfig().withNullValues(true) and type annotated as JsonbNillable under package annotated as JsonbNillable(false).");
-    }
-
-    return; // passed
+    assertThat("Failed to correctly marshal null properties when using JsonbConfig().withNullValues(true) and type "
+                       + "annotated as JsonbNillable under package annotated as JsonbNillable(false).",
+               jsonString, matchesPattern("\\{\\s*\"stringInstance\"\\s*\\:\\s*null\\s*\\}"));
   }
 
   /*
@@ -273,15 +223,12 @@ public class NullHandlingCustomizationTest {
    */
   @Test
   public void testNullValuesConfigNonNillablePackageNillableTypeNonNillableProperty() {
+    String validationMessage = "Failed to correctly ignore null property annotated as JsonbProperty with nillable = false "
+            + "when using JsonbConfig().withNullValues(true) and type annotated as JsonbNillable under package annotated "
+            + "as JsonbNillable(false).";
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withNullValues(true));
-    String jsonString = jsonb
-        .toJson(new NonNillablePackageNonNillablePropertyNillableContainer());
-    if (!jsonString.matches("\\{\\s*\\}")) {
-      fail(
-          "Failed to correctly ignore null property annotated as JsonbProperty with nillable = false when using JsonbConfig().withNullValues(true) and type annotated as JsonbNillable under package annotated as JsonbNillable(false).");
-    }
-
-    return; // passed
+    String jsonString = jsonb.toJson(new NonNillablePackageNonNillablePropertyNillableContainer());
+    assertThat(validationMessage, jsonString, matchesPattern("\\{\\s*\\}"));
   }
 
   /*
@@ -298,12 +245,9 @@ public class NullHandlingCustomizationTest {
   public void testNullValuesConfigNonNillableType() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withNullValues(true));
     String jsonString = jsonb.toJson(new NonNillableContainer());
-    if (!jsonString.matches("\\{\\s*\\}")) {
-      fail(
-          "Failed to correctly ignore null property when using JsonbConfig().withNullValues(true) and type annotated as JsonbNillable(false).");
-    }
-
-    return; // passed
+    assertThat("Failed to correctly ignore null property when using JsonbConfig().withNullValues(true) and type "
+                       + "annotated as JsonbNillable(false).",
+               jsonString, matchesPattern("\\{\\s*\\}"));
   }
 
   /*
@@ -320,15 +264,10 @@ public class NullHandlingCustomizationTest {
   @Test
   public void testNullValuesConfigNonNillableTypeNillableProperty() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withNullValues(true));
-    String jsonString = jsonb
-        .toJson(new NillablePropertyNonNillableContainer());
-    if (!jsonString
-        .matches("\\{\\s*\"nillableStringInstance\"\\s*\\:\\s*null\\s*\\}")) {
-      fail(
-          "Failed to correctly include null property annotated as JsonbProperty with nillable = true when using JsonbConfig().withNullValues(true) and type annotated as JsonbNillable(false).");
-    }
-
-    return; // passed
+    String jsonString = jsonb.toJson(new NillablePropertyNonNillableContainer());
+    assertThat("Failed to correctly include null property annotated as JsonbProperty with nillable = true when "
+                       + "using JsonbConfig().withNullValues(true) and type annotated as JsonbNillable(false).",
+               jsonString, matchesPattern("\\{\\s*\"nillableStringInstance\"\\s*\\:\\s*null\\s*\\}"));
   }
 
   /*
@@ -345,12 +284,9 @@ public class NullHandlingCustomizationTest {
   public void testNullValuesConfigNonNillableProperty() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withNullValues(true));
     String jsonString = jsonb.toJson(new NonNillablePropertyContainer());
-    if (!jsonString.matches("\\{\\s*\\}")) {
-      fail(
-          "Failed to correctly ignore null property annotated as JsonbProperty with nillable = false when using JsonbConfig().withNullValues(true).");
-    }
-
-    return; // passed
+    assertThat("Failed to correctly ignore null property annotated as JsonbProperty with nillable = false when "
+                       + "using JsonbConfig().withNullValues(true).",
+               jsonString, matchesPattern("\\{\\s*\\}"));
   }
 
   /*

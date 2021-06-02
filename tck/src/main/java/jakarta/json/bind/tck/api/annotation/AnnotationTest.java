@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2020 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,19 +20,8 @@
 
 package jakarta.json.bind.tck.api.annotation;
 
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
-import jakarta.json.bind.tck.RegexMatcher;
 import jakarta.json.bind.tck.api.model.SimpleAnnotatedAdaptedContainer;
 import jakarta.json.bind.tck.api.model.SimpleAnnotatedDateContainer;
 import jakarta.json.bind.tck.api.model.SimpleAnnotatedDoubleContainer;
@@ -44,22 +33,20 @@ import jakarta.json.bind.tck.api.model.SimpleAnnotatedSerializedArrayContainer;
 import jakarta.json.bind.tck.api.model.SimpleAnnotatedSerializedContainer;
 import jakarta.json.bind.tck.api.model.SimpleContainer;
 import jakarta.json.bind.tck.api.model.SimplePartiallyAnnotatedPropertyOrderContainer;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.matchesPattern;
 
 /**
  * @test
  * @sources AnnotationTest.java
  * @executeClass com.sun.ts.tests.jsonb.api.AnnotationTest
  **/
-@RunWith(Arquillian.class)
 public class AnnotationTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, AnnotationTest.class.getPackage().getName());
-    }
-    
-  private Jsonb jsonb = JsonbBuilder.create();
+
+  private final Jsonb jsonb = JsonbBuilder.create();
 
   /*
    * @testName: testJsonbDateFormat
@@ -72,7 +59,7 @@ public class AnnotationTest {
   @Test
   public void testJsonbDateFormat() {
     String jsonString = jsonb.toJson(new SimpleAnnotatedDateContainer());
-    assertThat(jsonString, RegexMatcher.matches("\\{\\s*\"instance\"\\s*:\\s*\"Do(\\.?), 01 Jan(\\.?) 1970\"\\s*}"));
+    assertThat(jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\"Do(\\.?), 01 Jan(\\.?) 1970\"\\s*}"));
   }
 
   /*
@@ -86,12 +73,8 @@ public class AnnotationTest {
   @Test
   public void testJsonbNillable() {
     String jsonString = jsonb.toJson(new SimpleAnnotatedNillableContainer());
-    if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*null\\s*}")) {
-      fail(
-          "Failed to enable serialization of null values using JsonbNillable annotation.");
-    }
-
-    return; // passed
+    assertThat("Failed to enable serialization of null values using JsonbNillable annotation.",
+               jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*null\\s*}"));
   }
 
   /*
@@ -105,12 +88,8 @@ public class AnnotationTest {
   @Test
   public void testJsonbNumberFormat() {
     String jsonString = jsonb.toJson(new SimpleAnnotatedDoubleContainer());
-    if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*\"123.456,8\"\\s*}")) {
-      fail(
-          "Failed to customize number format using JsonbNumberFormat annotation.");
-    }
-
-    return; // passed
+    assertThat("Failed to customize number format using JsonbNumberFormat annotation.",
+               jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\"123.456,8\"\\s*}"));
   }
 
   /*
@@ -123,14 +102,9 @@ public class AnnotationTest {
    */
   @Test
   public void testJsonbProperty() {
-    String jsonString = jsonb
-        .toJson(new SimpleAnnotatedNillablePropertyContainer());
-    if (!jsonString.matches("\\{\\s*\"nillableInstance\"\\s*:\\s*null\\s*}")) {
-      fail(
-          "Failed to customize property name and enable serialization of null values using JsonbProperty annotation.");
-    }
-
-    return; // passed
+    String jsonString = jsonb.toJson(new SimpleAnnotatedNillablePropertyContainer());
+    assertThat("Failed to customize property name and enable serialization of null values using JsonbProperty annotation.",
+               jsonString, matchesPattern("\\{\\s*\"nillableInstance\"\\s*:\\s*null\\s*}"));
   }
 
   /*
@@ -143,15 +117,10 @@ public class AnnotationTest {
    */
   @Test
   public void testJsonbPropertyOrder() {
-    String jsonString = jsonb
-        .toJson(new SimpleAnnotatedPropertyOrderContainer());
-    if (!jsonString.matches(
-        "\\{\\s*\"secondInstance\"\\s*:\\s*\"Second String\"\\s*,\\s*\"firstInstance\"\\s*:\\s*\"First String\"\\s*}")) {
-      fail(
-          "Failed to customize the order in which fields will be serialized using JsonbPropertyOrder annotation.");
-    }
-
-    return; // passed
+    String jsonString = jsonb.toJson(new SimpleAnnotatedPropertyOrderContainer());
+    assertThat("Failed to customize the order in which fields will be serialized using JsonbPropertyOrder annotation.",
+               jsonString, matchesPattern("\\{\\s*\"secondInstance\"\\s*:\\s*\"Second String\"\\s*,"
+                                                  + "\\s*\"firstInstance\"\\s*:\\s*\"First String\"\\s*}"));
   }
 
   /*
@@ -166,14 +135,10 @@ public class AnnotationTest {
    */
   @Test
   public void testJsonbPropertyPartialOrder() {
-    String jsonString = jsonb
-        .toJson(new SimplePartiallyAnnotatedPropertyOrderContainer());
-    if (!jsonString.matches(
-        "\\{\\s*\"thirdInstance\"\\s*:\\s*\"Third String\"\\s*,\\s*\"fourthInstance\"\\s*:\\s*\"Fourth String\".*}")) {
-      System.out.append("Got JSON: ").println(jsonString);
-      fail(
-          "Failed to order the fields partially defined using JsonbPropertyOrder annotation.");
-    }
+    String jsonString = jsonb.toJson(new SimplePartiallyAnnotatedPropertyOrderContainer());
+    assertThat("Failed to order the fields partially defined using JsonbPropertyOrder annotation.",
+               jsonString, matchesPattern("\\{\\s*\"thirdInstance\"\\s*:\\s*\"Third String\"\\s*,"
+                                                  + "\\s*\"fourthInstance\"\\s*:\\s*\"Fourth String\".*}"));
   }
 
   /*
@@ -195,13 +160,9 @@ public class AnnotationTest {
         });
       }
     });
-    if (!jsonString.matches(
-        "\\{\\s*\"instance\"\\s*:\\s*\\{\\s*\"instance\"\\s*:\\s*\"Test String Adapted\"\\s*}\\s*}")) {
-      fail(
-          "Failed to configure a JsonbAdapter implementation to provide custom mapping using JsonbTypeAdapter annotation.");
-    }
-
-    return; // passed
+    assertThat("Failed to configure a JsonbAdapter implementation to provide custom mapping using JsonbTypeAdapter annotation.",
+               jsonString,
+               matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\\{\\s*\"instance\"\\s*:\\s*\"Test String Adapted\"\\s*}\\s*}"));
   }
 
   /*
@@ -222,22 +183,17 @@ public class AnnotationTest {
     container.setInstance(instance);
 
     String jsonString = jsonb.toJson(container);
-    if (!jsonString.matches(
-        "\\{\\s*\"instance\"\\s*:\\s*\\{\\s*\"instance\"\\s*:\\s*\"Test String Serialized\"\\s*}\\s*}")) {
-      fail(
-          "Failed to configure a JsonbSerializer implementation to provide custom mapping using JsonbTypeSerializer annotation.");
-    }
+    assertThat("Failed to configure a JsonbSerializer implementation to "
+                       + "provide custom mapping using JsonbTypeSerializer annotation.",
+               jsonString,
+               matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\\{\\s*\"instance\"\\s*:\\s*\"Test String Serialized\"\\s*}\\s*}"));
 
     SimpleAnnotatedSerializedContainer unmarshalledObject = jsonb.fromJson(
         "{ \"instance\" : { \"instance\" : \"Test String\" } }",
         SimpleAnnotatedSerializedContainer.class);
-    if (!"Test String Deserialized"
-        .equals(unmarshalledObject.getInstance().getInstance())) {
-      fail(
-          "Failed to configure a JsonbDeserializer implementation to provide custom mapping using JsonbTypeDeserializer annotation.");
-    }
-
-    return; // passed
+    assertThat("Failed to configure a JsonbDeserializer implementation to "
+                       + "provide custom mapping using JsonbTypeDeserializer annotation.",
+               unmarshalledObject.getInstance().getInstance(), is("Test String Deserialized"));
   }
 
   /*
@@ -260,22 +216,18 @@ public class AnnotationTest {
     container.setInstance(new SimpleContainer[] { instance1, instance2 });
 
     String jsonString = jsonb.toJson(container);
-    if (!jsonString.matches(
-        "\\{\\s*\"instance\"\\s*:\\s*\\[\\s*\\{\\s*\"instance\"\\s*:\\s*\"Test String 1\"\\s*}\\s*,\\s*\\{\\s*\"instance\"\\s*:\\s*\"Test String 2\"\\s*}\\s*]\\s*}")) {
-      fail(
-          "Failed to configure a JsonbSerializer implementation to provide custom mapping using JsonbTypeSerializer annotation.");
-    }
+    assertThat("Failed to configure a JsonbSerializer implementation to "
+                       + "provide custom mapping using JsonbTypeSerializer annotation.",
+               jsonString,
+               matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\\[\\s*\\{\\s*\"instance\"\\s*:\\s*\"Test String 1\"\\s*}\\s*,"
+                                      + "\\s*\\{\\s*\"instance\"\\s*:\\s*\"Test String 2\"\\s*}\\s*]\\s*}"));
 
     SimpleAnnotatedSerializedArrayContainer unmarshalledObject = jsonb.fromJson(
         "{ \"instance\" : [ { \"instance\" : \"Test String 1\" }, { \"instance\" : \"Test String 2\" } ] }",
         SimpleAnnotatedSerializedArrayContainer.class);
-    if (!"Test String 1"
-        .equals(unmarshalledObject.getInstance()[0].getInstance())) {
-      fail(
-          "Failed to configure a JsonbDeserializer implementation to provide custom mapping using JsonbTypeDeserializer annotation.");
-    }
-
-    return; // passed
+    assertThat("Failed to configure a JsonbDeserializer implementation to "
+                       + "provide custom mapping using JsonbTypeDeserializer annotation.",
+               unmarshalledObject.getInstance()[0].getInstance(), is("Test String 1"));
   }
 
   /*
@@ -288,14 +240,8 @@ public class AnnotationTest {
    */
   @Test
   public void testJsonbVisibility() {
-    String jsonString = jsonb
-        .toJson(new SimpleAnnotatedPropertyVisibilityContainer());
-    if (!jsonString
-        .matches("\\{\\s*\"secondInstance\"\\s*:\\s*\"Second String\"\\s*}")) {
-      fail(
-          "Failed to customize fields visibility using JsonbVisibility annotation.");
-    }
-
-    return; // passed
+    String jsonString = jsonb.toJson(new SimpleAnnotatedPropertyVisibilityContainer());
+    assertThat("Failed to customize fields visibility using JsonbVisibility annotation.",
+               jsonString, matchesPattern("\\{\\s*\"secondInstance\"\\s*:\\s*\"Second String\"\\s*}"));
   }
 }

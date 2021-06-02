@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,35 +20,22 @@
 
 package jakarta.json.bind.tck.defaultmapping.bignumbers;
 
-import static org.junit.Assert.fail;
-
-import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.matchesPattern;
 
 /**
  * @test
  * @sources BigNumbersMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.bignumbers.BigNumbersMappingTest
  **/
-@RunWith(Arquillian.class)
 public class BigNumbersMappingTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
 
   private final Jsonb jsonb = JsonbBuilder.create();
 
@@ -62,16 +49,13 @@ public class BigNumbersMappingTest {
    * to JSON-B)
    */
   @Test
-  @Ignore("See https://github.com/eclipse-ee4j/jsonb-api/issues/180")
+  @Disabled("See https://github.com/eclipse-ee4j/jsonb-api/issues/180")
   public void testBigNumberMarshalling() {
     String jsonString = jsonb.toJson(new Object() {
       @SuppressWarnings("unused")
       public Number number = new BigDecimal("0.10000000000000001");
     });
-    if (!jsonString
-        .matches("\\{\\s*\"number\"\\s*:\\s*\"0.10000000000000001\"\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal number of greater precision than IEEE 754 as string.");
-    }
+    assertThat("Failed to correctly marshal number of greater precision than IEEE 754 as string.",
+               jsonString, matchesPattern("\\{\\s*\"number\"\\s*:\\s*\"0.10000000000000001\"\\s*\\}"));
   }
 }

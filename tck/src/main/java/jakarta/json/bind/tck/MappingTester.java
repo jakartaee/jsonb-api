@@ -16,8 +16,6 @@
 
 package jakarta.json.bind.tck;
 
-import static org.junit.Assert.fail;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,10 +26,16 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.function.BiPredicate;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.matchesPattern;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class MappingTester<T> {
   private static final String JSON_PATTERN_PREFIX = "\\{\\s*";
@@ -65,9 +69,7 @@ public class MappingTester<T> {
 
   private T testValue;
 
-  private BiPredicate<T, T> testUnmarshall = (f, s) -> {
-    return f.equals(s);
-  };
+  private BiPredicate<T, T> testUnmarshall = Object::equals;
 
   private String fixedRegExp = null;
 
@@ -153,15 +155,9 @@ public class MappingTester<T> {
     container.setInstance(value);
 
     String jsonString = jsonb.toJson(container);
-    if (jsonString.matches(getExpectedJsonString(expectedRepresentation))) {
-      return; // passed
-    } else {
-      System.out.append("jsonString ").println(jsonString);
-      System.out.append("does not match expected ")
-          .println(getExpectedJsonString(expectedRepresentation));
-      fail("[testMarshalling] - Failed to correctly marshal "
-          + value.getClass().getName() + " property with value " + value);
-    }
+    String validationMessage = "[testMarshalling] - Failed to correctly marshal "
+            + value.getClass().getName() + " property with value " + value;
+    assertThat(validationMessage, jsonString, matchesPattern(getExpectedJsonString(expectedRepresentation)));
   }
 
   private void testMarshallingToStream(T value, String expectedRepresentation)
@@ -171,17 +167,10 @@ public class MappingTester<T> {
 
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
       jsonb.toJson(container, stream);
-      String jsonString = new String(stream.toByteArray(),
-          StandardCharsets.UTF_8);
-      if (jsonString.matches(getExpectedJsonString(expectedRepresentation))) {
-        return; // passed
-      } else {
-        System.out.append("jsonString ").println(jsonString);
-        System.out.append("does not match expected ")
-            .println(getExpectedJsonString(expectedRepresentation));
-        fail("[testMarshallingToStream] - Failed to correctly marshal "
-                + value.getClass().getName() + " property with value " + value);
-      }
+      String jsonString = new String(stream.toByteArray(), StandardCharsets.UTF_8);
+      String validationMessage = "[testMarshallingToStream] - Failed to correctly marshal "
+              + value.getClass().getName() + " property with value " + value;
+      assertThat(validationMessage, jsonString, matchesPattern(getExpectedJsonString(expectedRepresentation)));
     } catch (IOException e) {
       fail();
     }
@@ -193,20 +182,12 @@ public class MappingTester<T> {
     container.setInstance(value);
 
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        OutputStreamWriter writer = new OutputStreamWriter(stream,
-            StandardCharsets.UTF_8)) {
+        OutputStreamWriter writer = new OutputStreamWriter(stream, StandardCharsets.UTF_8)) {
       jsonb.toJson(container, writer);
-      String jsonString = new String(stream.toByteArray(),
-          StandardCharsets.UTF_8);
-      if (jsonString.matches(getExpectedJsonString(expectedRepresentation))) {
-        return; // passed
-      } else {
-        System.out.append("jsonString ").println(jsonString);
-        System.out.append("does not match expected ")
-            .println(getExpectedJsonString(expectedRepresentation));
-        fail("[testMarshallingToWriter] - Failed to correctly marshal "
-                + value.getClass().getName() + " property with value " + value);
-      }
+      String jsonString = new String(stream.toByteArray(), StandardCharsets.UTF_8);
+      String validationMessage = "[testMarshallingToStream] - Failed to correctly marshal "
+              + value.getClass().getName() + " property with value " + value;
+      assertThat(validationMessage, jsonString, matchesPattern(getExpectedJsonString(expectedRepresentation)));
     } catch (IOException e) {
       fail();
     }
@@ -218,65 +199,40 @@ public class MappingTester<T> {
     container.setInstance(value);
 
     String jsonString = jsonb.toJson(container, TypeContainer.class);
-    if (jsonString.matches(getExpectedJsonString(expectedRepresentation))) {
-      return; // passed
-    } else {
-      System.out.append("jsonString ").println(jsonString);
-      System.out.append("does not match expected ")
-          .println(getExpectedJsonString(expectedRepresentation));
-      fail("[testMarshallingByType] - Failed to correctly marshal "
-              + value.getClass().getName() + " property with value " + value);
-    }
+    String validationMessage = "[testMarshallingByType] - Failed to correctly marshal "
+            + value.getClass().getName() + " property with value " + value;
+    assertThat(validationMessage, jsonString, matchesPattern(getExpectedJsonString(expectedRepresentation)));
   }
 
-  private void testMarshallingByTypeToStream(T value,
-      String expectedRepresentation)
-      throws IllegalAccessException, InstantiationException {
+  private void testMarshallingByTypeToStream(T value, String expectedRepresentation)
+          throws IllegalAccessException, InstantiationException {
     TypeContainer<T> container = typeContainerClass.newInstance();
     container.setInstance(value);
 
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
       jsonb.toJson(container, TypeContainer.class, stream);
-      String jsonString = new String(stream.toByteArray(),
-          StandardCharsets.UTF_8);
-      if (jsonString.matches(getExpectedJsonString(expectedRepresentation))) {
-        return; // passed
-      } else {
-        System.out.append("jsonString ").println(jsonString);
-        System.out.append("does not match expected ")
-            .println(getExpectedJsonString(expectedRepresentation));
-        fail(
-            "[testMarshallingByTypeToStream] - Failed to correctly marshal "
-                + value.getClass().getName() + " property with value " + value);
-      }
+      String jsonString = new String(stream.toByteArray(), StandardCharsets.UTF_8);
+      String validationMessage = "[testMarshallingByTypeToStream] - Failed to correctly marshal "
+              + value.getClass().getName() + " property with value " + value;
+      assertThat(validationMessage, jsonString, matchesPattern(getExpectedJsonString(expectedRepresentation)));
     } catch (IOException e) {
       fail();
     }
   }
 
-  private void testMarshallingByTypeToWriter(T value,
-      String expectedRepresentation)
+  private void testMarshallingByTypeToWriter(T value, String expectedRepresentation)
       throws IllegalAccessException, InstantiationException {
     TypeContainer<T> container = typeContainerClass.newInstance();
     container.setInstance(value);
 
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        OutputStreamWriter writer = new OutputStreamWriter(stream,
-            StandardCharsets.UTF_8)) {
+        OutputStreamWriter writer = new OutputStreamWriter(stream, StandardCharsets.UTF_8)) {
 
       jsonb.toJson(container, TypeContainer.class, writer);
-      String jsonString = new String(stream.toByteArray(),
-          StandardCharsets.UTF_8);
-      if (jsonString.matches(getExpectedJsonString(expectedRepresentation))) {
-        return; // passed
-      } else {
-        System.out.append("jsonString ").println(jsonString);
-        System.out.append("does not match expected ")
-            .println(getExpectedJsonString(expectedRepresentation));
-        fail(
-            "[testMarshallingByTypeToWriter] - Failed to correctly marshal "
-                + value.getClass().getName() + " property with value " + value);
-      }
+      String jsonString = new String(stream.toByteArray(), StandardCharsets.UTF_8);
+      String validationMessage = "[testMarshallingByTypeToWriter] - Failed to correctly marshal "
+              + value.getClass().getName() + " property with value " + value;
+      assertThat(validationMessage, jsonString, matchesPattern(getExpectedJsonString(expectedRepresentation)));
     } catch (IOException e) {
       fail();
     }
@@ -286,121 +242,70 @@ public class MappingTester<T> {
       String expectedRepresentation) {
     String jsonString = getJsonString(expectedRepresentation);
 
-    TypeContainer<T> typeContainer = jsonb.fromJson(jsonString,
-        typeContainerClass);
-    if (testUnmarshall(value, typeContainer.getInstance())) {
-      return; // passed
-    } else {
-      System.out.append("value ").println(typeContainer.getInstance());
-      System.out.append("does not match expected ").println(value);
-      fail("[testUnmarshallingByClass] - Failed to correctly unmarshal "
-              + value.getClass().getName() + " property with value " + value);
-    }
+    TypeContainer<T> typeContainer = jsonb.fromJson(jsonString, typeContainerClass);
+    String validationMessage = "[testUnmarshallingByClass] - Failed to correctly unmarshal "
+            + value.getClass().getName() + " property with value " + value;
+    assertTrue(testUnmarshall(value, typeContainer.getInstance()), validationMessage);
   }
 
-  private void testUnmarshallingByClassFromStream(T value,
-      String expectedRepresentation) {
+  private void testUnmarshallingByClassFromStream(T value, String expectedRepresentation) {
     String jsonString = getJsonString(expectedRepresentation);
-    try (ByteArrayInputStream stream = new ByteArrayInputStream(
-        jsonString.getBytes(StandardCharsets.UTF_8))) {
-      TypeContainer<T> typeContainer = jsonb.fromJson(stream,
-          typeContainerClass);
-      if (testUnmarshall(value, typeContainer.getInstance())) {
-        return; // passed
-      } else {
-        System.out.append("value ").println(typeContainer.getInstance());
-        System.out.append("does not match expected ").println(value);
-        fail(
-            "[testUnmarshallingByClassFromStream] - Failed to correctly unmarshal "
-                + value.getClass().getName() + " property with value " + value);
-      }
+    try (ByteArrayInputStream stream = new ByteArrayInputStream(jsonString.getBytes(StandardCharsets.UTF_8))) {
+      TypeContainer<T> typeContainer = jsonb.fromJson(stream, typeContainerClass);
+      String validationMessage = "[testUnmarshallingByClassFromStream] - Failed to correctly unmarshal "
+              + value.getClass().getName() + " property with value " + value;
+      assertTrue(testUnmarshall(value, typeContainer.getInstance()), validationMessage);
     } catch (IOException e) {
       fail();
     }
   }
 
-  private void testUnmarshallingByClassFromReader(T value,
-      String expectedRepresentation) {
+  private void testUnmarshallingByClassFromReader(T value, String expectedRepresentation) {
     String jsonString = getJsonString(expectedRepresentation);
     try (
-        ByteArrayInputStream stream = new ByteArrayInputStream(
-            jsonString.getBytes(StandardCharsets.UTF_8));
-        InputStreamReader reader = new InputStreamReader(stream,
-            StandardCharsets.UTF_8)) {
+        ByteArrayInputStream stream = new ByteArrayInputStream(jsonString.getBytes(StandardCharsets.UTF_8));
+        InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
 
-      TypeContainer<T> typeContainer = jsonb.fromJson(reader,
-          typeContainerClass);
-      if (testUnmarshall(value, typeContainer.getInstance())) {
-        return; // passed
-      } else {
-        System.out.append("value ").println(typeContainer.getInstance());
-        System.out.append("does not match expected ").println(value);
-        fail(
-            "[testUnmarshallingByClassFromReader] - Failed to correctly unmarshal "
-                + value.getClass().getName() + " property with value " + value);
-      }
+      TypeContainer<T> typeContainer = jsonb.fromJson(reader, typeContainerClass);
+      String validationMessage = "[testUnmarshallingByClassFromReader] - Failed to correctly unmarshal "
+              + value.getClass().getName() + " property with value " + value;
+      assertTrue(testUnmarshall(value, typeContainer.getInstance()), validationMessage);
     } catch (IOException e) {
       fail();
     }
   }
 
-  private void testUnmarshallingByType(T value,
-      String expectedRepresentation) {
+  private void testUnmarshallingByType(T value, String expectedRepresentation) {
     String jsonString = getJsonString(expectedRepresentation);
 
-    TypeContainer<T> typeContainer = jsonb.fromJson(jsonString,
-        (Type) typeContainerClass);
-    if (testUnmarshall(value, typeContainer.getInstance())) {
-      return; // passed
-    } else {
-      System.out.append("value ").println(typeContainer.getInstance());
-      System.out.append("does not match expected ").println(value);
-      fail("[testUnmarshallingByType] - Failed to correctly unmarshal "
-              + value.getClass().getName() + " property with value " + value);
-    }
+    TypeContainer<T> typeContainer = jsonb.fromJson(jsonString, (Type) typeContainerClass);
+    String validationMessage = "[testUnmarshallingByType] - Failed to correctly unmarshal "
+            + value.getClass().getName() + " property with value " + value;
+    assertTrue(testUnmarshall(value, typeContainer.getInstance()), validationMessage);
   }
 
-  private void testUnmarshallingByTypeFromStream(T value,
-      String expectedRepresentation) {
+  private void testUnmarshallingByTypeFromStream(T value, String expectedRepresentation) {
     String jsonString = getJsonString(expectedRepresentation);
-    try (ByteArrayInputStream stream = new ByteArrayInputStream(
-        jsonString.getBytes(StandardCharsets.UTF_8))) {
-      TypeContainer<T> typeContainer = jsonb.fromJson(stream,
-          (Type) typeContainerClass);
-      if (testUnmarshall(value, typeContainer.getInstance())) {
-        return; // passed
-      } else {
-        System.out.append("value ").println(typeContainer.getInstance());
-        System.out.append("does not match expected ").println(value);
-        fail(
-            "[testUnmarshallingByTypeFromStream] - Failed to correctly unmarshal "
-                + value.getClass().getName() + " property with value " + value);
-      }
+    try (ByteArrayInputStream stream = new ByteArrayInputStream(jsonString.getBytes(StandardCharsets.UTF_8))) {
+      TypeContainer<T> typeContainer = jsonb.fromJson(stream, (Type) typeContainerClass);
+      String validationMessage = "[testUnmarshallingByTypeFromStream] - Failed to correctly unmarshal "
+              + value.getClass().getName() + " property with value " + value;
+      assertTrue(testUnmarshall(value, typeContainer.getInstance()), validationMessage);
     } catch (IOException e) {
       fail();
     }
   }
 
-  private void testUnmarshallingByTypeFromReader(T value,
-      String expectedRepresentation) {
+  private void testUnmarshallingByTypeFromReader(T value, String expectedRepresentation) {
     String jsonString = getJsonString(expectedRepresentation);
     try (
-        ByteArrayInputStream stream = new ByteArrayInputStream(
-            jsonString.getBytes(StandardCharsets.UTF_8));
-        InputStreamReader reader = new InputStreamReader(stream,
-            StandardCharsets.UTF_8)) {
+        ByteArrayInputStream stream = new ByteArrayInputStream(jsonString.getBytes(StandardCharsets.UTF_8));
+        InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
 
-      TypeContainer<T> typeContainer = jsonb.fromJson(reader,
-          (Type) typeContainerClass);
-      if (testUnmarshall(value, typeContainer.getInstance())) {
-        return; // passed
-      } else {
-        System.out.append("value ").println(typeContainer.getInstance());
-        System.out.append("does not match expected ").println(value);
-        fail(
-            "[testUnmarshallingByTypeFromReader] - Failed to correctly unmarshal "
-                + value.getClass().getName() + " property with value " + value);
-      }
+      TypeContainer<T> typeContainer = jsonb.fromJson(reader, (Type) typeContainerClass);
+      String validationMessage = "[testUnmarshallingByTypeFromReader] - Failed to correctly unmarshal "
+              + value.getClass().getName() + " property with value " + value;
+      assertTrue(testUnmarshall(value, typeContainer.getInstance()), validationMessage);
     } catch (IOException e) {
       fail();
     }
@@ -441,6 +346,6 @@ public class MappingTester<T> {
   }
 
   private String quote(String value) {
-    return new StringBuilder(value.length() + 2).append('"').append(value).append('"').toString();
+    return '"' + value + '"';
   }
 }

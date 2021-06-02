@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,32 +20,21 @@
 
 package jakarta.json.bind.tck.api.exception;
 
-import static org.junit.Assert.fail;
-
-import java.lang.invoke.MethodHandles;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import jakarta.json.bind.JsonbException;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 /**
  * @test
  * @sources JsonbExceptionTest.java
  * @executeClass com.sun.ts.tests.jsonb.api.JsonbExceptionTest
  **/
-@RunWith(Arquillian.class)
 public class JsonbExceptionTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
+
+  private static final String EXCEPTION_MESSAGE = "Exception message";
 
   /*
    * @testName: testJsonbExceptionString
@@ -58,22 +47,16 @@ public class JsonbExceptionTest {
    */
   @Test
   public void testJsonbExceptionString() {
-    RuntimeException jsonbException = new JsonbException("Exception message");
-    if (!"Exception message".equals(jsonbException.getMessage())
-        || jsonbException.getCause() != null) {
-      fail(
-          "Failed to create JsonbException with an exception message and empty cause.");
-    }
+    RuntimeException jsonbException = new JsonbException(EXCEPTION_MESSAGE);
+    String validationMessage = "Failed to create JsonbException with an exception message and empty cause.";
+    assertThat(validationMessage, jsonbException.getMessage(), is(EXCEPTION_MESSAGE));
+    assertThat(validationMessage, jsonbException.getCause(), nullValue());
 
     RuntimeException exception = new RuntimeException();
     jsonbException.initCause(exception);
-    if (!"Exception message".equals(jsonbException.getMessage())
-        || jsonbException.getCause() != exception) {
-      fail(
-          "Failed to initialize the JsonbException cause with a call to initCause method.");
-    }
-
-    return; // passed
+    validationMessage = "Failed to initialize the JsonbException cause with a call to initCause method.";
+    assertThat(validationMessage, jsonbException.getMessage(), is(EXCEPTION_MESSAGE));
+    assertThat(validationMessage, jsonbException.getCause(), is(exception));
   }
 
   /*
@@ -88,14 +71,9 @@ public class JsonbExceptionTest {
   @Test
   public void testJsonbExceptionStringThrowable() {
     RuntimeException cause = new RuntimeException();
-    RuntimeException jsonbException = new JsonbException("Exception message",
-        cause);
-    if (!"Exception message".equals(jsonbException.getMessage())
-        || jsonbException.getCause() != cause) {
-      fail(
-          "Failed to create JsonbException with an exception message and cause.");
-    }
-
-    return; // passed
+    RuntimeException jsonbException = new JsonbException(EXCEPTION_MESSAGE, cause);
+    String validationMessage = "Failed to create JsonbException with an exception message and cause.";
+    assertThat(validationMessage, jsonbException.getMessage(), is(EXCEPTION_MESSAGE));
+    assertThat(validationMessage, jsonbException.getCause(), is(cause));
   }
 }

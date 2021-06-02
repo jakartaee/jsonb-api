@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,37 +20,20 @@
 
 package jakarta.json.bind.tck.defaultmapping.uniqueness;
 
-import static org.junit.Assert.fail;
-
-import java.lang.invoke.MethodHandles;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
 import jakarta.json.bind.tck.defaultmapping.uniqueness.model.SimpleContainer;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @test
  * @sources PropertyUniquenessTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.uniqueness.PropertyUniquenessTest
  **/
-@RunWith(Arquillian.class)
 public class PropertyUniquenessTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
-    
-  private final Jsonb jsonb = JsonbBuilder.create();
 
   /*
    * @testName: testUniqueProperties
@@ -62,12 +45,9 @@ public class PropertyUniquenessTest {
    */
   @Test
   public void testUniqueProperties() {
-    try {
-      jsonb.toJson(new SimpleContainer());
-      fail(
-          "An exception is expected when marshalling a class with duplicate attribute names.");
-    } catch (JsonbException x) {
-      return; // passed
-    }
+      Jsonb jsonb = JsonbBuilder.create();
+      assertThrows(JsonbException.class,
+                   () -> jsonb.toJson(new SimpleContainer()),
+                   "An exception is expected when marshalling a class with duplicate attribute names.");
   }
 }

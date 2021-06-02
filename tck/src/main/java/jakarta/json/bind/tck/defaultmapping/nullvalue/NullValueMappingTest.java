@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,28 +20,28 @@
 
 package jakarta.json.bind.tck.defaultmapping.nullvalue;
 
-import static org.junit.Assert.fail;
-
 import java.lang.invoke.MethodHandles;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.tck.defaultmapping.nullvalue.model.NullArrayContainer;
 import jakarta.json.bind.tck.defaultmapping.nullvalue.model.NullValueContainer;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.arrayContaining;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.matchesPattern;
+import static org.hamcrest.Matchers.nullValue;
 
 /**
  * @test
  * @sources NullValueMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.nullvalue.NullValueMappingTest
  **/
-@RunWith(Arquillian.class)
 public class NullValueMappingTest {
     
     @Deployment
@@ -64,29 +64,17 @@ public class NullValueMappingTest {
    */
   @Test
   public void testNullAttributeValue() {
-    String jsonString = jsonb.toJson(new NullValueContainer() {
-      {
-        setInstance(null);
-      }
-    });
-    if (!jsonString.matches("\\{\\s*\\}")) {
-      fail("Failed to ignore displaying property with null value.");
-    }
+    String jsonString = jsonb.toJson(new NullValueContainer() {{
+      setInstance(null);
+    }});
+    assertThat("Failed to ignore displaying property with null value.", jsonString, matchesPattern("\\{\\s*\\}"));
 
-    NullValueContainer unmarshalledObject = jsonb.fromJson("{ }",
-        NullValueContainer.class);
-    if (!"Test String".equals(unmarshalledObject.getInstance())) {
-      fail(
-          "Failed to ignore calling setter of absent property during unmarshalling.");
-    }
+    NullValueContainer unmarshalledObject = jsonb.fromJson("{ }", NullValueContainer.class);
+    assertThat("Failed to ignore calling setter of absent property during unmarshalling.",
+               unmarshalledObject.getInstance(), is(("Test String")));
 
-    unmarshalledObject = jsonb.fromJson("{ \"instance\" : null }",
-        NullValueContainer.class);
-    if (unmarshalledObject.getInstance() != null) {
-      fail("Failed to set property to null.");
-    }
-
-    return; // passed
+    unmarshalledObject = jsonb.fromJson("{ \"instance\" : null }", NullValueContainer.class);
+    assertThat("Failed to set property to null.", unmarshalledObject.getInstance(), nullValue());
   }
 
   /*
@@ -101,25 +89,16 @@ public class NullValueMappingTest {
    */
   @Test
   public void testNullArrayValue() {
-    String jsonString = jsonb.toJson(new NullArrayContainer() {
-      {
-        setInstance(new String[] { "Test 1", null, "Test 2" });
-      }
-    });
-    if (!jsonString.matches(
-        "\\{\\s*\"instance\"\\s*:\\s*\\[\\s*\"Test 1\"\\s*,\\s*null\\s*,\\s*\"Test 2\"\\s*\\]\\s*\\}")) {
-      fail("Failed to correctly display null array value.");
-    }
+    String jsonString = jsonb.toJson(new NullArrayContainer() {{
+      setInstance(new String[] {"Test 1", null, "Test 2"});
+    }});
+    assertThat("Failed to correctly display null array value.",
+               jsonString,
+               matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\\[\\s*\"Test 1\"\\s*,\\s*null\\s*,\\s*\"Test 2\"\\s*\\]\\s*\\}"));
 
-    NullArrayContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"instance\" : [ \"Test 1\", null, \"Test 2\" ] }",
-        NullArrayContainer.class);
-    Object[] instance = unmarshalledObject.getInstance();
-    if (instance.length != 3 || !"Test 1".equals(instance[0])
-        || instance[1] != null || !"Test 2".equals(instance[2])) {
-      fail("Failed to correctly set null array value.");
-    }
-
-    return; // passed
+    NullArrayContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : [ \"Test 1\", null, \"Test 2\" ] }",
+                                                           NullArrayContainer.class);
+    assertThat("Failed to correctly set null array value.",
+               unmarshalledObject.getInstance(), arrayContaining("Test 1", null, "Test 2"));
   }
 }

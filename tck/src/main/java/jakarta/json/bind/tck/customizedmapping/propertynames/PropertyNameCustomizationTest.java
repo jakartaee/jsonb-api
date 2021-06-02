@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -19,17 +19,6 @@
  */
 
 package jakarta.json.bind.tck.customizedmapping.propertynames;
-
-import static org.junit.Assert.fail;
-
-import java.lang.invoke.MethodHandles;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
@@ -51,20 +40,20 @@ import jakarta.json.bind.tck.customizedmapping.propertynames.model.TransientProp
 import jakarta.json.bind.tck.customizedmapping.propertynames.model.TransientSetterAnnotatedPropertyContainer;
 import jakarta.json.bind.tck.customizedmapping.propertynames.model.TransientSetterPlusCustomizationAnnotatedFieldContainer;
 import jakarta.json.bind.tck.customizedmapping.propertynames.model.TransientSetterPlusCustomizationAnnotatedSetterContainer;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.matchesPattern;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @test
  * @sources PropertyNameCustomizationTest.java
  * @executeClass com.sun.ts.tests.jsonb.customizedmapping.propertynames.PropertyNameCustomizationTest
  **/
-@RunWith(Arquillian.class)
 public class PropertyNameCustomizationTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
     
   private final Jsonb jsonb = JsonbBuilder.create();
 
@@ -83,19 +72,11 @@ public class PropertyNameCustomizationTest {
         setInstance("String Value");
       }
     });
-    if (!jsonString.matches("\\{\\s*\\}")) {
-      fail(
-          "Failed to ignore transient property during marshalling.");
-    }
+    assertThat("Failed to ignore transient property during marshalling.", jsonString, matchesPattern("\\{\\s*\\}"));
 
-    TransientPropertyContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"instance\" : \"Test String\" }", TransientPropertyContainer.class);
-    if (unmarshalledObject.getInstance() != null) {
-      fail(
-          "Failed to ignore transient property during unmarshalling.");
-    }
-
-    return; // passed
+    TransientPropertyContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : \"Test String\" }",
+                                                                   TransientPropertyContainer.class);
+    assertThat("Failed to ignore transient property during unmarshalling.", unmarshalledObject.getInstance(), nullValue());
   }
 
   /*
@@ -113,20 +94,11 @@ public class PropertyNameCustomizationTest {
         setInstance("String Value");
       }
     });
-    if (!jsonString.matches("\\{\\s*\\}")) {
-      fail(
-          "Failed to ignore JsonbTransient property during marshalling.");
-    }
+    assertThat("Failed to ignore JsonbTransient property during marshalling.", jsonString, matchesPattern("\\{\\s*\\}"));
 
-    TransientAnnotatedPropertyContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"instance\" : \"Test String\" }",
-        TransientAnnotatedPropertyContainer.class);
-    if (unmarshalledObject.getInstance() != null) {
-      fail(
-          "Failed to ignore JsonbTransient property during unmarshalling.");
-    }
-
-    return; // passed
+    TransientAnnotatedPropertyContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : \"Test String\" }",
+                                                                            TransientAnnotatedPropertyContainer.class);
+    assertThat("Failed to ignore JsonbTransient property during unmarshalling.", unmarshalledObject.getInstance(), nullValue());
   }
 
   /*
@@ -139,16 +111,12 @@ public class PropertyNameCustomizationTest {
    */
   @Test
   public void testTransientAnnotatedGetter() {
-    String jsonString = jsonb
-        .toJson(new TransientGetterAnnotatedPropertyContainer() {
+    String jsonString = jsonb.toJson(new TransientGetterAnnotatedPropertyContainer() {
           {
             setInstance("String Value");
           }
         });
-    if (!jsonString.matches("\\{\\s*\\}")) {
-      fail(
-          "Failed to ignore @JsonbTransient on getter during marshalling.");
-    }
+    assertThat("Failed to ignore @JsonbTransient on getter during marshalling.", jsonString, matchesPattern("\\{\\s*\\}"));
   }
 
   /*
@@ -161,13 +129,9 @@ public class PropertyNameCustomizationTest {
    */
   @Test
   public void testTransientAnnotatedSetter() {
-    TransientSetterAnnotatedPropertyContainer unmarshalledObject = jsonb
-        .fromJson("{ \"instance\" : \"Test String\" }",
-            TransientSetterAnnotatedPropertyContainer.class);
-    if (unmarshalledObject.getInstance() != null) {
-      fail(
-          "Failed to ignore @JsonbTransient on setter during unmarshalling.");
-    }
+    TransientSetterAnnotatedPropertyContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : \"Test String\" }",
+                                                                                  TransientSetterAnnotatedPropertyContainer.class);
+    assertThat("Failed to ignore @JsonbTransient on setter during unmarshalling.", unmarshalledObject.getInstance(), nullValue());
   }
 
   /*
@@ -180,30 +144,13 @@ public class PropertyNameCustomizationTest {
    */
   @Test
   public void testTransientPlusCustomizationAnnotatedField() {
-    try {
-      jsonb.toJson(new TransientPlusCustomizationAnnotatedPropertyContainer());
-      fail(
-          "JsonbException not thrown for property annotated with both JsonbTransient and other Jsonb customization annotation.");
-    } catch (Exception x) {
-      if (!JsonbException.class.isAssignableFrom(x.getClass())) {
-        fail(
-            "JsonbException expected for property annotated with both JsonbTransient and other Jsonb customization annotation.");
-      }
-    }
-
-    try {
-      jsonb.fromJson("{ \"instance\" : \"Test String\" }",
-          TransientPlusCustomizationAnnotatedPropertyContainer.class);
-      fail(
-          "JsonbException not thrown for property annotated with both JsonbTransient and other Jsonb customization annotation.");
-    } catch (Exception x) {
-      if (!JsonbException.class.isAssignableFrom(x.getClass())) {
-        fail(
-            "JsonbException expected for property annotated with both JsonbTransient and other Jsonb customization annotation.");
-      }
-    }
-
-    return; // passed
+    String message = "JsonbException not thrown for property annotated with both "
+            + "JsonbTransient and other Jsonb customization annotation.";
+    assertThrows(JsonbException.class, () -> jsonb.toJson(new TransientPlusCustomizationAnnotatedPropertyContainer()), message);
+    assertThrows(JsonbException.class,
+                 () -> jsonb.fromJson("{ \"instance\" : \"Test String\" }",
+                                      TransientPlusCustomizationAnnotatedPropertyContainer.class),
+                 message);
   }
 
   /*
@@ -216,28 +163,13 @@ public class PropertyNameCustomizationTest {
    */
   @Test
   public void testTransientPlusCustomizationAnnotatedGetter() {
-    try {
-      jsonb.toJson(new TransientPlusCustomizationAnnotatedGetterContainer());
-      fail(
-          "JsonbException not thrown for property annotated with JsonbTransient and getter with other Jsonb customization annotation.");
-    } catch (Exception x) {
-      if (!JsonbException.class.isAssignableFrom(x.getClass())) {
-        fail(
-            "JsonbException expected for property annotated with JsonbTransient and getter with other Jsonb customization annotation.");
-      }
-    }
-
-    try {
-      jsonb.fromJson("{ \"instance\" : \"Test String\" }",
-          TransientPlusCustomizationAnnotatedGetterContainer.class);
-      fail(
-          "JsonbException not thrown for property annotated with JsonbTransient and getter with other Jsonb customization annotation.");
-    } catch (Exception x) {
-      if (!JsonbException.class.isAssignableFrom(x.getClass())) {
-        fail(
-            "JsonbException expected for property annotated with JsonbTransient and getter with other Jsonb customization annotation.");
-      }
-    }
+    String message = "JsonbException not thrown for property annotated with JsonbTransient and getter with other "
+            + "Jsonb customization annotation.";
+    assertThrows(JsonbException.class, () -> jsonb.toJson(new TransientPlusCustomizationAnnotatedGetterContainer()), message);
+    assertThrows(JsonbException.class,
+                 () -> jsonb.fromJson("{ \"instance\" : \"Test String\" }",
+                                      TransientPlusCustomizationAnnotatedGetterContainer.class),
+                 message);
   }
 
   /*
@@ -250,28 +182,13 @@ public class PropertyNameCustomizationTest {
    */
   @Test
   public void testTransientPlusCustomizationAnnotatedSetter() {
-    try {
-      jsonb.toJson(new TransientPlusCustomizationAnnotatedSetterContainer());
-      fail(
-          "JsonbException not thrown for property annotated with JsonbTransient and setter with other Jsonb customization annotation.");
-    } catch (Exception x) {
-      if (!JsonbException.class.isAssignableFrom(x.getClass())) {
-        fail(
-            "JsonbException expected for property annotated with JsonbTransient and setter with other Jsonb customization annotation.");
-      }
-    }
-
-    try {
-      jsonb.fromJson("{ \"instance\" : \"Test String\" }",
-          TransientPlusCustomizationAnnotatedSetterContainer.class);
-      fail(
-          "JsonbException not thrown for property annotated with JsonbTransient and setter with other Jsonb customization annotation.");
-    } catch (Exception x) {
-      if (!JsonbException.class.isAssignableFrom(x.getClass())) {
-        fail(
-            "JsonbException expected for property annotated with JsonbTransient and setter with other Jsonb customization annotation.");
-      }
-    }
+    String message = "JsonbException not thrown for property annotated with JsonbTransient and setter with other "
+            + "Jsonb customization annotation.";
+    assertThrows(JsonbException.class, () -> jsonb.toJson(new TransientPlusCustomizationAnnotatedSetterContainer()), message);
+    assertThrows(JsonbException.class,
+                 () -> jsonb.fromJson("{ \"instance\" : \"Test String\" }",
+                                      TransientPlusCustomizationAnnotatedSetterContainer.class),
+                 message);
   }
 
   /*
@@ -283,31 +200,14 @@ public class PropertyNameCustomizationTest {
    * as both JsonbTransient and other Jsonb customization annotations
    */
   @Test
-  public void testTransientGetterPlusCustomizationAnnotatedField()
-       {
-    try {
-      jsonb.toJson(
-          new TransientGetterPlusCustomizationAnnotatedFieldContainer());
-      fail(
-          "JsonbException not thrown for getter annotated with JsonbTransient and property with other Jsonb customization annotation.");
-    } catch (Exception x) {
-      if (!JsonbException.class.isAssignableFrom(x.getClass())) {
-        fail(
-            "JsonbException expected for getter annotated with JsonbTransient and property with other Jsonb customization annotation.");
-      }
-    }
-
-    try {
-      jsonb.fromJson("{ \"instance\" : \"Test String\" }",
-          TransientGetterPlusCustomizationAnnotatedFieldContainer.class);
-      fail(
-          "JsonbException not thrown for getter annotated with JsonbTransient and property with other Jsonb customization annotation.");
-    } catch (Exception x) {
-      if (!JsonbException.class.isAssignableFrom(x.getClass())) {
-        fail(
-            "JsonbException expected for getter annotated with JsonbTransient and property with other Jsonb customization annotation.");
-      }
-    }
+  public void testTransientGetterPlusCustomizationAnnotatedField() {
+    String message = "JsonbException not thrown for getter annotated with JsonbTransient and property with other "
+            + "Jsonb customization annotation.";
+    assertThrows(JsonbException.class, () -> jsonb.toJson(new TransientGetterPlusCustomizationAnnotatedFieldContainer()), message);
+    assertThrows(JsonbException.class,
+                 () -> jsonb.fromJson("{ \"instance\" : \"Test String\" }",
+                                      TransientGetterPlusCustomizationAnnotatedFieldContainer.class),
+                 message);
   }
 
   /*
@@ -319,31 +219,14 @@ public class PropertyNameCustomizationTest {
    * as both JsonbTransient and other Jsonb customization annotations
    */
   @Test
-  public void testTransientGetterPlusCustomizationAnnotatedGetter()
-       {
-    try {
-      jsonb.toJson(
-          new TransientGetterPlusCustomizationAnnotatedGetterContainer());
-      fail(
-          "JsonbException not thrown for property annotated with JsonbTransient and getter with other Jsonb customization annotation.");
-    } catch (Exception x) {
-      if (!JsonbException.class.isAssignableFrom(x.getClass())) {
-        fail(
-            "JsonbException expected for property annotated with JsonbTransient and getter with other Jsonb customization annotation.");
-      }
-    }
-
-    try {
-      jsonb.fromJson("{ \"instance\" : \"Test String\" }",
-          TransientGetterPlusCustomizationAnnotatedGetterContainer.class);
-      fail(
-          "JsonbException not thrown for property annotated with JsonbTransient and getter with other Jsonb customization annotation.");
-    } catch (Exception x) {
-      if (!JsonbException.class.isAssignableFrom(x.getClass())) {
-        fail(
-            "JsonbException expected for property annotated with JsonbTransient and getter with other Jsonb customization annotation.");
-      }
-    }
+  public void testTransientGetterPlusCustomizationAnnotatedGetter() {
+    String message = "JsonbException not thrown for property annotated with JsonbTransient and getter with other "
+            + "Jsonb customization annotation.";
+    assertThrows(JsonbException.class, () -> jsonb.toJson(new TransientGetterPlusCustomizationAnnotatedGetterContainer()), message);
+    assertThrows(JsonbException.class,
+                 () -> jsonb.fromJson("{ \"instance\" : \"Test String\" }",
+                                      TransientGetterPlusCustomizationAnnotatedGetterContainer.class),
+                 message);
   }
 
   /*
@@ -355,31 +238,14 @@ public class PropertyNameCustomizationTest {
    * as both JsonbTransient and other Jsonb customization annotations
    */
   @Test
-  public void testTransientSetterPlusCustomizationAnnotatedSetter()
-      {
-    try {
-      jsonb.toJson(
-          new TransientSetterPlusCustomizationAnnotatedSetterContainer());
-      fail(
-          "JsonbException not thrown for property annotated with JsonbTransient and setter with other Jsonb customization annotation.");
-    } catch (Exception x) {
-      if (!JsonbException.class.isAssignableFrom(x.getClass())) {
-        fail(
-            "JsonbException expected for property annotated with JsonbTransient and setter with other Jsonb customization annotation.");
-      }
-    }
-
-    try {
-      jsonb.fromJson("{ \"instance\" : \"Test String\" }",
-          TransientSetterPlusCustomizationAnnotatedSetterContainer.class);
-      fail(
-          "JsonbException not thrown for property annotated with JsonbTransient and setter with other Jsonb customization annotation.");
-    } catch (Exception x) {
-      if (!JsonbException.class.isAssignableFrom(x.getClass())) {
-        fail(
-            "JsonbException expected for property annotated with JsonbTransient and setter with other Jsonb customization annotation.");
-      }
-    }
+  public void testTransientSetterPlusCustomizationAnnotatedSetter() {
+    String message = "JsonbException not thrown for property annotated with JsonbTransient and setter with other "
+            + "Jsonb customization annotation.";
+    assertThrows(JsonbException.class, () -> jsonb.toJson(new TransientSetterPlusCustomizationAnnotatedSetterContainer()), message);
+    assertThrows(JsonbException.class,
+                 () -> jsonb.fromJson("{ \"instance\" : \"Test String\" }",
+                                      TransientSetterPlusCustomizationAnnotatedSetterContainer.class),
+                 message);
   }
 
   /*
@@ -391,31 +257,14 @@ public class PropertyNameCustomizationTest {
    * as both JsonbTransient and other Jsonb customization annotations
    */
   @Test
-  public void testTransientSetterPlusCustomizationAnnotatedField()
-      {
-    try {
-      jsonb.toJson(
-          new TransientSetterPlusCustomizationAnnotatedFieldContainer());
-      fail(
-          "JsonbException not thrown for setter annotated with JsonbTransient and property with other Jsonb customization annotation.");
-    } catch (Exception x) {
-      if (!JsonbException.class.isAssignableFrom(x.getClass())) {
-        fail(
-            "JsonbException expected for setter annotated with JsonbTransient and property with other Jsonb customization annotation.");
-      }
-    }
-
-    try {
-      jsonb.fromJson("{ \"instance\" : \"Test String\" }",
-          TransientSetterPlusCustomizationAnnotatedFieldContainer.class);
-      fail(
-          "JsonbException not thrown for setter annotated with JsonbTransient and property with other Jsonb customization annotation.");
-    } catch (Exception x) {
-      if (!JsonbException.class.isAssignableFrom(x.getClass())) {
-        fail(
-            "JsonbException expected for setter annotated with JsonbTransient and property with other Jsonb customization annotation.");
-      }
-    }
+  public void testTransientSetterPlusCustomizationAnnotatedField() {
+    String message = "JsonbException not thrown for setter annotated with JsonbTransient and property with other "
+            + "Jsonb customization annotation.";
+    assertThrows(JsonbException.class, () -> jsonb.toJson(new TransientSetterPlusCustomizationAnnotatedFieldContainer()), message);
+    assertThrows(JsonbException.class,
+                 () -> jsonb.fromJson("{ \"instance\" : \"Test String\" }",
+                                      TransientSetterPlusCustomizationAnnotatedFieldContainer.class),
+                 message);
   }
 
   /*
@@ -433,21 +282,13 @@ public class PropertyNameCustomizationTest {
         setInstance("Test String");
       }
     });
-    if (!jsonString.matches(
-        "\\{\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}")) {
-      fail(
-          "Failed to customize property name during marshalling using JsonbProperty annotation.");
-    }
+    assertThat("Failed to customize property name during marshalling using JsonbProperty annotation.",
+               jsonString, matchesPattern("\\{\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-    PropertyNameCustomizationContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"stringInstance\" : \"Test String\" }",
-        PropertyNameCustomizationContainer.class);
-    if (!"Test String".equals(unmarshalledObject.getInstance())) {
-      fail(
-          "Failed to customize property name during unmarshalling using JsonbProperty annotation.");
-    }
-
-    return; // passed
+    PropertyNameCustomizationContainer unmarshalledObject = jsonb.fromJson("{ \"stringInstance\" : \"Test String\" }",
+                                                                           PropertyNameCustomizationContainer.class);
+    assertThat("Failed to customize property name during unmarshalling using JsonbProperty annotation.",
+               unmarshalledObject.getInstance(), is("Test String"));
   }
 
   /*
@@ -462,27 +303,18 @@ public class PropertyNameCustomizationTest {
    */
   @Test
   public void testPropertyNameCustomizationAccessors() {
-    String jsonString = jsonb
-        .toJson(new PropertyNameCustomizationAccessorsContainer() {
+    String jsonString = jsonb.toJson(new PropertyNameCustomizationAccessorsContainer() {
           {
             setInstance("Test String");
           }
         });
-    if (!jsonString.matches(
-        "\\{\\s*\"getterInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}")) {
-      fail(
-          "Failed to customize property name during marshalling using JsonbProperty annotation on getter.");
-    }
+    assertThat("Failed to customize property name during marshalling using JsonbProperty annotation on getter.",
+               jsonString, matchesPattern("\\{\\s*\"getterInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-    PropertyNameCustomizationAccessorsContainer unmarshalledObject = jsonb
-        .fromJson("{ \"setterInstance\" : \"Test String\" }",
-            PropertyNameCustomizationAccessorsContainer.class);
-    if (!"Test String".equals(unmarshalledObject.getInstance())) {
-      fail(
-          "Failed to customize property name during unmarshalling using JsonbProperty annotation on setter.");
-    }
-
-    return; // passed
+    PropertyNameCustomizationAccessorsContainer unmarshalledObject = jsonb.fromJson("{ \"setterInstance\" : \"Test String\" }",
+                                                                                    PropertyNameCustomizationAccessorsContainer.class);
+    assertThat("Failed to customize property name during unmarshalling using JsonbProperty annotation on setter.",
+               unmarshalledObject.getInstance(), is("Test String"));
   }
 
   /*
@@ -495,30 +327,19 @@ public class PropertyNameCustomizationTest {
    */
   @Test
   public void testIdentityPropertyNamingStrategy() {
-    JsonbConfig config = new JsonbConfig();
-    config.setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
-        PropertyNamingStrategy.IDENTITY);
+    JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY, PropertyNamingStrategy.IDENTITY);
     Jsonb jsonb = JsonbBuilder.create(config);
-
     String jsonString = jsonb.toJson(new StringContainer() {
       {
         setStringInstance("Test String");
       }
     });
-    if (!jsonString.matches(
-        "\\{\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal property using PropertyNamingStrategy.IDENTITY.");
-    }
+    assertThat("Failed to correctly marshal property using PropertyNamingStrategy.IDENTITY.",
+               jsonString, matchesPattern("\\{\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-    StringContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"stringInstance\" : \"Test String\" }", StringContainer.class);
-    if (!"Test String".equals(unmarshalledObject.getStringInstance())) {
-      fail(
-          "Failed to correctly unmarshal property using PropertyNamingStrategy.IDENTITY.");
-    }
-
-    return; // passed
+    StringContainer unmarshalledObject = jsonb.fromJson("{ \"stringInstance\" : \"Test String\" }", StringContainer.class);
+    assertThat("Failed to correctly unmarshal property using PropertyNamingStrategy.IDENTITY.",
+               unmarshalledObject.getStringInstance(), is("Test String"));
   }
 
   /*
@@ -531,30 +352,20 @@ public class PropertyNameCustomizationTest {
    */
   @Test
   public void testLowerCaseWithDashesPropertyNamingStrategy() {
-    JsonbConfig config = new JsonbConfig();
-    config.setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
-        PropertyNamingStrategy.LOWER_CASE_WITH_DASHES);
+    JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
+                                                       PropertyNamingStrategy.LOWER_CASE_WITH_DASHES);
     Jsonb jsonb = JsonbBuilder.create(config);
-
     String jsonString = jsonb.toJson(new StringContainer() {
       {
         setStringInstance("Test String");
       }
     });
-    if (!jsonString.matches(
-        "\\{\\s*\"string-instance\"\\s*\\:\\s*\"Test String\"\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal property using PropertyNamingStrategy.LOWER_CASE_WITH_DASHES.");
-    }
+    assertThat("Failed to correctly marshal property using PropertyNamingStrategy.LOWER_CASE_WITH_DASHES.",
+               jsonString, matchesPattern("\\{\\s*\"string-instance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-    StringContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"string-instance\" : \"Test String\" }", StringContainer.class);
-    if (!"Test String".equals(unmarshalledObject.getStringInstance())) {
-      fail(
-          "Failed to correctly unmarshal property using PropertyNamingStrategy.LOWER_CASE_WITH_DASHES.");
-    }
-
-    return; // passed
+    StringContainer unmarshalledObject = jsonb.fromJson("{ \"string-instance\" : \"Test String\" }", StringContainer.class);
+    assertThat("Failed to correctly unmarshal property using PropertyNamingStrategy.LOWER_CASE_WITH_DASHES.",
+               unmarshalledObject.getStringInstance(), is("Test String"));
   }
 
   /*
@@ -566,32 +377,21 @@ public class PropertyNameCustomizationTest {
    * when using PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES
    */
   @Test
-  public void testLowerCaseWithUnderscoresPropertyNamingStrategy()
-       {
-    JsonbConfig config = new JsonbConfig();
-    config.setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
-        PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES);
+  public void testLowerCaseWithUnderscoresPropertyNamingStrategy() {
+    JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
+                                                       PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES);
     Jsonb jsonb = JsonbBuilder.create(config);
-
     String jsonString = jsonb.toJson(new StringContainer() {
       {
         setStringInstance("Test String");
       }
     });
-    if (!jsonString.matches(
-        "\\{\\s*\"string_instance\"\\s*\\:\\s*\"Test String\"\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal property using PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES.");
-    }
+    assertThat("Failed to correctly marshal property using PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES.",
+               jsonString, matchesPattern("\\{\\s*\"string_instance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-    StringContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"string_instance\" : \"Test String\" }", StringContainer.class);
-    if (!"Test String".equals(unmarshalledObject.getStringInstance())) {
-      fail(
-          "Failed to correctly unmarshal property using PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES.");
-    }
-
-    return; // passed
+    StringContainer unmarshalledObject = jsonb.fromJson("{ \"string_instance\" : \"Test String\" }", StringContainer.class);
+    assertThat("Failed to correctly unmarshal property using PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES.",
+               unmarshalledObject.getStringInstance(), is("Test String"));
   }
 
   /*
@@ -604,30 +404,20 @@ public class PropertyNameCustomizationTest {
    */
   @Test
   public void testUpperCamelCasePropertyNamingStrategy() {
-    JsonbConfig config = new JsonbConfig();
-    config.setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
-        PropertyNamingStrategy.UPPER_CAMEL_CASE);
+    JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
+                                                       PropertyNamingStrategy.UPPER_CAMEL_CASE);
     Jsonb jsonb = JsonbBuilder.create(config);
-
     String jsonString = jsonb.toJson(new StringContainer() {
       {
         setStringInstance("Test String");
       }
     });
-    if (!jsonString.matches(
-        "\\{\\s*\"StringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal property using PropertyNamingStrategy.UPPER_CAMEL_CASE.");
-    }
+    assertThat("Failed to correctly marshal property using PropertyNamingStrategy.UPPER_CAMEL_CASE.",
+               jsonString, matchesPattern("\\{\\s*\"StringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-    StringContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"StringInstance\" : \"Test String\" }", StringContainer.class);
-    if (!"Test String".equals(unmarshalledObject.getStringInstance())) {
-      fail(
-          "Failed to correctly unmarshal property using PropertyNamingStrategy.UPPER_CAMEL_CASE.");
-    }
-
-    return; // passed
+    StringContainer unmarshalledObject = jsonb.fromJson("{ \"StringInstance\" : \"Test String\" }", StringContainer.class);
+    assertThat("Failed to correctly unmarshal property using PropertyNamingStrategy.UPPER_CAMEL_CASE.",
+               unmarshalledObject.getStringInstance(), is("Test String"));
   }
 
   /*
@@ -639,32 +429,21 @@ public class PropertyNameCustomizationTest {
    * when using PropertyNamingStrategy.UPPER_CAMEL_CASE_WITH_SPACES
    */
   @Test
-  public void testUpperCamelCaseWithSpacesPropertyNamingStrategy()
-      {
-    JsonbConfig config = new JsonbConfig();
-    config.setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
-        PropertyNamingStrategy.UPPER_CAMEL_CASE_WITH_SPACES);
+  public void testUpperCamelCaseWithSpacesPropertyNamingStrategy() {
+    JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
+                                                       PropertyNamingStrategy.UPPER_CAMEL_CASE_WITH_SPACES);
     Jsonb jsonb = JsonbBuilder.create(config);
-
     String jsonString = jsonb.toJson(new StringContainer() {
       {
         setStringInstance("Test String");
       }
     });
-    if (!jsonString.matches(
-        "\\{\\s*\"String Instance\"\\s*\\:\\s*\"Test String\"\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal property using PropertyNamingStrategy.UPPER_CAMEL_CASE_WITH_SPACES.");
-    }
+    assertThat("Failed to correctly marshal property using PropertyNamingStrategy.UPPER_CAMEL_CASE_WITH_SPACES.",
+               jsonString, matchesPattern("\\{\\s*\"String Instance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-    StringContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"String Instance\" : \"Test String\" }", StringContainer.class);
-    if (!"Test String".equals(unmarshalledObject.getStringInstance())) {
-      fail(
-          "Failed to correctly unmarshal property using PropertyNamingStrategy.UPPER_CAMEL_CASE_WITH_SPACES.");
-    }
-
-    return; // passed
+    StringContainer unmarshalledObject = jsonb.fromJson("{ \"String Instance\" : \"Test String\" }", StringContainer.class);
+    assertThat("Failed to correctly unmarshal property using PropertyNamingStrategy.UPPER_CAMEL_CASE_WITH_SPACES.",
+               unmarshalledObject.getStringInstance(), is("Test String"));
   }
 
   /*
@@ -677,30 +456,20 @@ public class PropertyNameCustomizationTest {
    */
   @Test
   public void testCaseInsensitivePropertyNamingStrategy() {
-    JsonbConfig config = new JsonbConfig();
-    config.setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
-        PropertyNamingStrategy.CASE_INSENSITIVE);
+    JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
+                                                       PropertyNamingStrategy.CASE_INSENSITIVE);
     Jsonb jsonb = JsonbBuilder.create(config);
-
     String jsonString = jsonb.toJson(new StringContainer() {
       {
         setStringInstance("Test String");
       }
     });
-    if (!jsonString.matches(
-        "\\{\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal property using PropertyNamingStrategy.CASE_INSENSITIVE.");
-    }
+    assertThat("Failed to correctly marshal property using PropertyNamingStrategy.CASE_INSENSITIVE.",
+               jsonString, matchesPattern("\\{\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-    StringContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"stringInstance\" : \"Test String\" }", StringContainer.class);
-    if (!"Test String".equals(unmarshalledObject.getStringInstance())) {
-      fail(
-          "Failed to correctly unmarshal property using PropertyNamingStrategy.CASE_INSENSITIVE.");
-    }
-
-    return; // passed
+    StringContainer unmarshalledObject = jsonb.fromJson("{ \"stringInstance\" : \"Test String\" }", StringContainer.class);
+    assertThat("Failed to correctly unmarshal property using PropertyNamingStrategy.CASE_INSENSITIVE.",
+               unmarshalledObject.getStringInstance(), is("Test String"));
   }
 
   /*
@@ -713,29 +482,10 @@ public class PropertyNameCustomizationTest {
    */
   @Test
   public void testDuplicateName() {
-    try {
-      jsonb.toJson(new DuplicateNameContainer());
-      fail(
-          "JsonbException not thrown for property name duplication as a result of property name customization.");
-    } catch (Exception x) {
-      if (!JsonbException.class.isAssignableFrom(x.getClass())) {
-        fail(
-            "JsonbException expected for property name duplication as a result of property name customization.");
-      }
-    }
-
-    try {
-      jsonb.fromJson("{ \"instance\" : \"Test String\" }",
-          DuplicateNameContainer.class);
-      fail(
-          "JsonbException not thrown for property name duplication as a result of property name customization.");
-    } catch (Exception x) {
-      if (!JsonbException.class.isAssignableFrom(x.getClass())) {
-        fail(
-            "JsonbException expected for property name duplication as a result of property name customization.");
-      }
-    }
-
-    return; // passed
+    String message = "JsonbException not thrown for property name duplication as a result of property name customization.";
+    assertThrows(JsonbException.class, () -> jsonb.toJson(new DuplicateNameContainer()), message);
+    assertThrows(JsonbException.class,
+                 () -> jsonb.fromJson("{ \"instance\" : \"Test String\" }", DuplicateNameContainer.class),
+                 message);
   }
 }

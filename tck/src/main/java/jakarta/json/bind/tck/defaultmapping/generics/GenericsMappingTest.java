@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,22 +20,12 @@
 
 package jakarta.json.bind.tck.defaultmapping.generics;
 
-import static org.junit.Assert.fail;
-
-import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
@@ -45,20 +35,20 @@ import jakarta.json.bind.tck.defaultmapping.generics.model.MultipleBoundsContain
 import jakarta.json.bind.tck.defaultmapping.generics.model.NumberContainer;
 import jakarta.json.bind.tck.defaultmapping.generics.model.StringContainer;
 import jakarta.json.bind.tck.defaultmapping.generics.model.WildcardContainer;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.matchesPattern;
 
 /**
  * @test
  * @sources GenericsMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.generics.GenericsMappingTest
  **/
-@RunWith(Arquillian.class)
 public class GenericsMappingTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
     
   private final Jsonb jsonb = JsonbBuilder.create();
 
@@ -73,26 +63,16 @@ public class GenericsMappingTest {
    */
   @Test
   public void testClassInformationOnRuntime() {
-    String jsonString = jsonb.toJson(new GenericContainer<String>() {
-      {
-        setInstance("Test String");
-      }
-    });
-    if (!jsonString
-        .matches("\\{\\s*\"instance\"\\s*\\:\\s*\"Test String\"\\s*\\}")) {
-      fail(
-          "Failed to marshal generic object with String attribute value.");
-    }
+    String jsonString = jsonb.toJson(new GenericContainer<String>() {{
+      setInstance("Test String");
+    }});
+    assertThat("Failed to marshal generic object with String attribute value.",
+               jsonString, matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-    GenericContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"instance\" : \"Test String\" }", new GenericContainer<String>() {
-        }.getClass().getGenericSuperclass());
-    if (!"Test String".equals(unmarshalledObject.getInstance())) {
-      fail(
-          "Failed to unmarshal generic object with String attribute value.");
-    }
-
-    return; // passed
+    Type runtimeType = new GenericContainer<String>() { }.getClass().getGenericSuperclass();
+    GenericContainer<String> unmarshalledObject = jsonb.fromJson("{ \"instance\" : \"Test String\" }", runtimeType);
+    assertThat("Failed to unmarshal generic object with String attribute value.",
+               unmarshalledObject.getInstance(), is("Test String"));
   }
 
   /*
@@ -105,25 +85,15 @@ public class GenericsMappingTest {
    */
   @Test
   public void testClassFileAvailable() {
-    String jsonString = jsonb.toJson(new GenericContainer<String>() {
-      {
-        setInstance("Test String");
-      }
-    });
-    if (!jsonString
-        .matches("\\{\\s*\"instance\"\\s*\\:\\s*\"Test String\"\\s*\\}")) {
-      fail(
-          "Failed to marshal generic object with String attribute value.");
-    }
+    String jsonString = jsonb.toJson(new GenericContainer<String>() {{
+      setInstance("Test String");
+    }});
+    assertThat("Failed to marshal generic object with String attribute value.",
+               jsonString, matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-    GenericContainer unmarshalledObject = jsonb
-        .fromJson("{ \"instance\" : \"Test String\" }", StringContainer.class);
-    if (!"Test String".equals(unmarshalledObject.getInstance())) {
-      fail(
-          "Failed to unmarshal generic object with String attribute value.");
-    }
-
-    return; // passed
+    GenericContainer<String> unmarshalledObject = jsonb.fromJson("{ \"instance\" : \"Test String\" }", StringContainer.class);
+    assertThat("Failed to unmarshal generic object with String attribute value.",
+               unmarshalledObject.getInstance(), is("Test String"));
   }
 
   /*
@@ -134,29 +104,19 @@ public class GenericsMappingTest {
    *
    * @test_Strategy: Assert that raw type information is handled as expected
    */
-  @SuppressWarnings("unchecked")
   @Test
   public void testRawTypeInformation() {
     final List<String> list = Arrays.asList("Test 1", "Test 2");
-    String jsonString = jsonb.toJson(new CollectionContainer() {
-      {
-        setInstance(list);
-      }
-    });
-    if (!jsonString.matches(
-        "\\{\\s*\"instance\"\\s*\\:\\s*\\[\\s*\"Test 1\"\\s*,\\s*\"Test 2\"\\s*\\]\\s*\\}")) {
-      fail("Failed to marshal object with raw List attribute.");
-    }
+    String jsonString = jsonb.toJson(new CollectionContainer() {{
+      setInstance(list);
+    }});
+    assertThat("Failed to marshal object with raw List attribute.",
+               jsonString, matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\\[\\s*\"Test 1\"\\s*,\\s*\"Test 2\"\\s*\\]\\s*\\}"));
 
-    CollectionContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"instance\" : [ \"Test 1\", \"Test 2\" ] }",
-        CollectionContainer.class);
-    if (!list.equals(unmarshalledObject.getInstance())) {
-      fail(
-          "Failed to unmarshal object with raw List type attribute.");
-    }
-
-    return; // passed
+    CollectionContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : [ \"Test 1\", \"Test 2\" ] }",
+                                                                 CollectionContainer.class);
+    assertThat("Failed to unmarshal object with raw List type attribute.",
+               unmarshalledObject.getInstance(), is(list));
   }
 
   /*
@@ -171,29 +131,20 @@ public class GenericsMappingTest {
   @SuppressWarnings("unchecked")
   @Test
   public void testNoTypeInformation() {
-    String jsonString = jsonb.toJson(new GenericContainer<String>() {
-      {
-        setInstance("Test String");
-      }
-    });
-    if (!jsonString
-        .matches("\\{\\s*\"instance\"\\s*\\:\\s*\"Test String\"\\s*\\}")) {
-      fail(
-          "Failed to marshal generic object with String attribute value.");
-    }
+    String jsonString = jsonb.toJson(new GenericContainer<String>() {{
+      setInstance("Test String");
+    }});
+    assertThat("Failed to marshal generic object with String attribute value.",
+               jsonString, matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-    GenericContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"instance\" : {\"value\":\"Test String\" } }",
-        GenericContainer.class);
-    if (!Map.class.isAssignableFrom(unmarshalledObject.getInstance().getClass())
-        && !"Test String"
-            .equals(((Map<String, Object>) unmarshalledObject.getInstance())
-                .get("instance"))) {
-      fail(
-          "Failed to unmarshal generic object without type information with String attribute value.");
-    }
-
-    return; // passed
+    GenericContainer<?> unmarshalledObject = jsonb.fromJson("{ \"instance\" : {\"value\":\"Test String\" } }",
+                                                            GenericContainer.class);
+    String validationMessage = "Failed to unmarshal generic object without type information with String attribute value.";
+    Object evaluatedInstance = unmarshalledObject.getInstance();
+    assertThat(validationMessage, evaluatedInstance, instanceOf(Map.class));
+    Map<String, Object> map = (Map<String, Object>) evaluatedInstance;
+    assertThat(validationMessage, map.size(), is(1));
+    assertThat(validationMessage, map, hasEntry("value", "Test String"));
   }
 
   /*
@@ -206,27 +157,15 @@ public class GenericsMappingTest {
    */
   @Test
   public void testBoundedTypeInformation() {
-    String jsonString = jsonb.toJson(new NumberContainer<Integer>() {
-      {
-        setInstance(Integer.MAX_VALUE);
-      }
-    });
-    if (!jsonString.matches(
-        "\\{\\s*\"instance\"\\s*\\:\\s*" + Integer.MAX_VALUE + "\\s*\\}")) {
-      fail(
-          "Failed to marshal object with bounded Number attribute.");
-    }
-
-    NumberContainer<Integer> unmarshalledObject = jsonb.fromJson(
-        "{ \"instance\" : " + Integer.MAX_VALUE + " }",
-        new NumberContainer<Integer>() {
-        }.getClass().getGenericSuperclass());
-    if (unmarshalledObject.getInstance() != Integer.MAX_VALUE) {
-      fail(
-          "Failed to unmarshal object with bounded Number attribute.");
-    }
-
-    return; // passed
+    String jsonString = jsonb.toJson(new NumberContainer<Integer>() {{
+      setInstance(Integer.MAX_VALUE);
+    }});
+    assertThat("Failed to marshal object with bounded Number attribute.",
+               jsonString, matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*" + Integer.MAX_VALUE + "\\s*\\}"));
+    Type runtimeType = new NumberContainer<Integer>() { }.getClass().getGenericSuperclass();
+    NumberContainer<Integer> unmarshalledObject = jsonb.fromJson("{ \"instance\" : " + Integer.MAX_VALUE + " }", runtimeType);
+    assertThat("Failed to unmarshal object with bounded Number attribute.",
+               unmarshalledObject.getInstance(), is(Integer.MAX_VALUE));
   }
 
   /*
@@ -241,32 +180,21 @@ public class GenericsMappingTest {
    */
   @Test
   public void testMultipleBoundsTypeInformation() {
-
-    final LinkedList<String> list = new LinkedList<>(
-        Arrays.asList("Test 1", "Test 2"));
+    final LinkedList<String> list = new LinkedList<>(Arrays.asList("Test 1", "Test 2"));
     MultipleBoundsContainer<LinkedList<String>> container = new MultipleBoundsContainer<>();
     container.setInstance(new ArrayList<>());
     container.getInstance().add(list);
 
-    final Type type = new MultipleBoundsContainer<LinkedList<String>>() {
-    }.getClass().getGenericSuperclass();
-
+    final Type type = new MultipleBoundsContainer<LinkedList<String>>() { }.getClass().getGenericSuperclass();
     String jsonString = jsonb.toJson(container, type);
+    assertThat("Failed to marshal object with multiple bounded attribute.",
+               jsonString,
+               matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\\[\\[\\s*\"Test 1\"\\s*,\\s*\"Test 2\"\\s*\\]\\]\\s*\\}"));
 
-    if (!jsonString.matches(
-        "\\{\\s*\"instance\"\\s*\\:\\s*\\[\\[\\s*\"Test 1\"\\s*,\\s*\"Test 2\"\\s*\\]\\]\\s*\\}")) {
-      fail(
-          "Failed to marshal object with multiple bounded attribute.");
-    }
-
-    MultipleBoundsContainer unmarshalledObject = jsonb
-        .fromJson("{ \"instance\" : [[ \"Test 1\", \"Test 2\" ]] }", type);
-    if (!container.getInstance().equals(unmarshalledObject.getInstance())) {
-      fail(
-          "Failed to unmarshal object with multiple bounded attribute.");
-    }
-
-    return; // passed
+    String toDeserialize = "{ \"instance\" : [[ \"Test 1\", \"Test 2\" ]] }";
+    MultipleBoundsContainer<LinkedList<String>> unmarshalledObject = jsonb.fromJson(toDeserialize, type);
+    assertThat("Failed to unmarshal object with multiple bounded attribute.",
+               unmarshalledObject.getInstance(), is(container.getInstance()));
   }
 
   /*
@@ -280,25 +208,16 @@ public class GenericsMappingTest {
   @Test
   public void testWildcardTypeInformation() {
     final List<String> list = Arrays.asList("Test 1", "Test 2");
-    String jsonString = jsonb.toJson(new WildcardContainer() {
-      {
-        setInstance(list);
-      }
-    });
-    if (!jsonString.matches(
-        "\\{\\s*\"instance\"\\s*\\:\\s*\\[\\s*\"Test 1\"\\s*,\\s*\"Test 2\"\\s*\\]\\s*\\}")) {
-      fail(
-          "Failed to marshal object with unbound collection attribute.");
-    }
+    String jsonString = jsonb.toJson(new WildcardContainer() {{
+      setInstance(list);
+    }});
+    assertThat("Failed to marshal object with unbound collection attribute.",
+               jsonString,
+               matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\\[\\s*\"Test 1\"\\s*,\\s*\"Test 2\"\\s*\\]\\s*\\}"));
 
-    WildcardContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"instance\" : [ \"Test 1\", \"Test 2\" ] }",
-        WildcardContainer.class);
-    if (!list.equals(unmarshalledObject.getInstance())) {
-      fail(
-          "Failed to unmarshal object with unbound collection attribute.");
-    }
-
-    return; // passed
+    WildcardContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : [ \"Test 1\", \"Test 2\" ] }",
+                                                          WildcardContainer.class);
+    assertThat("Failed to unmarshal object with unbound collection attribute.",
+               unmarshalledObject.getInstance(), is(list));
   }
 }

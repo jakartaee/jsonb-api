@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,16 +20,7 @@
 
 package jakarta.json.bind.tck.customizedmapping.visibility;
 
-import static org.junit.Assert.fail;
-
-import java.lang.invoke.MethodHandles;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import java.util.regex.Pattern;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
@@ -38,20 +29,21 @@ import jakarta.json.bind.tck.customizedmapping.visibility.model.CustomFieldVisib
 import jakarta.json.bind.tck.customizedmapping.visibility.model.CustomVisibilityAnnotatedContainer;
 import jakarta.json.bind.tck.customizedmapping.visibility.model.SimpleContainer;
 import jakarta.json.bind.tck.customizedmapping.visibility.model.customized.PackageCustomizedContainer;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.matchesPattern;
+import static org.hamcrest.Matchers.nullValue;
 
 /**
  * @test
  * @sources VisibilityCustomizationTest.java
  * @executeClass com.sun.ts.tests.jsonb.customizedmapping.visibility.VisibilityCustomizationTest
  **/
-@RunWith(Arquillian.class)
 public class VisibilityCustomizationTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
+
+  private static final Pattern PATTERN = Pattern.compile("\\{\\s*\"floatInstance\"\\s*:\\s*0.0\\s*}");
     
   private final Jsonb jsonb = JsonbBuilder.create();
 
@@ -66,30 +58,23 @@ public class VisibilityCustomizationTest {
    */
   @Test
   public void testCustomVisibilityConfig() {
-    Jsonb jsonb = JsonbBuilder.create(new JsonbConfig()
-        .withPropertyVisibilityStrategy(new CustomFieldVisibilityStrategy()));
-
+    Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withPropertyVisibilityStrategy(new CustomFieldVisibilityStrategy()));
     String jsonString = jsonb.toJson(new SimpleContainer() {
       {
         setStringInstance("Test String");
       }
     });
-    if (!jsonString.matches("\\{\\s*\"floatInstance\"\\s*:\\s*0.0\\s*}")) {
-      fail(
-          "Failed to hide fields during marshalling by applying custom visibility strategy using configuration.");
-    }
+    assertThat("Failed to hide fields during marshalling by applying custom visibility strategy using configuration.",
+               jsonString, matchesPattern(PATTERN));
 
-    SimpleContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"stringInstance\" : \"Test String\", \"floatInstance\" : 1.0, \"integerInstance\" : 1 }",
-        SimpleContainer.class);
-    if (unmarshalledObject.getStringInstance() != null
-        || unmarshalledObject.getIntegerInstance() != 1 
-        || unmarshalledObject.getFloatInstance() != 1.0f) {
-      fail(
-          "Failed to ignore fields during unmarshalling by applying custom visibility strategy using configuration.");
-    }
-
-    return; // passed
+    SimpleContainer unmarshalledObject = jsonb.fromJson("{ \"stringInstance\" : \"Test String\", \"floatInstance\" : 1.0, "
+                                                                + "\"integerInstance\" : 1 }",
+                                                        SimpleContainer.class);
+    String validationMessage = "Failed to ignore fields during unmarshalling by applying custom visibility strategy "
+            + "using configuration.";
+    assertThat(validationMessage, unmarshalledObject.getStringInstance(), nullValue());
+    assertThat(validationMessage, unmarshalledObject.getIntegerInstance(), is(1));
+    assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(1f));
   }
 
   /*
@@ -108,22 +93,20 @@ public class VisibilityCustomizationTest {
         setStringInstance("Test String");
       }
     });
-    if (!jsonString.matches("\\{\\s*\"floatInstance\"\\s*:\\s*0.0\\s*}")) {
-      fail(
-          "Failed to hide fields during marshalling by applying custom visibility strategy using JsonbVisibility annotation.");
-    }
+    assertThat("Failed to hide fields during marshalling by applying custom visibility strategy using "
+                       + "JsonbVisibility annotation.",
+               jsonString, matchesPattern(PATTERN));
 
-    CustomVisibilityAnnotatedContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"stringInstance\" : \"Test String\", \"floatInstance\" : 1.0, \"integerInstance\" : 1 }",
-        CustomVisibilityAnnotatedContainer.class);
-    if (unmarshalledObject.getStringInstance() != null
-        || unmarshalledObject.getIntegerInstance() != null
-        || unmarshalledObject.getFloatInstance() != 0.0f) {
-      fail(
-          "Failed to ignore fields during unmarshalling by applying custom visibility strategy using JsonbVisibility annotation.");
-    }
+    CustomVisibilityAnnotatedContainer unmarshalledObject = jsonb.fromJson("{ \"stringInstance\" : \"Test String\", "
+                                                                                   + "\"floatInstance\" : 1.0, "
+                                                                                   + "\"integerInstance\" : 1 }",
+                                                                           CustomVisibilityAnnotatedContainer.class);
 
-    return; // passed
+    String validationMessage = "Failed to ignore fields during unmarshalling by applying custom visibility strategy using "
+            + "JsonbVisibility annotation.";
+    assertThat(validationMessage, unmarshalledObject.getStringInstance(), nullValue());
+    assertThat(validationMessage, unmarshalledObject.getIntegerInstance(), nullValue());
+    assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(0.0f));
   }
 
   /*
@@ -142,21 +125,19 @@ public class VisibilityCustomizationTest {
         setStringInstance("Test String");
       }
     });
-    if (!jsonString.matches("\\{\\s*\"floatInstance\"\\s*:\\s*0.0\\s*}")) {
-      fail(
-          "Failed to hide fields during marshalling by applying custom visibility strategy using JsonbVisibility annotation on package.");
-    }
+    assertThat("Failed to hide fields during marshalling by applying custom visibility strategy using JsonbVisibility "
+                       + "annotation on package.",
+               jsonString, matchesPattern(PATTERN));
 
-    PackageCustomizedContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"stringInstance\" : \"Test String\", \"floatInstance\" : 1.0, \"integerInstance\" : 1 }",
-        PackageCustomizedContainer.class);
-    if (unmarshalledObject.getStringInstance() != null
-        || unmarshalledObject.getIntegerInstance() != null
-        || unmarshalledObject.getFloatInstance() != 0.0f) {
-      fail(
-          "Failed to ignore fields during unmarshalling by applying custom visibility strategy using JsonbVisibility annotation on package.");
-    }
+    PackageCustomizedContainer unmarshalledObject = jsonb.fromJson("{ \"stringInstance\" : \"Test String\", "
+                                                                           + "\"floatInstance\" : 1.0, "
+                                                                           + "\"integerInstance\" : 1 }",
+                                                                   PackageCustomizedContainer.class);
 
-    return; // passed
+    String validationMessage = "Failed to ignore fields during unmarshalling by applying custom visibility strategy using "
+            + "JsonbVisibility annotation on package.";
+    assertThat(validationMessage, unmarshalledObject.getStringInstance(), nullValue());
+    assertThat(validationMessage, unmarshalledObject.getIntegerInstance(), nullValue());
+    assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(0.0f));
   }
 }

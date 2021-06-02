@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,32 +20,17 @@
 
 package jakarta.json.bind.tck.defaultmapping.enums;
 
-import java.lang.invoke.MethodHandles;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import jakarta.json.bind.tck.MappingTester;
 import jakarta.json.bind.tck.defaultmapping.enums.model.EnumContainer;
 import jakarta.json.bind.tck.defaultmapping.enums.model.EnumContainer.Enumeration;
+import org.junit.jupiter.api.Test;
 
 /**
  * @test
  * @sources EnumMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.enums.EnumMappingTest
  **/
-@RunWith(Arquillian.class)
 public class EnumMappingTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
 
   /*
    * @testName: testEnum

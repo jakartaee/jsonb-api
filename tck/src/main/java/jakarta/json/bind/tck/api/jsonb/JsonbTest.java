@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,42 +20,36 @@
 
 package jakarta.json.bind.tck.api.jsonb;
 
-import static org.junit.Assert.fail;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.invoke.MethodHandles;
 import java.nio.charset.StandardCharsets;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.tck.api.model.SimpleContainer;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.matchesPattern;
 
 /**
  * @test
  * @sources JsonbTest.java
  * @executeClass com.sun.ts.tests.jsonb.api.JsonbTest
  **/
-@RunWith(Arquillian.class)
 public class JsonbTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
-    
-  private Jsonb jsonb = JsonbBuilder.create();
+
+  private static final String TEST_STRING = "Test String";
+  private static final String TEST_JSON = "{ \"instance\" : \"" + TEST_STRING + "\" }";
+  private static final byte[] TEST_JSON_BYTE = TEST_JSON.getBytes(StandardCharsets.UTF_8);
+
+  private static final String MATCHING_PATTERN = "\\{\\s*\"instance\"\\s*:\\s*\"Test\"\\s*}";
+
+  private final Jsonb jsonb = JsonbBuilder.create();
 
   /*
    * @testName: testFromJsonStringClass
@@ -67,14 +61,9 @@ public class JsonbTest {
    */
   @Test
   public void testFromJsonStringClass() {
-    SimpleContainer unmarshalledObject = jsonb
-        .fromJson("{ \"instance\" : \"Test String\" }", SimpleContainer.class);
-    if (!"Test String".equals(unmarshalledObject.getInstance())) {
-      fail(
-          "Failed to unmarshal using Jsonb.fromJson method with String and Class arguments.");
-    }
-
-    return; // passed
+    SimpleContainer unmarshalledObject = jsonb.fromJson(TEST_JSON, SimpleContainer.class);
+    assertThat("Failed to unmarshal using Jsonb.fromJson method with String and Class arguments.",
+               unmarshalledObject.getInstance(), is(TEST_STRING));
   }
 
   /*
@@ -87,15 +76,9 @@ public class JsonbTest {
    */
   @Test
   public void testFromJsonStringType() {
-    SimpleContainer unmarshalledObject = jsonb
-        .fromJson("{ \"instance\" : \"Test String\" }", new SimpleContainer() {
-        }.getClass().getGenericSuperclass());
-    if (!"Test String".equals(unmarshalledObject.getInstance())) {
-      fail(
-          "Failed to unmarshal using Jsonb.fromJson method with String and Type arguments.");
-    }
-
-    return; // passed
+    SimpleContainer unmarshalledObject = jsonb.fromJson(TEST_JSON, new SimpleContainer() {}.getClass().getGenericSuperclass());
+    assertThat("Failed to unmarshal using Jsonb.fromJson method with String and Type arguments.",
+               unmarshalledObject.getInstance(), is(TEST_STRING));
   }
 
   /*
@@ -107,22 +90,13 @@ public class JsonbTest {
    * arguments is working as expected
    */
   @Test
-  public void testFromJsonReaderClass() {
-    try (ByteArrayInputStream stream = new ByteArrayInputStream(
-        "{ \"instance\" : \"Test String\" }".getBytes(StandardCharsets.UTF_8));
-        InputStreamReader reader = new InputStreamReader(stream)) {
-
-      SimpleContainer unmarshalledObject = jsonb.fromJson(reader,
-          SimpleContainer.class);
-      if (!"Test String".equals(unmarshalledObject.getInstance())) {
-        fail(
-            "Failed to unmarshal using Jsonb.fromJson method with Reader and Class arguments.");
-      }
-    } catch (IOException e) {
-      fail(e.getMessage());
+  public void testFromJsonReaderClass() throws IOException {
+    try (ByteArrayInputStream stream = new ByteArrayInputStream(TEST_JSON_BYTE);
+            InputStreamReader reader = new InputStreamReader(stream)) {
+      SimpleContainer unmarshalledObject = jsonb.fromJson(reader, SimpleContainer.class);
+      assertThat("Failed to unmarshal using Jsonb.fromJson method with Reader and Class arguments.",
+                 unmarshalledObject.getInstance(), is(TEST_STRING));
     }
-
-    return; // passed
   }
 
   /*
@@ -134,23 +108,13 @@ public class JsonbTest {
    * arguments is working as expected
    */
   @Test
-  public void testFromJsonReaderType() {
-    try (ByteArrayInputStream stream = new ByteArrayInputStream(
-        "{ \"instance\" : \"Test String\" }".getBytes(StandardCharsets.UTF_8));
-        InputStreamReader reader = new InputStreamReader(stream)) {
-
-      SimpleContainer unmarshalledObject = jsonb.fromJson(reader,
-          new SimpleContainer() {
-          }.getClass().getGenericSuperclass());
-      if (!"Test String".equals(unmarshalledObject.getInstance())) {
-        fail(
-            "Failed to unmarshal using Jsonb.fromJson method with Reader and Type arguments.");
-      }
-    } catch (IOException e) {
-      fail(e.getMessage());
+  public void testFromJsonReaderType() throws IOException {
+    try (ByteArrayInputStream stream = new ByteArrayInputStream(TEST_JSON_BYTE);
+            InputStreamReader reader = new InputStreamReader(stream)) {
+      SimpleContainer unmarshalledObject = jsonb.fromJson(reader, new SimpleContainer() {}.getClass().getGenericSuperclass());
+      assertThat("Failed to unmarshal using Jsonb.fromJson method with Reader and Type arguments.",
+                 unmarshalledObject.getInstance(), is(TEST_STRING));
     }
-
-    return; // passed
   }
 
   /*
@@ -162,21 +126,12 @@ public class JsonbTest {
    * Class arguments is working as expected
    */
   @Test
-  public void testFromJsonStreamClass() {
-    try (ByteArrayInputStream stream = new ByteArrayInputStream(
-        "{ \"instance\" : \"Test String\" }"
-            .getBytes(StandardCharsets.UTF_8))) {
-      SimpleContainer unmarshalledObject = jsonb.fromJson(stream,
-          SimpleContainer.class);
-      if (!"Test String".equals(unmarshalledObject.getInstance())) {
-        fail(
-            "Failed to unmarshal using Jsonb.fromJson method with InputStream and Class arguments.");
-      }
-    } catch (IOException e) {
-      fail(e.getMessage());
+  public void testFromJsonStreamClass() throws IOException {
+    try (ByteArrayInputStream stream = new ByteArrayInputStream(TEST_JSON_BYTE)) {
+      SimpleContainer unmarshalledObject = jsonb.fromJson(stream, SimpleContainer.class);
+      assertThat("Failed to unmarshal using Jsonb.fromJson method with InputStream and Class arguments.",
+                 unmarshalledObject.getInstance(), is(TEST_STRING));
     }
-
-    return; // passed
   }
 
   /*
@@ -188,22 +143,12 @@ public class JsonbTest {
    * Class arguments is working as expected
    */
   @Test
-  public void testFromJsonStreamType() {
-    try (ByteArrayInputStream stream = new ByteArrayInputStream(
-        "{ \"instance\" : \"Test String\" }"
-            .getBytes(StandardCharsets.UTF_8))) {
-      SimpleContainer unmarshalledObject = jsonb.fromJson(stream,
-          new SimpleContainer() {
-          }.getClass().getGenericSuperclass());
-      if (!"Test String".equals(unmarshalledObject.getInstance())) {
-        fail(
-            "Failed to unmarshal using Jsonb.fromJson method with InputStream and Type arguments.");
-      }
-    } catch (IOException e) {
-      fail(e.getMessage());
+  public void testFromJsonStreamType() throws IOException {
+    try (ByteArrayInputStream stream = new ByteArrayInputStream(TEST_JSON_BYTE)) {
+      SimpleContainer unmarshalledObject = jsonb.fromJson(stream, new SimpleContainer() {}.getClass().getGenericSuperclass());
+      assertThat("Failed to unmarshal using Jsonb.fromJson method with InputStream and Type arguments.",
+                 unmarshalledObject.getInstance(), is(TEST_STRING));
     }
-
-    return; // passed
   }
 
   /*
@@ -217,12 +162,8 @@ public class JsonbTest {
   @Test
   public void testToJsonObject() {
     String jsonString = jsonb.toJson(new SimpleContainer());
-    if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*\"Test\"\\s*}")) {
-      fail(
-          "Failed to marshal using Jsonb.toJson method with Object argument.");
-    }
-
-    return; // passed
+    assertThat("Failed to marshal using Jsonb.toJson method with Object argument.",
+               jsonString, matchesPattern(MATCHING_PATTERN));
   }
 
   /*
@@ -235,15 +176,9 @@ public class JsonbTest {
    */
   @Test
   public void testToJsonObjectType() {
-    String jsonString = jsonb.toJson(new SimpleContainer(),
-        new SimpleContainer() {
-        }.getClass().getGenericSuperclass());
-    if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*\"Test\"\\s*}")) {
-      fail(
-          "Failed to marshal using Jsonb.toJson method with Object and Type arguments.");
-    }
-
-    return; // passed
+    String jsonString = jsonb.toJson(new SimpleContainer(), new SimpleContainer() { }.getClass().getGenericSuperclass());
+    assertThat("Failed to marshal using Jsonb.toJson method with Object and Type arguments.",
+               jsonString, matchesPattern(MATCHING_PATTERN));
   }
 
   /*
@@ -255,22 +190,14 @@ public class JsonbTest {
    * arguments is working as expected
    */
   @Test
-  public void testToJsonObjectWriter() {
+  public void testToJsonObjectWriter() throws IOException {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(stream)) {
-
       jsonb.toJson(new SimpleContainer(), writer);
-      String jsonString = new String(stream.toByteArray(),
-          StandardCharsets.UTF_8);
-      if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*\"Test\"\\s*}")) {
-        fail(
-            "Failed to marshal using Jsonb.toJson method with Object and Writer arguments.");
-      }
-    } catch (IOException e) {
-      fail(e.getMessage());
+      String jsonString = new String(stream.toByteArray(), StandardCharsets.UTF_8);
+      assertThat("Failed to marshal using Jsonb.toJson method with Object and Writer arguments.",
+                 jsonString, matchesPattern(MATCHING_PATTERN));
     }
-
-    return; // passed
   }
 
   /*
@@ -282,23 +209,14 @@ public class JsonbTest {
    * Writer arguments is working as expected
    */
   @Test
-  public void testToJsonObjectTypeWriter() {
+  public void testToJsonObjectTypeWriter() throws IOException {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(stream)) {
-
-      jsonb.toJson(new SimpleContainer(), new SimpleContainer() {
-      }.getClass().getGenericSuperclass(), writer);
-      String jsonString = new String(stream.toByteArray(),
-          StandardCharsets.UTF_8);
-      if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*\"Test\"\\s*}")) {
-        fail(
-            "Failed to marshal using Jsonb.toJson method with Object, Type and Writer arguments.");
-      }
-    } catch (IOException e) {
-      fail(e.getMessage());
+      jsonb.toJson(new SimpleContainer(), new SimpleContainer() {}.getClass().getGenericSuperclass(), writer);
+      String jsonString = new String(stream.toByteArray(), StandardCharsets.UTF_8);
+      assertThat("Failed to marshal using Jsonb.toJson method with Object, Type and Writer arguments.",
+                 jsonString, matchesPattern(MATCHING_PATTERN));
     }
-
-    return; // passed
   }
 
   /*
@@ -310,20 +228,13 @@ public class JsonbTest {
    * OutputStream arguments is working as expected
    */
   @Test
-  public void testToJsonObjectStream() {
+  public void testToJsonObjectStream() throws IOException {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
       jsonb.toJson(new SimpleContainer(), stream);
-      String jsonString = new String(stream.toByteArray(),
-          StandardCharsets.UTF_8);
-      if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*\"Test\"\\s*}")) {
-        fail(
-            "Failed to marshal using Jsonb.toJson method with Object and OutputStream arguments.");
-      }
-    } catch (IOException e) {
-      fail(e.getMessage());
+      String jsonString = new String(stream.toByteArray(), StandardCharsets.UTF_8);
+      assertThat("Failed to marshal using Jsonb.toJson method with Object and OutputStream arguments.",
+                 jsonString, matchesPattern(MATCHING_PATTERN));
     }
-
-    return; // passed
   }
 
   /*
@@ -335,20 +246,12 @@ public class JsonbTest {
    * OutputStream arguments is working as expected
    */
   @Test
-  public void testToJsonObjectTypeStream() {
+  public void testToJsonObjectTypeStream() throws IOException {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
-      jsonb.toJson(new SimpleContainer(), new SimpleContainer() {
-      }.getClass().getGenericSuperclass(), stream);
-      String jsonString = new String(stream.toByteArray(),
-          StandardCharsets.UTF_8);
-      if (!jsonString.matches("\\{\\s*\"instance\"\\s*:\\s*\"Test\"\\s*}")) {
-        fail(
-            "Failed to marshal using Jsonb.toJson method with Object, Type and OutputStream arguments.");
-      }
-    } catch (IOException e) {
-      fail(e.getMessage());
+      jsonb.toJson(new SimpleContainer(), new SimpleContainer() {}.getClass().getGenericSuperclass(), stream);
+      String jsonString = new String(stream.toByteArray(), StandardCharsets.UTF_8);
+      assertThat("Failed to marshal using Jsonb.toJson method with Object, Type and OutputStream arguments.",
+                 jsonString, matchesPattern(MATCHING_PATTERN));
     }
-
-    return; // passed
   }
 }

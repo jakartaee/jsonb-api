@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,36 +20,22 @@
 
 package jakarta.json.bind.tck.defaultmapping.identifiers;
 
-import static org.junit.Assert.fail;
-
-import java.lang.invoke.MethodHandles;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
+import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbConfig;
 import jakarta.json.bind.JsonbException;
 import jakarta.json.bind.tck.MappingTester;
 import jakarta.json.bind.tck.defaultmapping.identifiers.model.StringContainer;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @test
  * @sources NamesAndIdentifiersMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.identifiers.NamesAndIdentifiersMappingTest
  **/
-@RunWith(Arquillian.class)
 public class NamesAndIdentifiersMappingTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
 
   /*
    * @testName: testSimpleMapping
@@ -62,8 +48,7 @@ public class NamesAndIdentifiersMappingTest {
    */
   @Test
   public void testSimpleMapping() {
-    new MappingTester<>(StringContainer.class).test("Test String",
-        "\"Test String\"");
+    new MappingTester<>(StringContainer.class).test("Test String", "\"Test String\"");
   }
 
   /*
@@ -76,17 +61,11 @@ public class NamesAndIdentifiersMappingTest {
    * corresponding name as in json document cannot be found or is not accessible
    */
   @Test
-  public void testSimpleMappingNoCorrespondingIdentifierWithFailOnUnknownProperties()
-      {
-    try {
-      JsonbBuilder
-          .create(new JsonbConfig()
-              .setProperty("jsonb.fail-on-unknown-properties", true))
-          .fromJson("{ \"data\" : \"Test String\" }", StringContainer.class);
-      fail(
-          "A JsonbException is expected if a Java identifier with corresponding name as in json document cannot be found.");
-    } catch (JsonbException x) {
-      return; // passed
-    }
+  public void testSimpleMappingNoCorrespondingIdentifierWithFailOnUnknownProperties() {
+      Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().setProperty("jsonb.fail-on-unknown-properties", true));
+      assertThrows(JsonbException.class,
+                   () -> jsonb.fromJson("{ \"data\" : \"Test String\" }", StringContainer.class),
+                   "A JsonbException is expected if a Java identifier with corresponding name as in json "
+                           + "document cannot be found.");
   }
 }

@@ -20,37 +20,24 @@
 
 package jakarta.json.bind.tck.api.jsonbadapter;
 
-import static org.junit.Assert.fail;
-
-import java.lang.invoke.MethodHandles;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbConfig;
 import jakarta.json.bind.tck.api.model.SimpleContainer;
 import jakarta.json.bind.tck.api.model.SimpleContainerContainer;
 import jakarta.json.bind.tck.api.model.SimpleStringAdapter;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.matchesPattern;
 
 /**
  * @test
  * @sources JsonbAdapterTest.java
  * @executeClass com.sun.ts.tests.jsonb.api.JsonbAdapterTest
  **/
-@RunWith(Arquillian.class)
 public class JsonbAdapterTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
 
   /*
    * @testName: testAdaptFromJson
@@ -63,17 +50,12 @@ public class JsonbAdapterTest {
    */
   @Test
   public void testAdaptFromJson() {
-    Jsonb jsonb = JsonbBuilder
-        .create(new JsonbConfig().withAdapters(new SimpleStringAdapter()));
-    SimpleContainerContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"instance\" : { \"instance\" : \"Test String Adapted\" } }",
-        SimpleContainerContainer.class);
-    if (!"Test String".equals(unmarshalledObject.getInstance().getInstance())) {
-      fail(
-          "Failed to use JsonbAdapter.adaptFromJson method to provide conversion logic from adapted object to original during object deserialization.");
-    }
-
-    return; // passed
+    Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withAdapters(new SimpleStringAdapter()));
+    SimpleContainerContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : { \"instance\" : \"Test String Adapted\" } }",
+                                                                 SimpleContainerContainer.class);
+    assertThat("Failed to use JsonbAdapter.adaptFromJson method to provide conversion logic from "
+                       + "adapted object to original during object deserialization.",
+               unmarshalledObject.getInstance(), is("Test String"));
   }
 
   /*
@@ -87,8 +69,7 @@ public class JsonbAdapterTest {
    */
   @Test
   public void testAdaptToJson() {
-    Jsonb jsonb = JsonbBuilder
-        .create(new JsonbConfig().withAdapters(new SimpleStringAdapter()));
+    Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withAdapters(new SimpleStringAdapter()));
     String jsonString = jsonb.toJson(new SimpleContainerContainer() {
       {
         setInstance(new SimpleContainer() {
@@ -98,12 +79,9 @@ public class JsonbAdapterTest {
         });
       }
     });
-    if (!jsonString.matches(
-        "\\{\\s*\"instance\"\\s*:\\s*\\{\\s*\"instance\"\\s*:\\s*\"Test String Adapted\"\\s*}\\s*}")) {
-      fail(
-          "Failed to use JsonbAdapter.adaptToJson method to provide conversion logic from original object to adapted during object serialization.");
-    }
-
-    return; // passed
+    assertThat("Failed to use JsonbAdapter.adaptToJson method to provide conversion "
+                       + "logic from original object to adapted during object serialization.",
+               jsonString,
+               matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\\{\\s*\"instance\"\\s*:\\s*\"Test String Adapted\"\\s*}\\s*}"));
   }
 }

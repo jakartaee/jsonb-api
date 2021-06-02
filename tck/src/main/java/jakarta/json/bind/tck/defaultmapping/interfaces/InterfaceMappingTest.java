@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,37 +20,22 @@
 
 package jakarta.json.bind.tck.defaultmapping.interfaces;
 
-import static org.junit.Assert.fail;
-
-import java.lang.invoke.MethodHandles;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
 import jakarta.json.bind.tck.TypeContainer;
 import jakarta.json.bind.tck.defaultmapping.interfaces.model.InterfaceContainer;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @test
  * @sources InterfaceMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.interfaces.InterfaceMappingTest
  **/
-@RunWith(Arquillian.class)
 public class InterfaceMappingTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
-    
+
   private final Jsonb jsonb = JsonbBuilder.create();
 
   /*
@@ -63,13 +48,9 @@ public class InterfaceMappingTest {
    */
   @Test
   public void testDeserializationToInterface() {
-    try {
-      jsonb.fromJson("{ \"instance\" : \"Test String\" }", TypeContainer.class);
-      fail(
-          "An exception is expected when unmarshalling a class to an interface.");
-    } catch (JsonbException x) {
-      return; // passed
-    }
+    assertThrows(JsonbException.class,
+                 () -> jsonb.fromJson("{ \"instance\" : \"Test String\" }", TypeContainer.class),
+                 "An exception is expected when unmarshalling a class to an interface.");
   }
 
   /*
@@ -82,13 +63,8 @@ public class InterfaceMappingTest {
    */
   @Test
   public void testInterfaceField() {
-    try {
-      jsonb.fromJson("{ \"instance\" : { \"instance\" : \"Test String\" } }",
-          InterfaceContainer.class);
-      fail(
-          "An exception is expected when unmarshalling a class with an interface property.");
-    } catch (JsonbException x) {
-      return; // passed
-    }
+    assertThrows(JsonbException.class,
+                 () -> jsonb.fromJson("{ \"instance\" : { \"instance\" : \"Test String\" } }", InterfaceContainer.class),
+                 "An exception is expected when unmarshalling a class with an interface property.");
   }
 }

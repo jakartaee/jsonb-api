@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,17 +20,6 @@
 
 package jakarta.json.bind.tck.customizedmapping.propertyorder;
 
-import static org.junit.Assert.fail;
-
-import java.lang.invoke.MethodHandles;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbConfig;
@@ -40,20 +29,19 @@ import jakarta.json.bind.tck.customizedmapping.propertyorder.model.PartialOrderC
 import jakarta.json.bind.tck.customizedmapping.propertyorder.model.RenamedPropertiesContainer;
 import jakarta.json.bind.tck.customizedmapping.propertyorder.model.SimpleContainer;
 import jakarta.json.bind.tck.customizedmapping.propertyorder.model.SimpleOrderContainer;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.matchesPattern;
 
 /**
  * @test
  * @sources PropertyOrderCustomizationTest.java
  * @executeClass com.sun.ts.tests.jsonb.customizedmapping.propertyorder.PropertyOrderCustomizationTest
  **/
-@RunWith(Arquillian.class)
 public class PropertyOrderCustomizationTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
     
   private final Jsonb jsonb = JsonbBuilder.create();
 
@@ -67,26 +55,18 @@ public class PropertyOrderCustomizationTest {
    */
   @Test
   public void testAnyPropertyOrderStrategy() {
-    JsonbConfig config = new JsonbConfig();
-    config.setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY,
-        PropertyOrderStrategy.ANY);
+    JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY, PropertyOrderStrategy.ANY);
     Jsonb jsonb = JsonbBuilder.create(config);
-
     String jsonString = jsonb.toJson(new SimpleContainer() {
       {
         setStringInstance("Test String");
       }
     });
-    SimpleContainer unmarshalledObject = jsonb.fromJson(jsonString,
-        SimpleContainer.class);
-    if (!("Test String".equals(unmarshalledObject.getStringInstance())
-        && unmarshalledObject.getIntInstance() == 0
-        && unmarshalledObject.getLongInstance() == 0)) {
-      fail(
-          "Failed to correctly marshal and unmarshal object using PropertyOrderStrategy.ANY.");
-    }
-
-    return; // passed
+    SimpleContainer unmarshalledObject = jsonb.fromJson(jsonString, SimpleContainer.class);
+    String validationMessage = "Failed to correctly marshal and unmarshal object using PropertyOrderStrategy.ANY.";
+    assertThat(validationMessage, unmarshalledObject.getStringInstance(), is("Test String"));
+    assertThat(validationMessage, unmarshalledObject.getIntInstance(), is(0));
+    assertThat(validationMessage, unmarshalledObject.getLongInstance(), is(0));
   }
 
   /*
@@ -100,31 +80,22 @@ public class PropertyOrderCustomizationTest {
    */
   @Test
   public void testLexicographicalPropertyOrderStrategy() {
-    JsonbConfig config = new JsonbConfig();
-    config.setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY,
-        PropertyOrderStrategy.LEXICOGRAPHICAL);
+    JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY, PropertyOrderStrategy.LEXICOGRAPHICAL);
     Jsonb jsonb = JsonbBuilder.create(config);
-
     String jsonString = jsonb.toJson(new SimpleOrderContainer() {
       {
         setStringInstance("Test String");
       }
     });
-    if (!jsonString.matches(
-        "\\{\\s*\"intInstance\"\\s*\\:\\s*0\\s*,\\s*\"longInstance\"\\s*\\:\\s*0\\s*,\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal properties in lexicographical order using PropertyOrderStrategy.LEXICOGRAPHICAL.");
-    }
+    assertThat("Failed to correctly marshal properties in lexicographical order using PropertyOrderStrategy.LEXICOGRAPHICAL.",
+               jsonString, matchesPattern("\\{\\s*\"intInstance\"\\s*\\:\\s*0\\s*,\\s*\"longInstance\"\\s*\\:\\s*0\\s*,"
+                                                  + "\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-    SimpleOrderContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"intInstance\" : 1, \"stringInstance\" : \"Test String\", \"longInstance\" : 1 }",
-        SimpleOrderContainer.class);
-    if (unmarshalledObject.getIntInstance() != 3) {
-      fail(
-          "Failed to correctly unmarshal properties in order of appearance using PropertyOrderStrategy.LEXICOGRAPHICAL.");
-    }
-
-    return; // passed
+    SimpleOrderContainer unmarshalledObject = jsonb.fromJson("{ \"intInstance\" : 1, \"stringInstance\" : \"Test String\", "
+                                                                     + "\"longInstance\" : 1 }",
+                                                             SimpleOrderContainer.class);
+    assertThat("Failed to correctly unmarshal properties in order of appearance using PropertyOrderStrategy.LEXICOGRAPHICAL.",
+               unmarshalledObject.getIntInstance(), is(3));
   }
 
   /*
@@ -138,31 +109,22 @@ public class PropertyOrderCustomizationTest {
    */
   @Test
   public void testReversePropertyOrderStrategy() {
-    JsonbConfig config = new JsonbConfig();
-    config.setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY,
-        PropertyOrderStrategy.REVERSE);
+    JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY, PropertyOrderStrategy.REVERSE);
     Jsonb jsonb = JsonbBuilder.create(config);
-
     String jsonString = jsonb.toJson(new SimpleOrderContainer() {
       {
         setStringInstance("Test String");
       }
     });
-    if (!jsonString.matches(
-        "\\{\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*,\\s*\"longInstance\"\\s*\\:\\s*0\\s*,\\s*\"intInstance\"\\s*\\:\\s*0\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal properties in reverse lexicographical order using PropertyOrderStrategy.REVERSE.");
-    }
+    assertThat("Failed to correctly marshal properties in reverse lexicographical order using PropertyOrderStrategy.REVERSE.",
+               jsonString, matchesPattern("\\{\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*,"
+                                                  + "\\s*\"longInstance\"\\s*\\:\\s*0\\s*,\\s*\"intInstance\"\\s*\\:\\s*0\\s*\\}"));
 
-    SimpleOrderContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"intInstance\" : 1, \"stringInstance\" : \"Test String\", \"longInstance\" : 1 }",
-        SimpleOrderContainer.class);
-    if (unmarshalledObject.getIntInstance() != 3) {
-      fail(
-          "Failed to correctly unmarshal properties in order of appearance using PropertyOrderStrategy.REVERSE.");
-    }
-
-    return; // passed
+    SimpleOrderContainer unmarshalledObject = jsonb.fromJson("{ \"intInstance\" : 1, \"stringInstance\" : \"Test String\", "
+                                                                     + "\"longInstance\" : 1 }",
+                                                             SimpleOrderContainer.class);
+    assertThat("Failed to correctly unmarshal properties in order of appearance using PropertyOrderStrategy.REVERSE.",
+               unmarshalledObject.getIntInstance(), is(3));
   }
 
   /*
@@ -181,21 +143,15 @@ public class PropertyOrderCustomizationTest {
         setStringInstance("Test String");
       }
     });
-    if (!jsonString.matches(
-        "\\{\\s*\"longInstance\"\\s*\\:\\s*0\\s*,\\s*\"intInstance\"\\s*\\:\\s*0\\s*,\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal properties in custom order using JsonbPropertyOrder annotation.");
-    }
+    assertThat("Failed to correctly marshal properties in custom order using JsonbPropertyOrder annotation.",
+               jsonString, matchesPattern("\\{\\s*\"longInstance\"\\s*\\:\\s*0\\s*,\\s*\"intInstance\"\\s*\\:\\s*0\\s*,"
+                                                  + "\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-    CustomOrderContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"intInstance\" : 1, \"stringInstance\" : \"Test String\", \"longInstance\" : 0 }",
-        CustomOrderContainer.class);
-    if (unmarshalledObject.getIntInstance() != 3) {
-      fail(
-          "Failed to correctly unmarshal properties in order of appearance using JsonbPropertyOrder annotation.");
-    }
-
-    return; // passed
+    CustomOrderContainer unmarshalledObject = jsonb.fromJson("{ \"intInstance\" : 1, \"stringInstance\" : \"Test String\", "
+                                                                     + "\"longInstance\" : 0 }",
+                                                             CustomOrderContainer.class);
+    assertThat("Failed to correctly unmarshal properties in order of appearance using JsonbPropertyOrder annotation.",
+               unmarshalledObject.getIntInstance(), is(3));
   }
 
   /*
@@ -210,31 +166,23 @@ public class PropertyOrderCustomizationTest {
    */
   @Test
   public void testCustomPropertyOrderStrategyOverride() {
-    JsonbConfig config = new JsonbConfig();
-    config.setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY,
-        PropertyOrderStrategy.REVERSE);
+    JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY, PropertyOrderStrategy.REVERSE);
     Jsonb jsonb = JsonbBuilder.create(config);
-
     String jsonString = jsonb.toJson(new CustomOrderContainer() {
       {
         setStringInstance("Test String");
       }
     });
-    if (!jsonString.matches(
-        "\\{\\s*\"longInstance\"\\s*\\:\\s*0\\s*,\\s*\"intInstance\"\\s*\\:\\s*0\\s*,\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal properties in custom order using JsonbPropertyOrder annotation.");
-    }
+    assertThat("Failed to correctly marshal properties in custom order using JsonbPropertyOrder annotation.",
+               jsonString, matchesPattern("\\{\\s*\"longInstance\"\\s*\\:\\s*0\\s*,\\s*\"intInstance\"\\s*\\:\\s*0\\s*,"
+                                                  + "\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-    CustomOrderContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"intInstance\" : 1, \"stringInstance\" : \"Test String\", \"longInstance\" : 0 }",
-        CustomOrderContainer.class);
-    if (unmarshalledObject.getIntInstance() != 3) {
-      fail(
-          "Failed to correctly unmarshal properties in order of appearance using JsonbPropertyOrder annotation and PropertyOrderStrategy.REVERSE.");
-    }
-
-    return; // passed
+    CustomOrderContainer unmarshalledObject = jsonb.fromJson("{ \"intInstance\" : 1, \"stringInstance\" : \"Test String\", "
+                                                                     + "\"longInstance\" : 0 }",
+                                                             CustomOrderContainer.class);
+    assertThat("Failed to correctly unmarshal properties in order of appearance using JsonbPropertyOrder annotation and "
+                       + "PropertyOrderStrategy.REVERSE.",
+               unmarshalledObject.getIntInstance(), is(3));
   }
 
   /*
@@ -254,46 +202,23 @@ public class PropertyOrderCustomizationTest {
         setStringInstance("Test String");
       }
     });
-    if (!jsonString.matches(
-        "\\{\\s*\"longInstance\"\\s*\\:\\s*0\\s*,\\s*\"intInstance\"\\s*\\:\\s*0\\s*,\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\".*\\}")) {
-      System.out.append("Got JSON: ").println(jsonString);
-      fail(
-          "Failed to correctly marshal properties in custom order using JsonbPropertyOrder annotation.");
-    }
-    if (!jsonString.contains("anotherIntInstance")
-        || !jsonString.contains("anIntInstance")
-        || !jsonString.contains("yetAnotherIntInstance")) {
-      System.out.append("Got JSON: ").println(jsonString);
-      fail("Did not marshall all expected properties");
-    }
+    assertThat("Failed to correctly marshal properties in custom order using JsonbPropertyOrder annotation.",
+               jsonString, matchesPattern("\\{\\s*\"longInstance\"\\s*\\:\\s*0\\s*,\\s*\"intInstance\"\\s*\\:\\s*0\\s*,"
+                                                  + "\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\".*\\}"));
 
-    PartialOrderContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"anIntInstance\" : 100, \"yetAnotherIntInstance\":100, \"anotherIntInstance\": 100, \"intInstance\" : 1, \"stringInstance\" : \"Test String\", \"longInstance\" : 0 }",
-        PartialOrderContainer.class);
-    if (unmarshalledObject.getIntInstance() != 3) {
-      System.out.append("Got Int instance: ")
-          .println(unmarshalledObject.getIntInstance());
-      fail(
-          "Failed to correctly unmarshal properties in order of appearance using JsonbPropertyOrder annotation.");
-    }
-    if (unmarshalledObject.getAnotherIntInstance() != 100) {
-      System.out.append("Got AnotherInt instance: ")
-          .println(unmarshalledObject.getAnotherIntInstance());
-      fail(
-          "Failed to correctly unmarshal properties in order of appearance using JsonbPropertyOrder annotation.");
-    }
-    if (unmarshalledObject.getYetAnotherIntInstance() != 100) {
-      System.out.append("Got YetAnotherInt instance: ")
-          .println(unmarshalledObject.getYetAnotherIntInstance());
-      fail(
-          "Failed to correctly unmarshal properties in order of appearance using JsonbPropertyOrder annotation.");
-    }
-    if (unmarshalledObject.getAnIntInstance() != 100) {
-      System.out.append("Got AnInt instance: ")
-          .println(unmarshalledObject.getAnIntInstance());
-      fail(
-          "Failed to correctly unmarshal properties in order of appearance using JsonbPropertyOrder annotation.");
-    }
+    String validationMessage = "Did not marshall all expected properties";
+    assertThat(validationMessage, jsonString, containsString("anotherIntInstance"));
+    assertThat(validationMessage, jsonString, containsString("anIntInstance"));
+    assertThat(validationMessage, jsonString, containsString("yetAnotherIntInstance"));
+
+    String toDeserialize = "{ \"anIntInstance\" : 100, \"yetAnotherIntInstance\":100, \"anotherIntInstance\": 100, "
+            + "\"intInstance\" : 1, \"stringInstance\" : \"Test String\", \"longInstance\" : 0 }";
+    PartialOrderContainer unmarshalledObject = jsonb.fromJson(toDeserialize, PartialOrderContainer.class);
+    validationMessage = "Failed to correctly unmarshal properties in order of appearance using JsonbPropertyOrder annotation.";
+    assertThat(validationMessage, unmarshalledObject.getIntInstance(), is(3));
+    assertThat(validationMessage, unmarshalledObject.getAnotherIntInstance(), is(100));
+    assertThat(validationMessage, unmarshalledObject.getYetAnotherIntInstance(), is(100));
+    assertThat(validationMessage, unmarshalledObject.getAnIntInstance(), is(100));
   }
 
   /*
@@ -308,56 +233,30 @@ public class PropertyOrderCustomizationTest {
    */
   @Test
   public void testCustomPartialPropertyOrderStrategyOverride() {
-    JsonbConfig config = new JsonbConfig();
-    config.setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY,
-        PropertyOrderStrategy.REVERSE);
+    JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY, PropertyOrderStrategy.REVERSE);
     Jsonb jsonb = JsonbBuilder.create(config);
-
     String jsonString = jsonb.toJson(new PartialOrderContainer() {
       {
         setStringInstance("Test String");
       }
     });
-    if (!jsonString.matches(
-        "\\{\\s*\"longInstance\"\\s*\\:\\s*0\\s*,\\s*\"intInstance\"\\s*\\:\\s*0\\s*,\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\".*\\}")) {
-      System.out.append("Got JSON: ").println(jsonString);
-      fail(
-          "Failed to correctly marshal properties in custom order using JsonbPropertyOrder annotation.");
-    }
-    if (!jsonString.contains("anotherIntInstance")
-        || !jsonString.contains("anIntInstance")
-        || !jsonString.contains("yetAnotherIntInstance")) {
-      System.out.append("Got JSON: ").println(jsonString);
-      fail("Did not marshall all expected properties");
-    }
+    assertThat("Failed to correctly marshal properties in custom order using JsonbPropertyOrder annotation.",
+               jsonString, matchesPattern("\\{\\s*\"longInstance\"\\s*\\:\\s*0\\s*,\\s*\"intInstance\"\\s*\\:\\s*0\\s*,"
+                                                  + "\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\".*\\}"));
 
-    PartialOrderContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"anIntInstance\" : 100, \"yetAnotherIntInstance\":100, \"anotherIntInstance\": 100, \"intInstance\" : 1, \"stringInstance\" : \"Test String\", \"longInstance\" : 0 }",
-        PartialOrderContainer.class);
-    if (unmarshalledObject.getIntInstance() != 3) {
-      System.out.append("Got Int instance: ")
-          .println(unmarshalledObject.getIntInstance());
-      fail(
-          "Failed to correctly unmarshal properties in order of appearance using JsonbPropertyOrder annotation and PropertyOrderStrategy.REVERSE.");
-    }
-    if (unmarshalledObject.getAnotherIntInstance() != 100) {
-      System.out.append("Got AnotherInt instance: ")
-          .println(unmarshalledObject.getAnotherIntInstance());
-      fail(
-          "Failed to correctly unmarshal properties in order of appearance using JsonbPropertyOrder annotation.");
-    }
-    if (unmarshalledObject.getYetAnotherIntInstance() != 100) {
-      System.out.append("Got YetAnotherInt instance: ")
-          .println(unmarshalledObject.getYetAnotherIntInstance());
-      fail(
-          "Failed to correctly unmarshal properties in order of appearance using JsonbPropertyOrder annotation.");
-    }
-    if (unmarshalledObject.getAnIntInstance() != 100) {
-      System.out.append("Got AnInt instance: ")
-          .println(unmarshalledObject.getAnIntInstance());
-      fail(
-          "Failed to correctly unmarshal properties in order of appearance using JsonbPropertyOrder annotation.");
-    }
+    String validationMessage = "Did not marshall all expected properties";
+    assertThat(validationMessage, jsonString, containsString("anotherIntInstance"));
+    assertThat(validationMessage, jsonString, containsString("anIntInstance"));
+    assertThat(validationMessage, jsonString, containsString("yetAnotherIntInstance"));
+
+    String toDeserialize = "{ \"anIntInstance\" : 100, \"yetAnotherIntInstance\":100, \"anotherIntInstance\": 100, "
+            + "\"intInstance\" : 1, \"stringInstance\" : \"Test String\", \"longInstance\" : 0 }";
+    PartialOrderContainer unmarshalledObject = jsonb.fromJson(toDeserialize, PartialOrderContainer.class);
+    validationMessage = "Failed to correctly unmarshal properties in order of appearance using JsonbPropertyOrder annotation.";
+    assertThat(validationMessage, unmarshalledObject.getIntInstance(), is(3));
+    assertThat(validationMessage, unmarshalledObject.getAnotherIntInstance(), is(100));
+    assertThat(validationMessage, unmarshalledObject.getYetAnotherIntInstance(), is(100));
+    assertThat(validationMessage, unmarshalledObject.getAnIntInstance(), is(100));
   }
 
   /*
@@ -370,33 +269,25 @@ public class PropertyOrderCustomizationTest {
    * is the order of appearance in the JSON document
    */
   @Test
-  public void testLexicographicalPropertyOrderRenamedProperties()
-      {
-    JsonbConfig config = new JsonbConfig();
-    config.setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY,
-        PropertyOrderStrategy.LEXICOGRAPHICAL);
+  public void testLexicographicalPropertyOrderRenamedProperties() {
+    JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_ORDER_STRATEGY, PropertyOrderStrategy.LEXICOGRAPHICAL);
     Jsonb jsonb = JsonbBuilder.create(config);
-
     String jsonString = jsonb.toJson(new RenamedPropertiesContainer() {
       {
         setStringInstance("Test String");
         setLongInstance(1);
       }
     });
-    if (!jsonString.matches(
-        "\\{\\s*\"first\"\\s*\\:\\s*0\\s*,\\s*\"second\"\\s*\\:\\s*\"Test String\"\\s*,\\s*\"third\"\\s*\\:\\s*1\\s*\\}")) {
-      fail(
-          "Failed to correctly marshal renamed properties in lexicographical order using PropertyOrderStrategy.LEXICOGRAPHICAL.");
-    }
+    assertThat("Failed to correctly marshal renamed properties in lexicographical order "
+                       + "using PropertyOrderStrategy.LEXICOGRAPHICAL.",
+               jsonString, matchesPattern("\\{\\s*\"first\"\\s*\\:\\s*0\\s*,\\s*\"second\"\\s*\\:\\s*\"Test String\"\\s*,"
+                                                  + "\\s*\"third\"\\s*\\:\\s*1\\s*\\}"));
 
-    RenamedPropertiesContainer unmarshalledObject = jsonb.fromJson(
-        "{ \"first\" : 1, \"second\" : \"Test String\", \"third\" : 1 }",
-        RenamedPropertiesContainer.class);
-    if (unmarshalledObject.getIntInstance() != 3) {
-      fail(
-          "Failed to correctly unmarshal renamed properties in order of appearance using PropertyOrderStrategy.LEXICOGRAPHICAL.");
-    }
-
-    return; // passed
+    RenamedPropertiesContainer unmarshalledObject = jsonb.fromJson("{ \"first\" : 1, \"second\" : \"Test String\", "
+                                                                           + "\"third\" : 1 }",
+                                                                   RenamedPropertiesContainer.class);
+    assertThat("Failed to correctly unmarshal renamed properties in order of appearance "
+                       + "using PropertyOrderStrategy.LEXICOGRAPHICAL.",
+               unmarshalledObject.getIntInstance(), is(3));
   }
 }

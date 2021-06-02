@@ -16,8 +16,6 @@
 
 package jakarta.json.bind.tck;
 
-import static org.junit.Assert.fail;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -29,6 +27,11 @@ import java.util.Objects;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.matchesPattern;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class SimpleMappingTester<T> {
   private final Jsonb jsonb = JsonbBuilder.create();
@@ -63,192 +66,113 @@ public class SimpleMappingTester<T> {
 
   private void testMarshalling(T value, String expectedRepresentation) {
     String jsonString = jsonb.toJson(value);
-    if (jsonString.matches(expectedRepresentation)) {
-      return; // passed
-    } else {
-      fail("[testMarshalling] - Failed to correctly marshal "
-          + value.getClass().getName() + " object");
-    }
+    assertThat("[testMarshalling] - Failed to correctly marshal " + value.getClass().getName() + " object",
+               jsonString, matchesPattern(expectedRepresentation));
   }
 
-  private void testMarshallingToStream(T value,
-      String expectedRepresentation) {
+  private void testMarshallingToStream(T value, String expectedRepresentation) {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
       jsonb.toJson(value, stream);
-      String jsonString = new String(stream.toByteArray(),
-          StandardCharsets.UTF_8);
-      if (jsonString.matches(expectedRepresentation)) {
-        return; // passed
-      } else {
-        fail("[testMarshallingToStream] - Failed to correctly marshal "
-                + value.getClass().getName() + " object");
-      }
+      String jsonString = new String(stream.toByteArray(), StandardCharsets.UTF_8);
+      assertThat("[testMarshallingToStream] - Failed to correctly marshal " + value.getClass().getName() + " object",
+                 jsonString, matchesPattern(expectedRepresentation));
     } catch (IOException e) {
-      fail(e.getMessage());
+      fail(e.getMessage(), e);
     }
   }
 
-  private void testMarshallingToWriter(T value,
-      String expectedRepresentation) {
+  private void testMarshallingToWriter(T value, String expectedRepresentation) {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        OutputStreamWriter writer = new OutputStreamWriter(stream)) {
+            OutputStreamWriter writer = new OutputStreamWriter(stream)) {
       jsonb.toJson(value, writer);
-      String jsonString = new String(stream.toByteArray(),
-          StandardCharsets.UTF_8);
-      if (jsonString.matches(expectedRepresentation)) {
-        return; // passed
-      } else {
-        fail("[testMarshallingToWriter] - Failed to correctly marshal "
-                + value.getClass().getName() + " object");
-      }
+      String jsonString = new String(stream.toByteArray(), StandardCharsets.UTF_8);
+      assertThat("[testMarshallingToWriter] - Failed to correctly marshal " + value.getClass().getName() + " object",
+                 jsonString, matchesPattern(expectedRepresentation));
     } catch (IOException e) {
-      fail(e.getMessage());
+      fail(e.getMessage(), e);
     }
   }
 
   private void testMarshallingByType(T value, String expectedRepresentation) {
     String jsonString = jsonb.toJson(value, serializationType);
-    if (jsonString.matches(expectedRepresentation)) {
-      return; // passed
-    } else {
-      fail("[testMarshallingByType] - Failed to correctly marshal "
-              + value.getClass().getName() + " object");
-    }
+    assertThat("[testMarshallingByType] - Failed to correctly marshal " + value.getClass().getName() + " object",
+               jsonString, matchesPattern(expectedRepresentation));
   }
 
-  private void testMarshallingByTypeToStream(T value,
-      String expectedRepresentation) {
+  private void testMarshallingByTypeToStream(T value, String expectedRepresentation) {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
       jsonb.toJson(value, serializationType, stream);
-      String jsonString = new String(stream.toByteArray(),
-          StandardCharsets.UTF_8);
-      if (jsonString.matches(expectedRepresentation)) {
-        return; // passed
-      } else {
-        fail(
-            "[testMarshallingByTypeToStream] - Failed to correctly marshal "
-                + value.getClass().getName() + " object");
-      }
+      String jsonString = new String(stream.toByteArray(), StandardCharsets.UTF_8);
+      assertThat("[testMarshallingByTypeToStream] - Failed to correctly marshal " + value.getClass().getName() + " object",
+                 jsonString, matchesPattern(expectedRepresentation));
     } catch (IOException e) {
-      fail(e.getMessage());
+      fail(e.getMessage(), e);
     }
   }
 
-  private void testMarshallingByTypeToWriter(T value,
-      String expectedRepresentation) {
+  private void testMarshallingByTypeToWriter(T value, String expectedRepresentation) {
     try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        OutputStreamWriter writer = new OutputStreamWriter(stream)) {
-
+            OutputStreamWriter writer = new OutputStreamWriter(stream)) {
       jsonb.toJson(value, serializationType, writer);
-      String jsonString = new String(stream.toByteArray(),
-          StandardCharsets.UTF_8);
-      if (jsonString.matches(expectedRepresentation)) {
-        return; // passed
-      } else {
-        fail(
-            "[testMarshallingByTypeToWriter] - Failed to correctly marshal "
-                + value.getClass().getName() + " object");
-      }
+      String jsonString = new String(stream.toByteArray(), StandardCharsets.UTF_8);
+      assertThat("[testMarshallingByTypeToWriter] - Failed to correctly marshal " + value.getClass().getName() + " object",
+                 jsonString, matchesPattern(expectedRepresentation));
     } catch (IOException e) {
-      fail(e.getMessage());
+      fail(e.getMessage(), e);
     }
   }
 
-  private void testUnmarshallingByClass(String expectedRepresentation,
-      Object value) {
-    Object unmarshalledObject = jsonb.fromJson(expectedRepresentation,
-        typeClass);
-    if (value.equals(unmarshalledObject)) {
-      return; // passed
-    } else {
-      fail("[testUnmarshallingByClass] - Failed to correctly unmarshal "
-              + value.getClass().getName() + " object");
-    }
+  private void testUnmarshallingByClass(String expectedRepresentation, Object value) {
+    Object unmarshalledObject = jsonb.fromJson(expectedRepresentation, typeClass);
+    assertThat("[testUnmarshallingByClass] - Failed to correctly unmarshal " + value.getClass().getName() + " object",
+               unmarshalledObject, is(value));
   }
 
-  private void testUnmarshallingByClassFromStream(
-      String expectedRepresentation, Object value) {
-    try (ByteArrayInputStream stream = new ByteArrayInputStream(
-        expectedRepresentation.getBytes(StandardCharsets.UTF_8))) {
+  private void testUnmarshallingByClassFromStream(String expectedRepresentation, Object value) {
+    try (ByteArrayInputStream stream = new ByteArrayInputStream(expectedRepresentation.getBytes(StandardCharsets.UTF_8))) {
       Object unmarshalledObject = jsonb.fromJson(stream, typeClass);
-      if (value.equals(unmarshalledObject)) {
-        return; // passed
-      } else {
-        fail(
-            "[testUnmarshallingByClassFromStream] - Failed to correctly unmarshal "
-                + value.getClass().getName() + " object");
-      }
+      assertThat("[testUnmarshallingByClassFromStream] - Failed to correctly unmarshal " + value.getClass().getName() + " object",
+                 unmarshalledObject, is(value));
     } catch (IOException e) {
-      fail(e.getMessage());
+      fail(e.getMessage(), e);
     }
   }
 
-  private void testUnmarshallingByClassFromReader(
-      String expectedRepresentation, Object value) {
-    try (
-        ByteArrayInputStream stream = new ByteArrayInputStream(
-            expectedRepresentation.getBytes(StandardCharsets.UTF_8));
-        InputStreamReader reader = new InputStreamReader(stream)) {
-
+  private void testUnmarshallingByClassFromReader(String expectedRepresentation, Object value) {
+    try (ByteArrayInputStream stream = new ByteArrayInputStream(expectedRepresentation.getBytes(StandardCharsets.UTF_8));
+            InputStreamReader reader = new InputStreamReader(stream)) {
       Object unmarshalledObject = jsonb.fromJson(reader, typeClass);
-      if (value.equals(unmarshalledObject)) {
-        return; // passed
-      } else {
-        fail(
-            "[testUnmarshallingByClassFromReader] - Failed to correctly unmarshal "
-                + value.getClass().getName() + " object");
-      }
+      assertThat("[testUnmarshallingByClassFromReader] - Failed to correctly unmarshal " + value.getClass().getName() + " object",
+                 unmarshalledObject, is(value));
     } catch (IOException e) {
-      fail(e.getMessage());
+      fail(e.getMessage(), e);
     }
   }
 
-  private void testUnmarshallingByType(String expectedRepresentation,
-      Object value) {
-    Object unmarshalledObject = jsonb.fromJson(expectedRepresentation,
-        (Type) typeClass);
-    if (value.equals(unmarshalledObject)) {
-      return; // passed
-    } else {
-      fail("[testUnmarshallingByType] - Failed to correctly unmarshal "
-              + value.getClass().getName() + " object");
-    }
+  private void testUnmarshallingByType(String expectedRepresentation, Object value) {
+    Object unmarshalledObject = jsonb.fromJson(expectedRepresentation, (Type) typeClass);
+    assertThat("[testUnmarshallingByType] - Failed to correctly unmarshal " + value.getClass().getName() + " object",
+               unmarshalledObject, is(value));
   }
 
-  private void testUnmarshallingByTypeFromStream(
-      String expectedRepresentation, Object value) {
-    try (ByteArrayInputStream stream = new ByteArrayInputStream(
-        expectedRepresentation.getBytes(StandardCharsets.UTF_8))) {
+  private void testUnmarshallingByTypeFromStream(String expectedRepresentation, Object value) {
+    try (ByteArrayInputStream stream = new ByteArrayInputStream(expectedRepresentation.getBytes(StandardCharsets.UTF_8))) {
       Object unmarshalledObject = jsonb.fromJson(stream, (Type) typeClass);
-      if (value.equals(unmarshalledObject)) {
-        return; // passed
-      } else {
-        fail(
-            "[testUnmarshallingByTypeFromStream] - Failed to correctly unmarshal "
-                + value.getClass().getName() + " object");
-      }
+      assertThat("[testUnmarshallingByTypeFromStream] - Failed to correctly unmarshal " + value.getClass().getName() + " object",
+                 unmarshalledObject, is(value));
     } catch (IOException e) {
-      fail(e.getMessage());
+      fail(e.getMessage(), e);
     }
   }
 
-  private void testUnmarshallingByTypeFromReader(
-      String expectedRepresentation, Object value) {
-    try (
-        ByteArrayInputStream stream = new ByteArrayInputStream(
-            expectedRepresentation.getBytes(StandardCharsets.UTF_8));
-        InputStreamReader reader = new InputStreamReader(stream)) {
-
+  private void testUnmarshallingByTypeFromReader(String expectedRepresentation, Object value) {
+    try (ByteArrayInputStream stream = new ByteArrayInputStream(expectedRepresentation.getBytes(StandardCharsets.UTF_8));
+            InputStreamReader reader = new InputStreamReader(stream)) {
       Object unmarshalledObject = jsonb.fromJson(reader, (Type) typeClass);
-      if (value.equals(unmarshalledObject)) {
-        return; // passed
-      } else {
-        fail(
-            "[testUnmarshallingByTypeFromReader] - Failed to correctly unmarshal "
-                + value.getClass().getName() + " object");
-      }
+      assertThat("[testUnmarshallingByTypeFromReader] - Failed to correctly unmarshal " + value.getClass().getName() + " object",
+                 unmarshalledObject, is(value));
     } catch (IOException e) {
-      fail(e.getMessage());
+      fail(e.getMessage(), e);
     }
   }
 }

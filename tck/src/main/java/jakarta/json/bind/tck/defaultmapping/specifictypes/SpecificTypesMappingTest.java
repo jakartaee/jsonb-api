@@ -20,7 +20,6 @@
 
 package jakarta.json.bind.tck.defaultmapping.specifictypes;
 
-import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
@@ -31,16 +30,9 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 
-import jakarta.json.bind.tck.TypeContainer;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import jakarta.json.bind.tck.MappingTester;
 import jakarta.json.bind.tck.SimpleMappingTester;
+import jakarta.json.bind.tck.TypeContainer;
 import jakarta.json.bind.tck.defaultmapping.specifictypes.model.BigDecimalContainer;
 import jakarta.json.bind.tck.defaultmapping.specifictypes.model.BigIntegerContainer;
 import jakarta.json.bind.tck.defaultmapping.specifictypes.model.OptionalArrayContainer;
@@ -52,20 +44,14 @@ import jakarta.json.bind.tck.defaultmapping.specifictypes.model.OptionalTypeCont
 import jakarta.json.bind.tck.defaultmapping.specifictypes.model.SimpleContainer;
 import jakarta.json.bind.tck.defaultmapping.specifictypes.model.URIContainer;
 import jakarta.json.bind.tck.defaultmapping.specifictypes.model.URLContainer;
+import org.junit.jupiter.api.Test;
 
 /**
  * @test
  * @sources SpecificTypesMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.specifictypes.SpecificTypesMappingTest
  **/
-@RunWith(Arquillian.class)
 public class SpecificTypesMappingTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
 
   /*
    * @testName: testBigIntegerMapping
@@ -79,8 +65,7 @@ public class SpecificTypesMappingTest {
    */
   @Test
   public void testBigIntegerMapping() {
-    new MappingTester<>(BigIntegerContainer.class)
-        .test(new BigInteger("0"), "0");
+    new MappingTester<>(BigIntegerContainer.class).test(new BigInteger("0"), "0");
   }
 
   /*
@@ -95,8 +80,7 @@ public class SpecificTypesMappingTest {
    */
   @Test
   public void testBigDecimalMapping() {
-    new MappingTester<>(BigDecimalContainer.class)
-        .test(new BigDecimal("0.0"), "0.0");
+    new MappingTester<>(BigDecimalContainer.class).test(new BigDecimal("0.0"), "0.0");
   }
 
   /*
@@ -111,8 +95,7 @@ public class SpecificTypesMappingTest {
    */
   @Test
   public void testURLMapping() throws Exception {
-    new MappingTester<>(URLContainer.class)
-        .test(new URL("http://www.host.com:80"), "\"http://www.host.com:80\"");
+    new MappingTester<>(URLContainer.class).test(new URL("http://www.host.com:80"), "\"http://www.host.com:80\"");
   }
 
   /*
@@ -127,8 +110,7 @@ public class SpecificTypesMappingTest {
    */
   @Test
   public void testURIMapping() throws URISyntaxException {
-    new MappingTester<>(URIContainer.class)
-        .test(new URI("http://www.host.com:80"), "\"http://www.host.com:80\"");
+    new MappingTester<>(URIContainer.class).test(new URI("http://www.host.com:80"), "\"http://www.host.com:80\"");
   }
 
   /*
@@ -142,8 +124,7 @@ public class SpecificTypesMappingTest {
    */
   @Test
   public void testOptionalMapping() {
-    new MappingTester<>(OptionalContainer.class)
-        .test(Optional.of("String Value"), "\"String Value\"");
+    new MappingTester<>(OptionalContainer.class).test(Optional.of("String Value"), "\"String Value\"");
   }
 
   /*
@@ -184,7 +165,9 @@ public class SpecificTypesMappingTest {
     OptionalContainer optionalContainer = new OptionalContainer();
     optionalContainer.setInstance(Optional.empty());
     new SimpleMappingTester<>(OptionalContainer.class, TypeContainer.class).test(
-        optionalContainer, "\\{\\s*}", "{ \"instance\" : null }",
+        optionalContainer,
+        "\\{\\s*}",
+        "{ \"instance\" : null }",
         optionalContainer);
   }
 
@@ -204,8 +187,10 @@ public class SpecificTypesMappingTest {
     OptionalArrayContainer optionalContainer = new OptionalArrayContainer();
     optionalContainer.setInstance(new Optional[] { Optional.empty() });
     new SimpleMappingTester<>(OptionalArrayContainer.class, TypeContainer.class).test(
-        optionalContainer, "\\{\\s*\"instance\"\\s*:\\s*\\[\\s*null\\s*]\\s*}",
-        "{ \"instance\" : [ null ] }", optionalContainer);
+        optionalContainer,
+        "\\{\\s*\"instance\"\\s*:\\s*\\[\\s*null\\s*]\\s*}",
+        "{ \"instance\" : [ null ] }",
+        optionalContainer);
   }
 
   /*
@@ -219,8 +204,7 @@ public class SpecificTypesMappingTest {
    */
   @Test
   public void testOptionalIntMapping() {
-    new MappingTester<>(OptionalIntContainer.class)
-        .test(OptionalInt.of(0), "0");
+    new MappingTester<>(OptionalIntContainer.class).test(OptionalInt.of(0), "0");
   }
 
   /*
@@ -238,7 +222,9 @@ public class SpecificTypesMappingTest {
     OptionalIntContainer optionalContainer = new OptionalIntContainer();
     optionalContainer.setInstance(OptionalInt.empty());
     new SimpleMappingTester<>(OptionalIntContainer.class, TypeContainer.class).test(
-        optionalContainer, "\\{\\s*}", "{ \"instance\" : null }",
+        optionalContainer,
+        "\\{\\s*}",
+        "{ \"instance\" : null }",
         optionalContainer);
   }
 
@@ -253,8 +239,7 @@ public class SpecificTypesMappingTest {
    */
   @Test
   public void testOptionalLongMapping() {
-    new MappingTester<>(OptionalLongContainer.class)
-        .test(OptionalLong.of(0), "0");
+    new MappingTester<>(OptionalLongContainer.class).test(OptionalLong.of(0), "0");
   }
 
   /*
@@ -272,7 +257,9 @@ public class SpecificTypesMappingTest {
     OptionalLongContainer optionalContainer = new OptionalLongContainer();
     optionalContainer.setInstance(OptionalLong.empty());
     new SimpleMappingTester<>(OptionalLongContainer.class, TypeContainer.class).test(
-        optionalContainer, "\\{\\s*}", "{ \"instance\" : null }",
+        optionalContainer,
+        "\\{\\s*}",
+        "{ \"instance\" : null }",
         optionalContainer);
   }
 
@@ -287,8 +274,7 @@ public class SpecificTypesMappingTest {
    */
   @Test
   public void testOptionalDoubleMapping() {
-    new MappingTester<>(OptionalDoubleContainer.class)
-        .test(OptionalDouble.of(0.0), "0.0");
+    new MappingTester<>(OptionalDoubleContainer.class).test(OptionalDouble.of(0.0), "0.0");
   }
 
   /*
@@ -306,7 +292,9 @@ public class SpecificTypesMappingTest {
     OptionalDoubleContainer optionalContainer = new OptionalDoubleContainer();
     optionalContainer.setInstance(OptionalDouble.empty());
     new SimpleMappingTester<>(OptionalDoubleContainer.class, TypeContainer.class).test(
-        optionalContainer, "\\{\\s*}", "{ \"instance\" : null }",
+        optionalContainer,
+        "\\{\\s*}",
+        "{ \"instance\" : null }",
         optionalContainer);
   }
 }

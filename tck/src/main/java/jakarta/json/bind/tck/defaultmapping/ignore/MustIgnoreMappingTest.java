@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,36 +20,21 @@
 
 package jakarta.json.bind.tck.defaultmapping.ignore;
 
-import static org.junit.Assert.fail;
-
-import java.lang.invoke.MethodHandles;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.tck.defaultmapping.ignore.model.StringContainer;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 /**
  * @test
  * @sources MustIgnoreMappingTest.java
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.ignore.MustIgnoreMappingTest
  **/
-@RunWith(Arquillian.class)
 public class MustIgnoreMappingTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
-
-  private final Jsonb jsonb = JsonbBuilder.create();
 
   /*
    * @testName: testIgnoreUnknownAttribute
@@ -61,19 +46,13 @@ public class MustIgnoreMappingTest {
    */
   @Test
   public void testIgnoreUnknownAttribute() {
-    try {
-      StringContainer unmarshalledObject = jsonb.fromJson(
-          "{ \"instance\" : \"Test String\", \"newInstance\" : 0 }",
-          StringContainer.class);
-      if (!"Test String".equals(unmarshalledObject.getInstance())) {
-        fail(
-            "Failed to deserialize into a class with less attributes than exist in the JSON string.");
-      }
-    } catch (Exception x) {
-      fail(
-          "An exception is not expected when coming across a non existent attribute during deserialization.");
-    }
+      Jsonb jsonb = JsonbBuilder.create();
+      String toDeserialize = "{ \"instance\" : \"Test String\", \"newInstance\" : 0 }";
+      StringContainer container = assertDoesNotThrow(()->jsonb.fromJson(toDeserialize, StringContainer.class),
+                                                     "An exception is not expected when coming across "
+                                                             + "a non existent attribute during deserialization.");
 
-    return; // passed
+      assertThat("Failed to deserialize into a class with less attributes than exist in the JSON string.",
+                 container.getInstance(), is("Test String"));
   }
 }

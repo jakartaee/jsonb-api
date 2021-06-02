@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,43 +20,24 @@
 
 package jakarta.json.bind.tck.cdi.customizedmapping.serializers;
 
-import static org.junit.Assert.fail;
-
-import java.lang.invoke.MethodHandles;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ArchivePaths;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.tck.cdi.customizedmapping.serializers.model.AnimalShelterWithInjectedSerializer;
 import jakarta.json.bind.tck.customizedmapping.serializers.model.Animal;
 import jakarta.json.bind.tck.customizedmapping.serializers.model.Cat;
 import jakarta.json.bind.tck.customizedmapping.serializers.model.Dog;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.matchesPattern;
 
 /**
  * @test
  * @sources SerializersCustomizationTest.java
  * @executeClass com.sun.ts.tests.jsonb.customizedmapping.serializers.SerializersCustomizationTest
  **/
-@RunWith(Arquillian.class)
 public class SerializersCustomizationCDITest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName(),
-                        "jakarta.json.bind.tck.customizedmapping.serializers.model.serializer")
-                .addAsWebResource(EmptyAsset.INSTANCE, ArchivePaths.create("beans.xml"));
-    }
-
-  private final Jsonb jsonb = JsonbBuilder.create();
 
   /*
    * @testName: testCDISupport
@@ -68,30 +49,33 @@ public class SerializersCustomizationCDITest {
    */
   @Test
   public void testCDISupport() {
+    Jsonb jsonb = JsonbBuilder.create();
+    String validationPattern = "\\{\\s*\"animals\"\\s*:\\s*\\[\\s*"
+            + "\\{\\s*\"type\"\\s*:\\s*\"cat\"\\s*,\\s*\"cuddly\"\\s*:\\s*true\\s*,\\s*\"age\"\\s*:\\s*5\\s*,\\s*\"furry\"\\s*:\\s*true\\s*,\\s*\"name\"\\s*:\\s*\"Garfield\"\\s*,\\s*\"weight\"\\s*:\\s*10.5\\s*}\\s*,\\s*"
+            + "\\{\\s*\"type\"\\s*:\\s*\"dog\"\\s*,\\s*\"barking\"\\s*:\\s*true\\s*,\\s*\"age\"\\s*:\\s*3\\s*,\\s*\"furry\"\\s*:\\s*false\\s*,\\s*\"name\"\\s*:\\s*\"Milo\"\\s*,\\s*\"weight\"\\s*:\\s*5.5\\s*}\\s*,\\s*"
+            + "\\{\\s*\"type\"\\s*:\\s*\"animal\"\\s*,\\s*\"age\"\\s*:\\s*6\\s*,\\s*\"furry\"\\s*:\\s*false\\s*,\\s*\"name\"\\s*:\\s*\"Tweety\"\\s*,\\s*\"weight\"\\s*:\\s*0.5\\s*}\\s*"
+            + "]\\s*}";
     AnimalShelterWithInjectedSerializer animalShelter = new AnimalShelterWithInjectedSerializer();
     animalShelter.addAnimal(new Cat(5, "Garfield", 10.5f, true, true));
     animalShelter.addAnimal(new Dog(3, "Milo", 5.5f, false, true));
     animalShelter.addAnimal(new Animal(6, "Tweety", 0.5f, false));
 
-    String jsonString = jsonb.toJson(animalShelter);
-    if (!jsonString.matches("\\{\\s*\"animals\"\\s*:\\s*\\[\\s*"
-        + "\\{\\s*\"type\"\\s*:\\s*\"cat\"\\s*,\\s*\"cuddly\"\\s*:\\s*true\\s*,\\s*\"age\"\\s*:\\s*5\\s*,\\s*\"furry\"\\s*:\\s*true\\s*,\\s*\"name\"\\s*:\\s*\"Garfield\"\\s*,\\s*\"weight\"\\s*:\\s*10.5\\s*}\\s*,\\s*"
-        + "\\{\\s*\"type\"\\s*:\\s*\"dog\"\\s*,\\s*\"barking\"\\s*:\\s*true\\s*,\\s*\"age\"\\s*:\\s*3\\s*,\\s*\"furry\"\\s*:\\s*false\\s*,\\s*\"name\"\\s*:\\s*\"Milo\"\\s*,\\s*\"weight\"\\s*:\\s*5.5\\s*}\\s*,\\s*"
-        + "\\{\\s*\"type\"\\s*:\\s*\"animal\"\\s*,\\s*\"age\"\\s*:\\s*6\\s*,\\s*\"furry\"\\s*:\\s*false\\s*,\\s*\"name\"\\s*:\\s*\"Tweety\"\\s*,\\s*\"weight\"\\s*:\\s*0.5\\s*}\\s*"
-        + "]\\s*}")) {
-      fail(
-          "Failed to correctly marshall complex type hierarchy using a serializer configured using JsonbTypeSerializer annotation and a deserializer with a CDI managed field configured using JsonbTypeDeserializer annotation.");
-    }
+    String validationMessage = "Failed to correctly marshall complex type hierarchy using a serializer configured using "
+            + "JsonbTypeSerializer annotation and a deserializer with a CDI managed field configured using "
+            + "JsonbTypeDeserializer annotation.";
 
-    AnimalShelterWithInjectedSerializer unmarshalledObject = jsonb
-        .fromJson("{ \"animals\" : [ "
+    String jsonString = jsonb.toJson(animalShelter);
+    assertThat(validationMessage, jsonString, matchesPattern(validationPattern));
+
+    String toSerialize = "{ \"animals\" : [ "
             + "{ \"type\" : \"cat\", \"cuddly\" : true, \"age\" : 5, \"furry\" : true, \"name\" : \"Garfield\" , \"weight\" : 10.5}, "
             + "{ \"type\" : \"dog\", \"barking\" : true, \"age\" : 3, \"furry\" : false, \"name\" : \"Milo\", \"weight\" : 5.5}, "
             + "{ \"type\" : \"animal\", \"age\" : 6, \"furry\" : false, \"name\" : \"Tweety\", \"weight\" : 0.5}"
-            + " ] }", AnimalShelterWithInjectedSerializer.class);
-    if (!animalShelter.equals(unmarshalledObject)) {
-      fail(
-          "Failed to correctly unmarshall complex type hierarchy using a serializer configured using JsonbTypeSerializer annotation and a deserializer with a CDI managed field configured using JsonbTypeDeserializer annotation.");
-    }
+            + " ] }";
+    validationMessage = "Failed to correctly unmarshall complex type hierarchy using a serializer configured using "
+            + "JsonbTypeSerializer annotation and a deserializer with a CDI managed field configured using "
+            + "JsonbTypeDeserializer annotation.";
+    AnimalShelterWithInjectedSerializer unmarshalledObject = jsonb.fromJson(toSerialize, AnimalShelterWithInjectedSerializer.class);
+    assertThat(validationMessage, unmarshalledObject, is((animalShelter)));
   }
 }

@@ -20,15 +20,10 @@
 
 package jakarta.json.bind.tck.defaultmapping.nullvalue;
 
-import java.lang.invoke.MethodHandles;
-
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.tck.defaultmapping.nullvalue.model.NullArrayContainer;
 import jakarta.json.bind.tck.defaultmapping.nullvalue.model.NullValueContainer;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -43,12 +38,6 @@ import static org.hamcrest.Matchers.nullValue;
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.nullvalue.NullValueMappingTest
  **/
 public class NullValueMappingTest {
-    
-    @Deployment
-    public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackages(true, MethodHandles.lookup().lookupClass().getPackage().getName());
-    }
     
   private final Jsonb jsonb = JsonbBuilder.create();
 

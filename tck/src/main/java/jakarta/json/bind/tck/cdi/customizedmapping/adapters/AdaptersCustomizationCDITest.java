@@ -20,12 +20,17 @@
 
 package jakarta.json.bind.tck.cdi.customizedmapping.adapters;
 
+import jakarta.enterprise.inject.se.SeContainer;
+import jakarta.enterprise.inject.se.SeContainerInitializer;
+import jakarta.enterprise.inject.spi.CDI;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.tck.cdi.customizedmapping.adapters.model.AnimalShelterInjectedAdapter;
 import jakarta.json.bind.tck.customizedmapping.adapters.model.Animal;
 import jakarta.json.bind.tck.customizedmapping.adapters.model.Cat;
 import jakarta.json.bind.tck.customizedmapping.adapters.model.Dog;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -41,6 +46,25 @@ import static org.hamcrest.Matchers.matchesPattern;
  * @class.setup_props: webServerHost; webServerPort; ts_home;
  */
 public class AdaptersCustomizationCDITest {
+
+    private static SeContainer container;
+
+    @BeforeAll
+    private static void startContainer() {
+        try {
+            //Verify that CDI container is already running
+            CDI.current();
+        } catch (IllegalStateException exception) {
+            container = SeContainerInitializer.newInstance().initialize();
+        }
+    }
+
+    @AfterAll
+    private static void stopContainer() {
+        if (container != null) {
+            container.close();
+        }
+    }
 
   /*
    * @testName: testCDISupport

@@ -54,8 +54,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  **/
 public class IJsonSupportTest {
 
-  private static final Pattern PATTERN = Pattern.compile("\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T00:00:00Z\\+01:00\"\\s*}");
-
   private final Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withStrictIJSON(true));
 
   /*
@@ -113,7 +111,7 @@ public class IJsonSupportTest {
     });
     assertThat("Failed to serialize java.util.Date in the same format as java.time.ZonedDateTime when "
                        + "JsonbConfig.withStrictIJSON is used.",
-               jsonString, matchesPattern(PATTERN));
+               jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T00:00:00Z\\+00:00\"\\s*}"));
   }
 
   /*
@@ -139,7 +137,7 @@ public class IJsonSupportTest {
     });
     assertThat("Failed to serialize java.util.Calendar in the same format as java.time.ZonedDateTime when "
                        + "JsonbConfig.withStrictIJSON is used.",
-               jsonString, matchesPattern(PATTERN));
+               jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T00:00:00Z\\+01:00\"\\s*}"));
   }
 
   /*
@@ -165,7 +163,7 @@ public class IJsonSupportTest {
     });
     assertThat("Failed to serialize java.util.GregorianCalendar in the same format as java.time.ZonedDateTime when "
                        + "JsonbConfig.withStrictIJSON is used.",
-               jsonString, matchesPattern(PATTERN));
+               jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T00:00:00Z\\+01:00\"\\s*}"));
   }
 
   /*
@@ -186,7 +184,7 @@ public class IJsonSupportTest {
     });
     assertThat( "Failed to serialize java.time.LocalDate in the same format as java.time.ZonedDateTime when "
                         + "JsonbConfig.withStrictIJSON is used.",
-               jsonString, matchesPattern(PATTERN));
+               jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T00:00:00Z\\+00:00\"\\s*}"));
   }
 
   /*
@@ -228,7 +226,7 @@ public class IJsonSupportTest {
     });
     assertThat( "Failed to serialize java.time.Instant in the same format as java.time.ZonedDateTime when "
                         + "JsonbConfig.withStrictIJSON is used.",
-                jsonString, matchesPattern(PATTERN));
+                jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\"1970-01-01T00:00:00Z\\+00:00\"\\s*}"));
   }
 
   /*

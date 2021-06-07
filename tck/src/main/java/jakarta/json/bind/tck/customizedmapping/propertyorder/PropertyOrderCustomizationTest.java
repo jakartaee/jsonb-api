@@ -66,7 +66,7 @@ public class PropertyOrderCustomizationTest {
     String validationMessage = "Failed to correctly marshal and unmarshal object using PropertyOrderStrategy.ANY.";
     assertThat(validationMessage, unmarshalledObject.getStringInstance(), is("Test String"));
     assertThat(validationMessage, unmarshalledObject.getIntInstance(), is(0));
-    assertThat(validationMessage, unmarshalledObject.getLongInstance(), is(0));
+    assertThat(validationMessage, unmarshalledObject.getLongInstance(), is(0L));
   }
 
   /*

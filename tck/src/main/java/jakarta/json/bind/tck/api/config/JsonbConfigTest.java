@@ -45,6 +45,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -112,7 +113,7 @@ public class JsonbConfigTest {
         .withNullValues(true);
     Optional<Object> property = jsonbConfig.getProperty(JsonbConfig.ADAPTERS);
 
-    assertTrue(property.isPresent(),
+    assertFalse(property.isPresent(),
                "Failed to get Optional.empty for an unset configuration property using JsonbConfig.getProperty method.");
   }
 
@@ -412,7 +413,7 @@ public class JsonbConfigTest {
     String validationMessage = "Failed to configure a custom property visibility strategy using "
             + "JsonbConfig.withPropertyVisibilityStrategy method.";
     assertTrue(property.isPresent(), validationMessage);
-    assertThat(validationMessage, property.get(), is(JsonbConfig.PROPERTY_VISIBILITY_STRATEGY));
+    assertThat(validationMessage, property.get(), is(propertyVisibilityStrategy));
   }
 
   /*

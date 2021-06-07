@@ -67,11 +67,9 @@ public class PropertyNameCustomizationTest {
    */
   @Test
   public void testTransientField() {
-    String jsonString = jsonb.toJson(new TransientPropertyContainer() {
-      {
-        setInstance("String Value");
-      }
-    });
+    String jsonString = jsonb.toJson(new TransientPropertyContainer() {{
+      setInstance("String Value");
+    }});
     assertThat("Failed to ignore transient property during marshalling.", jsonString, matchesPattern("\\{\\s*\\}"));
 
     TransientPropertyContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : \"Test String\" }",
@@ -89,11 +87,9 @@ public class PropertyNameCustomizationTest {
    */
   @Test
   public void testTransientAnnotatedField() {
-    String jsonString = jsonb.toJson(new TransientAnnotatedPropertyContainer() {
-      {
-        setInstance("String Value");
-      }
-    });
+    String jsonString = jsonb.toJson(new TransientAnnotatedPropertyContainer() {{
+      setInstance("String Value");
+    }});
     assertThat("Failed to ignore JsonbTransient property during marshalling.", jsonString, matchesPattern("\\{\\s*\\}"));
 
     TransientAnnotatedPropertyContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : \"Test String\" }",
@@ -111,11 +107,9 @@ public class PropertyNameCustomizationTest {
    */
   @Test
   public void testTransientAnnotatedGetter() {
-    String jsonString = jsonb.toJson(new TransientGetterAnnotatedPropertyContainer() {
-          {
-            setInstance("String Value");
-          }
-        });
+    String jsonString = jsonb.toJson(new TransientGetterAnnotatedPropertyContainer() {{
+      setInstance("String Value");
+    }});
     assertThat("Failed to ignore @JsonbTransient on getter during marshalling.", jsonString, matchesPattern("\\{\\s*\\}"));
   }
 
@@ -277,11 +271,9 @@ public class PropertyNameCustomizationTest {
    */
   @Test
   public void testPropertyNameCustomization() {
-    String jsonString = jsonb.toJson(new PropertyNameCustomizationContainer() {
-      {
-        setInstance("Test String");
-      }
-    });
+    String jsonString = jsonb.toJson(new PropertyNameCustomizationContainer() {{
+      setInstance("Test String");
+    }});
     assertThat("Failed to customize property name during marshalling using JsonbProperty annotation.",
                jsonString, matchesPattern("\\{\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 

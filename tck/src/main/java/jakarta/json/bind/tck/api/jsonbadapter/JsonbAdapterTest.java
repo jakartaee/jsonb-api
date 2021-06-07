@@ -55,7 +55,7 @@ public class JsonbAdapterTest {
                                                                  SimpleContainerContainer.class);
     assertThat("Failed to use JsonbAdapter.adaptFromJson method to provide conversion logic from "
                        + "adapted object to original during object deserialization.",
-               unmarshalledObject.getInstance(), is("Test String"));
+               unmarshalledObject.getInstance().getInstance(), is("Test String"));
   }
 
   /*

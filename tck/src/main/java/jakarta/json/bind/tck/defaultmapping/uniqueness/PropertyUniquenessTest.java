@@ -35,19 +35,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  **/
 public class PropertyUniquenessTest {
 
-  /*
-   * @testName: testUniqueProperties
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.19-1; JSONB:SPEC:JSB-3.19-2
-   *
-   * @test_Strategy: Assert that an exception is thrown when duplicate property
-   * names exist
-   */
-  @Test
-  public void testUniqueProperties() {
-      Jsonb jsonb = JsonbBuilder.create();
-      assertThrows(JsonbException.class,
-                   () -> jsonb.toJson(new SimpleContainer()),
-                   "An exception is expected when marshalling a class with duplicate attribute names.");
-  }
+    /*
+     * @testName: testUniqueProperties
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.19-1; JSONB:SPEC:JSB-3.19-2
+     *
+     * @test_Strategy: Assert that an exception is thrown when duplicate property
+     * names exist
+     */
+    @Test
+    public void testUniqueProperties() {
+        Jsonb jsonb = JsonbBuilder.create();
+        assertThrows(JsonbException.class,
+                     () -> jsonb.toJson(new SimpleContainer()),
+                     "An exception is expected when marshalling a class with duplicate attribute names.");
+    }
 }

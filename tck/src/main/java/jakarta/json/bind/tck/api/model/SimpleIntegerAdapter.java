@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -23,13 +23,13 @@ package jakarta.json.bind.tck.api.model;
 import jakarta.json.bind.adapter.JsonbAdapter;
 
 public class SimpleIntegerAdapter implements JsonbAdapter<Integer, Integer> {
-  @Override
-  public Integer adaptToJson(Integer integer) throws Exception {
-    return integer;
-  }
+    @Override
+    public Integer adaptToJson(Integer integer) throws Exception {
+        return integer;
+    }
 
-  @Override
-  public Integer adaptFromJson(Integer adapted) throws Exception {
-    return adapted;
-  }
+    @Override
+    public Integer adaptFromJson(Integer adapted) throws Exception {
+        return adapted;
+    }
 }

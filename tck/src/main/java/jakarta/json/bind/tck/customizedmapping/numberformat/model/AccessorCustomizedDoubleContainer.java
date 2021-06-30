@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -24,18 +24,18 @@ import jakarta.json.bind.annotation.JsonbNumberFormat;
 import jakarta.json.bind.tck.TypeContainer;
 
 public class AccessorCustomizedDoubleContainer
-    implements TypeContainer<Double> {
-  private Double instance;
+        implements TypeContainer<Double> {
+    private Double instance;
 
-  @Override
-  @JsonbNumberFormat(value = "###,###.##")
-  public Double getInstance() {
-    return instance;
-  }
+    @Override
+    @JsonbNumberFormat(value = "###,###.##")
+    public Double getInstance() {
+        return instance;
+    }
 
-  @Override
-  @JsonbNumberFormat(locale = "fr")
-  public void setInstance(Double instance) {
-    this.instance = instance;
-  }
+    @Override
+    @JsonbNumberFormat(locale = "fr")
+    public void setInstance(Double instance) {
+        this.instance = instance;
+    }
 }

@@ -27,11 +27,11 @@ public class NonNillablePackageNonNillablePropertyNillableContainer {
   @JsonbNillable(false)
   private String stringInstance;
 
-  public String getStringInstance() {
-    return stringInstance;
-  }
+    public String getStringInstance() {
+        return stringInstance;
+    }
 
-  public void setStringInstance(String stringInstance) {
-    this.stringInstance = stringInstance;
-  }
+    public void setStringInstance(String stringInstance) {
+        this.stringInstance = stringInstance;
+    }
 }

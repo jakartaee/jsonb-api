@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -23,19 +23,19 @@ package jakarta.json.bind.tck.defaultmapping.enums.model;
 import jakarta.json.bind.tck.TypeContainer;
 
 public class EnumContainer implements TypeContainer<EnumContainer.Enumeration> {
-  public enum Enumeration {
-    ONE, TWO
-  }
+    public enum Enumeration {
+        ONE, TWO
+    }
 
-  private Enumeration instance = Enumeration.ONE;
+    private Enumeration instance = Enumeration.ONE;
 
-  @Override
-  public Enumeration getInstance() {
-    return instance;
-  }
+    @Override
+    public Enumeration getInstance() {
+        return instance;
+    }
 
-  @Override
-  public void setInstance(Enumeration instance) {
-    this.instance = instance;
-  }
+    @Override
+    public void setInstance(Enumeration instance) {
+        this.instance = instance;
+    }
 }

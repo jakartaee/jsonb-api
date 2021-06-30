@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -18,55 +18,55 @@ package jakarta.json.bind.tck.api.model;
 
 import jakarta.json.bind.annotation.JsonbPropertyOrder;
 
-@JsonbPropertyOrder({ "thirdInstance", "fourthInstance" })
+@JsonbPropertyOrder({"thirdInstance", "fourthInstance"})
 public class SimplePartiallyAnnotatedPropertyOrderContainer {
-  private String firstInstance = "First String";
+    private String firstInstance = "First String";
 
-  private String secondInstance = "Second String";
+    private String secondInstance = "Second String";
 
-  private String thirdInstance = "Third String";
+    private String thirdInstance = "Third String";
 
-  private String fourthInstance = "Fourth String";
+    private String fourthInstance = "Fourth String";
 
-  private String anyOtherInstance = "Fifth String property starting with A";
+    private String anyOtherInstance = "Fifth String property starting with A";
 
-  public String getThirdInstance() {
-    return thirdInstance;
-  }
+    public String getThirdInstance() {
+        return thirdInstance;
+    }
 
-  public void setThirdInstance(String thirdInstance) {
-    this.thirdInstance = thirdInstance;
-  }
+    public void setThirdInstance(String thirdInstance) {
+        this.thirdInstance = thirdInstance;
+    }
 
-  public String getFourthInstance() {
-    return fourthInstance;
-  }
+    public String getFourthInstance() {
+        return fourthInstance;
+    }
 
-  public void setFourthInstance(String fourthInstance) {
-    this.fourthInstance = fourthInstance;
-  }
+    public void setFourthInstance(String fourthInstance) {
+        this.fourthInstance = fourthInstance;
+    }
 
-  public String getAnyOtherInstance() {
-    return anyOtherInstance;
-  }
+    public String getAnyOtherInstance() {
+        return anyOtherInstance;
+    }
 
-  public void setAnyOtherInstance(String anyOtherInstance) {
-    this.anyOtherInstance = anyOtherInstance;
-  }
+    public void setAnyOtherInstance(String anyOtherInstance) {
+        this.anyOtherInstance = anyOtherInstance;
+    }
 
-  public String getFirstInstance() {
-    return firstInstance;
-  }
+    public String getFirstInstance() {
+        return firstInstance;
+    }
 
-  public void setFirstInstance(String firstInstance) {
-    this.firstInstance = firstInstance;
-  }
+    public void setFirstInstance(String firstInstance) {
+        this.firstInstance = firstInstance;
+    }
 
-  public String getSecondInstance() {
-    return secondInstance;
-  }
+    public String getSecondInstance() {
+        return secondInstance;
+    }
 
-  public void setSecondInstance(String secondInstance) {
-    this.secondInstance = secondInstance;
-  }
+    public void setSecondInstance(String secondInstance) {
+        this.secondInstance = secondInstance;
+    }
 }

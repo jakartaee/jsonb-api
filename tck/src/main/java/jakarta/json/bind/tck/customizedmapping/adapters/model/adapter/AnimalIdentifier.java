@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,22 +20,22 @@
 
 package jakarta.json.bind.tck.customizedmapping.adapters.model.adapter;
 
-import static jakarta.json.bind.tck.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.CAT;
-import static jakarta.json.bind.tck.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.DOG;
-import static jakarta.json.bind.tck.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.GENERIC;
-
 import jakarta.json.bind.tck.customizedmapping.adapters.model.Animal;
 import jakarta.json.bind.tck.customizedmapping.adapters.model.Cat;
 import jakarta.json.bind.tck.customizedmapping.adapters.model.Dog;
 
+import static jakarta.json.bind.tck.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.CAT;
+import static jakarta.json.bind.tck.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.DOG;
+import static jakarta.json.bind.tck.customizedmapping.adapters.model.adapter.AnimalJson.TYPE.GENERIC;
+
 public class AnimalIdentifier {
-  public AnimalJson.TYPE getType(Animal animal) {
-    if (Cat.class.isAssignableFrom(animal.getClass())) {
-      return CAT;
-    } else if (Dog.class.isAssignableFrom(animal.getClass())) {
-      return DOG;
-    } else {
-      return GENERIC;
+    public AnimalJson.TYPE getType(Animal animal) {
+        if (Cat.class.isAssignableFrom(animal.getClass())) {
+            return CAT;
+        } else if (Dog.class.isAssignableFrom(animal.getClass())) {
+            return DOG;
+        } else {
+            return GENERIC;
+        }
     }
-  }
 }

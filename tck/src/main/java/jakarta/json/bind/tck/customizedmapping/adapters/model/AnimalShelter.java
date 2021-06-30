@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -24,35 +24,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnimalShelter {
-  private List<Animal> animals = new ArrayList<>();
+    private List<Animal> animals = new ArrayList<>();
 
-  public List<Animal> getAnimals() {
-    return animals;
-  }
+    public List<Animal> getAnimals() {
+        return animals;
+    }
 
-  public void setAnimals(List<Animal> animals) {
-    this.animals = animals;
-  }
+    public void setAnimals(List<Animal> animals) {
+        this.animals = animals;
+    }
 
-  public boolean addAnimal(Animal animal) {
-    return animals.add(animal);
-  }
+    public boolean addAnimal(Animal animal) {
+        return animals.add(animal);
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (!(o instanceof AnimalShelter))
-      return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AnimalShelter)) {
+            return false;
+        }
 
-    AnimalShelter that = (AnimalShelter) o;
+        AnimalShelter that = (AnimalShelter) o;
 
-    return animals != null ? animals.equals(that.animals)
-        : that.animals == null;
-  }
+        return animals != null ? animals.equals(that.animals)
+                : that.animals == null;
+    }
 
-  @Override
-  public int hashCode() {
-    return animals != null ? animals.hashCode() : 0;
-  }
+    @Override
+    public int hashCode() {
+        return animals != null ? animals.hashCode() : 0;
+    }
 }

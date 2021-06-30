@@ -37,25 +37,25 @@ import static org.hamcrest.Matchers.matchesPattern;
  **/
 public class BigNumbersMappingTest {
 
-  private final Jsonb jsonb = JsonbBuilder.create();
+    private final Jsonb jsonb = JsonbBuilder.create();
 
-  /*
-   * @testName: testBigNumberMarshalling
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.16-1
-   *
-   * @test_Strategy: Assert that numbers of greater magnitude or precision than
-   * IEEE 754 are serialized as strings as specified by IJSON RFC 7493 (default
-   * to JSON-B)
-   */
-  @Test
-  @Disabled("See https://github.com/eclipse-ee4j/jsonb-api/issues/180")
-  public void testBigNumberMarshalling() {
-    String jsonString = jsonb.toJson(new Object() {
-      @SuppressWarnings("unused")
-      public Number number = new BigDecimal("0.10000000000000001");
-    });
-    assertThat("Failed to correctly marshal number of greater precision than IEEE 754 as string.",
-               jsonString, matchesPattern("\\{\\s*\"number\"\\s*:\\s*\"0.10000000000000001\"\\s*\\}"));
-  }
+    /*
+     * @testName: testBigNumberMarshalling
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.16-1
+     *
+     * @test_Strategy: Assert that numbers of greater magnitude or precision than
+     * IEEE 754 are serialized as strings as specified by IJSON RFC 7493 (default
+     * to JSON-B)
+     */
+    @Test
+    @Disabled("See https://github.com/eclipse-ee4j/jsonb-api/issues/180")
+    public void testBigNumberMarshalling() {
+        String jsonString = jsonb.toJson(new Object() {
+            @SuppressWarnings("unused")
+            public Number number = new BigDecimal("0.10000000000000001");
+        });
+        assertThat("Failed to correctly marshal number of greater precision than IEEE 754 as string.",
+                   jsonString, matchesPattern("\\{\\s*\"number\"\\s*:\\s*\"0.10000000000000001\"\\s*\\}"));
+    }
 }

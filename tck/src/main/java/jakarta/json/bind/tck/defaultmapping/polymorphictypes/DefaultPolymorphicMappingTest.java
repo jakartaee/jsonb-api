@@ -38,25 +38,25 @@ import static org.hamcrest.Matchers.not;
  **/
 public class PolymorphicMappingTest {
 
-  /*
-   * @testName: testPolymorphicTypes
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.8-1
-   *
-   * @test_Strategy: Assert that unmarshalling into polymorphic types is not
-   * supported when polymorphic information is missing
-   */
-  @Test
-  public void testPolymorphicTypes() {
-      Jsonb jsonb = JsonbBuilder.create();
-    String jsonString = jsonb.toJson(new StringContainerSubClass());
-    assertThat("Failed to get attribute value from subclass.",
-               jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\"Test String\"\\s*,"
-                                                  + "\\s*\"newInstance\"\\s*:\\s*\"SubClass Test String\"\\s*\\}"));
+    /*
+     * @testName: testPolymorphicTypes
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.8-1
+     *
+     * @test_Strategy: Assert that unmarshalling into polymorphic types is not
+     * supported
+     */
+    @Test
+    public void testPolymorphicTypes() {
+        Jsonb jsonb = JsonbBuilder.create();
+        String jsonString = jsonb.toJson(new StringContainerSubClass());
+        assertThat("Failed to get attribute value from subclass.",
+                   jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\"Test String\"\\s*,"
+                                                      + "\\s*\"newInstance\"\\s*:\\s*\"SubClass Test String\"\\s*\\}"));
 
-    String toDeserialize = "{ \"instance\" : \"New Test String\", \"newInstance\" : \"New SubClass Test String\" }";
-    StringContainer unmarshalledObject = jsonb.fromJson(toDeserialize, StringContainer.class);
-      assertThat("Polymorphic types support is not expected.",
-                 unmarshalledObject, not(instanceOf(StringContainerSubClass.class)));
-  }
+        String toDeserialize = "{ \"instance\" : \"New Test String\", \"newInstance\" : \"New SubClass Test String\" }";
+        StringContainer unmarshalledObject = jsonb.fromJson(toDeserialize, StringContainer.class);
+        assertThat("Polymorphic types support is not expected.",
+                   unmarshalledObject, not(instanceOf(StringContainerSubClass.class)));
+    }
 }

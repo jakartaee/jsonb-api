@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -25,20 +25,20 @@ import java.util.EnumMap;
 import jakarta.json.bind.tck.TypeContainer;
 
 public class EnumMapContainer
-    implements TypeContainer<EnumMap<EnumSetContainer.Enum, String>> {
-  public enum Enum {
-    ONE, TWO
-  }
+        implements TypeContainer<EnumMap<EnumSetContainer.Enum, String>> {
+    public enum Enum {
+        ONE, TWO
+    }
 
-  private EnumMap<EnumSetContainer.Enum, String> instance;
+    private EnumMap<EnumSetContainer.Enum, String> instance;
 
-  @Override
-  public EnumMap<EnumSetContainer.Enum, String> getInstance() {
-    return instance;
-  }
+    @Override
+    public EnumMap<EnumSetContainer.Enum, String> getInstance() {
+        return instance;
+    }
 
-  @Override
-  public void setInstance(EnumMap<EnumSetContainer.Enum, String> instance) {
-    this.instance = instance;
-  }
+    @Override
+    public void setInstance(EnumMap<EnumSetContainer.Enum, String> instance) {
+        this.instance = instance;
+    }
 }

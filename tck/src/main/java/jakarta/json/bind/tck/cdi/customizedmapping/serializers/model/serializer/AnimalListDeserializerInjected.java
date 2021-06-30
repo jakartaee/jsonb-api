@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -32,19 +32,19 @@ import jakarta.json.bind.tck.customizedmapping.serializers.model.serializer.Anim
 import jakarta.json.stream.JsonParser;
 
 public class AnimalListDeserializerInjected
-    implements JsonbDeserializer<List<Animal>> {
-  @Inject
-  private AnimalDeserializer animalDeserializer;
+        implements JsonbDeserializer<List<Animal>> {
+    @Inject
+    private AnimalDeserializer animalDeserializer;
 
-  public List<Animal> deserialize(JsonParser jsonParser,
-      DeserializationContext deserializationContext, Type type) {
-    // start array
-    List<Animal> animals = new ArrayList<>();
-    while (jsonParser.next() == JsonParser.Event.START_OBJECT) {
-      animals.add(animalDeserializer.deserialize(jsonParser,
-          deserializationContext, type));
+    public List<Animal> deserialize(JsonParser jsonParser,
+                                    DeserializationContext deserializationContext, Type type) {
+        // start array
+        List<Animal> animals = new ArrayList<>();
+        while (jsonParser.next() == JsonParser.Event.START_OBJECT) {
+            animals.add(animalDeserializer.deserialize(jsonParser,
+                                                       deserializationContext, type));
+        }
+
+        return animals;
     }
-
-    return animals;
-  }
 }

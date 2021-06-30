@@ -49,175 +49,176 @@ import static org.hamcrest.Matchers.matchesPattern;
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.generics.GenericsMappingTest
  **/
 public class GenericsMappingTest {
-    
-  private final Jsonb jsonb = JsonbBuilder.create();
 
-  /*
-   * @testName: testClassInformationOnRuntime
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17-3;
-   * JSONB:SPEC:JSB-3.17.1-1; JSONB:SPEC:JSB-3.17.1-15
-   *
-   * @test_Strategy: Assert that passing Type information on runtime is handled
-   * as expected
-   */
-  @Test
-  public void testClassInformationOnRuntime() {
-    String jsonString = jsonb.toJson(new GenericContainer<String>() {{
-      setInstance("Test String");
-    }});
-    assertThat("Failed to marshal generic object with String attribute value.",
-               jsonString, matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
+    private final Jsonb jsonb = JsonbBuilder.create();
 
-    Type runtimeType = new GenericContainer<String>() { }.getClass().getGenericSuperclass();
-    GenericContainer<String> unmarshalledObject = jsonb.fromJson("{ \"instance\" : \"Test String\" }", runtimeType);
-    assertThat("Failed to unmarshal generic object with String attribute value.",
-               unmarshalledObject.getInstance(), is("Test String"));
-  }
+    /*
+     * @testName: testClassInformationOnRuntime
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17-3;
+     * JSONB:SPEC:JSB-3.17.1-1; JSONB:SPEC:JSB-3.17.1-15
+     *
+     * @test_Strategy: Assert that passing Type information on runtime is handled
+     * as expected
+     */
+    @Test
+    public void testClassInformationOnRuntime() {
+        String jsonString = jsonb.toJson(new GenericContainer<String>() {{
+            setInstance("Test String");
+        }});
+        assertThat("Failed to marshal generic object with String attribute value.",
+                   jsonString, matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-  /*
-   * @testName: testClassFileAvailable
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17-2;
-   * JSONB:SPEC:JSB-3.17.1-1; JSONB:SPEC:JSB-3.17.1-5; JSONB:SPEC:JSB-3.17.1-6
-   *
-   * @test_Strategy: Assert that static type information is handled as expected
-   */
-  @Test
-  public void testClassFileAvailable() {
-    String jsonString = jsonb.toJson(new GenericContainer<String>() {{
-      setInstance("Test String");
-    }});
-    assertThat("Failed to marshal generic object with String attribute value.",
-               jsonString, matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
+        Type runtimeType = new GenericContainer<String>() { }.getClass().getGenericSuperclass();
+        GenericContainer<String> unmarshalledObject = jsonb.fromJson("{ \"instance\" : \"Test String\" }", runtimeType);
+        assertThat("Failed to unmarshal generic object with String attribute value.",
+                   unmarshalledObject.getInstance(), is("Test String"));
+    }
 
-    GenericContainer<String> unmarshalledObject = jsonb.fromJson("{ \"instance\" : \"Test String\" }", StringContainer.class);
-    assertThat("Failed to unmarshal generic object with String attribute value.",
-               unmarshalledObject.getInstance(), is("Test String"));
-  }
+    /*
+     * @testName: testClassFileAvailable
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17-2;
+     * JSONB:SPEC:JSB-3.17.1-1; JSONB:SPEC:JSB-3.17.1-5; JSONB:SPEC:JSB-3.17.1-6
+     *
+     * @test_Strategy: Assert that static type information is handled as expected
+     */
+    @Test
+    public void testClassFileAvailable() {
+        String jsonString = jsonb.toJson(new GenericContainer<String>() {{
+            setInstance("Test String");
+        }});
+        assertThat("Failed to marshal generic object with String attribute value.",
+                   jsonString, matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-  /*
-   * @testName: testRawTypeInformation
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-1;
-   * JSONB:SPEC:JSB-3.17.1-3; JSONB:SPEC:JSB-3.17.1-4; JSONB:SPEC:JSB-3.17.1-8
-   *
-   * @test_Strategy: Assert that raw type information is handled as expected
-   */
-  @Test
-  public void testRawTypeInformation() {
-    final List<String> list = Arrays.asList("Test 1", "Test 2");
-    String jsonString = jsonb.toJson(new CollectionContainer() {{
-      setInstance(list);
-    }});
-    assertThat("Failed to marshal object with raw List attribute.",
-               jsonString, matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\\[\\s*\"Test 1\"\\s*,\\s*\"Test 2\"\\s*\\]\\s*\\}"));
+        GenericContainer<String> unmarshalledObject = jsonb.fromJson("{ \"instance\" : \"Test String\" }", StringContainer.class);
+        assertThat("Failed to unmarshal generic object with String attribute value.",
+                   unmarshalledObject.getInstance(), is("Test String"));
+    }
 
-    CollectionContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : [ \"Test 1\", \"Test 2\" ] }",
-                                                                 CollectionContainer.class);
-    assertThat("Failed to unmarshal object with raw List type attribute.",
-               unmarshalledObject.getInstance(), is(list));
-  }
+    /*
+     * @testName: testRawTypeInformation
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-1;
+     * JSONB:SPEC:JSB-3.17.1-3; JSONB:SPEC:JSB-3.17.1-4; JSONB:SPEC:JSB-3.17.1-8
+     *
+     * @test_Strategy: Assert that raw type information is handled as expected
+     */
+    @Test
+    public void testRawTypeInformation() {
+        final List<String> list = Arrays.asList("Test 1", "Test 2");
+        String jsonString = jsonb.toJson(new CollectionContainer() {{
+            setInstance(list);
+        }});
+        assertThat("Failed to marshal object with raw List attribute.",
+                   jsonString,
+                   matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\\[\\s*\"Test 1\"\\s*,\\s*\"Test 2\"\\s*\\]\\s*\\}"));
 
-  /*
-   * @testName: testNoTypeInformation
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-1;
-   * JSONB:SPEC:JSB-3.17.1-2; JSONB:SPEC:JSB-3.17.1-9; JSONB:SPEC:JSB-3.17.1-14
-   *
-   * @test_Strategy: Assert that if no type information is provided, type is
-   * treated as java.lang.Object
-   */
-  @SuppressWarnings("unchecked")
-  @Test
-  public void testNoTypeInformation() {
-    String jsonString = jsonb.toJson(new GenericContainer<String>() {{
-      setInstance("Test String");
-    }});
-    assertThat("Failed to marshal generic object with String attribute value.",
-               jsonString, matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
+        CollectionContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : [ \"Test 1\", \"Test 2\" ] }",
+                                                                CollectionContainer.class);
+        assertThat("Failed to unmarshal object with raw List type attribute.",
+                   unmarshalledObject.getInstance(), is(list));
+    }
 
-    GenericContainer<?> unmarshalledObject = jsonb.fromJson("{ \"instance\" : {\"value\":\"Test String\" } }",
-                                                            GenericContainer.class);
-    String validationMessage = "Failed to unmarshal generic object without type information with String attribute value.";
-    Object evaluatedInstance = unmarshalledObject.getInstance();
-    assertThat(validationMessage, evaluatedInstance, instanceOf(Map.class));
-    Map<String, Object> map = (Map<String, Object>) evaluatedInstance;
-    assertThat(validationMessage, map.size(), is(1));
-    assertThat(validationMessage, map, hasEntry("value", "Test String"));
-  }
+    /*
+     * @testName: testNoTypeInformation
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-1;
+     * JSONB:SPEC:JSB-3.17.1-2; JSONB:SPEC:JSB-3.17.1-9; JSONB:SPEC:JSB-3.17.1-14
+     *
+     * @test_Strategy: Assert that if no type information is provided, type is
+     * treated as java.lang.Object
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testNoTypeInformation() {
+        String jsonString = jsonb.toJson(new GenericContainer<String>() {{
+            setInstance("Test String");
+        }});
+        assertThat("Failed to marshal generic object with String attribute value.",
+                   jsonString, matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-  /*
-   * @testName: testBoundedTypeInformation
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-5;
-   * JSONB:SPEC:JSB-3.17.1-7
-   *
-   * @test_Strategy: Assert that bounded type information is treated as expected
-   */
-  @Test
-  public void testBoundedTypeInformation() {
-    String jsonString = jsonb.toJson(new NumberContainer<Integer>() {{
-      setInstance(Integer.MAX_VALUE);
-    }});
-    assertThat("Failed to marshal object with bounded Number attribute.",
-               jsonString, matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*" + Integer.MAX_VALUE + "\\s*\\}"));
-    Type runtimeType = new NumberContainer<Integer>() { }.getClass().getGenericSuperclass();
-    NumberContainer<Integer> unmarshalledObject = jsonb.fromJson("{ \"instance\" : " + Integer.MAX_VALUE + " }", runtimeType);
-    assertThat("Failed to unmarshal object with bounded Number attribute.",
-               unmarshalledObject.getInstance(), is(Integer.MAX_VALUE));
-  }
+        GenericContainer<?> unmarshalledObject = jsonb.fromJson("{ \"instance\" : {\"value\":\"Test String\" } }",
+                                                                GenericContainer.class);
+        String validationMessage = "Failed to unmarshal generic object without type information with String attribute value.";
+        Object evaluatedInstance = unmarshalledObject.getInstance();
+        assertThat(validationMessage, evaluatedInstance, instanceOf(Map.class));
+        Map<String, Object> map = (Map<String, Object>) evaluatedInstance;
+        assertThat(validationMessage, map.size(), is(1));
+        assertThat(validationMessage, map, hasEntry("value", "Test String"));
+    }
 
-  /*
-   * @testName: testMultipleBoundsTypeInformation
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-5;
-   * JSONB:SPEC:JSB-3.17.1-7; JSONB:SPEC:JSB-3.17.1-10;
-   * JSONB:SPEC:JSB-3.17.1-11; JSONB:SPEC:JSB-3.17.1-12
-   *
-   * @test_Strategy: Assert that when multiple bounds exist, the most specific
-   * type is used
-   */
-  @Test
-  public void testMultipleBoundsTypeInformation() {
-    final LinkedList<String> list = new LinkedList<>(Arrays.asList("Test 1", "Test 2"));
-    MultipleBoundsContainer<LinkedList<String>> container = new MultipleBoundsContainer<>();
-    container.setInstance(new ArrayList<>());
-    container.getInstance().add(list);
+    /*
+     * @testName: testBoundedTypeInformation
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-5;
+     * JSONB:SPEC:JSB-3.17.1-7
+     *
+     * @test_Strategy: Assert that bounded type information is treated as expected
+     */
+    @Test
+    public void testBoundedTypeInformation() {
+        String jsonString = jsonb.toJson(new NumberContainer<Integer>() {{
+            setInstance(Integer.MAX_VALUE);
+        }});
+        assertThat("Failed to marshal object with bounded Number attribute.",
+                   jsonString, matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*" + Integer.MAX_VALUE + "\\s*\\}"));
+        Type runtimeType = new NumberContainer<Integer>() { }.getClass().getGenericSuperclass();
+        NumberContainer<Integer> unmarshalledObject = jsonb.fromJson("{ \"instance\" : " + Integer.MAX_VALUE + " }", runtimeType);
+        assertThat("Failed to unmarshal object with bounded Number attribute.",
+                   unmarshalledObject.getInstance(), is(Integer.MAX_VALUE));
+    }
 
-    final Type type = new MultipleBoundsContainer<LinkedList<String>>() { }.getClass().getGenericSuperclass();
-    String jsonString = jsonb.toJson(container, type);
-    assertThat("Failed to marshal object with multiple bounded attribute.",
-               jsonString,
-               matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\\[\\[\\s*\"Test 1\"\\s*,\\s*\"Test 2\"\\s*\\]\\]\\s*\\}"));
+    /*
+     * @testName: testMultipleBoundsTypeInformation
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-5;
+     * JSONB:SPEC:JSB-3.17.1-7; JSONB:SPEC:JSB-3.17.1-10;
+     * JSONB:SPEC:JSB-3.17.1-11; JSONB:SPEC:JSB-3.17.1-12
+     *
+     * @test_Strategy: Assert that when multiple bounds exist, the most specific
+     * type is used
+     */
+    @Test
+    public void testMultipleBoundsTypeInformation() {
+        final LinkedList<String> list = new LinkedList<>(Arrays.asList("Test 1", "Test 2"));
+        MultipleBoundsContainer<LinkedList<String>> container = new MultipleBoundsContainer<>();
+        container.setInstance(new ArrayList<>());
+        container.getInstance().add(list);
 
-    String toDeserialize = "{ \"instance\" : [[ \"Test 1\", \"Test 2\" ]] }";
-    MultipleBoundsContainer<LinkedList<String>> unmarshalledObject = jsonb.fromJson(toDeserialize, type);
-    assertThat("Failed to unmarshal object with multiple bounded attribute.",
-               unmarshalledObject.getInstance(), is(container.getInstance()));
-  }
+        final Type type = new MultipleBoundsContainer<LinkedList<String>>() { }.getClass().getGenericSuperclass();
+        String jsonString = jsonb.toJson(container, type);
+        assertThat("Failed to marshal object with multiple bounded attribute.",
+                   jsonString,
+                   matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\\[\\[\\s*\"Test 1\"\\s*,\\s*\"Test 2\"\\s*\\]\\]\\s*\\}"));
 
-  /*
-   * @testName: testWildcardTypeInformation
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-5;
-   * JSONB:SPEC:JSB-3.17.1-13
-   *
-   * @test_Strategy: Assert that wildcard type is handled as java.lang.Object
-   */
-  @Test
-  public void testWildcardTypeInformation() {
-    final List<String> list = Arrays.asList("Test 1", "Test 2");
-    String jsonString = jsonb.toJson(new WildcardContainer() {{
-      setInstance(list);
-    }});
-    assertThat("Failed to marshal object with unbound collection attribute.",
-               jsonString,
-               matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\\[\\s*\"Test 1\"\\s*,\\s*\"Test 2\"\\s*\\]\\s*\\}"));
+        String toDeserialize = "{ \"instance\" : [[ \"Test 1\", \"Test 2\" ]] }";
+        MultipleBoundsContainer<LinkedList<String>> unmarshalledObject = jsonb.fromJson(toDeserialize, type);
+        assertThat("Failed to unmarshal object with multiple bounded attribute.",
+                   unmarshalledObject.getInstance(), is(container.getInstance()));
+    }
 
-    WildcardContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : [ \"Test 1\", \"Test 2\" ] }",
-                                                          WildcardContainer.class);
-    assertThat("Failed to unmarshal object with unbound collection attribute.",
-               unmarshalledObject.getInstance(), is(list));
-  }
+    /*
+     * @testName: testWildcardTypeInformation
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.17-1; JSONB:SPEC:JSB-3.17.1-5;
+     * JSONB:SPEC:JSB-3.17.1-13
+     *
+     * @test_Strategy: Assert that wildcard type is handled as java.lang.Object
+     */
+    @Test
+    public void testWildcardTypeInformation() {
+        final List<String> list = Arrays.asList("Test 1", "Test 2");
+        String jsonString = jsonb.toJson(new WildcardContainer() {{
+            setInstance(list);
+        }});
+        assertThat("Failed to marshal object with unbound collection attribute.",
+                   jsonString,
+                   matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\\[\\s*\"Test 1\"\\s*,\\s*\"Test 2\"\\s*\\]\\s*\\}"));
+
+        WildcardContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : [ \"Test 1\", \"Test 2\" ] }",
+                                                              WildcardContainer.class);
+        assertThat("Failed to unmarshal object with unbound collection attribute.",
+                   unmarshalledObject.getInstance(), is(list));
+    }
 }

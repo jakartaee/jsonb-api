@@ -38,56 +38,56 @@ import static org.hamcrest.Matchers.nullValue;
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.nullvalue.NullValueMappingTest
  **/
 public class NullValueMappingTest {
-    
-  private final Jsonb jsonb = JsonbBuilder.create();
 
-  /*
-   * @testName: testNullAttributeValue
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.14.1-1; JSONB:SPEC:JSB-3.14.1-2;
-   * JSONB:SPEC:JSB-3.14.1-3
-   *
-   * @test_Strategy: Assert that fields with null value are ignored during
-   * marshalling and that during unmarshalling missing attributes are not set,
-   * maintaining original value, and null attributes are correctly unmarshalled
-   */
-  @Test
-  public void testNullAttributeValue() {
-    String jsonString = jsonb.toJson(new NullValueContainer() {{
-      setInstance(null);
-    }});
-    assertThat("Failed to ignore displaying property with null value.", jsonString, matchesPattern("\\{\\s*\\}"));
+    private final Jsonb jsonb = JsonbBuilder.create();
 
-    NullValueContainer unmarshalledObject = jsonb.fromJson("{ }", NullValueContainer.class);
-    assertThat("Failed to ignore calling setter of absent property during unmarshalling.",
-               unmarshalledObject.getInstance(), is(("Test String")));
+    /*
+     * @testName: testNullAttributeValue
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.14.1-1; JSONB:SPEC:JSB-3.14.1-2;
+     * JSONB:SPEC:JSB-3.14.1-3
+     *
+     * @test_Strategy: Assert that fields with null value are ignored during
+     * marshalling and that during unmarshalling missing attributes are not set,
+     * maintaining original value, and null attributes are correctly unmarshalled
+     */
+    @Test
+    public void testNullAttributeValue() {
+        String jsonString = jsonb.toJson(new NullValueContainer() {{
+            setInstance(null);
+        }});
+        assertThat("Failed to ignore displaying property with null value.", jsonString, matchesPattern("\\{\\s*\\}"));
 
-    unmarshalledObject = jsonb.fromJson("{ \"instance\" : null }", NullValueContainer.class);
-    assertThat("Failed to set property to null.", unmarshalledObject.getInstance(), nullValue());
-  }
+        NullValueContainer unmarshalledObject = jsonb.fromJson("{ }", NullValueContainer.class);
+        assertThat("Failed to ignore calling setter of absent property during unmarshalling.",
+                   unmarshalledObject.getInstance(), is(("Test String")));
 
-  /*
-   * @testName: testNullArrayValue
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.14.2-1; JSONB:SPEC:JSB-3.14.2-2;
-   * JSONB:SPEC:JSB-3.14.2-3
-   *
-   * @test_Strategy: Assert that a null array value is marked as null during
-   * marshalling and a null value is set to the appropriate array index during
-   * unmrashalling of an array containing a null value
-   */
-  @Test
-  public void testNullArrayValue() {
-    String jsonString = jsonb.toJson(new NullArrayContainer() {{
-      setInstance(new String[] {"Test 1", null, "Test 2"});
-    }});
-    assertThat("Failed to correctly display null array value.",
-               jsonString,
-               matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\\[\\s*\"Test 1\"\\s*,\\s*null\\s*,\\s*\"Test 2\"\\s*\\]\\s*\\}"));
+        unmarshalledObject = jsonb.fromJson("{ \"instance\" : null }", NullValueContainer.class);
+        assertThat("Failed to set property to null.", unmarshalledObject.getInstance(), nullValue());
+    }
 
-    NullArrayContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : [ \"Test 1\", null, \"Test 2\" ] }",
-                                                           NullArrayContainer.class);
-    assertThat("Failed to correctly set null array value.",
-               unmarshalledObject.getInstance(), arrayContaining("Test 1", null, "Test 2"));
-  }
+    /*
+     * @testName: testNullArrayValue
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.14.2-1; JSONB:SPEC:JSB-3.14.2-2;
+     * JSONB:SPEC:JSB-3.14.2-3
+     *
+     * @test_Strategy: Assert that a null array value is marked as null during
+     * marshalling and a null value is set to the appropriate array index during
+     * unmrashalling of an array containing a null value
+     */
+    @Test
+    public void testNullArrayValue() {
+        String jsonString = jsonb.toJson(new NullArrayContainer() {{
+            setInstance(new String[] {"Test 1", null, "Test 2"});
+        }});
+        assertThat("Failed to correctly display null array value.",
+                   jsonString,
+                   matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\\[\\s*\"Test 1\"\\s*,\\s*null\\s*,\\s*\"Test 2\"\\s*\\]\\s*\\}"));
+
+        NullArrayContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : [ \"Test 1\", null, \"Test 2\" ] }",
+                                                               NullArrayContainer.class);
+        assertThat("Failed to correctly set null array value.",
+                   unmarshalledObject.getInstance(), arrayContaining("Test 1", null, "Test 2"));
+    }
 }

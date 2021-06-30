@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -23,46 +23,46 @@ package jakarta.json.bind.tck.customizedmapping.instantiation.model;
 import jakarta.json.bind.annotation.JsonbCreator;
 
 public class IllegalInstanceFactoryCreatorContainer {
-  private String stringInstance;
+    private String stringInstance;
 
-  private Integer integerInstance;
+    private Integer integerInstance;
 
-  private float floatInstance;
+    private float floatInstance;
 
-  private IllegalInstanceFactoryCreatorContainer() {
-  }
+    private IllegalInstanceFactoryCreatorContainer() {
+    }
 
-  @JsonbCreator
-  public static SimpleFactoryCreatorContainer createInstance(
-      String stringInstance) {
-    SimpleFactoryCreatorContainer simpleFactoryCreatorContainer = new SimpleFactoryCreatorContainer();
-    simpleFactoryCreatorContainer.setStringInstance("Factory String");
-    simpleFactoryCreatorContainer.setIntegerInstance(2);
-    simpleFactoryCreatorContainer.setFloatInstance(3);
-    return simpleFactoryCreatorContainer;
-  }
+    @JsonbCreator
+    public static SimpleFactoryCreatorContainer createInstance(
+            String stringInstance) {
+        SimpleFactoryCreatorContainer simpleFactoryCreatorContainer = new SimpleFactoryCreatorContainer();
+        simpleFactoryCreatorContainer.setStringInstance("Factory String");
+        simpleFactoryCreatorContainer.setIntegerInstance(2);
+        simpleFactoryCreatorContainer.setFloatInstance(3);
+        return simpleFactoryCreatorContainer;
+    }
 
-  public String getStringInstance() {
-    return stringInstance;
-  }
+    public String getStringInstance() {
+        return stringInstance;
+    }
 
-  public void setStringInstance(String stringInstance) {
-    this.stringInstance = stringInstance;
-  }
+    public void setStringInstance(String stringInstance) {
+        this.stringInstance = stringInstance;
+    }
 
-  public Integer getIntegerInstance() {
-    return integerInstance;
-  }
+    public Integer getIntegerInstance() {
+        return integerInstance;
+    }
 
-  public void setIntegerInstance(Integer integerInstance) {
-    this.integerInstance = integerInstance;
-  }
+    public void setIntegerInstance(Integer integerInstance) {
+        this.integerInstance = integerInstance;
+    }
 
-  public float getFloatInstance() {
-    return floatInstance;
-  }
+    public float getFloatInstance() {
+        return floatInstance;
+    }
 
-  public void setFloatInstance(float floatInstance) {
-    this.floatInstance = floatInstance;
-  }
+    public void setFloatInstance(float floatInstance) {
+        this.floatInstance = floatInstance;
+    }
 }

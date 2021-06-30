@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -25,66 +25,66 @@ import jakarta.json.bind.tck.customizedmapping.serializers.model.Cat;
 import jakarta.json.bind.tck.customizedmapping.serializers.model.Dog;
 
 public class AnimalBuilder {
-  public enum TYPE {
-    CAT, DOG, GENERIC
-  }
-
-  private TYPE type;
-
-  private int age;
-
-  private String name;
-
-  private float weight;
-
-  private boolean furry;
-
-  private boolean cuddly;
-
-  private boolean barking;
-
-  public void setType(TYPE type) {
-    this.type = type;
-  }
-
-  public void setAge(int age) {
-    this.age = age;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public void setWeight(float weight) {
-    this.weight = weight;
-  }
-
-  public void setFurry(boolean furry) {
-    this.furry = furry;
-  }
-
-  public void setCuddly(boolean cuddly) {
-    this.cuddly = cuddly;
-  }
-
-  public void setBarking(boolean barking) {
-    this.barking = barking;
-  }
-
-  public Animal build() {
-    Animal animal;
-
-    switch (type) {
-    case CAT:
-      animal = new Cat(age, name, weight, furry, cuddly);
-      break;
-    case DOG:
-      animal = new Dog(age, name, weight, furry, barking);
-      break;
-    default:
-      animal = new Animal(age, name, weight, furry);
+    public enum TYPE {
+        CAT, DOG, GENERIC
     }
 
-    return animal;
-  }
+    private TYPE type;
+
+    private int age;
+
+    private String name;
+
+    private float weight;
+
+    private boolean furry;
+
+    private boolean cuddly;
+
+    private boolean barking;
+
+    public void setType(TYPE type) {
+        this.type = type;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
+    }
+
+    public void setFurry(boolean furry) {
+        this.furry = furry;
+    }
+
+    public void setCuddly(boolean cuddly) {
+        this.cuddly = cuddly;
+    }
+
+    public void setBarking(boolean barking) {
+        this.barking = barking;
+    }
+
+    public Animal build() {
+        Animal animal;
+
+        switch (type) {
+        case CAT:
+            animal = new Cat(age, name, weight, furry, cuddly);
+            break;
+        case DOG:
+            animal = new Dog(age, name, weight, furry, barking);
+            break;
+        default:
+            animal = new Animal(age, name, weight, furry);
+        }
+
+        return animal;
+    }
 }

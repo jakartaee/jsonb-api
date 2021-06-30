@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -23,14 +23,14 @@ package jakarta.json.bind.tck.api.model;
 import jakarta.json.bind.tck.TypeContainer;
 
 public class SimpleContainerContainer
-    implements TypeContainer<SimpleContainer> {
-  private SimpleContainer instance;
+        implements TypeContainer<SimpleContainer> {
+    private SimpleContainer instance;
 
-  public SimpleContainer getInstance() {
-    return instance;
-  }
+    public SimpleContainer getInstance() {
+        return instance;
+    }
 
-  public void setInstance(SimpleContainer instance) {
-    this.instance = instance;
-  }
+    public void setInstance(SimpleContainer instance) {
+        this.instance = instance;
+    }
 }

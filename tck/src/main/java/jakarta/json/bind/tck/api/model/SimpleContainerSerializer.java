@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -25,13 +25,13 @@ import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
 
 public class SimpleContainerSerializer
-    implements JsonbSerializer<SimpleContainer> {
-  @Override
-  public void serialize(SimpleContainer container, JsonGenerator jsonGenerator,
-      SerializationContext serializationContext) {
-    jsonGenerator.writeStartObject();
-    serializationContext.serialize("instance",
-        container.getInstance() + " Serialized", jsonGenerator);
-    jsonGenerator.writeEnd();
-  }
+        implements JsonbSerializer<SimpleContainer> {
+    @Override
+    public void serialize(SimpleContainer container, JsonGenerator jsonGenerator,
+                          SerializationContext serializationContext) {
+        jsonGenerator.writeStartObject();
+        serializationContext.serialize("instance",
+                                       container.getInstance() + " Serialized", jsonGenerator);
+        jsonGenerator.writeEnd();
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -25,15 +25,15 @@ import java.net.URL;
 import jakarta.json.bind.tck.TypeContainer;
 
 public class URLContainer implements TypeContainer<URL> {
-  private URL instance;
+    private URL instance;
 
-  @Override
-  public URL getInstance() {
-    return instance;
-  }
+    @Override
+    public URL getInstance() {
+        return instance;
+    }
 
-  @Override
-  public void setInstance(URL instance) {
-    this.instance = instance;
-  }
+    @Override
+    public void setInstance(URL instance) {
+        this.instance = instance;
+    }
 }

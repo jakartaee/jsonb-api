@@ -36,23 +36,23 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
  **/
 public class MustIgnoreMappingTest {
 
-  /*
-   * @testName: testIgnoreUnknownAttribute
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.18-1
-   *
-   * @test_Strategy: Assert that unknown attributes are ignored during
-   * unmarshalling
-   */
-  @Test
-  public void testIgnoreUnknownAttribute() {
-      Jsonb jsonb = JsonbBuilder.create();
-      String toDeserialize = "{ \"instance\" : \"Test String\", \"newInstance\" : 0 }";
-      StringContainer container = assertDoesNotThrow(()->jsonb.fromJson(toDeserialize, StringContainer.class),
-                                                     "An exception is not expected when coming across "
-                                                             + "a non existent attribute during deserialization.");
+    /*
+     * @testName: testIgnoreUnknownAttribute
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.18-1
+     *
+     * @test_Strategy: Assert that unknown attributes are ignored during
+     * unmarshalling
+     */
+    @Test
+    public void testIgnoreUnknownAttribute() {
+        Jsonb jsonb = JsonbBuilder.create();
+        String toDeserialize = "{ \"instance\" : \"Test String\", \"newInstance\" : 0 }";
+        StringContainer container = assertDoesNotThrow(() -> jsonb.fromJson(toDeserialize, StringContainer.class),
+                                                       "An exception is not expected when coming across "
+                                                               + "a non existent attribute during deserialization.");
 
-      assertThat("Failed to deserialize into a class with less attributes than exist in the JSON string.",
-                 container.getInstance(), is("Test String"));
-  }
+        assertThat("Failed to deserialize into a class with less attributes than exist in the JSON string.",
+                   container.getInstance(), is("Test String"));
+    }
 }

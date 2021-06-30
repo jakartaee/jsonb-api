@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -39,49 +39,50 @@ import static org.hamcrest.Matchers.matchesPattern;
  **/
 public class JsonbAdapterTest {
 
-  /*
-   * @testName: testAdaptFromJson
-   *
-   * @assertion_ids: JSONB:JAVADOC:53
-   *
-   * @test_Strategy: Assert that JsonbAdapter.adaptFromJson method can be
-   * configured during object deserialization to provide conversion logic from
-   * adapted object to original
-   */
-  @Test
-  public void testAdaptFromJson() {
-    Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withAdapters(new SimpleStringAdapter()));
-    SimpleContainerContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : { \"instance\" : \"Test String Adapted\" } }",
-                                                                 SimpleContainerContainer.class);
-    assertThat("Failed to use JsonbAdapter.adaptFromJson method to provide conversion logic from "
-                       + "adapted object to original during object deserialization.",
-               unmarshalledObject.getInstance().getInstance(), is("Test String"));
-  }
+    /*
+     * @testName: testAdaptFromJson
+     *
+     * @assertion_ids: JSONB:JAVADOC:53
+     *
+     * @test_Strategy: Assert that JsonbAdapter.adaptFromJson method can be
+     * configured during object deserialization to provide conversion logic from
+     * adapted object to original
+     */
+    @Test
+    public void testAdaptFromJson() {
+        Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withAdapters(new SimpleStringAdapter()));
+        SimpleContainerContainer unmarshalledObject = jsonb
+                .fromJson("{ \"instance\" : { \"instance\" : \"Test String Adapted\" } }",
+                          SimpleContainerContainer.class);
+        assertThat("Failed to use JsonbAdapter.adaptFromJson method to provide conversion logic from "
+                           + "adapted object to original during object deserialization.",
+                   unmarshalledObject.getInstance().getInstance(), is("Test String"));
+    }
 
-  /*
-   * @testName: testAdaptToJson
-   *
-   * @assertion_ids: JSONB:JAVADOC:55
-   *
-   * @test_Strategy: Assert that JsonbAdapter.adaptToJson method can be
-   * configured during object serialization to provide conversion logic from
-   * original object to adapted
-   */
-  @Test
-  public void testAdaptToJson() {
-    Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withAdapters(new SimpleStringAdapter()));
-    String jsonString = jsonb.toJson(new SimpleContainerContainer() {
-      {
-        setInstance(new SimpleContainer() {
-          {
-            setInstance("Test String");
-          }
+    /*
+     * @testName: testAdaptToJson
+     *
+     * @assertion_ids: JSONB:JAVADOC:55
+     *
+     * @test_Strategy: Assert that JsonbAdapter.adaptToJson method can be
+     * configured during object serialization to provide conversion logic from
+     * original object to adapted
+     */
+    @Test
+    public void testAdaptToJson() {
+        Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withAdapters(new SimpleStringAdapter()));
+        String jsonString = jsonb.toJson(new SimpleContainerContainer() {
+            {
+                setInstance(new SimpleContainer() {
+                    {
+                        setInstance("Test String");
+                    }
+                });
+            }
         });
-      }
-    });
-    assertThat("Failed to use JsonbAdapter.adaptToJson method to provide conversion "
-                       + "logic from original object to adapted during object serialization.",
-               jsonString,
-               matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\\{\\s*\"instance\"\\s*:\\s*\"Test String Adapted\"\\s*}\\s*}"));
-  }
+        assertThat("Failed to use JsonbAdapter.adaptToJson method to provide conversion "
+                           + "logic from original object to adapted during object serialization.",
+                   jsonString,
+                   matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\\{\\s*\"instance\"\\s*:\\s*\"Test String Adapted\"\\s*}\\s*}"));
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -22,77 +22,77 @@ package jakarta.json.bind.tck.customizedmapping.propertyorder.model;
 
 import jakarta.json.bind.annotation.JsonbPropertyOrder;
 
-@JsonbPropertyOrder({ "longInstance", "intInstance", "stringInstance" })
+@JsonbPropertyOrder({"longInstance", "intInstance", "stringInstance"})
 public class PartialOrderContainer {
-  private int intInstance;
+    private int intInstance;
 
-  private String stringInstance;
+    private String stringInstance;
 
-  private long longInstance;
+    private long longInstance;
 
-  private int anIntInstance;
+    private int anIntInstance;
 
-  private int anotherIntInstance;
+    private int anotherIntInstance;
 
-  private int yetAnotherIntInstance;
+    private int yetAnotherIntInstance;
 
-  public int getAnIntInstance() {
-    intInstance -= 10;
-    return anIntInstance;
-  }
-
-  public void setAnIntInstance(int anIntInstance) {
-    intInstance -= 30;
-    this.anIntInstance = anIntInstance;
-  }
-
-  public int getAnotherIntInstance() {
-    intInstance -= 100;
-    return anotherIntInstance;
-  }
-
-  public void setAnotherIntInstance(int anotherIntInstance) {
-    intInstance -= 300;
-    this.anotherIntInstance = anotherIntInstance;
-  }
-
-  public int getYetAnotherIntInstance() {
-    intInstance -= 1000;
-    return yetAnotherIntInstance;
-  }
-
-  public void setYetAnotherIntInstance(int yetAnotherIntInstance) {
-    intInstance -= 3000;
-    this.yetAnotherIntInstance = yetAnotherIntInstance;
-  }
-
-  public String getStringInstance() {
-    return stringInstance;
-  }
-
-  public void setStringInstance(String stringInstance) {
-    this.stringInstance = stringInstance;
-    if (intInstance == 1) {
-      intInstance = 2;
+    public int getAnIntInstance() {
+        intInstance -= 10;
+        return anIntInstance;
     }
-  }
 
-  public int getIntInstance() {
-    return intInstance;
-  }
-
-  public void setIntInstance(int intInstance) {
-    this.intInstance = intInstance;
-  }
-
-  public long getLongInstance() {
-    return longInstance;
-  }
-
-  public void setLongInstance(long longInstance) {
-    this.longInstance = longInstance;
-    if (intInstance == 2) {
-      intInstance = 3;
+    public void setAnIntInstance(int anIntInstance) {
+        intInstance -= 30;
+        this.anIntInstance = anIntInstance;
     }
-  }
+
+    public int getAnotherIntInstance() {
+        intInstance -= 100;
+        return anotherIntInstance;
+    }
+
+    public void setAnotherIntInstance(int anotherIntInstance) {
+        intInstance -= 300;
+        this.anotherIntInstance = anotherIntInstance;
+    }
+
+    public int getYetAnotherIntInstance() {
+        intInstance -= 1000;
+        return yetAnotherIntInstance;
+    }
+
+    public void setYetAnotherIntInstance(int yetAnotherIntInstance) {
+        intInstance -= 3000;
+        this.yetAnotherIntInstance = yetAnotherIntInstance;
+    }
+
+    public String getStringInstance() {
+        return stringInstance;
+    }
+
+    public void setStringInstance(String stringInstance) {
+        this.stringInstance = stringInstance;
+        if (intInstance == 1) {
+            intInstance = 2;
+        }
+    }
+
+    public int getIntInstance() {
+        return intInstance;
+    }
+
+    public void setIntInstance(int intInstance) {
+        this.intInstance = intInstance;
+    }
+
+    public long getLongInstance() {
+        return longInstance;
+    }
+
+    public void setLongInstance(long longInstance) {
+        this.longInstance = longInstance;
+        if (intInstance == 2) {
+            intInstance = 3;
+        }
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -25,16 +25,16 @@ import java.util.NavigableMap;
 import jakarta.json.bind.tck.TypeContainer;
 
 public class NavigableMapContainer
-    implements TypeContainer<NavigableMap<String, String>> {
-  private NavigableMap<String, String> instance;
+        implements TypeContainer<NavigableMap<String, String>> {
+    private NavigableMap<String, String> instance;
 
-  @Override
-  public NavigableMap<String, String> getInstance() {
-    return instance;
-  }
+    @Override
+    public NavigableMap<String, String> getInstance() {
+        return instance;
+    }
 
-  @Override
-  public void setInstance(NavigableMap<String, String> instance) {
-    this.instance = instance;
-  }
+    @Override
+    public void setInstance(NavigableMap<String, String> instance) {
+        this.instance = instance;
+    }
 }

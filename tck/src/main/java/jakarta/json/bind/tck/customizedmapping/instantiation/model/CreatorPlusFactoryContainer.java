@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -23,35 +23,35 @@ package jakarta.json.bind.tck.customizedmapping.instantiation.model;
 import jakarta.json.bind.annotation.JsonbCreator;
 
 public class CreatorPlusFactoryContainer {
-  private String stringInstance;
+    private String stringInstance;
 
-  private Integer integerInstance;
+    private Integer integerInstance;
 
-  private float floatInstance;
+    private float floatInstance;
 
-  @JsonbCreator
-  public CreatorPlusFactoryContainer(String stringInstance,
-      Integer integerInstance, float floatInstance) {
-    this.stringInstance = "Constructor String";
-    this.integerInstance = 2;
-    this.floatInstance = 2;
-  }
+    @JsonbCreator
+    public CreatorPlusFactoryContainer(String stringInstance,
+                                       Integer integerInstance, float floatInstance) {
+        this.stringInstance = "Constructor String";
+        this.integerInstance = 2;
+        this.floatInstance = 2;
+    }
 
-  @JsonbCreator
-  public static CreatorPlusFactoryContainer createInstance(
-      String stringInstance) {
-    return new CreatorPlusFactoryContainer(stringInstance, 3, 3);
-  }
+    @JsonbCreator
+    public static CreatorPlusFactoryContainer createInstance(
+            String stringInstance) {
+        return new CreatorPlusFactoryContainer(stringInstance, 3, 3);
+    }
 
-  public String getStringInstance() {
-    return stringInstance;
-  }
+    public String getStringInstance() {
+        return stringInstance;
+    }
 
-  public Integer getIntegerInstance() {
-    return integerInstance;
-  }
+    public Integer getIntegerInstance() {
+        return integerInstance;
+    }
 
-  public float getFloatInstance() {
-    return floatInstance;
-  }
+    public float getFloatInstance() {
+        return floatInstance;
+    }
 }

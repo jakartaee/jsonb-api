@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -21,13 +21,13 @@
 package jakarta.json.bind.tck.customizedmapping.propertynames.model;
 
 public class StringContainer {
-  private String stringInstance;
+    private String stringInstance;
 
-  public String getStringInstance() {
-    return stringInstance;
-  }
+    public String getStringInstance() {
+        return stringInstance;
+    }
 
-  public void setStringInstance(String stringInstance) {
-    this.stringInstance = stringInstance;
-  }
+    public void setStringInstance(String stringInstance) {
+        this.stringInstance = stringInstance;
+    }
 }

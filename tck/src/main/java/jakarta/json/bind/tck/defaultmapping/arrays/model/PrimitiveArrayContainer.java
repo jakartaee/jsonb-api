@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -23,15 +23,15 @@ package jakarta.json.bind.tck.defaultmapping.arrays.model;
 import jakarta.json.bind.tck.TypeContainer;
 
 public class PrimitiveArrayContainer implements TypeContainer<int[]> {
-  private int[] instance;
+    private int[] instance;
 
-  @Override
-  public int[] getInstance() {
-    return instance;
-  }
+    @Override
+    public int[] getInstance() {
+        return instance;
+    }
 
-  @Override
-  public void setInstance(int[] instance) {
-    this.instance = instance;
-  }
+    @Override
+    public void setInstance(int[] instance) {
+        this.instance = instance;
+    }
 }

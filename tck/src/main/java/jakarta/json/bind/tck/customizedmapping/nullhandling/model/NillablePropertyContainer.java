@@ -26,11 +26,11 @@ public class NillablePropertyContainer {
   @JsonbNillable
   private String nillableStringInstance;
 
-  public String getNillableStringInstance() {
-    return nillableStringInstance;
-  }
+    public String getNillableStringInstance() {
+        return nillableStringInstance;
+    }
 
-  public void setNillableStringInstance(String nillableStringInstance) {
-    this.nillableStringInstance = nillableStringInstance;
-  }
+    public void setNillableStringInstance(String nillableStringInstance) {
+        this.nillableStringInstance = nillableStringInstance;
+    }
 }

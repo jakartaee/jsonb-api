@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,31 +20,31 @@
 
 package jakarta.json.bind.tck.customizedmapping.adapters.model.adapter;
 
-import jakarta.json.bind.adapter.JsonbAdapter;
-import jakarta.json.bind.tck.customizedmapping.adapters.model.Animal;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.json.bind.adapter.JsonbAdapter;
+import jakarta.json.bind.tck.customizedmapping.adapters.model.Animal;
+
 public class AnimalListAdapter
-    implements JsonbAdapter<List<Animal>, List<AnimalJson>> {
-  private AnimalAdapter animalAdapter = new AnimalAdapter();
+        implements JsonbAdapter<List<Animal>, List<AnimalJson>> {
+    private AnimalAdapter animalAdapter = new AnimalAdapter();
 
-  @Override
-  public List<AnimalJson> adaptToJson(List<Animal> animals) throws Exception {
-    List<AnimalJson> adapted = new ArrayList<>();
-    for (Animal animal : animals) {
-      adapted.add(animalAdapter.adaptToJson(animal));
+    @Override
+    public List<AnimalJson> adaptToJson(List<Animal> animals) throws Exception {
+        List<AnimalJson> adapted = new ArrayList<>();
+        for (Animal animal : animals) {
+            adapted.add(animalAdapter.adaptToJson(animal));
+        }
+        return adapted;
     }
-    return adapted;
-  }
 
-  @Override
-  public List<Animal> adaptFromJson(List<AnimalJson> adapted) throws Exception {
-    List<Animal> animals = new ArrayList<>();
-    for (AnimalJson animal : adapted) {
-      animals.add(animalAdapter.adaptFromJson(animal));
+    @Override
+    public List<Animal> adaptFromJson(List<AnimalJson> adapted) throws Exception {
+        List<Animal> animals = new ArrayList<>();
+        for (AnimalJson animal : adapted) {
+            animals.add(animalAdapter.adaptFromJson(animal));
+        }
+        return animals;
     }
-    return animals;
-  }
 }

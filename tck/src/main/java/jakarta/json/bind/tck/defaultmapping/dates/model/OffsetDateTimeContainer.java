@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -25,15 +25,15 @@ import java.time.OffsetDateTime;
 import jakarta.json.bind.tck.TypeContainer;
 
 public class OffsetDateTimeContainer implements TypeContainer<OffsetDateTime> {
-  private OffsetDateTime instance;
+    private OffsetDateTime instance;
 
-  @Override
-  public OffsetDateTime getInstance() {
-    return instance;
-  }
+    @Override
+    public OffsetDateTime getInstance() {
+        return instance;
+    }
 
-  @Override
-  public void setInstance(OffsetDateTime instance) {
-    this.instance = instance;
-  }
+    @Override
+    public void setInstance(OffsetDateTime instance) {
+        this.instance = instance;
+    }
 }

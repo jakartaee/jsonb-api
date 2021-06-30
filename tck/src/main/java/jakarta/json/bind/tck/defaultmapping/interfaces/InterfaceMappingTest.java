@@ -36,35 +36,35 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  **/
 public class InterfaceMappingTest {
 
-  private final Jsonb jsonb = JsonbBuilder.create();
+    private final Jsonb jsonb = JsonbBuilder.create();
 
-  /*
-   * @testName: testDeserializationToInterface
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.10-2
-   *
-   * @test_Strategy: Assert that an error is reported when unmarshalling to an
-   * arbitrary interface
-   */
-  @Test
-  public void testDeserializationToInterface() {
-    assertThrows(JsonbException.class,
-                 () -> jsonb.fromJson("{ \"instance\" : \"Test String\" }", TypeContainer.class),
-                 "An exception is expected when unmarshalling a class to an interface.");
-  }
+    /*
+     * @testName: testDeserializationToInterface
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.10-2
+     *
+     * @test_Strategy: Assert that an error is reported when unmarshalling to an
+     * arbitrary interface
+     */
+    @Test
+    public void testDeserializationToInterface() {
+        assertThrows(JsonbException.class,
+                     () -> jsonb.fromJson("{ \"instance\" : \"Test String\" }", TypeContainer.class),
+                     "An exception is expected when unmarshalling a class to an interface.");
+    }
 
-  /*
-   * @testName: testInterfaceField
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.10-2
-   *
-   * @test_Strategy: Assert that an error is reported when unmarshalling to an
-   * arbitrary interface
-   */
-  @Test
-  public void testInterfaceField() {
-    assertThrows(JsonbException.class,
-                 () -> jsonb.fromJson("{ \"instance\" : { \"instance\" : \"Test String\" } }", InterfaceContainer.class),
-                 "An exception is expected when unmarshalling a class with an interface property.");
-  }
+    /*
+     * @testName: testInterfaceField
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.10-2
+     *
+     * @test_Strategy: Assert that an error is reported when unmarshalling to an
+     * arbitrary interface
+     */
+    @Test
+    public void testInterfaceField() {
+        assertThrows(JsonbException.class,
+                     () -> jsonb.fromJson("{ \"instance\" : { \"instance\" : \"Test String\" } }", InterfaceContainer.class),
+                     "An exception is expected when unmarshalling a class with an interface property.");
+    }
 }

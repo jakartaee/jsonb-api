@@ -36,65 +36,65 @@ import static org.hamcrest.Matchers.matchesPattern;
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.attributeorder.AttributeOrderMappingTest
  **/
 public class AttributeOrderMappingTest {
-    
-  private final Jsonb jsonb = JsonbBuilder.create();
 
-  /*
-   * @testName: testClassAttributeOrder
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.13-1; JSONB:SPEC:JSB-3.13-2
-   *
-   * @test_Strategy: Assert that declared fields are marshalled in
-   * lexicographical order and unmarshalled in the order of appearance in the
-   * JSON document
-   */
-  @Test
-  public void testClassAttributeOrder() {
-    String jsonString = jsonb.toJson(new SimpleContainer() {
-      {
-        setIntInstance(0);
-        setStringInstance("Test String");
-        setLongInstance(0L);
-      }
-    });
-    String validationPattern = "\\{\\s*\"intInstance\"\\s*\\:\\s*0\\s*,\\s*\"longInstance\"\\s*\\:\\s*0\\s*,"
-            + "\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}";
-    assertThat("Failed to lexicographically order class attributes.", jsonString, matchesPattern(validationPattern));
+    private final Jsonb jsonb = JsonbBuilder.create();
 
-    String toDeserialize = "{ \"intInstance\" : 1, \"stringInstance\" : \"Test String\", \"longInstance\" : 0 }";
-    SimpleContainer unmarshalledObject = jsonb.fromJson(toDeserialize, SimpleContainer.class);
-    assertThat("Failed to set class attributes in order of appearance.", unmarshalledObject.getIntInstance(), is(3));
-  }
+    /*
+     * @testName: testClassAttributeOrder
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.13-1; JSONB:SPEC:JSB-3.13-2
+     *
+     * @test_Strategy: Assert that declared fields are marshalled in
+     * lexicographical order and unmarshalled in the order of appearance in the
+     * JSON document
+     */
+    @Test
+    public void testClassAttributeOrder() {
+        String jsonString = jsonb.toJson(new SimpleContainer() {
+            {
+                setIntInstance(0);
+                setStringInstance("Test String");
+                setLongInstance(0L);
+            }
+        });
+        String validationPattern = "\\{\\s*\"intInstance\"\\s*\\:\\s*0\\s*,\\s*\"longInstance\"\\s*\\:\\s*0\\s*,"
+                + "\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\}";
+        assertThat("Failed to lexicographically order class attributes.", jsonString, matchesPattern(validationPattern));
 
-  /*
-   * @testName: testExtendedClassAttributeOrder
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.13-1; JSONB:SPEC:JSB-3.13-2
-   *
-   * @test_Strategy: Assert that declared fields of super class are marshalled
-   * before declared fields of child class and all are unmarshalled in the order
-   * of appearance in the JSON document
-   */
-  @Test
-  public void testExtendedClassAttributeOrder() {
-    String jsonString = jsonb.toJson(new ExtendedContainer() {
-      {
-        setIntInstance(0);
-        setStringInstance("Test String");
-        setLongInstance(0L);
-        setFloatInstance(0f);
-        setShortInstance((short) 0);
-      }
-    });
-    String validationPattern = "\\{\\s*\"intInstance\"\\s*\\:\\s*0\\s*,\\s*\"longInstance\"\\s*\\:\\s*0\\s*,"
-            + "\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\,\\s*\"floatInstance\"\\s*\\:\\s*0.0\\s*,"
-            + "\\s*\"shortInstance\"\\s*\\:\\s*0\\s*}";
-    assertThat("Failed to correctly order extended class attributes.", jsonString, matchesPattern(validationPattern));
+        String toDeserialize = "{ \"intInstance\" : 1, \"stringInstance\" : \"Test String\", \"longInstance\" : 0 }";
+        SimpleContainer unmarshalledObject = jsonb.fromJson(toDeserialize, SimpleContainer.class);
+        assertThat("Failed to set class attributes in order of appearance.", unmarshalledObject.getIntInstance(), is(3));
+    }
 
-    String toDeserialize = "{ \"intInstance\" : 1, \"shortInstance\" : 0, \"stringInstance\" : \"Test String\", "
-            + "\"floatInstance\" : 0.0, \"longInstance\" : 0 }";
-    ExtendedContainer unmarshalledObject = jsonb.fromJson(toDeserialize, ExtendedContainer.class);
-    assertThat("Failed to set extended class attributes in order of appearance.",
-               unmarshalledObject.getIntInstance(), is(5));
-  }
+    /*
+     * @testName: testExtendedClassAttributeOrder
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.13-1; JSONB:SPEC:JSB-3.13-2
+     *
+     * @test_Strategy: Assert that declared fields of super class are marshalled
+     * before declared fields of child class and all are unmarshalled in the order
+     * of appearance in the JSON document
+     */
+    @Test
+    public void testExtendedClassAttributeOrder() {
+        String jsonString = jsonb.toJson(new ExtendedContainer() {
+            {
+                setIntInstance(0);
+                setStringInstance("Test String");
+                setLongInstance(0L);
+                setFloatInstance(0f);
+                setShortInstance((short) 0);
+            }
+        });
+        String validationPattern = "\\{\\s*\"intInstance\"\\s*\\:\\s*0\\s*,\\s*\"longInstance\"\\s*\\:\\s*0\\s*,"
+                + "\\s*\"stringInstance\"\\s*\\:\\s*\"Test String\"\\s*\\,\\s*\"floatInstance\"\\s*\\:\\s*0.0\\s*,"
+                + "\\s*\"shortInstance\"\\s*\\:\\s*0\\s*}";
+        assertThat("Failed to correctly order extended class attributes.", jsonString, matchesPattern(validationPattern));
+
+        String toDeserialize = "{ \"intInstance\" : 1, \"shortInstance\" : 0, \"stringInstance\" : \"Test String\", "
+                + "\"floatInstance\" : 0.0, \"longInstance\" : 0 }";
+        ExtendedContainer unmarshalledObject = jsonb.fromJson(toDeserialize, ExtendedContainer.class);
+        assertThat("Failed to set extended class attributes in order of appearance.",
+                   unmarshalledObject.getIntInstance(), is(5));
+    }
 }

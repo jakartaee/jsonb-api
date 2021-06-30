@@ -30,13 +30,13 @@ public class SimpleAnnotatedNillablePropertyContainer
   @JsonbNillable
   private Object instance;
 
-  @Override
-  public Object getInstance() {
-    return instance;
-  }
+    @Override
+    public Object getInstance() {
+        return instance;
+    }
 
-  @Override
-  public void setInstance(Object instance) {
-    this.instance = instance;
-  }
+    @Override
+    public void setInstance(Object instance) {
+        this.instance = instance;
+    }
 }

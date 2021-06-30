@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -21,50 +21,50 @@
 package jakarta.json.bind.tck.defaultmapping.attributeorder.model;
 
 public class ExtendedContainer extends SimpleContainer {
-  private short shortInstance;
+    private short shortInstance;
 
-  private float floatInstance;
+    private float floatInstance;
 
-  public short getShortInstance() {
-    return shortInstance;
-  }
-
-  public void setShortInstance(short shortInstance) {
-    this.shortInstance = shortInstance;
-    if (intInstance == 1) {
-      intInstance = 2;
+    public short getShortInstance() {
+        return shortInstance;
     }
-  }
 
-  public float getFloatInstance() {
-    return floatInstance;
-  }
-
-  public void setFloatInstance(float floatInstance) {
-    this.floatInstance = floatInstance;
-    if (intInstance == 3) {
-      intInstance = 4;
+    public void setShortInstance(short shortInstance) {
+        this.shortInstance = shortInstance;
+        if (intInstance == 1) {
+            intInstance = 2;
+        }
     }
-  }
 
-  @Override
-  public void setStringInstance(String stringInstance) {
-    this.stringInstance = stringInstance;
-    if (intInstance == 2) {
-      intInstance = 3;
+    public float getFloatInstance() {
+        return floatInstance;
     }
-  }
 
-  @Override
-  public void setIntInstance(int intInstance) {
-    this.intInstance = intInstance;
-  }
-
-  @Override
-  public void setLongInstance(long longInstance) {
-    this.longInstance = longInstance;
-    if (intInstance == 4) {
-      intInstance = 5;
+    public void setFloatInstance(float floatInstance) {
+        this.floatInstance = floatInstance;
+        if (intInstance == 3) {
+            intInstance = 4;
+        }
     }
-  }
+
+    @Override
+    public void setStringInstance(String stringInstance) {
+        this.stringInstance = stringInstance;
+        if (intInstance == 2) {
+            intInstance = 3;
+        }
+    }
+
+    @Override
+    public void setIntInstance(int intInstance) {
+        this.intInstance = intInstance;
+    }
+
+    @Override
+    public void setLongInstance(long longInstance) {
+        this.longInstance = longInstance;
+        if (intInstance == 4) {
+            intInstance = 5;
+        }
+    }
 }

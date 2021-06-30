@@ -32,18 +32,18 @@ import org.junit.jupiter.api.Test;
  **/
 public class EnumMappingTest {
 
-  /*
-   * @testName: testEnum
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-3.9-1; JSONB:SPEC:JSB-3.9-2
-   *
-   * @test_Strategy: Assert that enum is correctly handled
-   */
-  @Test
-  public void testEnum() {
-    MappingTester<Enumeration> enumMappingTester = new MappingTester<>(
-        EnumContainer.class);
-    enumMappingTester.test(Enumeration.ONE, "\"ONE\"");
-    enumMappingTester.test(Enumeration.TWO, "\"TWO\"");
-  }
+    /*
+     * @testName: testEnum
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.9-1; JSONB:SPEC:JSB-3.9-2
+     *
+     * @test_Strategy: Assert that enum is correctly handled
+     */
+    @Test
+    public void testEnum() {
+        MappingTester<Enumeration> enumMappingTester = new MappingTester<>(
+                EnumContainer.class);
+        enumMappingTester.test(Enumeration.ONE, "\"ONE\"");
+        enumMappingTester.test(Enumeration.TWO, "\"TWO\"");
+    }
 }

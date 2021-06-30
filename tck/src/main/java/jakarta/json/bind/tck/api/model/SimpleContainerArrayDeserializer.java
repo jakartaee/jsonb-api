@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -29,23 +29,23 @@ import jakarta.json.bind.serializer.JsonbDeserializer;
 import jakarta.json.stream.JsonParser;
 
 public class SimpleContainerArrayDeserializer
-    implements JsonbDeserializer<SimpleContainer[]> {
-  public SimpleContainer[] deserialize(JsonParser jsonParser,
-      DeserializationContext deserializationContext, Type type) {
-    List<SimpleContainer> containers = new ArrayList<>();
+        implements JsonbDeserializer<SimpleContainer[]> {
+    public SimpleContainer[] deserialize(JsonParser jsonParser,
+                                         DeserializationContext deserializationContext, Type type) {
+        List<SimpleContainer> containers = new ArrayList<>();
 
-    while (jsonParser.hasNext()) {
-      JsonParser.Event event = jsonParser.next();
-      if (event == JsonParser.Event.START_OBJECT) {
-        containers
-            .add(deserializationContext.deserialize(new SimpleContainer() {
-            }.getClass().getGenericSuperclass(), jsonParser));
-      }
-      if (event == JsonParser.Event.END_OBJECT) {
-        break;
-      }
+        while (jsonParser.hasNext()) {
+            JsonParser.Event event = jsonParser.next();
+            if (event == JsonParser.Event.START_OBJECT) {
+                containers
+                        .add(deserializationContext.deserialize(new SimpleContainer() {
+                        }.getClass().getGenericSuperclass(), jsonParser));
+            }
+            if (event == JsonParser.Event.END_OBJECT) {
+                break;
+            }
+        }
+
+        return containers.toArray(new SimpleContainer[0]);
     }
-
-    return containers.toArray(new SimpleContainer[0]);
-  }
 }

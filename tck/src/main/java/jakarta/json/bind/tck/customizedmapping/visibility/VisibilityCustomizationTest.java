@@ -43,101 +43,101 @@ import static org.hamcrest.Matchers.nullValue;
  **/
 public class VisibilityCustomizationTest {
 
-  private static final Pattern PATTERN = Pattern.compile("\\{\\s*\"floatInstance\"\\s*:\\s*0.0\\s*}");
-    
-  private final Jsonb jsonb = JsonbBuilder.create();
+    private static final Pattern PATTERN = Pattern.compile("\\{\\s*\"floatInstance\"\\s*:\\s*0.0\\s*}");
 
-  /*
-   * @testName: testCustomVisibilityConfig
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-4.6-1
-   *
-   * @test_Strategy: Assert that only fields allowed by custom
-   * PropertyVisibilityStrategy are available for marshalling and unmarshalling
-   * if JsonbConfig.withPropertyVisibilityStrategy is used
-   */
-  @Test
-  public void testCustomVisibilityConfig() {
-    Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withPropertyVisibilityStrategy(new CustomFieldVisibilityStrategy()));
-    String jsonString = jsonb.toJson(new SimpleContainer() {
-      {
-        setStringInstance("Test String");
-      }
-    });
-    assertThat("Failed to hide fields during marshalling by applying custom visibility strategy using configuration.",
-               jsonString, matchesPattern(PATTERN));
+    private final Jsonb jsonb = JsonbBuilder.create();
 
-    SimpleContainer unmarshalledObject = jsonb.fromJson("{ \"stringInstance\" : \"Test String\", \"floatInstance\" : 1.0, "
-                                                                + "\"integerInstance\" : 1 }",
-                                                        SimpleContainer.class);
-    String validationMessage = "Failed to ignore fields during unmarshalling by applying custom visibility strategy "
-            + "using configuration.";
-    assertThat(validationMessage, unmarshalledObject.getStringInstance(), nullValue());
-    assertThat(validationMessage, unmarshalledObject.getIntegerInstance(), is(1));
-    assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(1f));
-  }
+    /*
+     * @testName: testCustomVisibilityConfig
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-4.6-1
+     *
+     * @test_Strategy: Assert that only fields allowed by custom
+     * PropertyVisibilityStrategy are available for marshalling and unmarshalling
+     * if JsonbConfig.withPropertyVisibilityStrategy is used
+     */
+    @Test
+    public void testCustomVisibilityConfig() {
+        Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withPropertyVisibilityStrategy(new CustomFieldVisibilityStrategy()));
+        String jsonString = jsonb.toJson(new SimpleContainer() {
+            {
+                setStringInstance("Test String");
+            }
+        });
+        assertThat("Failed to hide fields during marshalling by applying custom visibility strategy using configuration.",
+                   jsonString, matchesPattern(PATTERN));
 
-  /*
-   * @testName: testCustomVisibilityAnnotation
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-4.6-1
-   *
-   * @test_Strategy: Assert that only fields allowed by custom
-   * PropertyVisibilityStrategy are available for marshalling and unmarshalling
-   * if JsonbVisibility annotation is used on a type
-   */
-  @Test
-  public void testCustomVisibilityAnnotation() {
-    String jsonString = jsonb.toJson(new CustomVisibilityAnnotatedContainer() {
-      {
-        setStringInstance("Test String");
-      }
-    });
-    assertThat("Failed to hide fields during marshalling by applying custom visibility strategy using "
-                       + "JsonbVisibility annotation.",
-               jsonString, matchesPattern(PATTERN));
+        SimpleContainer unmarshalledObject = jsonb.fromJson("{ \"stringInstance\" : \"Test String\", \"floatInstance\" : 1.0, "
+                                                                    + "\"integerInstance\" : 1 }",
+                                                            SimpleContainer.class);
+        String validationMessage = "Failed to ignore fields during unmarshalling by applying custom visibility strategy "
+                + "using configuration.";
+        assertThat(validationMessage, unmarshalledObject.getStringInstance(), nullValue());
+        assertThat(validationMessage, unmarshalledObject.getIntegerInstance(), is(1));
+        assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(1f));
+    }
 
-    CustomVisibilityAnnotatedContainer unmarshalledObject = jsonb.fromJson("{ \"stringInstance\" : \"Test String\", "
-                                                                                   + "\"floatInstance\" : 1.0, "
-                                                                                   + "\"integerInstance\" : 1 }",
-                                                                           CustomVisibilityAnnotatedContainer.class);
+    /*
+     * @testName: testCustomVisibilityAnnotation
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-4.6-1
+     *
+     * @test_Strategy: Assert that only fields allowed by custom
+     * PropertyVisibilityStrategy are available for marshalling and unmarshalling
+     * if JsonbVisibility annotation is used on a type
+     */
+    @Test
+    public void testCustomVisibilityAnnotation() {
+        String jsonString = jsonb.toJson(new CustomVisibilityAnnotatedContainer() {
+            {
+                setStringInstance("Test String");
+            }
+        });
+        assertThat("Failed to hide fields during marshalling by applying custom visibility strategy using "
+                           + "JsonbVisibility annotation.",
+                   jsonString, matchesPattern(PATTERN));
 
-    String validationMessage = "Failed to ignore fields during unmarshalling by applying custom visibility strategy using "
-            + "JsonbVisibility annotation.";
-    assertThat(validationMessage, unmarshalledObject.getStringInstance(), nullValue());
-    assertThat(validationMessage, unmarshalledObject.getIntegerInstance(), nullValue());
-    assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(0.0f));
-  }
+        CustomVisibilityAnnotatedContainer unmarshalledObject = jsonb.fromJson("{ \"stringInstance\" : \"Test String\", "
+                                                                                       + "\"floatInstance\" : 1.0, "
+                                                                                       + "\"integerInstance\" : 1 }",
+                                                                               CustomVisibilityAnnotatedContainer.class);
 
-  /*
-   * @testName: testCustomVisibilityPackage
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-4.6-1
-   *
-   * @test_Strategy: Assert that only fields allowed by custom
-   * PropertyVisibilityStrategy are available for marshalling and unmarshalling
-   * if JsonbVisibility annotation is used on a package
-   */
-  @Test
-  public void testCustomVisibilityPackage() {
-    String jsonString = jsonb.toJson(new PackageCustomizedContainer() {
-      {
-        setStringInstance("Test String");
-      }
-    });
-    assertThat("Failed to hide fields during marshalling by applying custom visibility strategy using JsonbVisibility "
-                       + "annotation on package.",
-               jsonString, matchesPattern(PATTERN));
+        String validationMessage = "Failed to ignore fields during unmarshalling by applying custom visibility strategy using "
+                + "JsonbVisibility annotation.";
+        assertThat(validationMessage, unmarshalledObject.getStringInstance(), nullValue());
+        assertThat(validationMessage, unmarshalledObject.getIntegerInstance(), nullValue());
+        assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(0.0f));
+    }
 
-    PackageCustomizedContainer unmarshalledObject = jsonb.fromJson("{ \"stringInstance\" : \"Test String\", "
-                                                                           + "\"floatInstance\" : 1.0, "
-                                                                           + "\"integerInstance\" : 1 }",
-                                                                   PackageCustomizedContainer.class);
+    /*
+     * @testName: testCustomVisibilityPackage
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-4.6-1
+     *
+     * @test_Strategy: Assert that only fields allowed by custom
+     * PropertyVisibilityStrategy are available for marshalling and unmarshalling
+     * if JsonbVisibility annotation is used on a package
+     */
+    @Test
+    public void testCustomVisibilityPackage() {
+        String jsonString = jsonb.toJson(new PackageCustomizedContainer() {
+            {
+                setStringInstance("Test String");
+            }
+        });
+        assertThat("Failed to hide fields during marshalling by applying custom visibility strategy using JsonbVisibility "
+                           + "annotation on package.",
+                   jsonString, matchesPattern(PATTERN));
 
-    String validationMessage = "Failed to ignore fields during unmarshalling by applying custom visibility strategy using "
-            + "JsonbVisibility annotation on package.";
-    assertThat(validationMessage, unmarshalledObject.getStringInstance(), nullValue());
-    assertThat(validationMessage, unmarshalledObject.getIntegerInstance(), nullValue());
-    assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(0.0f));
-  }
+        PackageCustomizedContainer unmarshalledObject = jsonb.fromJson("{ \"stringInstance\" : \"Test String\", "
+                                                                               + "\"floatInstance\" : 1.0, "
+                                                                               + "\"integerInstance\" : 1 }",
+                                                                       PackageCustomizedContainer.class);
+
+        String validationMessage = "Failed to ignore fields during unmarshalling by applying custom visibility strategy using "
+                + "JsonbVisibility annotation on package.";
+        assertThat(validationMessage, unmarshalledObject.getStringInstance(), nullValue());
+        assertThat(validationMessage, unmarshalledObject.getIntegerInstance(), nullValue());
+        assertThat(validationMessage, unmarshalledObject.getFloatInstance(), is(0.0f));
+    }
 }

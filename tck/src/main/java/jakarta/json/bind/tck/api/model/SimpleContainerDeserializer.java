@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -27,30 +27,30 @@ import jakarta.json.bind.serializer.JsonbDeserializer;
 import jakarta.json.stream.JsonParser;
 
 public class SimpleContainerDeserializer
-    implements JsonbDeserializer<SimpleContainer> {
-  public SimpleContainer deserialize(JsonParser jsonParser,
-      DeserializationContext deserializationContext, Type type) {
-    SimpleContainer container = new SimpleContainer();
+        implements JsonbDeserializer<SimpleContainer> {
+    public SimpleContainer deserialize(JsonParser jsonParser,
+                                       DeserializationContext deserializationContext, Type type) {
+        SimpleContainer container = new SimpleContainer();
 
-    while (jsonParser.hasNext()) {
-      JsonParser.Event event = jsonParser.next();
-      if (event == JsonParser.Event.START_OBJECT) {
-        continue;
-      }
-      if (event == JsonParser.Event.END_OBJECT) {
-        break;
-      }
-      if (event == JsonParser.Event.KEY_NAME) {
-        switch (jsonParser.getString()) {
-        case "instance":
-          container.setInstance(
-              deserializationContext.deserialize(String.class, jsonParser)
-                  + " Deserialized");
-          break;
+        while (jsonParser.hasNext()) {
+            JsonParser.Event event = jsonParser.next();
+            if (event == JsonParser.Event.START_OBJECT) {
+                continue;
+            }
+            if (event == JsonParser.Event.END_OBJECT) {
+                break;
+            }
+            if (event == JsonParser.Event.KEY_NAME) {
+                switch (jsonParser.getString()) {
+                case "instance":
+                    container.setInstance(
+                            deserializationContext.deserialize(String.class, jsonParser)
+                                    + " Deserialized");
+                    break;
+                }
+            }
         }
-      }
-    }
 
-    return container;
-  }
+        return container;
+    }
 }

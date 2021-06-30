@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -25,15 +25,15 @@ import java.time.ZonedDateTime;
 import jakarta.json.bind.tck.TypeContainer;
 
 public class ZonedDateTimeContainer implements TypeContainer<ZonedDateTime> {
-  private ZonedDateTime instance;
+    private ZonedDateTime instance;
 
-  @Override
-  public ZonedDateTime getInstance() {
-    return instance;
-  }
+    @Override
+    public ZonedDateTime getInstance() {
+        return instance;
+    }
 
-  @Override
-  public void setInstance(ZonedDateTime instance) {
-    this.instance = instance;
-  }
+    @Override
+    public void setInstance(ZonedDateTime instance) {
+        this.instance = instance;
+    }
 }

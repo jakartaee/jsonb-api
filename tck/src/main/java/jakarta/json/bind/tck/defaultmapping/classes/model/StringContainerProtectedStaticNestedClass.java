@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -21,21 +21,21 @@
 package jakarta.json.bind.tck.defaultmapping.classes.model;
 
 public class StringContainerProtectedStaticNestedClass {
-  public NestedClass nestedClass = new NestedClass();
+    public NestedClass nestedClass = new NestedClass();
 
-  protected static class NestedClass {
+    protected static class NestedClass {
 
-    public NestedClass() {
+        public NestedClass() {
+        }
+
+        private String instance = "Test String";
+
+        public String getInstance() {
+            return instance;
+        }
+
+        public void setInstance(String instance) {
+            this.instance = instance;
+        }
     }
-
-    private String instance = "Test String";
-
-    public String getInstance() {
-      return instance;
-    }
-
-    public void setInstance(String instance) {
-      this.instance = instance;
-    }
-  }
 }

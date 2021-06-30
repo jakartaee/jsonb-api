@@ -44,62 +44,68 @@ import static org.hamcrest.Matchers.matchesPattern;
  **/
 public class SerializersCustomizationCDITest {
 
-  private static SeContainer container;
+    private static SeContainer container;
 
-  @BeforeAll
-  private static void startContainer() {
-    try {
-      //Verify that CDI container is already running
-      CDI.current();
-    } catch (IllegalStateException exception) {
-      container = SeContainerInitializer.newInstance().initialize();
+    @BeforeAll
+    private static void startContainer() {
+        try {
+            //Verify that CDI container is already running
+            CDI.current();
+        } catch (IllegalStateException exception) {
+            container = SeContainerInitializer.newInstance().initialize();
+        }
     }
-  }
 
-  @AfterAll
-  private static void stopContainer() {
-    if (container != null) {
-      container.close();
+    @AfterAll
+    private static void stopContainer() {
+        if (container != null) {
+            container.close();
+        }
     }
-  }
 
-  /*
-   * @testName: testCDISupport
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-4.7.2-3
-   *
-   * @test_Strategy: Assert that CDI injection is supported in serializers and
-   * deserializers
-   */
-  @Test
-  public void testCDISupport() {
-    Jsonb jsonb = JsonbBuilder.create();
-    String validationPattern = "\\{\\s*\"animals\"\\s*:\\s*\\[\\s*"
-            + "\\{\\s*\"type\"\\s*:\\s*\"cat\"\\s*,\\s*\"cuddly\"\\s*:\\s*true\\s*,\\s*\"age\"\\s*:\\s*5\\s*,\\s*\"furry\"\\s*:\\s*true\\s*,\\s*\"name\"\\s*:\\s*\"Garfield\"\\s*,\\s*\"weight\"\\s*:\\s*10.5\\s*}\\s*,\\s*"
-            + "\\{\\s*\"type\"\\s*:\\s*\"dog\"\\s*,\\s*\"barking\"\\s*:\\s*true\\s*,\\s*\"age\"\\s*:\\s*3\\s*,\\s*\"furry\"\\s*:\\s*false\\s*,\\s*\"name\"\\s*:\\s*\"Milo\"\\s*,\\s*\"weight\"\\s*:\\s*5.5\\s*}\\s*,\\s*"
-            + "\\{\\s*\"type\"\\s*:\\s*\"animal\"\\s*,\\s*\"age\"\\s*:\\s*6\\s*,\\s*\"furry\"\\s*:\\s*false\\s*,\\s*\"name\"\\s*:\\s*\"Tweety\"\\s*,\\s*\"weight\"\\s*:\\s*0.5\\s*}\\s*"
-            + "]\\s*}";
-    AnimalShelterWithInjectedSerializer animalShelter = new AnimalShelterWithInjectedSerializer();
-    animalShelter.addAnimal(new Cat(5, "Garfield", 10.5f, true, true));
-    animalShelter.addAnimal(new Dog(3, "Milo", 5.5f, false, true));
-    animalShelter.addAnimal(new Animal(6, "Tweety", 0.5f, false));
+    /*
+     * @testName: testCDISupport
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-4.7.2-3
+     *
+     * @test_Strategy: Assert that CDI injection is supported in serializers and
+     * deserializers
+     */
+    @Test
+    public void testCDISupport() {
+        Jsonb jsonb = JsonbBuilder.create();
+        String validationPattern = "\\{\\s*\"animals\"\\s*:\\s*\\[\\s*"
+                + "\\{\\s*\"type\"\\s*:\\s*\"cat\"\\s*,\\s*\"cuddly\"\\s*:\\s*true\\s*,\\s*\"age\"\\s*:\\s*5\\s*,"
+                + "\\s*\"furry\"\\s*:\\s*true\\s*,\\s*\"name\"\\s*:\\s*\"Garfield\"\\s*,\\s*\"weight\"\\s*:\\s*10.5\\s*}\\s*,\\s*"
+                + "\\{\\s*\"type\"\\s*:\\s*\"dog\"\\s*,\\s*\"barking\"\\s*:\\s*true\\s*,\\s*\"age\"\\s*:\\s*3\\s*,"
+                + "\\s*\"furry\"\\s*:\\s*false\\s*,\\s*\"name\"\\s*:\\s*\"Milo\"\\s*,\\s*\"weight\"\\s*:\\s*5.5\\s*}\\s*,\\s*"
+                + "\\{\\s*\"type\"\\s*:\\s*\"animal\"\\s*,\\s*\"age\"\\s*:\\s*6\\s*,\\s*\"furry\"\\s*:\\s*false\\s*,"
+                + "\\s*\"name\"\\s*:\\s*\"Tweety\"\\s*,\\s*\"weight\"\\s*:\\s*0.5\\s*}\\s*"
+                + "]\\s*}";
+        AnimalShelterWithInjectedSerializer animalShelter = new AnimalShelterWithInjectedSerializer();
+        animalShelter.addAnimal(new Cat(5, "Garfield", 10.5f, true, true));
+        animalShelter.addAnimal(new Dog(3, "Milo", 5.5f, false, true));
+        animalShelter.addAnimal(new Animal(6, "Tweety", 0.5f, false));
 
-    String validationMessage = "Failed to correctly marshall complex type hierarchy using a serializer configured using "
-            + "JsonbTypeSerializer annotation and a deserializer with a CDI managed field configured using "
-            + "JsonbTypeDeserializer annotation.";
+        String validationMessage = "Failed to correctly marshall complex type hierarchy using a serializer configured using "
+                + "JsonbTypeSerializer annotation and a deserializer with a CDI managed field configured using "
+                + "JsonbTypeDeserializer annotation.";
 
-    String jsonString = jsonb.toJson(animalShelter);
-    assertThat(validationMessage, jsonString, matchesPattern(validationPattern));
+        String jsonString = jsonb.toJson(animalShelter);
+        assertThat(validationMessage, jsonString, matchesPattern(validationPattern));
 
-    String toSerialize = "{ \"animals\" : [ "
-            + "{ \"type\" : \"cat\", \"cuddly\" : true, \"age\" : 5, \"furry\" : true, \"name\" : \"Garfield\" , \"weight\" : 10.5}, "
-            + "{ \"type\" : \"dog\", \"barking\" : true, \"age\" : 3, \"furry\" : false, \"name\" : \"Milo\", \"weight\" : 5.5}, "
-            + "{ \"type\" : \"animal\", \"age\" : 6, \"furry\" : false, \"name\" : \"Tweety\", \"weight\" : 0.5}"
-            + " ] }";
-    validationMessage = "Failed to correctly unmarshall complex type hierarchy using a serializer configured using "
-            + "JsonbTypeSerializer annotation and a deserializer with a CDI managed field configured using "
-            + "JsonbTypeDeserializer annotation.";
-    AnimalShelterWithInjectedSerializer unmarshalledObject = jsonb.fromJson(toSerialize, AnimalShelterWithInjectedSerializer.class);
-    assertThat(validationMessage, unmarshalledObject, is((animalShelter)));
-  }
+        String toSerialize = "{ \"animals\" : [ "
+                + "{ \"type\" : \"cat\", \"cuddly\" : true, \"age\" : 5, \"furry\" : true, \"name\" : \"Garfield\" , \"weight\""
+                + " : 10.5}, "
+                + "{ \"type\" : \"dog\", \"barking\" : true, \"age\" : 3, \"furry\" : false, \"name\" : \"Milo\", \"weight\" : "
+                + "5.5}, "
+                + "{ \"type\" : \"animal\", \"age\" : 6, \"furry\" : false, \"name\" : \"Tweety\", \"weight\" : 0.5}"
+                + " ] }";
+        validationMessage = "Failed to correctly unmarshall complex type hierarchy using a serializer configured using "
+                + "JsonbTypeSerializer annotation and a deserializer with a CDI managed field configured using "
+                + "JsonbTypeDeserializer annotation.";
+        AnimalShelterWithInjectedSerializer unmarshalledObject = jsonb
+                .fromJson(toSerialize, AnimalShelterWithInjectedSerializer.class);
+        assertThat(validationMessage, unmarshalledObject, is((animalShelter)));
+    }
 }

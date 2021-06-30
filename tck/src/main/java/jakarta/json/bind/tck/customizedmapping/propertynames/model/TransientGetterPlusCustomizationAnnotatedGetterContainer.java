@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -25,18 +25,18 @@ import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.json.bind.tck.TypeContainer;
 
 public class TransientGetterPlusCustomizationAnnotatedGetterContainer
-    implements TypeContainer<String> {
-  private String instance;
+        implements TypeContainer<String> {
+    private String instance;
 
-  @Override
-  @JsonbTransient
-  @JsonbProperty("instance")
-  public String getInstance() {
-    return instance;
-  }
+    @Override
+    @JsonbTransient
+    @JsonbProperty("instance")
+    public String getInstance() {
+        return instance;
+    }
 
-  @Override
-  public void setInstance(String instance) {
-    this.instance = instance;
-  }
+    @Override
+    public void setInstance(String instance) {
+        this.instance = instance;
+    }
 }

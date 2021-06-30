@@ -66,39 +66,45 @@ public class AdaptersCustomizationCDITest {
         }
     }
 
-  /*
-   * @testName: testCDISupport
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-4.7.1-3
-   *
-   * @test_Strategy: Assert that CDI injection is supported in adapters
-   */
-  @Test
-  public void testCDISupport() {
-    Jsonb jsonb = JsonbBuilder.create();
-    String validationPattern = "\\{\\s*\"animals\"\\s*:\\s*\\[\\s*"
-            + "\\{\\s*\"age\"\\s*:\\s*5\\s*,\\s*\"cuddly\"\\s*:\\s*true\\s*,\\s*\"furry\"\\s*:\\s*true\\s*,\\s*\"name\"\\s*:\\s*\"Garfield\"\\s*,\\s*\"type\"\\s*:\\s*\"CAT\"\\s*,\\s*\"weight\"\\s*:\\s*10.5\\s*}\\s*,\\s*"
-            + "\\{\\s*\"age\"\\s*:\\s*3\\s*,\\s*\"barking\"\\s*:\\s*true\\s*,\\s*\"furry\"\\s*:\\s*false\\s*,\\s*\"name\"\\s*:\\s*\"Milo\"\\s*,\\s*\"type\"\\s*:\\s*\"DOG\"\\s*,\\s*\"weight\"\\s*:\\s*5.5\\s*}\\s*,\\s*"
-            + "\\{\\s*\"age\"\\s*:\\s*6\\s*,\\s*\"furry\"\\s*:\\s*false\\s*,\\s*\"name\"\\s*:\\s*\"Tweety\"\\s*,\\s*\"type\"\\s*:\\s*\"GENERIC\"\\s*,\\s*\"weight\"\\s*:\\s*0.5\\s*}\\s*"
-            + "]\\s*}";
-    AnimalShelterInjectedAdapter animalShelter = new AnimalShelterInjectedAdapter();
-    animalShelter.addAnimal(new Cat(5, "Garfield", 10.5f, true, true));
-    animalShelter.addAnimal(new Dog(3, "Milo", 5.5f, false, true));
-    animalShelter.addAnimal(new Animal(6, "Tweety", 0.5f, false));
+    /*
+     * @testName: testCDISupport
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-4.7.1-3
+     *
+     * @test_Strategy: Assert that CDI injection is supported in adapters
+     */
+    @Test
+    public void testCDISupport() {
+        Jsonb jsonb = JsonbBuilder.create();
+        String validationPattern = "\\{\\s*\"animals\"\\s*:\\s*\\[\\s*"
+                + "\\{\\s*\"age\"\\s*:\\s*5\\s*,\\s*\"cuddly\"\\s*:\\s*true\\s*,\\s*\"furry\"\\s*:\\s*true\\s*,"
+                + "\\s*\"name\"\\s*:\\s*\"Garfield\"\\s*,\\s*\"type\"\\s*:\\s*\"CAT\"\\s*,\\s*\"weight\"\\s*:\\s*10.5\\s*}\\s*,"
+                + "\\s*"
+                + "\\{\\s*\"age\"\\s*:\\s*3\\s*,\\s*\"barking\"\\s*:\\s*true\\s*,\\s*\"furry\"\\s*:\\s*false\\s*,"
+                + "\\s*\"name\"\\s*:\\s*\"Milo\"\\s*,\\s*\"type\"\\s*:\\s*\"DOG\"\\s*,\\s*\"weight\"\\s*:\\s*5.5\\s*}\\s*,\\s*"
+                + "\\{\\s*\"age\"\\s*:\\s*6\\s*,\\s*\"furry\"\\s*:\\s*false\\s*,\\s*\"name\"\\s*:\\s*\"Tweety\"\\s*,"
+                + "\\s*\"type\"\\s*:\\s*\"GENERIC\"\\s*,\\s*\"weight\"\\s*:\\s*0.5\\s*}\\s*"
+                + "]\\s*}";
+        AnimalShelterInjectedAdapter animalShelter = new AnimalShelterInjectedAdapter();
+        animalShelter.addAnimal(new Cat(5, "Garfield", 10.5f, true, true));
+        animalShelter.addAnimal(new Dog(3, "Milo", 5.5f, false, true));
+        animalShelter.addAnimal(new Animal(6, "Tweety", 0.5f, false));
 
-    String jsonString = jsonb.toJson(animalShelter);
-    assertThat("Failed to correctly marshall complex type hierarchy using an adapter with a CDI managed field "
-                       + "configured using JsonbTypeAdapter annotation to a simpler class.",
-               jsonString, matchesPattern(validationPattern));
+        String jsonString = jsonb.toJson(animalShelter);
+        assertThat("Failed to correctly marshall complex type hierarchy using an adapter with a CDI managed field "
+                           + "configured using JsonbTypeAdapter annotation to a simpler class.",
+                   jsonString, matchesPattern(validationPattern));
 
-    String toSerialize = "{ \"animals\" : [ "
-            + "{ \"age\" : 5, \"cuddly\" : true, \"furry\" : true, \"name\" : \"Garfield\" , \"type\" : \"CAT\", \"weight\" : 10.5}, "
-            + "{ \"age\" : 3, \"barking\" : true, \"furry\" : false, \"name\" : \"Milo\", \"type\" : \"DOG\", \"weight\" : 5.5}, "
-            + "{ \"age\" : 6, \"furry\" : false, \"name\" : \"Tweety\", \"type\" : \"GENERIC\", \"weight\" : 0.5}"
-            + " ] }";
-    AnimalShelterInjectedAdapter unmarshalledObject = jsonb.fromJson(toSerialize, AnimalShelterInjectedAdapter.class);
-    assertThat("Failed to correctly unmarshall complex type hierarchy using an adapter with a CDI managed "
-                       + "field configured using JsonbTypeAdapter annotation to a simpler class.",
-               unmarshalledObject, is(animalShelter));
-  }
+        String toSerialize = "{ \"animals\" : [ "
+                + "{ \"age\" : 5, \"cuddly\" : true, \"furry\" : true, \"name\" : \"Garfield\" , \"type\" : \"CAT\", \"weight\""
+                + " : 10.5}, "
+                + "{ \"age\" : 3, \"barking\" : true, \"furry\" : false, \"name\" : \"Milo\", \"type\" : \"DOG\", \"weight\" : "
+                + "5.5}, "
+                + "{ \"age\" : 6, \"furry\" : false, \"name\" : \"Tweety\", \"type\" : \"GENERIC\", \"weight\" : 0.5}"
+                + " ] }";
+        AnimalShelterInjectedAdapter unmarshalledObject = jsonb.fromJson(toSerialize, AnimalShelterInjectedAdapter.class);
+        assertThat("Failed to correctly unmarshall complex type hierarchy using an adapter with a CDI managed "
+                           + "field configured using JsonbTypeAdapter annotation to a simpler class.",
+                   unmarshalledObject, is(animalShelter));
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,46 +20,48 @@
 
 package jakarta.json.bind.tck.customizedmapping.serializers.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import jakarta.json.bind.annotation.JsonbTypeSerializer;
 import jakarta.json.bind.tck.customizedmapping.serializers.model.serializer.AnimalListDeserializer;
 import jakarta.json.bind.tck.customizedmapping.serializers.model.serializer.AnimalListSerializer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class AnimalShelterWithSerializer {
-  @JsonbTypeSerializer(AnimalListSerializer.class)
-  @JsonbTypeDeserializer(AnimalListDeserializer.class)
-  private List<Animal> animals = new ArrayList<>();
+    @JsonbTypeSerializer(AnimalListSerializer.class)
+    @JsonbTypeDeserializer(AnimalListDeserializer.class)
+    private List<Animal> animals = new ArrayList<>();
 
-  public List<Animal> getAnimals() {
-    return animals;
-  }
+    public List<Animal> getAnimals() {
+        return animals;
+    }
 
-  public void setAnimals(List<Animal> animals) {
-    this.animals = animals;
-  }
+    public void setAnimals(List<Animal> animals) {
+        this.animals = animals;
+    }
 
-  public boolean addAnimal(Animal animal) {
-    return animals.add(animal);
-  }
+    public boolean addAnimal(Animal animal) {
+        return animals.add(animal);
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (!(o instanceof AnimalShelterWithSerializer))
-      return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AnimalShelterWithSerializer)) {
+            return false;
+        }
 
-    AnimalShelterWithSerializer that = (AnimalShelterWithSerializer) o;
+        AnimalShelterWithSerializer that = (AnimalShelterWithSerializer) o;
 
-    return animals != null ? animals.equals(that.animals)
-        : that.animals == null;
-  }
+        return animals != null ? animals.equals(that.animals)
+                : that.animals == null;
+    }
 
-  @Override
-  public int hashCode() {
-    return animals != null ? animals.hashCode() : 0;
-  }
+    @Override
+    public int hashCode() {
+        return animals != null ? animals.hashCode() : 0;
+    }
 }

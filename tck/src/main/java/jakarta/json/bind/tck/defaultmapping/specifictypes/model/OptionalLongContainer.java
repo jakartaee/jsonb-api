@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -25,33 +25,35 @@ import java.util.OptionalLong;
 import jakarta.json.bind.tck.TypeContainer;
 
 public class OptionalLongContainer implements TypeContainer<OptionalLong> {
-  private OptionalLong instance;
+    private OptionalLong instance;
 
-  @Override
-  public OptionalLong getInstance() {
-    return instance;
-  }
+    @Override
+    public OptionalLong getInstance() {
+        return instance;
+    }
 
-  @Override
-  public void setInstance(OptionalLong instance) {
-    this.instance = instance;
-  }
+    @Override
+    public void setInstance(OptionalLong instance) {
+        this.instance = instance;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (!(o instanceof OptionalLongContainer))
-      return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof OptionalLongContainer)) {
+            return false;
+        }
 
-    OptionalLongContainer that = (OptionalLongContainer) o;
+        OptionalLongContainer that = (OptionalLongContainer) o;
 
-    return instance != null ? instance.equals(that.instance)
-        : that.instance == null;
-  }
+        return instance != null ? instance.equals(that.instance)
+                : that.instance == null;
+    }
 
-  @Override
-  public int hashCode() {
-    return instance != null ? instance.hashCode() : 0;
-  }
+    @Override
+    public int hashCode() {
+        return instance != null ? instance.hashCode() : 0;
+    }
 }

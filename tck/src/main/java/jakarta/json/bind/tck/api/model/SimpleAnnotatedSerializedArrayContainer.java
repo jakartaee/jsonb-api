@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -25,18 +25,18 @@ import jakarta.json.bind.annotation.JsonbTypeSerializer;
 import jakarta.json.bind.tck.TypeContainer;
 
 public class SimpleAnnotatedSerializedArrayContainer
-    implements TypeContainer<SimpleContainer[]> {
-  @JsonbTypeSerializer(SimpleContainerArraySerializer.class)
-  @JsonbTypeDeserializer(SimpleContainerArrayDeserializer.class)
-  private SimpleContainer[] instance;
+        implements TypeContainer<SimpleContainer[]> {
+    @JsonbTypeSerializer(SimpleContainerArraySerializer.class)
+    @JsonbTypeDeserializer(SimpleContainerArrayDeserializer.class)
+    private SimpleContainer[] instance;
 
-  @Override
-  public SimpleContainer[] getInstance() {
-    return instance;
-  }
+    @Override
+    public SimpleContainer[] getInstance() {
+        return instance;
+    }
 
-  @Override
-  public void setInstance(SimpleContainer[] instance) {
-    this.instance = instance;
-  }
+    @Override
+    public void setInstance(SimpleContainer[] instance) {
+        this.instance = instance;
+    }
 }

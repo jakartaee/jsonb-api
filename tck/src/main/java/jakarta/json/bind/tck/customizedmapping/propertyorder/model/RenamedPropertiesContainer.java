@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -23,42 +23,42 @@ package jakarta.json.bind.tck.customizedmapping.propertyorder.model;
 import jakarta.json.bind.annotation.JsonbProperty;
 
 public class RenamedPropertiesContainer {
-  @JsonbProperty("first")
-  private int intInstance;
+    @JsonbProperty("first")
+    private int intInstance;
 
-  @JsonbProperty("second")
-  private String stringInstance;
+    @JsonbProperty("second")
+    private String stringInstance;
 
-  @JsonbProperty("third")
-  private long longInstance;
+    @JsonbProperty("third")
+    private long longInstance;
 
-  public String getStringInstance() {
-    return stringInstance;
-  }
-
-  public void setStringInstance(String stringInstance) {
-    this.stringInstance = stringInstance;
-    if (intInstance == 1) {
-      intInstance = 2;
+    public String getStringInstance() {
+        return stringInstance;
     }
-  }
 
-  public int getIntInstance() {
-    return intInstance;
-  }
-
-  public void setIntInstance(int intInstance) {
-    this.intInstance = intInstance;
-  }
-
-  public long getLongInstance() {
-    return longInstance;
-  }
-
-  public void setLongInstance(long longInstance) {
-    this.longInstance = longInstance;
-    if (intInstance == 2) {
-      intInstance = 3;
+    public void setStringInstance(String stringInstance) {
+        this.stringInstance = stringInstance;
+        if (intInstance == 1) {
+            intInstance = 2;
+        }
     }
-  }
+
+    public int getIntInstance() {
+        return intInstance;
+    }
+
+    public void setIntInstance(int intInstance) {
+        this.intInstance = intInstance;
+    }
+
+    public long getLongInstance() {
+        return longInstance;
+    }
+
+    public void setLongInstance(long longInstance) {
+        this.longInstance = longInstance;
+        if (intInstance == 2) {
+            intInstance = 3;
+        }
+    }
 }

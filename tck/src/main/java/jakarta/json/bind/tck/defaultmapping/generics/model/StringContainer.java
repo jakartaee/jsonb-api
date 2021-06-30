@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -21,13 +21,13 @@
 package jakarta.json.bind.tck.defaultmapping.generics.model;
 
 public class StringContainer extends GenericContainer<String> {
-  @Override
-  public String getInstance() {
-    return instance;
-  }
+    @Override
+    public String getInstance() {
+        return instance;
+    }
 
-  @Override
-  public void setInstance(String instance) {
-    this.instance = instance;
-  }
+    @Override
+    public void setInstance(String instance) {
+        this.instance = instance;
+    }
 }

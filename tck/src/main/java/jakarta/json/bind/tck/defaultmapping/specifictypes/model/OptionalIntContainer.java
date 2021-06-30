@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -25,33 +25,35 @@ import java.util.OptionalInt;
 import jakarta.json.bind.tck.TypeContainer;
 
 public class OptionalIntContainer implements TypeContainer<OptionalInt> {
-  private OptionalInt instance;
+    private OptionalInt instance;
 
-  @Override
-  public OptionalInt getInstance() {
-    return instance;
-  }
+    @Override
+    public OptionalInt getInstance() {
+        return instance;
+    }
 
-  @Override
-  public void setInstance(OptionalInt instance) {
-    this.instance = instance;
-  }
+    @Override
+    public void setInstance(OptionalInt instance) {
+        this.instance = instance;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (!(o instanceof OptionalIntContainer))
-      return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof OptionalIntContainer)) {
+            return false;
+        }
 
-    OptionalIntContainer that = (OptionalIntContainer) o;
+        OptionalIntContainer that = (OptionalIntContainer) o;
 
-    return instance != null ? instance.equals(that.instance)
-        : that.instance == null;
-  }
+        return instance != null ? instance.equals(that.instance)
+                : that.instance == null;
+    }
 
-  @Override
-  public int hashCode() {
-    return instance != null ? instance.hashCode() : 0;
-  }
+    @Override
+    public int hashCode() {
+        return instance != null ? instance.hashCode() : 0;
+    }
 }

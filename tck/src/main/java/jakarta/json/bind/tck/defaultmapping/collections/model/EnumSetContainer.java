@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -25,20 +25,20 @@ import java.util.EnumSet;
 import jakarta.json.bind.tck.TypeContainer;
 
 public class EnumSetContainer
-    implements TypeContainer<EnumSet<EnumSetContainer.Enum>> {
-  public enum Enum {
-    ONE, TWO
-  }
+        implements TypeContainer<EnumSet<EnumSetContainer.Enum>> {
+    public enum Enum {
+        ONE, TWO
+    }
 
-  private EnumSet<Enum> instance;
+    private EnumSet<Enum> instance;
 
-  @Override
-  public EnumSet<Enum> getInstance() {
-    return instance;
-  }
+    @Override
+    public EnumSet<Enum> getInstance() {
+        return instance;
+    }
 
-  @Override
-  public void setInstance(EnumSet<Enum> instance) {
-    this.instance = instance;
-  }
+    @Override
+    public void setInstance(EnumSet<Enum> instance) {
+        this.instance = instance;
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -25,16 +25,16 @@ import java.util.GregorianCalendar;
 import jakarta.json.bind.tck.TypeContainer;
 
 public class GregorianCalendarContainer
-    implements TypeContainer<GregorianCalendar> {
-  private GregorianCalendar instance;
+        implements TypeContainer<GregorianCalendar> {
+    private GregorianCalendar instance;
 
-  @Override
-  public GregorianCalendar getInstance() {
-    return instance;
-  }
+    @Override
+    public GregorianCalendar getInstance() {
+        return instance;
+    }
 
-  @Override
-  public void setInstance(GregorianCalendar instance) {
-    this.instance = instance;
-  }
+    @Override
+    public void setInstance(GregorianCalendar instance) {
+        this.instance = instance;
+    }
 }

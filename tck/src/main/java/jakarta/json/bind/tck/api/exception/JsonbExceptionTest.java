@@ -34,46 +34,46 @@ import static org.hamcrest.Matchers.nullValue;
  **/
 public class JsonbExceptionTest {
 
-  private static final String EXCEPTION_MESSAGE = "Exception message";
+    private static final String EXCEPTION_MESSAGE = "Exception message";
 
-  /*
-   * @testName: testJsonbExceptionString
-   *
-   * @assertion_ids: JSONB:JAVADOC:51
-   *
-   * @test_Strategy: Assert that JsonbException with String argument is creating
-   * a new RuntimeException with cause uninitialized and that subsequent call to
-   * #initCause may initialize the cause
-   */
-  @Test
-  public void testJsonbExceptionString() {
-    RuntimeException jsonbException = new JsonbException(EXCEPTION_MESSAGE);
-    String validationMessage = "Failed to create JsonbException with an exception message and empty cause.";
-    assertThat(validationMessage, jsonbException.getMessage(), is(EXCEPTION_MESSAGE));
-    assertThat(validationMessage, jsonbException.getCause(), nullValue());
+    /*
+     * @testName: testJsonbExceptionString
+     *
+     * @assertion_ids: JSONB:JAVADOC:51
+     *
+     * @test_Strategy: Assert that JsonbException with String argument is creating
+     * a new RuntimeException with cause uninitialized and that subsequent call to
+     * #initCause may initialize the cause
+     */
+    @Test
+    public void testJsonbExceptionString() {
+        RuntimeException jsonbException = new JsonbException(EXCEPTION_MESSAGE);
+        String validationMessage = "Failed to create JsonbException with an exception message and empty cause.";
+        assertThat(validationMessage, jsonbException.getMessage(), is(EXCEPTION_MESSAGE));
+        assertThat(validationMessage, jsonbException.getCause(), nullValue());
 
-    RuntimeException exception = new RuntimeException();
-    jsonbException.initCause(exception);
-    validationMessage = "Failed to initialize the JsonbException cause with a call to initCause method.";
-    assertThat(validationMessage, jsonbException.getMessage(), is(EXCEPTION_MESSAGE));
-    assertThat(validationMessage, jsonbException.getCause(), is(exception));
-  }
+        RuntimeException exception = new RuntimeException();
+        jsonbException.initCause(exception);
+        validationMessage = "Failed to initialize the JsonbException cause with a call to initCause method.";
+        assertThat(validationMessage, jsonbException.getMessage(), is(EXCEPTION_MESSAGE));
+        assertThat(validationMessage, jsonbException.getCause(), is(exception));
+    }
 
-  /*
-   * @testName: testJsonbExceptionStringThrowable
-   *
-   * @assertion_ids: JSONB:JAVADOC:52
-   *
-   * @test_Strategy: Assert that JsonbException with String and throwable
-   * arguments is creating a new RuntimeException with exception message and
-   * cause initialized
-   */
-  @Test
-  public void testJsonbExceptionStringThrowable() {
-    RuntimeException cause = new RuntimeException();
-    RuntimeException jsonbException = new JsonbException(EXCEPTION_MESSAGE, cause);
-    String validationMessage = "Failed to create JsonbException with an exception message and cause.";
-    assertThat(validationMessage, jsonbException.getMessage(), is(EXCEPTION_MESSAGE));
-    assertThat(validationMessage, jsonbException.getCause(), is(cause));
-  }
+    /*
+     * @testName: testJsonbExceptionStringThrowable
+     *
+     * @assertion_ids: JSONB:JAVADOC:52
+     *
+     * @test_Strategy: Assert that JsonbException with String and throwable
+     * arguments is creating a new RuntimeException with exception message and
+     * cause initialized
+     */
+    @Test
+    public void testJsonbExceptionStringThrowable() {
+        RuntimeException cause = new RuntimeException();
+        RuntimeException jsonbException = new JsonbException(EXCEPTION_MESSAGE, cause);
+        String validationMessage = "Failed to create JsonbException with an exception message and cause.";
+        assertThat(validationMessage, jsonbException.getMessage(), is(EXCEPTION_MESSAGE));
+        assertThat(validationMessage, jsonbException.getCause(), is(cause));
+    }
 }

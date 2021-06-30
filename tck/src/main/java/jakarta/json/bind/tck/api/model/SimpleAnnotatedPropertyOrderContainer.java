@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -22,25 +22,25 @@ package jakarta.json.bind.tck.api.model;
 
 import jakarta.json.bind.annotation.JsonbPropertyOrder;
 
-@JsonbPropertyOrder({ "secondInstance", "firstInstance" })
+@JsonbPropertyOrder({"secondInstance", "firstInstance"})
 public class SimpleAnnotatedPropertyOrderContainer {
-  private String firstInstance = "First String";
+    private String firstInstance = "First String";
 
-  private String secondInstance = "Second String";
+    private String secondInstance = "Second String";
 
-  public String getFirstInstance() {
-    return firstInstance;
-  }
+    public String getFirstInstance() {
+        return firstInstance;
+    }
 
-  public void setFirstInstance(String firstInstance) {
-    this.firstInstance = firstInstance;
-  }
+    public void setFirstInstance(String firstInstance) {
+        this.firstInstance = firstInstance;
+    }
 
-  public String getSecondInstance() {
-    return secondInstance;
-  }
+    public String getSecondInstance() {
+        return secondInstance;
+    }
 
-  public void setSecondInstance(String secondInstance) {
-    this.secondInstance = secondInstance;
-  }
+    public void setSecondInstance(String secondInstance) {
+        this.secondInstance = secondInstance;
+    }
 }

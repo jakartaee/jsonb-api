@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2020 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -21,6 +21,7 @@ import jakarta.json.bind.adapter.JsonbAdapter;
 import jakarta.json.bind.config.PropertyNamingStrategy;
 import jakarta.json.bind.config.PropertyVisibilityStrategy;
 
+import jakarta.json.bind.decorator.TypeDecorator;
 import jakarta.json.bind.serializer.JsonbDeserializer;
 import jakarta.json.bind.serializer.JsonbSerializer;
 
@@ -125,6 +126,11 @@ public class JsonbConfig {
      * Property used to specify custom deserializers.
      */
     public static final String DESERIALIZERS = "jsonb.derializers";
+
+    /**
+     * Property used to specify custom deserializers.
+     */
+    public static final String TYPE_DECORATORS = "jsonb.type-decorators";
 
     /**
      * Property used to specify custom binary data strategy.
@@ -357,6 +363,21 @@ public class JsonbConfig {
      */
     public final JsonbConfig withDeserializers(final JsonbDeserializer... deserializers) {
         mergeProperties(DESERIALIZERS, deserializers, JsonbDeserializer.class);
+        return this;
+    }
+
+    /**
+     * Property used to specify custom type decorators.
+     *
+     * Configures value of {@link #TYPE_DECORATORS} property.
+     *
+     * Calling withTypeDecorators more than once will merge the type decorators with previous value.
+     *
+     * @param typeDecorators Custom type decorators which affects deserialization and serialization of the decorated types.
+     * @return This JsonbConfig instance.
+     */
+    public final JsonbConfig withTypeDecorators(final TypeDecorator... typeDecorators) {
+        mergeProperties(TYPE_DECORATORS, typeDecorators, TypeDecorator.class);
         return this;
     }
 

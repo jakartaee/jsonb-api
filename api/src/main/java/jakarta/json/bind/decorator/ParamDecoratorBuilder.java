@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,18 +14,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-module jakarta.json.bind {
-    exports jakarta.json.bind;
-    exports jakarta.json.bind.adapter;
-    exports jakarta.json.bind.annotation;
-    exports jakarta.json.bind.config;
-    exports jakarta.json.bind.decorator;
-    exports jakarta.json.bind.serializer;
-    exports jakarta.json.bind.spi;
+package jakarta.json.bind.decorator;
 
-    requires jakarta.json;
-    requires java.logging;
+/**
+ * Builder of the {@link ParamDecorator} instance.
+ */
+public interface ParamDecoratorBuilder extends CommonDecoratorBuilder<ParamDecoratorBuilder, ParamDecorator> {
 
-    uses jakarta.json.bind.spi.JsonbProvider;
-    uses jakarta.json.bind.spi.DecoratorBuilderProvider;
 }

@@ -19,9 +19,9 @@ package jakarta.json.bind.decorator;
 import jakarta.json.bind.serializer.JsonbSerializer;
 
 /**
- * Extension of the {@link CommonDecoratorBuilder} over the serialization specific methods.
+ * Extension of the {@link JsonbDecoratorBuilder} over the serialization specific methods.
  */
-public interface SerializerDecoratorBuilder<T extends SerializerDecoratorBuilder<T, B>, B> extends CommonDecoratorBuilder<T, B> {
+public interface SerializerDecoratorBuilder<T extends SerializerDecoratorBuilder<T, B>, B> extends JsonbDecoratorBuilder<T, B> {
 
     /**
      * Set {@link JsonbSerializer} which should be used for this component.

@@ -26,7 +26,7 @@ import jakarta.json.bind.serializer.JsonbDeserializer;
 /**
  * Common interface for all decorator builders.
  */
-public interface CommonDecoratorBuilder<T extends CommonDecoratorBuilder<T, B>, B> {
+public interface JsonbDecoratorBuilder<T extends JsonbDecoratorBuilder<T, B>, B> {
 
     /**
      * Whether this component can be nillable.

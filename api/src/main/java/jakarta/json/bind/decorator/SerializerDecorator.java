@@ -18,13 +18,12 @@ package jakarta.json.bind.decorator;
 
 import java.util.Optional;
 
-import jakarta.json.bind.serializer.JsonbDeserializer;
 import jakarta.json.bind.serializer.JsonbSerializer;
 
 /**
- * Extension of the {@link CommonDecorator} over the serialization specific methods.
+ * Extension of the {@link JsonbDecorator} over the serialization specific methods.
  */
-public interface SerializerDecorator extends CommonDecorator {
+public interface SerializerDecorator extends JsonbDecorator {
 
     /**
      * Return {@link JsonbSerializer} of the component.

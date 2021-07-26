@@ -26,7 +26,7 @@ import jakarta.json.bind.serializer.JsonbDeserializer;
 /**
  * Common interface for all of the decorators.
  */
-public interface CommonDecorator {
+public interface JsonbDecorator {
 
     /**
      * Return {@link NumberFormat} specified to the required {@link Scope}.

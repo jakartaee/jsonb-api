@@ -21,7 +21,7 @@ import java.util.Objects;
 /**
  * Decorated parameter customization.
  */
-public interface ParamDecorator extends CommonDecorator {
+public interface ParamDecorator extends JsonbDecorator {
 
     /**
      * Create new {@link ParamDecoratorBuilder} instance base on parameter class and its json name.

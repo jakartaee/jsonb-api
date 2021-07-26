@@ -19,6 +19,6 @@ package jakarta.json.bind.decorator;
 /**
  * Builder of the {@link ParamDecorator} instance.
  */
-public interface ParamDecoratorBuilder extends CommonDecoratorBuilder<ParamDecoratorBuilder, ParamDecorator> {
+public interface ParamDecoratorBuilder extends JsonbDecoratorBuilder<ParamDecoratorBuilder, ParamDecorator> {
 
 }

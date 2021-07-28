@@ -18,6 +18,8 @@ package jakarta.json.bind.decorator;
 
 import java.util.Optional;
 
+import jakarta.json.bind.spi.JsonbProvider;
+
 /**
  * Decorated property customization.
  */
@@ -34,7 +36,7 @@ public interface PropertyDecorator extends SerializerDecorator {
         if (propertyName == null || propertyName.isBlank()) {
             throw new IllegalStateException("Property name cannot be null or empty");
         }
-        return BuilderProviderLoader.provider().newPropertyDecoratorBuilder(propertyName);
+        return JsonbProvider.provider().newPropertyDecoratorBuilder(propertyName);
     }
 
     /**

@@ -19,6 +19,8 @@ package jakarta.json.bind.decorator;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.json.bind.spi.JsonbProvider;
+
 /**
  * Decorated creator customization.
  */
@@ -32,7 +34,7 @@ public interface CreatorDecorator {
      * @return new creator decorator builder instance
      */
     static CreatorDecoratorBuilder builder() {
-        return BuilderProviderLoader.provider().newCreatorDecoratorBuilder();
+        return JsonbProvider.provider().newCreatorDecoratorBuilder();
     }
 
     /**
@@ -41,7 +43,7 @@ public interface CreatorDecorator {
      * @return new creator decorator builder instance
      */
     static CreatorDecoratorBuilder builder(String methodName) {
-        return BuilderProviderLoader.provider().newCreatorDecoratorBuilder(methodName);
+        return JsonbProvider.provider().newCreatorDecoratorBuilder(methodName);
     }
 
     /**

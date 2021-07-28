@@ -18,6 +18,8 @@ package jakarta.json.bind.decorator;
 
 import java.util.Objects;
 
+import jakarta.json.bind.spi.JsonbProvider;
+
 /**
  * Decorated parameter customization.
  */
@@ -36,7 +38,7 @@ public interface ParamDecorator extends JsonbDecorator {
         if (jsonName == null || jsonName.isBlank()) {
             throw new IllegalStateException("Json name cannot be null or empty");
         }
-        return BuilderProviderLoader.provider().newCreatorParamBuilder(paramClass, jsonName);
+        return JsonbProvider.provider().newCreatorParamBuilder(paramClass, jsonName);
     }
 
     /**

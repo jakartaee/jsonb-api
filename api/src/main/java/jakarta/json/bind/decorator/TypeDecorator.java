@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import jakarta.json.bind.config.PropertyOrderStrategy;
 import jakarta.json.bind.config.PropertyVisibilityStrategy;
+import jakarta.json.bind.spi.JsonbProvider;
 
 /**
  * Decorated type customization.
@@ -35,7 +36,7 @@ public interface TypeDecorator extends SerializerDecorator {
      * @return new type decorator builder instance
      */
     static TypeDecoratorBuilder builder(Class<?> typeClass) {
-        return BuilderProviderLoader.provider().newTypeDecoratorBuilder(typeClass);
+        return JsonbProvider.provider().newTypeDecoratorBuilder(typeClass);
     }
 
     /**

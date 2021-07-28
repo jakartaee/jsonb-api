@@ -27,5 +27,4 @@ module jakarta.json.bind {
     requires java.logging;
 
     uses jakarta.json.bind.spi.JsonbProvider;
-    uses jakarta.json.bind.spi.DecoratorBuilderProvider;
 }

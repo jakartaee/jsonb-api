@@ -65,7 +65,7 @@ public abstract class JsonbProvider {
      */
     private static final String DEFAULT_PROVIDER = "org.eclipse.yasson.JsonBindingProvider";
 
-    private static JsonbProvider instance = null;
+    private static volatile JsonbProvider instance = null;
     /**
      * Protected constructor.
      */

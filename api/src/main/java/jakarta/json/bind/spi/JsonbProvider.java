@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2020 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -65,6 +65,7 @@ public abstract class JsonbProvider {
      */
     private static final String DEFAULT_PROVIDER = "org.eclipse.yasson.JsonBindingProvider";
 
+    private static JsonbProvider instance = null;
     /**
      * Protected constructor.
      */
@@ -88,21 +89,28 @@ public abstract class JsonbProvider {
      */
     @SuppressWarnings("UseSpecificCatch")
     public static JsonbProvider provider() {
-        ServiceLoader<JsonbProvider> loader = ServiceLoader.load(JsonbProvider.class);
-        Iterator<JsonbProvider> it = loader.iterator();
-        if (it.hasNext()) {
-            return it.next();
+        if (instance == null) {
+            synchronized (JsonbProvider.class) {
+                if (instance == null) {
+                    ServiceLoader<JsonbProvider> loader = ServiceLoader.load(JsonbProvider.class);
+                    Iterator<JsonbProvider> it = loader.iterator();
+                    if (it.hasNext()) {
+                        instance = it.next();
+                    } else {
+                        try {
+                            Class<?> clazz = Class.forName(DEFAULT_PROVIDER);
+                            instance = (JsonbProvider) clazz.newInstance();
+                        } catch (ClassNotFoundException x) {
+                            throw new JsonbException("JSON Binding provider " + DEFAULT_PROVIDER + " not found", x);
+                        } catch (Exception x) {
+                            throw new JsonbException("JSON Binding provider " + DEFAULT_PROVIDER
+                                                             + " could not be instantiated: " + x, x);
+                        }
+                    }
+                }
+            }
         }
-
-        try {
-            Class<?> clazz = Class.forName(DEFAULT_PROVIDER);
-            return (JsonbProvider) clazz.newInstance();
-        } catch (ClassNotFoundException x) {
-            throw new JsonbException("JSON Binding provider " + DEFAULT_PROVIDER + " not found", x);
-        } catch (Exception x) {
-            throw new JsonbException("JSON Binding provider " + DEFAULT_PROVIDER
-                                        + " could not be instantiated: " + x, x);
-        }
+        return instance;
     }
 
     /**
@@ -129,11 +137,11 @@ public abstract class JsonbProvider {
     public static JsonbProvider provider(final String providerName) {
         if (providerName == null) {
             throw new IllegalArgumentException();
+        } else if (instance != null && providerName.equals(instance.getClass().getName())) {
+            return instance;
         }
         ServiceLoader<JsonbProvider> loader = ServiceLoader.load(JsonbProvider.class);
-        Iterator<JsonbProvider> it = loader.iterator();
-        while (it.hasNext()) {
-            JsonbProvider provider = it.next();
+        for (JsonbProvider provider : loader) {
             if (providerName.equals(provider.getClass().getName())) {
                 return provider;
             }

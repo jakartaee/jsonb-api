@@ -22,12 +22,12 @@ package jakarta.json.bind.decorator;
 public enum Scope {
 
     /**
-     * Transformation from JSON to the Java object.
+     * Transformation from Java object to the JSON.
      */
     SERIALIZATION,
 
     /**
-     * Transformation from Java object to the JSON.
+     * Transformation from JSON to the Java object.
      */
     DESERIALIZATION,
 

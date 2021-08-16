@@ -128,7 +128,7 @@ public class JsonbConfig {
     public static final String DESERIALIZERS = "jsonb.derializers";
 
     /**
-     * Property used to specify custom deserializers.
+     * Property used to specify type decorators.
      */
     public static final String TYPE_DECORATORS = "jsonb.type-decorators";
 

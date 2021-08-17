@@ -31,8 +31,4 @@ public enum Scope {
      */
     DESERIALIZATION,
 
-    /**
-     * Applied to the both {@link #SERIALIZATION} and {@link #DESERIALIZATION}.
-     */
-    BOTH
 }

@@ -23,7 +23,7 @@ import jakarta.json.bind.spi.JsonbProvider;
 /**
  * Decorated property customization.
  */
-public interface PropertyCustomization extends SerializerCustomization {
+public interface PropertyCustomization extends ScopedCustomization {
 
     /**
      * Create new {@link PropertyCustomizationBuilder} instance base on property name.

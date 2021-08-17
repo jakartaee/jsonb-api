@@ -16,28 +16,35 @@
 
 package jakarta.json.bind.customization;
 
+import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.util.Optional;
 
-import jakarta.json.bind.adapter.JsonbAdapter;
-import jakarta.json.bind.serializer.JsonbDeserializer;
-
 /**
- * Common interface for all the customizations.
+ * Customization methods without the scope.
  */
-public interface JsonbCustomization {
+public interface ScopelessCustomization extends JsonbCustomization {
 
     /**
-     * Return {@link JsonbDeserializer} of the component.
+     * Return specified {@link NumberFormat}.
      *
-     * @return component deserializer instance, otherwise empty
+     * @return specified {@link NumberFormat} instance, otherwise empty
      */
-    Optional<JsonbDeserializer<?>> deserializer();
+    Optional<NumberFormat> numberFormat();
 
     /**
-     * Return {@link JsonbAdapter} of the component.
+     * Return {@link DateFormat}.
      *
-     * @return component adapter instance, otherwise empty
+     * @return specified {@link DateFormat} instance, otherwise empty
      */
-    Optional<JsonbAdapter<?, ?>> adapter();
+    Optional<DateFormat> dateFormat();
+
+    /**
+     * Return if the component can be nillable.
+     *
+     * @return property nillable state, otherwise empty
+     */
+    Optional<Boolean> nillable();
+
 
 }

@@ -26,7 +26,7 @@ import jakarta.json.bind.spi.JsonbProvider;
 /**
  * Decorated type customization.
  */
-public interface TypeCustomization extends SerializerCustomization {
+public interface TypeCustomization extends SerializerCustomization, ScopelessCustomization {
 
     /**
      * Create new {@link TypeCustomizationBuilder} instance base on type class.

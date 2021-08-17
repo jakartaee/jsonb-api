@@ -23,7 +23,7 @@ import jakarta.json.bind.spi.JsonbProvider;
 /**
  * Decorated parameter customization.
  */
-public interface ParamCustomization extends JsonbCustomization {
+public interface ParamCustomization extends JsonbCustomization, ScopelessCustomization {
 
     /**
      * Create new {@link ParamCustomizationBuilder} instance base on parameter class and its json name.

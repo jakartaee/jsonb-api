@@ -50,7 +50,7 @@ public interface PropertyCustomizationBuilder
      * @return updated builder instance
      */
     default PropertyCustomizationBuilder name(String name) {
-        return name(name, Scope.BOTH);
+        return name(name, Scope.SERIALIZATION).name(name, Scope.DESERIALIZATION);
     }
 
     /**
@@ -72,7 +72,7 @@ public interface PropertyCustomizationBuilder
      */
     @Override
     default PropertyCustomizationBuilder nillable(boolean nillable) {
-        return nillable(nillable, Scope.BOTH);
+        return nillable(nillable, Scope.SERIALIZATION).nillable(nillable, Scope.DESERIALIZATION);
     }
 
     /**
@@ -94,7 +94,7 @@ public interface PropertyCustomizationBuilder
      */
     @Override
     default PropertyCustomizationBuilder numberFormat(String numberFormat) {
-        return numberFormat(numberFormat, Scope.BOTH);
+        return numberFormat(numberFormat, Scope.SERIALIZATION).numberFormat(numberFormat, Scope.DESERIALIZATION);
     }
 
     /**
@@ -107,7 +107,7 @@ public interface PropertyCustomizationBuilder
      */
     @Override
     default PropertyCustomizationBuilder numberFormat(Locale locale) {
-        return numberFormat(locale, Scope.BOTH);
+        return numberFormat(locale, Scope.SERIALIZATION).numberFormat(locale, Scope.DESERIALIZATION);
     }
 
     /**
@@ -121,7 +121,7 @@ public interface PropertyCustomizationBuilder
      */
     @Override
     default PropertyCustomizationBuilder numberFormat(String numberFormat, Locale locale) {
-        return numberFormat(numberFormat, locale, Scope.BOTH);
+        return numberFormat(numberFormat, locale, Scope.SERIALIZATION).numberFormat(numberFormat, locale, Scope.DESERIALIZATION);
     }
 
     /**
@@ -134,7 +134,7 @@ public interface PropertyCustomizationBuilder
      */
     @Override
     default PropertyCustomizationBuilder numberFormat(NumberFormat numberFormat) {
-        return numberFormat(numberFormat, Scope.BOTH);
+        return numberFormat(numberFormat, Scope.SERIALIZATION).numberFormat(numberFormat, Scope.DESERIALIZATION);
     }
 
     /**
@@ -189,7 +189,7 @@ public interface PropertyCustomizationBuilder
      */
     @Override
     default PropertyCustomizationBuilder dateFormat(String dateFormat, Locale locale) {
-        return dateFormat(dateFormat, locale, Scope.BOTH);
+        return dateFormat(dateFormat, locale, Scope.SERIALIZATION).dateFormat(dateFormat, locale, Scope.DESERIALIZATION);
     }
 
     /**
@@ -202,7 +202,8 @@ public interface PropertyCustomizationBuilder
      */
     @Override
     default PropertyCustomizationBuilder dateFormat(String dateFormat) {
-        return dateFormat(dateFormat, Locale.getDefault(), Scope.BOTH);
+        return dateFormat(dateFormat, Locale.getDefault(), Scope.SERIALIZATION)
+                .dateFormat(dateFormat, Locale.getDefault(), Scope.DESERIALIZATION);
     }
 
 
@@ -216,7 +217,8 @@ public interface PropertyCustomizationBuilder
      */
     @Override
     default PropertyCustomizationBuilder dateFormat(Locale locale) {
-        return dateFormat(JsonbDateFormat.DEFAULT_FORMAT, locale, Scope.BOTH);
+        return dateFormat(JsonbDateFormat.DEFAULT_FORMAT, locale, Scope.SERIALIZATION)
+                .dateFormat(JsonbDateFormat.DEFAULT_FORMAT, locale, Scope.DESERIALIZATION);
     }
 
     /**
@@ -229,7 +231,7 @@ public interface PropertyCustomizationBuilder
      */
     @Override
     default PropertyCustomizationBuilder dateFormat(DateFormat dateFormat) {
-        return dateFormat(dateFormat, Scope.BOTH);
+        return dateFormat(dateFormat, Scope.SERIALIZATION).dateFormat(dateFormat, Scope.DESERIALIZATION);
     }
 
     /**

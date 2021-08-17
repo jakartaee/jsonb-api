@@ -56,8 +56,8 @@ public interface CreatorCustomizationBuilder {
      * Add new {@link PropertyCustomization} of the property.
      * <br>
      * Shortcut method to the {@link #addParam(ParamCustomization)}. It is not required to create {@link CreatorCustomizationBuilder}
-     * since this method will create is based on the provided parameter class and json name. Created builder is provided over
-     * the paramBuilder.
+     * since this method will create {@link CreatorCustomizationBuilder} based on the provided parameter class and json name.
+     * Created builder is provided over the paramBuilder.
      * <br>
      * All creator parameters are required to be added in exact order as they are on decorated factory method/constructor.
      * <br>

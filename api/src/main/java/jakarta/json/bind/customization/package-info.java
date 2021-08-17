@@ -16,7 +16,7 @@
 
 /**
  * <p>
- * Defines customizations for different components to provide runtime customization with the same possibility as
+ * Defines customizations for different components to provide runtime customization with the same capability as
  * annotation approach.
  * </p>
  *

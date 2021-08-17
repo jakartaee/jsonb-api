@@ -16,6 +16,7 @@
 
 package jakarta.json.bind.customization;
 
+import java.lang.annotation.Annotation;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -281,5 +282,25 @@ public interface PropertyCustomizationBuilder
      * @return updated builder instance
      */
     PropertyCustomizationBuilder transientProperty(boolean isTransient, Scope scope);
+
+    /**
+     * Ignore selected annotation in the given {@link Scope}.
+     *
+     * @param ignoredAnnotation annotation to be ignored
+     * @return updated builder instance
+     */
+    @Override
+    default PropertyCustomizationBuilder ignoreAnnotation(Class<? extends Annotation> ignoredAnnotation) {
+        return ignoreAnnotation(ignoredAnnotation, Scope.SERIALIZATION)
+                .ignoreAnnotation(ignoredAnnotation, Scope.DESERIALIZATION);
+    }
+
+    /**
+     * Ignore selected annotation on the property/accessor method depending on the scope.
+     *
+     * @param ignoredAnnotation annotation to be ignored
+     * @return updated builder instance
+     */
+    PropertyCustomizationBuilder ignoreAnnotation(Class<? extends Annotation> ignoredAnnotation, Scope scope);
 
 }

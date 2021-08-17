@@ -45,10 +45,11 @@ public interface ScopedCustomization extends SerializerCustomization {
     Optional<DateFormat> dateFormat(Scope scope);
 
     /**
-     * Return if the component can be nillable in the given {@link Scope}.
+     * Return whether the component can be nillable in the given {@link Scope}.
+     * If no explicit value has been set, empty optional is returned.
      *
      * @param scope required scope
-     * @return property nillable state, otherwise empty
+     * @return property nillable state, if not explicitly set empty is returned
      */
     Optional<Boolean> nillable(Scope scope);
 

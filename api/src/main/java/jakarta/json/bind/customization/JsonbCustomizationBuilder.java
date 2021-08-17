@@ -16,6 +16,7 @@
 
 package jakarta.json.bind.customization;
 
+import java.lang.annotation.Annotation;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -117,6 +118,14 @@ public interface JsonbCustomizationBuilder<T extends JsonbCustomizationBuilder<T
      * @return updated builder instance
      */
     T dateFormat(DateFormat dateFormat);
+
+    /**
+     * Ignores selected annotation on the component.
+     *
+     * @param ignoredAnnotation annotation to be ignored
+     * @return updated builder instance
+     */
+    T ignoreAnnotation(Class<? extends Annotation> ignoredAnnotation);
 
     /**
      * Build the new instance from this builder.

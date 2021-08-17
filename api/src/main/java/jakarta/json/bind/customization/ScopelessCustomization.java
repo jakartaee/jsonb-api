@@ -40,9 +40,10 @@ public interface ScopelessCustomization extends JsonbCustomization {
     Optional<DateFormat> dateFormat();
 
     /**
-     * Return if the component can be nillable.
+     * Return whether this component can be nillable.
+     * If no explicit value has been set, empty optional is returned.
      *
-     * @return property nillable state, otherwise empty
+     * @return property nillable state, if not explicitly set empty is returned
      */
     Optional<Boolean> nillable();
 

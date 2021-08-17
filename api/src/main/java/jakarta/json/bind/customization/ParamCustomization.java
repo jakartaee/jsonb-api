@@ -27,7 +27,7 @@ public interface ParamCustomization extends JsonbCustomization {
 
     /**
      * Create new {@link ParamCustomizationBuilder} instance base on parameter class and its json name.
-     * Both parameter class and json name are required to be non-null or empty.
+     * Both class and json name are required to be non-null or empty.
      *
      * @param paramClass parameter class
      * @param jsonName parameter json name
@@ -38,7 +38,7 @@ public interface ParamCustomization extends JsonbCustomization {
         if (jsonName == null || jsonName.isBlank()) {
             throw new IllegalStateException("Json name cannot be null or empty");
         }
-        return JsonbProvider.provider().newCreatorParamBuilder(paramClass, jsonName);
+        return JsonbProvider.provider().newParamCustomizationBuilder(paramClass, jsonName);
     }
 
     /**

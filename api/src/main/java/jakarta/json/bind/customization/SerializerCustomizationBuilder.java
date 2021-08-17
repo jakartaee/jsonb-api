@@ -21,8 +21,8 @@ import jakarta.json.bind.serializer.JsonbSerializer;
 /**
  * Extension of the {@link JsonbCustomizationBuilder} over the serialization specific methods.
  */
-public interface SerializerCustomizationBuilder<T extends SerializerCustomizationBuilder<T, B>, B> extends
-                                                                                                   JsonbCustomizationBuilder<T, B> {
+public interface SerializerCustomizationBuilder<T extends SerializerCustomizationBuilder<T, B>, B extends JsonbCustomization>
+        extends JsonbCustomizationBuilder<T, B> {
 
     /**
      * Set {@link JsonbSerializer} which should be used for this component.

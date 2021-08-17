@@ -207,6 +207,6 @@ public abstract class JsonbProvider {
      * @param jsonName customized parameter json name
      * @return new builder instance
      */
-    public abstract ParamCustomizationBuilder newCreatorParamBuilder(Class<?> paramClass, String jsonName);
+    public abstract ParamCustomizationBuilder newParamCustomizationBuilder(Class<?> paramClass, String jsonName);
 
 }

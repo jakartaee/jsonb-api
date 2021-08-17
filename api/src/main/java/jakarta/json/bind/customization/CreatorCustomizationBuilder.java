@@ -33,12 +33,12 @@ public interface CreatorCustomizationBuilder {
      * @param creatorParam creator parameter
      * @return updated builder instance
      */
-    CreatorCustomizationBuilder addParameter(ParamCustomization creatorParam);
+    CreatorCustomizationBuilder addParam(ParamCustomization creatorParam);
 
     /**
      * Add new {@link ParamCustomization} of the property.
      * <br>
-     * Shortcut method to the {@link #addParameter(ParamCustomization)}. It is not required to create {@link CreatorCustomizationBuilder}
+     * Shortcut method to the {@link #addParam(ParamCustomization)}. It is not required to create {@link CreatorCustomizationBuilder}
      * since this method will create {@link ParamCustomization} based on the provided parameter class and json name and by calling
      * {@link ParamCustomization#create(Class, String)} method. No further customizations will be applied.
      * <br>
@@ -48,14 +48,14 @@ public interface CreatorCustomizationBuilder {
      * @param jsonName json name of the parameter
      * @return updated builder instance
      */
-    default CreatorCustomizationBuilder addParameter(Class<?> parameterClass, String jsonName) {
-        return addParameter(ParamCustomization.create(parameterClass, jsonName));
+    default CreatorCustomizationBuilder addParam(Class<?> parameterClass, String jsonName) {
+        return addParam(ParamCustomization.create(parameterClass, jsonName));
     }
 
     /**
      * Add new {@link PropertyCustomization} of the property.
      * <br>
-     * Shortcut method to the {@link #addParameter(ParamCustomization)}. It is not required to create {@link CreatorCustomizationBuilder}
+     * Shortcut method to the {@link #addParam(ParamCustomization)}. It is not required to create {@link CreatorCustomizationBuilder}
      * since this method will create is based on the provided parameter class and json name. Created builder is provided over
      * the paramBuilder.
      * <br>
@@ -71,12 +71,12 @@ public interface CreatorCustomizationBuilder {
      * @param paramBuilder builder used to customize parameter
      * @return updated builder instance
      */
-    default CreatorCustomizationBuilder addParameter(Class<?> parameterClass,
-                                                     String jsonName,
-                                                     Consumer<ParamCustomizationBuilder> paramBuilder) {
+    default CreatorCustomizationBuilder addParam(Class<?> parameterClass,
+                                                 String jsonName,
+                                                 Consumer<ParamCustomizationBuilder> paramBuilder) {
         ParamCustomizationBuilder builder = ParamCustomization.builder(parameterClass, jsonName);
         paramBuilder.accept(builder);
-        return addParameter(builder.build());
+        return addParam(builder.build());
     }
 
     /**

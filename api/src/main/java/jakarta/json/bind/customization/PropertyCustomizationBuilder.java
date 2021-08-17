@@ -63,6 +63,28 @@ public interface PropertyCustomizationBuilder
     PropertyCustomizationBuilder name(String name, Scope scope);
 
     /**
+     * Whether this component can be nillable.
+     *
+     * This number format is used for serialization and deserialization of the property.
+     *
+     * @param nillable nillable component
+     * @return updated builder instance
+     */
+    @Override
+    default PropertyCustomizationBuilder nillable(boolean nillable) {
+        return nillable(nillable, Scope.BOTH);
+    }
+
+    /**
+     * Whether this component should be nillable in the given {@link Scope}.
+     *
+     * @param nillable nillable component
+     * @param scope scope of the nillable
+     * @return updated builder instance
+     */
+    PropertyCustomizationBuilder nillable(boolean nillable, Scope scope);
+
+    /**
      * Set number format which should be used.
      *
      * This number format is used for serialization and deserialization of the property.

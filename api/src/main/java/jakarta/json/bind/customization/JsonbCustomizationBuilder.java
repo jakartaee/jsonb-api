@@ -26,7 +26,7 @@ import jakarta.json.bind.serializer.JsonbDeserializer;
 /**
  * Common interface for all customization builders.
  */
-public interface JsonbCustomizationBuilder<T extends JsonbCustomizationBuilder<T, B>, B> {
+public interface JsonbCustomizationBuilder<T extends JsonbCustomizationBuilder<T, B>, B extends JsonbCustomization> {
 
     /**
      * Whether this component can be nillable.

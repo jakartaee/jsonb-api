@@ -55,7 +55,7 @@ public interface CreatorCustomization {
     Optional<String> factoryMethodName();
 
     /**
-     * Return {@link List} of the registered parameters. The order of the parameters needs to be the same as they were added.
+     * Return immutable {@link List} of the registered parameters. The order of the parameters needs to be the same as they were added.
      * If no parameters were added, empty {@link List} is returned.
      *
      * @return creator parameters

@@ -18,10 +18,10 @@ package jakarta.json.bind.spi;
 
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
-import jakarta.json.bind.decorator.CreatorDecoratorBuilder;
-import jakarta.json.bind.decorator.ParamDecoratorBuilder;
-import jakarta.json.bind.decorator.PropertyDecoratorBuilder;
-import jakarta.json.bind.decorator.TypeDecoratorBuilder;
+import jakarta.json.bind.customization.CreatorCustomizationBuilder;
+import jakarta.json.bind.customization.ParamCustomizationBuilder;
+import jakarta.json.bind.customization.PropertyCustomizationBuilder;
+import jakarta.json.bind.customization.TypeCustomizationBuilder;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;
@@ -170,43 +170,43 @@ public abstract class JsonbProvider {
     public abstract JsonbBuilder create();
 
     /**
-     * Return new {@link TypeDecoratorBuilder} instance based on decorated type class.
+     * Return new {@link TypeCustomizationBuilder} instance based on customized type class.
      *
-     * @param decoratedType decorated type class
+     * @param decoratedType customized type class
      * @return new builder instance
      */
-    public abstract TypeDecoratorBuilder newTypeDecoratorBuilder(Class<?> decoratedType);
+    public abstract TypeCustomizationBuilder newTypeCustomizationBuilder(Class<?> decoratedType);
 
     /**
-     * Return new {@link PropertyDecoratorBuilder} instance based on decorated property name.
+     * Return new {@link PropertyCustomizationBuilder} instance based on customized property name.
      *
-     * @param propertyName decorated property name
+     * @param propertyName customized property name
      * @return new builder instance
      */
-    public abstract PropertyDecoratorBuilder newPropertyDecoratorBuilder(String propertyName);
+    public abstract PropertyCustomizationBuilder newPropertyCustomizationBuilder(String propertyName);
 
     /**
-     * Return new {@link CreatorDecoratorBuilder}.
+     * Return new {@link CreatorCustomizationBuilder}.
      *
      * @return new builder instance
      */
-    public abstract CreatorDecoratorBuilder newCreatorDecoratorBuilder();
+    public abstract CreatorCustomizationBuilder newCreatorCustomizationBuilder();
 
     /**
-     * Return new {@link CreatorDecoratorBuilder} instance based on creator method name.
+     * Return new {@link CreatorCustomizationBuilder} instance based on creator method name.
      *
-     * @param methodName decorated creator method name
+     * @param methodName customized creator method name
      * @return new builder instance
      */
-    public abstract CreatorDecoratorBuilder newCreatorDecoratorBuilder(String methodName);
+    public abstract CreatorCustomizationBuilder newCreatorCustomizationBuilder(String methodName);
 
     /**
-     * Return new {@link ParamDecoratorBuilder} instance based on parameter class and its name in JSON document.
+     * Return new {@link ParamCustomizationBuilder} instance based on parameter class and its name in JSON document.
      *
-     * @param paramClass decorated parameter class
-     * @param jsonName decorated parameter json name
+     * @param paramClass customized parameter class
+     * @param jsonName customized parameter json name
      * @return new builder instance
      */
-    public abstract ParamDecoratorBuilder newCreatorParamBuilder(Class<?> paramClass, String jsonName);
+    public abstract ParamCustomizationBuilder newCreatorParamBuilder(Class<?> paramClass, String jsonName);
 
 }

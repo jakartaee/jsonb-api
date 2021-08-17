@@ -14,21 +14,25 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package jakarta.json.bind.decorator;
-
-import jakarta.json.bind.serializer.JsonbSerializer;
+package jakarta.json.bind.customization;
 
 /**
- * Extension of the {@link JsonbDecoratorBuilder} over the serialization specific methods.
+ * Scope of upon which the customization should be used.
  */
-public interface SerializerDecoratorBuilder<T extends SerializerDecoratorBuilder<T, B>, B> extends JsonbDecoratorBuilder<T, B> {
+public enum Scope {
 
     /**
-     * Set {@link JsonbSerializer} which should be used for this component.
-     *
-     * @param serializer component deserializer
-     * @return updated builder instance
+     * Transformation from Java object to the JSON.
      */
-    T serializer(JsonbSerializer<?> serializer);
+    SERIALIZATION,
 
+    /**
+     * Transformation from JSON to the Java object.
+     */
+    DESERIALIZATION,
+
+    /**
+     * Applied to the both {@link #SERIALIZATION} and {@link #DESERIALIZATION}.
+     */
+    BOTH
 }

@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package jakarta.json.bind.decorator;
+package jakarta.json.bind.customization;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,26 +24,26 @@ import jakarta.json.bind.spi.JsonbProvider;
 /**
  * Decorated creator customization.
  */
-public interface CreatorDecorator {
+public interface CreatorCustomization {
 
     /**
-     * Create new {@link CreatorDecoratorBuilder} instance.
+     * Create new {@link CreatorCustomizationBuilder} instance.
      *
      * Builder created via this method targets constructors of the class it is bound to.
      *
-     * @return new creator decorator builder instance
+     * @return new creator customization builder instance
      */
-    static CreatorDecoratorBuilder builder() {
-        return JsonbProvider.provider().newCreatorDecoratorBuilder();
+    static CreatorCustomizationBuilder builder() {
+        return JsonbProvider.provider().newCreatorCustomizationBuilder();
     }
 
     /**
-     * Create new {@link CreatorDecoratorBuilder} instance based on creator method name.
+     * Create new {@link CreatorCustomizationBuilder} instance based on creator method name.
      *
-     * @return new creator decorator builder instance
+     * @return new creator customization builder instance
      */
-    static CreatorDecoratorBuilder builder(String methodName) {
-        return JsonbProvider.provider().newCreatorDecoratorBuilder(methodName);
+    static CreatorCustomizationBuilder builder(String methodName) {
+        return JsonbProvider.provider().newCreatorCustomizationBuilder(methodName);
     }
 
     /**
@@ -60,6 +60,6 @@ public interface CreatorDecorator {
      *
      * @return creator parameters
      */
-    List<ParamDecorator> params();
+    List<ParamCustomization> params();
 
 }

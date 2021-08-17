@@ -21,7 +21,7 @@ import jakarta.json.bind.adapter.JsonbAdapter;
 import jakarta.json.bind.config.PropertyNamingStrategy;
 import jakarta.json.bind.config.PropertyVisibilityStrategy;
 
-import jakarta.json.bind.decorator.TypeDecorator;
+import jakarta.json.bind.customization.TypeCustomization;
 import jakarta.json.bind.serializer.JsonbDeserializer;
 import jakarta.json.bind.serializer.JsonbSerializer;
 
@@ -128,9 +128,9 @@ public class JsonbConfig {
     public static final String DESERIALIZERS = "jsonb.derializers";
 
     /**
-     * Property used to specify type decorators.
+     * Property used to specify runtime type customizations.
      */
-    public static final String TYPE_DECORATORS = "jsonb.type-decorators";
+    public static final String TYPE_CUSTOMIZATIONS = "jsonb.type-customizations";
 
     /**
      * Property used to specify custom binary data strategy.
@@ -367,17 +367,17 @@ public class JsonbConfig {
     }
 
     /**
-     * Property used to specify custom type decorators.
+     * Property used to specify custom runtime type customizations.
      *
-     * Configures value of {@link #TYPE_DECORATORS} property.
+     * Configures value of {@link #TYPE_CUSTOMIZATIONS} property.
      *
-     * Calling withTypeDecorators more than once will merge the type decorators with previous value.
+     * Calling withTypeCustomizations more than once will merge the type customizations with previous value.
      *
-     * @param typeDecorators Custom type decorators which affects deserialization and serialization of the decorated types.
+     * @param typeCustomizations Type customizations which affects deserialization and serialization of the customized types.
      * @return This JsonbConfig instance.
      */
-    public final JsonbConfig withTypeDecorators(final TypeDecorator... typeDecorators) {
-        mergeProperties(TYPE_DECORATORS, typeDecorators, TypeDecorator.class);
+    public final JsonbConfig withTypeCustomizations(final TypeCustomization... typeCustomizations) {
+        mergeProperties(TYPE_CUSTOMIZATIONS, typeCustomizations, TypeCustomization.class);
         return this;
     }
 

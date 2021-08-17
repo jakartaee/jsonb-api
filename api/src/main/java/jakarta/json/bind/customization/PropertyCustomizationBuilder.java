@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package jakarta.json.bind.decorator;
+package jakarta.json.bind.customization;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -40,7 +40,8 @@ import jakarta.json.bind.annotation.JsonbDateFormat;
  * }</pre>
  * </p>
  */
-public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<PropertyDecoratorBuilder, PropertyDecorator> {
+public interface PropertyCustomizationBuilder
+        extends SerializerCustomizationBuilder<PropertyCustomizationBuilder, PropertyCustomization> {
 
     /**
      * Set custom property name for serialization and deserialization.
@@ -48,7 +49,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @param name custom property name
      * @return updated builder instance
      */
-    default PropertyDecoratorBuilder name(String name) {
+    default PropertyCustomizationBuilder name(String name) {
         return name(name, Scope.BOTH);
     }
 
@@ -59,7 +60,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @param scope scope to which this name is bound
      * @return updated builder instance
      */
-    PropertyDecoratorBuilder name(String name, Scope scope);
+    PropertyCustomizationBuilder name(String name, Scope scope);
 
     /**
      * Set number format which should be used.
@@ -70,7 +71,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @return updated builder instance
      */
     @Override
-    default PropertyDecoratorBuilder numberFormat(String numberFormat) {
+    default PropertyCustomizationBuilder numberFormat(String numberFormat) {
         return numberFormat(numberFormat, Scope.BOTH);
     }
 
@@ -83,7 +84,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @return updated builder instance
      */
     @Override
-    default PropertyDecoratorBuilder numberFormat(Locale locale) {
+    default PropertyCustomizationBuilder numberFormat(Locale locale) {
         return numberFormat(locale, Scope.BOTH);
     }
 
@@ -97,7 +98,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @return updated builder instance
      */
     @Override
-    default PropertyDecoratorBuilder numberFormat(String numberFormat, Locale locale) {
+    default PropertyCustomizationBuilder numberFormat(String numberFormat, Locale locale) {
         return numberFormat(numberFormat, locale, Scope.BOTH);
     }
 
@@ -110,7 +111,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @return updated builder instance
      */
     @Override
-    default PropertyDecoratorBuilder numberFormat(NumberFormat numberFormat) {
+    default PropertyCustomizationBuilder numberFormat(NumberFormat numberFormat) {
         return numberFormat(numberFormat, Scope.BOTH);
     }
 
@@ -122,7 +123,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @param scope scope of the format
      * @return updated builder instance
      */
-    PropertyDecoratorBuilder numberFormat(String numberFormat, Locale locale, Scope scope);
+    PropertyCustomizationBuilder numberFormat(String numberFormat, Locale locale, Scope scope);
 
     /**
      * Set {@link NumberFormat} instance which should be used in the given {@link Scope}.
@@ -131,7 +132,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @param scope scope of the format
      * @return updated builder instance
      */
-    PropertyDecoratorBuilder numberFormat(NumberFormat numberFormat, Scope scope);
+    PropertyCustomizationBuilder numberFormat(NumberFormat numberFormat, Scope scope);
 
     /**
      * Set number format which should be used in the given {@link Scope}.
@@ -140,7 +141,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @param scope scope of the format
      * @return updated builder instance
      */
-    default PropertyDecoratorBuilder numberFormat(String numberFormat, Scope scope) {
+    default PropertyCustomizationBuilder numberFormat(String numberFormat, Scope scope) {
         return numberFormat(numberFormat, Locale.getDefault(), scope);
     }
 
@@ -151,7 +152,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @param scope scope of the format
      * @return updated builder instance
      */
-    default PropertyDecoratorBuilder numberFormat(Locale locale, Scope scope) {
+    default PropertyCustomizationBuilder numberFormat(Locale locale, Scope scope) {
         return numberFormat("", locale, scope);
     }
 
@@ -165,7 +166,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @return updated builder instance
      */
     @Override
-    default PropertyDecoratorBuilder dateFormat(String dateFormat, Locale locale) {
+    default PropertyCustomizationBuilder dateFormat(String dateFormat, Locale locale) {
         return dateFormat(dateFormat, locale, Scope.BOTH);
     }
 
@@ -178,7 +179,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @return updated builder instance
      */
     @Override
-    default PropertyDecoratorBuilder dateFormat(String dateFormat) {
+    default PropertyCustomizationBuilder dateFormat(String dateFormat) {
         return dateFormat(dateFormat, Locale.getDefault(), Scope.BOTH);
     }
 
@@ -192,7 +193,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @return updated builder instance
      */
     @Override
-    default PropertyDecoratorBuilder dateFormat(Locale locale) {
+    default PropertyCustomizationBuilder dateFormat(Locale locale) {
         return dateFormat(JsonbDateFormat.DEFAULT_FORMAT, locale, Scope.BOTH);
     }
 
@@ -205,7 +206,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @return updated builder instance
      */
     @Override
-    default PropertyDecoratorBuilder dateFormat(DateFormat dateFormat) {
+    default PropertyCustomizationBuilder dateFormat(DateFormat dateFormat) {
         return dateFormat(dateFormat, Scope.BOTH);
     }
 
@@ -217,7 +218,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @param scope scope of the format
      * @return updated builder instance
      */
-    PropertyDecoratorBuilder dateFormat(String dateFormat, Locale locale, Scope scope);
+    PropertyCustomizationBuilder dateFormat(String dateFormat, Locale locale, Scope scope);
 
     /**
      * Set {@link DateFormat} instance which should be used in the given {@link Scope}.
@@ -225,7 +226,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @param dateFormat pre created DateFormat instance
      * @return updated builder instance
      */
-    PropertyDecoratorBuilder dateFormat(DateFormat dateFormat, Scope scope);
+    PropertyCustomizationBuilder dateFormat(DateFormat dateFormat, Scope scope);
 
     /**
      * Set date format which should be used in the given {@link Scope}.
@@ -234,7 +235,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @param scope scope of the format
      * @return updated builder instance
      */
-    default PropertyDecoratorBuilder dateFormat(String dateFormat, Scope scope) {
+    default PropertyCustomizationBuilder dateFormat(String dateFormat, Scope scope) {
         return dateFormat(dateFormat, Locale.getDefault(), scope);
     }
 
@@ -245,7 +246,7 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @param scope scope of the format
      * @return updated builder instance
      */
-    default PropertyDecoratorBuilder dateFormat(Locale locale, Scope scope) {
+    default PropertyCustomizationBuilder dateFormat(Locale locale, Scope scope) {
         return dateFormat(JsonbDateFormat.DEFAULT_FORMAT, locale, scope);
     }
 
@@ -255,6 +256,6 @@ public interface PropertyDecoratorBuilder extends SerializerDecoratorBuilder<Pro
      * @param isTransient transient property
      * @return updated builder instance
      */
-    PropertyDecoratorBuilder transientProperty(boolean isTransient, Scope scope);
+    PropertyCustomizationBuilder transientProperty(boolean isTransient, Scope scope);
 
 }

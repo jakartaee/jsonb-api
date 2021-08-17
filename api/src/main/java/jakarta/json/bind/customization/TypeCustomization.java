@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package jakarta.json.bind.decorator;
+package jakarta.json.bind.customization;
 
 import java.util.Map;
 import java.util.Optional;
@@ -26,17 +26,17 @@ import jakarta.json.bind.spi.JsonbProvider;
 /**
  * Decorated type customization.
  */
-public interface TypeDecorator extends SerializerDecorator {
+public interface TypeCustomization extends SerializerCustomization {
 
     /**
-     * Create new {@link TypeDecoratorBuilder} instance base on type class.
+     * Create new {@link TypeCustomizationBuilder} instance base on type class.
      * Parameter typeClass is required to be non-null.
      *
      * @param typeClass type class
-     * @return new type decorator builder instance
+     * @return new type customization builder instance
      */
-    static TypeDecoratorBuilder builder(Class<?> typeClass) {
-        return JsonbProvider.provider().newTypeDecoratorBuilder(typeClass);
+    static TypeCustomizationBuilder builder(Class<?> typeClass) {
+        return JsonbProvider.provider().newTypeCustomizationBuilder(typeClass);
     }
 
     /**
@@ -54,18 +54,18 @@ public interface TypeDecorator extends SerializerDecorator {
     Optional<PropertyVisibilityStrategy> propertyVisibilityStrategy();
 
     /**
-     * Return registered property decorators.
+     * Return registered property customizations.
      * If no property is registered, empty {@link Map} is returned.
      *
-     * @return map of the registered property decorators, otherwise empty map
+     * @return map of the registered property customizations, otherwise empty map
      */
-    Map<String, PropertyDecorator> properties();
+    Map<String, PropertyCustomization> properties();
 
     /**
-     * Return {@link CreatorDecorator} of the decorated type.
+     * Return {@link CreatorCustomization} of the decorated type.
      *
-     * @return creator decorator instance, otherwise empty
+     * @return creator customization instance, otherwise empty
      */
-    Optional<CreatorDecorator> creator();
+    Optional<CreatorCustomization> creator();
 
 }

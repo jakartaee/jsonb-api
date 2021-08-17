@@ -19,7 +19,7 @@ module jakarta.json.bind {
     exports jakarta.json.bind.adapter;
     exports jakarta.json.bind.annotation;
     exports jakarta.json.bind.config;
-    exports jakarta.json.bind.decorator;
+    exports jakarta.json.bind.customization;
     exports jakarta.json.bind.serializer;
     exports jakarta.json.bind.spi;
 

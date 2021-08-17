@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package jakarta.json.bind.decorator;
+package jakarta.json.bind.customization;
 
 import java.util.Objects;
 
@@ -23,17 +23,17 @@ import jakarta.json.bind.spi.JsonbProvider;
 /**
  * Decorated parameter customization.
  */
-public interface ParamDecorator extends JsonbDecorator {
+public interface ParamCustomization extends JsonbCustomization {
 
     /**
-     * Create new {@link ParamDecoratorBuilder} instance base on parameter class and its json name.
+     * Create new {@link ParamCustomizationBuilder} instance base on parameter class and its json name.
      * Both parameter class and json name are required to be non-null or empty.
      *
      * @param paramClass parameter class
      * @param jsonName parameter json name
-     * @return new param decorator builder instance
+     * @return new parameter customization builder instance
      */
-    static ParamDecoratorBuilder builder(Class<?> paramClass, String jsonName) {
+    static ParamCustomizationBuilder builder(Class<?> paramClass, String jsonName) {
         Objects.requireNonNull(paramClass, "Parameter class cannot be null");
         if (jsonName == null || jsonName.isBlank()) {
             throw new IllegalStateException("Json name cannot be null or empty");
@@ -42,14 +42,14 @@ public interface ParamDecorator extends JsonbDecorator {
     }
 
     /**
-     * Create new instance of {@link ParamDecorator} base on parameter class and its json name.
+     * Create new instance of {@link ParamCustomization} base on parameter class and its json name.
      * Both parameter class and json name are required to be non-null or empty.
      *
      * @param paramClass parameter class
      * @param jsonName parameter json name
-     * @return new parameter decorator instance
+     * @return new parameter customization instance
      */
-    static ParamDecorator create(Class<?> paramClass, String jsonName) {
+    static ParamCustomization create(Class<?> paramClass, String jsonName) {
         Objects.requireNonNull(paramClass, "Parameter class cannot be null");
         if (jsonName == null || jsonName.isBlank()) {
             throw new IllegalStateException("Json name cannot be null or empty");

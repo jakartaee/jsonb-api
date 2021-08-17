@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package jakarta.json.bind.decorator;
+package jakarta.json.bind.customization;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -25,7 +25,7 @@ import jakarta.json.bind.config.PropertyVisibilityStrategy;
 /**
  * Builder of the specific type customization.
  */
-public interface TypeDecoratorBuilder extends SerializerDecoratorBuilder<TypeDecoratorBuilder, TypeDecorator> {
+public interface TypeCustomizationBuilder extends SerializerCustomizationBuilder<TypeCustomizationBuilder, TypeCustomization> {
 
     /**
      * Set {@link PropertyOrderStrategy} which should be used.
@@ -33,7 +33,7 @@ public interface TypeDecoratorBuilder extends SerializerDecoratorBuilder<TypeDec
      * @param strategy property order strategy
      * @return updated builder instance
      */
-    TypeDecoratorBuilder propertyOrder(PropertyOrderStrategy strategy);
+    TypeCustomizationBuilder propertyOrder(PropertyOrderStrategy strategy);
 
     /**
      * Set {@link PropertyVisibilityStrategy} which should be used.
@@ -41,20 +41,20 @@ public interface TypeDecoratorBuilder extends SerializerDecoratorBuilder<TypeDec
      * @param strategy property visibility strategy
      * @return updated builder instance
      */
-    TypeDecoratorBuilder visibilityStrategy(PropertyVisibilityStrategy strategy);
+    TypeCustomizationBuilder visibilityStrategy(PropertyVisibilityStrategy strategy);
 
     /**
-     * Add new {@link PropertyDecorator} of the property.
+     * Add new {@link PropertyCustomization} of the property.
      *
-     * @param propertyDecorator property decorator
+     * @param propertyCustomization property customization
      * @return updated builder instance
      */
-    TypeDecoratorBuilder property(PropertyDecorator propertyDecorator);
+    TypeCustomizationBuilder property(PropertyCustomization propertyCustomization);
 
     /**
-     * Add new {@link PropertyDecorator} of the property.
+     * Add new {@link PropertyCustomization} of the property.
      * <br>
-     * Shortcut method to the {@link #property(PropertyDecorator)}. It is not required to create {@link PropertyDecoratorBuilder}
+     * Shortcut method to the {@link #property(PropertyCustomization)}. It is not required to create {@link PropertyCustomizationBuilder}
      * since this method will create it based on the provided property name and expose it over the propertyBuilder parameter.
      * <br>
      * Example usage:
@@ -65,24 +65,24 @@ public interface TypeDecoratorBuilder extends SerializerDecoratorBuilder<TypeDec
      * @param propertyBuilder builder used to customize property
      * @return updated builder instance
      */
-    default TypeDecoratorBuilder property(String propertyName, Consumer<PropertyDecoratorBuilder> propertyBuilder) {
-        PropertyDecoratorBuilder builder = PropertyDecorator.builder(Objects.requireNonNull(propertyName));
+    default TypeCustomizationBuilder property(String propertyName, Consumer<PropertyCustomizationBuilder> propertyBuilder) {
+        PropertyCustomizationBuilder builder = PropertyCustomization.builder(Objects.requireNonNull(propertyName));
         propertyBuilder.accept(builder);
         return property(builder.build());
     }
 
     /**
-     * Add new {@link CreatorDecorator} of the type.
+     * Add new {@link CreatorCustomization} of the type.
      *
-     * @param creatorDecorator creator decorator
+     * @param creatorCustomization creator customization
      * @return updated builder instance
      */
-    TypeDecoratorBuilder creator(CreatorDecorator creatorDecorator);
+    TypeCustomizationBuilder creator(CreatorCustomization creatorCustomization);
 
     /**
-     * Add new {@link CreatorDecorator} of the type.
+     * Add new {@link CreatorCustomization} of the type.
      * <br>
-     * Shortcut method to the {@link #creator(CreatorDecorator)}. It is not required to create {@link CreatorDecoratorBuilder}
+     * Shortcut method to the {@link #creator(CreatorCustomization)}. It is not required to create {@link CreatorCustomizationBuilder}
      * since this method will create it based on the creator method name and expose it over the creatorBuilder parameter.
      * <br>
      * Example usage:
@@ -94,16 +94,16 @@ public interface TypeDecoratorBuilder extends SerializerDecoratorBuilder<TypeDec
      * @param creatorBuilder creator builder instance consumer
      * @return updated builder instance
      */
-    default TypeDecoratorBuilder creator(String creatorMethodName, Consumer<CreatorDecoratorBuilder> creatorBuilder) {
-        CreatorDecoratorBuilder builder = CreatorDecorator.builder(creatorMethodName);
+    default TypeCustomizationBuilder creator(String creatorMethodName, Consumer<CreatorCustomizationBuilder> creatorBuilder) {
+        CreatorCustomizationBuilder builder = CreatorCustomization.builder(creatorMethodName);
         creatorBuilder.accept(builder);
         return creator(builder.build());
     }
 
     /**
-     * Add new {@link CreatorDecorator} of the type.
+     * Add new {@link CreatorCustomization} of the type.
      * <br>
-     * Shortcut method to the {@link #creator(CreatorDecorator)}. It is not required to create {@link CreatorDecoratorBuilder}
+     * Shortcut method to the {@link #creator(CreatorCustomization)}. It is not required to create {@link CreatorCustomizationBuilder}
      * since this method will create it and expose it over the creatorBuilder parameter. Since no factory method name is
      * provided, this creator builder is targeting constructors.
      * <br>
@@ -114,8 +114,8 @@ public interface TypeDecoratorBuilder extends SerializerDecoratorBuilder<TypeDec
      * @param creatorBuilder creator builder instance consumer
      * @return updated builder instance
      */
-    default TypeDecoratorBuilder creator(Consumer<CreatorDecoratorBuilder> creatorBuilder) {
-        CreatorDecoratorBuilder builder = CreatorDecorator.builder();
+    default TypeCustomizationBuilder creator(Consumer<CreatorCustomizationBuilder> creatorBuilder) {
+        CreatorCustomizationBuilder builder = CreatorCustomization.builder();
         creatorBuilder.accept(builder);
         return creator(builder.build());
     }

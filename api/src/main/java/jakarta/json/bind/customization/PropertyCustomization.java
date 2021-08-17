@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package jakarta.json.bind.decorator;
+package jakarta.json.bind.customization;
 
 import java.util.Optional;
 
@@ -23,20 +23,20 @@ import jakarta.json.bind.spi.JsonbProvider;
 /**
  * Decorated property customization.
  */
-public interface PropertyDecorator extends SerializerDecorator {
+public interface PropertyCustomization extends SerializerCustomization {
 
     /**
-     * Create new {@link PropertyDecoratorBuilder} instance base on property name.
+     * Create new {@link PropertyCustomizationBuilder} instance base on property name.
      * Property name is required to be non-null or empty.
      *
      * @param propertyName name of the decorated property
-     * @return new property decorator builder instance
+     * @return new property customization builder instance
      */
-    static PropertyDecoratorBuilder builder(String propertyName) {
+    static PropertyCustomizationBuilder builder(String propertyName) {
         if (propertyName == null || propertyName.isBlank()) {
             throw new IllegalStateException("Property name cannot be null or empty");
         }
-        return JsonbProvider.provider().newPropertyDecoratorBuilder(propertyName);
+        return JsonbProvider.provider().newPropertyCustomizationBuilder(propertyName);
     }
 
     /**

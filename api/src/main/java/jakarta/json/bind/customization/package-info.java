@@ -14,11 +14,12 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package jakarta.json.bind.decorator;
-
 /**
- * Builder of the {@link ParamDecorator} instance.
+ * <p>
+ * Defines customizations for different components to provide runtime customization with the same possibility as
+ * annotation approach.
+ * </p>
+ *
+ * @since JSON Binding 2.1
  */
-public interface ParamDecoratorBuilder extends JsonbDecoratorBuilder<ParamDecoratorBuilder, ParamDecorator> {
-
-}
+package jakarta.json.bind.customization;

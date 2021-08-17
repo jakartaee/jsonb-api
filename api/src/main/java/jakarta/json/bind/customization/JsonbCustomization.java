@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package jakarta.json.bind.decorator;
+package jakarta.json.bind.customization;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -24,9 +24,9 @@ import jakarta.json.bind.adapter.JsonbAdapter;
 import jakarta.json.bind.serializer.JsonbDeserializer;
 
 /**
- * Common interface for all of the decorators.
+ * Common interface for all the customizations.
  */
-public interface JsonbDecorator {
+public interface JsonbCustomization {
 
     /**
      * Return {@link NumberFormat} specified to the required {@link Scope}.

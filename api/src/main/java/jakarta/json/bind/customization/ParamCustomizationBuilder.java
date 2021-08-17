@@ -14,25 +14,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package jakarta.json.bind.decorator;
+package jakarta.json.bind.customization;
 
 /**
- * Scope of upon which the customization should be used.
+ * Builder of the {@link ParamCustomization} instance.
  */
-public enum Scope {
+public interface ParamCustomizationBuilder extends JsonbCustomizationBuilder<ParamCustomizationBuilder, ParamCustomization> {
 
-    /**
-     * Transformation from Java object to the JSON.
-     */
-    SERIALIZATION,
-
-    /**
-     * Transformation from JSON to the Java object.
-     */
-    DESERIALIZATION,
-
-    /**
-     * Applied to the both {@link #SERIALIZATION} and {@link #DESERIALIZATION}.
-     */
-    BOTH
 }

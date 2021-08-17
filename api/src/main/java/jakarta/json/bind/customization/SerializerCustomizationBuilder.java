@@ -14,12 +14,22 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
+package jakarta.json.bind.customization;
+
+import jakarta.json.bind.serializer.JsonbSerializer;
+
 /**
- * <p>
- * Defines decorators for different components to provide runtime customization with the same possibility as
- * annotation approach.
- * </p>
- *
- * @since JSON Binding 2.1
+ * Extension of the {@link JsonbCustomizationBuilder} over the serialization specific methods.
  */
-package jakarta.json.bind.decorator;
+public interface SerializerCustomizationBuilder<T extends SerializerCustomizationBuilder<T, B>, B> extends
+                                                                                                   JsonbCustomizationBuilder<T, B> {
+
+    /**
+     * Set {@link JsonbSerializer} which should be used for this component.
+     *
+     * @param serializer component deserializer
+     * @return updated builder instance
+     */
+    T serializer(JsonbSerializer<?> serializer);
+
+}

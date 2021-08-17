@@ -14,33 +14,33 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package jakarta.json.bind.decorator;
+package jakarta.json.bind.customization;
 
 import java.util.function.Consumer;
 
 /**
- * Builder of the {@link CreatorDecorator} instance.
+ * Builder of the {@link CreatorCustomization} instance.
  *
  * When no creator method name is specified, it is assumed that creator is constructor.
  */
-public interface CreatorDecoratorBuilder {
+public interface CreatorCustomizationBuilder {
 
     /**
-     * Add {@link ParamDecorator} instance.
+     * Add {@link ParamCustomization} instance.
      *
      * All creator parameters are required to be added in exact order as they are on decorated factory method/constructor.
      *
      * @param creatorParam creator parameter
      * @return updated builder instance
      */
-    CreatorDecoratorBuilder addParameter(ParamDecorator creatorParam);
+    CreatorCustomizationBuilder addParameter(ParamCustomization creatorParam);
 
     /**
-     * Add new {@link ParamDecorator} of the property.
+     * Add new {@link ParamCustomization} of the property.
      * <br>
-     * Shortcut method to the {@link #addParameter(ParamDecorator)}. It is not required to create {@link CreatorDecoratorBuilder}
-     * since this method will create {@link ParamDecorator} based on the provided parameter class and json name and by calling
-     * {@link ParamDecorator#create(Class, String)} method. No further customizations will be applied.
+     * Shortcut method to the {@link #addParameter(ParamCustomization)}. It is not required to create {@link CreatorCustomizationBuilder}
+     * since this method will create {@link ParamCustomization} based on the provided parameter class and json name and by calling
+     * {@link ParamCustomization#create(Class, String)} method. No further customizations will be applied.
      * <br>
      * All creator parameters are required to be added in exact order as they are on decorated factory method/constructor.
      *
@@ -48,14 +48,14 @@ public interface CreatorDecoratorBuilder {
      * @param jsonName json name of the parameter
      * @return updated builder instance
      */
-    default CreatorDecoratorBuilder addParameter(Class<?> parameterClass, String jsonName) {
-        return addParameter(ParamDecorator.create(parameterClass, jsonName));
+    default CreatorCustomizationBuilder addParameter(Class<?> parameterClass, String jsonName) {
+        return addParameter(ParamCustomization.create(parameterClass, jsonName));
     }
 
     /**
-     * Add new {@link PropertyDecorator} of the property.
+     * Add new {@link PropertyCustomization} of the property.
      * <br>
-     * Shortcut method to the {@link #addParameter(ParamDecorator)}. It is not required to create {@link CreatorDecoratorBuilder}
+     * Shortcut method to the {@link #addParameter(ParamCustomization)}. It is not required to create {@link CreatorCustomizationBuilder}
      * since this method will create is based on the provided parameter class and json name. Created builder is provided over
      * the paramBuilder.
      * <br>
@@ -71,19 +71,19 @@ public interface CreatorDecoratorBuilder {
      * @param paramBuilder builder used to customize parameter
      * @return updated builder instance
      */
-    default CreatorDecoratorBuilder addParameter(Class<?> parameterClass,
-                                                 String jsonName,
-                                                 Consumer<ParamDecoratorBuilder> paramBuilder) {
-        ParamDecoratorBuilder builder = ParamDecorator.builder(parameterClass, jsonName);
+    default CreatorCustomizationBuilder addParameter(Class<?> parameterClass,
+                                                     String jsonName,
+                                                     Consumer<ParamCustomizationBuilder> paramBuilder) {
+        ParamCustomizationBuilder builder = ParamCustomization.builder(parameterClass, jsonName);
         paramBuilder.accept(builder);
         return addParameter(builder.build());
     }
 
     /**
-     * Build the new instance of the {@link CreatorDecorator}.
+     * Build the new instance of the {@link CreatorCustomization}.
      *
-     * @return new {@link CreatorDecorator} instance
+     * @return new {@link CreatorCustomization} instance
      */
-    CreatorDecorator build();
+    CreatorCustomization build();
 
 }

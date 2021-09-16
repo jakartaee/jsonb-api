@@ -52,7 +52,7 @@ public interface CreatorCustomization {
      *
      * @return specified creator method name, otherwise empty
      */
-    Optional<String> factoryMethodName();
+    Optional<String> getFactoryMethodName();
 
     /**
      * Return immutable {@link List} of the registered parameters. The order of the parameters needs to be the same as they were added.
@@ -60,6 +60,6 @@ public interface CreatorCustomization {
      *
      * @return creator parameters
      */
-    List<ParamCustomization> params();
+    List<ParamCustomization> getParams();
 
 }

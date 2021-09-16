@@ -30,14 +30,14 @@ public interface ScopelessCustomization extends JsonbCustomization {
      *
      * @return specified {@link NumberFormat} instance, otherwise empty
      */
-    Optional<NumberFormat> numberFormat();
+    Optional<NumberFormat> getNumberFormat();
 
     /**
      * Return {@link DateFormat}.
      *
      * @return specified {@link DateFormat} instance, otherwise empty
      */
-    Optional<DateFormat> dateFormat();
+    Optional<DateFormat> getDateFormat();
 
     /**
      * Return whether this component can be nillable.
@@ -45,7 +45,7 @@ public interface ScopelessCustomization extends JsonbCustomization {
      *
      * @return property nillable state, if not explicitly set empty is returned
      */
-    Optional<Boolean> nillable();
+    Optional<Boolean> getNillable();
 
 
 }

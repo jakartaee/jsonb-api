@@ -16,6 +16,7 @@
 
 package jakarta.json.bind.customization;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import jakarta.json.bind.spi.JsonbProvider;
@@ -40,12 +41,19 @@ public interface PropertyCustomization extends ScopedCustomization {
     }
 
     /**
+     * Return the original property name.
+     *
+     * @return property name
+     */
+    String getPropertyName();
+
+    /**
      * Return if the property is transient in the given {@link Scope}.
      *
      * @param scope required scope
      * @return property transient state, otherwise empty
      */
-    Optional<Boolean> transientProperty(Scope scope);
+    Optional<Boolean> getTransientProperty(Scope scope);
 
     /**
      * Return custom property name in the given {@link Scope}.
@@ -53,6 +61,22 @@ public interface PropertyCustomization extends ScopedCustomization {
      * @param scope required scope
      * @return property custom name, otherwise empty
      */
-    Optional<String> name(Scope scope);
+    Optional<String> getName(Scope scope);
+
+    default PropertyCustomizationBuilder toBuilder() {
+        PropertyCustomizationBuilder builder = builder(getPropertyName());
+        getAdapter().ifPresent(builder::adapter);
+        getDeserializer().ifPresent(builder::deserializer);
+        getSerializer().ifPresent(builder::serializer);
+        Arrays.stream(Scope.values())
+                        .forEach(scope -> {
+                            getTransientProperty(scope).ifPresent(value -> builder.transientProperty(value, scope));
+                            getDateFormat(scope).ifPresent(value -> builder.dateFormat(value, scope));
+                            getName(scope).ifPresent(value -> builder.name(value, scope));
+                            getNillable(scope).ifPresent(value -> builder.nillable(value, scope));
+                            getNumberFormat(scope).ifPresent(value -> builder.numberFormat(value, scope));
+                        });
+        return builder;
+    }
 
 }

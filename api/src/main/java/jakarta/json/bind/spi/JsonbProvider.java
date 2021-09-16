@@ -24,6 +24,7 @@ import jakarta.json.bind.customization.PropertyCustomizationBuilder;
 import jakarta.json.bind.customization.TypeCustomizationBuilder;
 
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.ServiceLoader;
 
 /**
@@ -135,9 +136,8 @@ public abstract class JsonbProvider {
      */
     @SuppressWarnings("UseSpecificCatch")
     public static JsonbProvider provider(final String providerName) {
-        if (providerName == null) {
-            throw new IllegalArgumentException();
-        } else if (instance != null && providerName.equals(instance.getClass().getName())) {
+        Objects.requireNonNull(providerName, "providerName is required");
+        if (instance != null && providerName.equals(instance.getClass().getName())) {
             return instance;
         }
         ServiceLoader<JsonbProvider> loader = ServiceLoader.load(JsonbProvider.class);

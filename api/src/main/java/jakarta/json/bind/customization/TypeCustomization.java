@@ -24,9 +24,9 @@ import jakarta.json.bind.config.PropertyVisibilityStrategy;
 import jakarta.json.bind.spi.JsonbProvider;
 
 /**
- * Decorated type customization.
+ * Type customization.
  */
-public interface TypeCustomization extends SerializerCustomization, ScopelessCustomization {
+public interface TypeCustomization extends SerializationCustomization, ScopelessCustomization {
 
     /**
      * Create new {@link TypeCustomizationBuilder} instance base on type class.
@@ -40,18 +40,25 @@ public interface TypeCustomization extends SerializerCustomization, ScopelessCus
     }
 
     /**
+     * Return type which is this customization bound to.
+     *
+     * @return type which is this customization bound to
+     */
+    Class<?> getType();
+
+    /**
      * Return {@link PropertyOrderStrategy} of the decorated type.
      *
      * @return property order strategy instance, otherwise empty
      */
-    Optional<PropertyOrderStrategy> propertyOrderStrategy();
+    Optional<PropertyOrderStrategy> getPropertyOrderStrategy();
 
     /**
      * Return {@link PropertyVisibilityStrategy} of the decorated type.
      *
      * @return property visibility strategy instance, otherwise empty
      */
-    Optional<PropertyVisibilityStrategy> propertyVisibilityStrategy();
+    Optional<PropertyVisibilityStrategy> getPropertyVisibilityStrategy();
 
     /**
      * Return registered property customizations.
@@ -59,13 +66,33 @@ public interface TypeCustomization extends SerializerCustomization, ScopelessCus
      *
      * @return map of the registered property customizations, otherwise empty map
      */
-    Map<String, PropertyCustomization> properties();
+    Map<String, ? extends PropertyCustomization> getProperties();
 
     /**
      * Return {@link CreatorCustomization} of the decorated type.
      *
      * @return creator customization instance, otherwise empty
      */
-    Optional<CreatorCustomization> creator();
+    Optional<CreatorCustomization> getCreator();
+
+    /**
+     * Convert {@link TypeCustomization} to the {@link TypeCustomizationBuilder} with prefilled values from original object.
+     *
+     * @return new {@link TypeCustomizationBuilder} instance
+     */
+    default TypeCustomizationBuilder toBuilder() {
+        TypeCustomizationBuilder builder = builder(getType());
+        getNillable().ifPresent(builder::nillable);
+        getDeserializer().ifPresent(builder::deserializer);
+        getSerializer().ifPresent(builder::serializer);
+        getAdapter().ifPresent(builder::adapter);
+        getNumberFormat().ifPresent(builder::numberFormat);
+        getDateFormat().ifPresent(builder::dateFormat);
+        getCreator().ifPresent(builder::creator);
+        getPropertyOrderStrategy().ifPresent(builder::propertyOrderStrategy);
+        getPropertyVisibilityStrategy().ifPresent(builder::visibilityStrategy);
+        getProperties().values().forEach(builder::property);
+        return builder;
+    }
 
 }

@@ -16,20 +16,27 @@
 
 package jakarta.json.bind.customization;
 
-import java.util.Optional;
-
 import jakarta.json.bind.serializer.JsonbSerializer;
 
 /**
- * Extension of the {@link JsonbCustomization} over the serialization specific methods.
+ * Extension of the {@link JsonbCustomizationBuilder} over the serialization specific methods.
  */
-public interface SerializerCustomization extends JsonbCustomization {
+public interface SerializationCustomizationBuilder<T extends SerializationCustomizationBuilder<T, B>, B extends JsonbCustomization>
+        extends JsonbCustomizationBuilder<T, B> {
 
     /**
-     * Return {@link JsonbSerializer} of the component.
+     * Set {@link JsonbSerializer} which should be used for this component.
      *
-     * @return component serializer instance, otherwise empty
+     * @param serializer component deserializer
+     * @return updated builder instance
      */
-    Optional<JsonbSerializer<?>> serializer();
+    T serializer(JsonbSerializer<?> serializer);
+
+    /**
+     * Ignore serializer of this component.
+     *
+     * @return updated builder instance
+     */
+    T ignoreSerializer();
 
 }

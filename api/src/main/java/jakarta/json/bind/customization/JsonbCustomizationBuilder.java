@@ -16,7 +16,6 @@
 
 package jakarta.json.bind.customization;
 
-import java.lang.annotation.Annotation;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -38,6 +37,13 @@ public interface JsonbCustomizationBuilder<T extends JsonbCustomizationBuilder<T
     T nillable(boolean nillable);
 
     /**
+     * Ignore nillable customization of this component.
+     *
+     * @return updated builder instance
+     */
+    T ignoreNillable();
+
+    /**
      * Set {@link JsonbDeserializer} which should be used.
      *
      * @param deserializer component deserializer
@@ -46,12 +52,26 @@ public interface JsonbCustomizationBuilder<T extends JsonbCustomizationBuilder<T
     T deserializer(JsonbDeserializer<?> deserializer);
 
     /**
+     * Ignore deserializer of this component.
+     *
+     * @return updated builder instance
+     */
+    T ignoreDeserializer();
+
+    /**
      * Set {@link JsonbAdapter} which should be used.
      *
      * @param adapter component adapter
      * @return updated builder instance
      */
     T adapter(JsonbAdapter<?, ?> adapter);
+
+    /**
+     * Ignore adapter of this component.
+     *
+     * @return updated builder instance
+     */
+    T ignoreAdapter();
 
     /**
      * Set number format and locale which should be used.
@@ -87,6 +107,13 @@ public interface JsonbCustomizationBuilder<T extends JsonbCustomizationBuilder<T
     T numberFormat(NumberFormat numberFormat);
 
     /**
+     * Ignore number format customization of this component.
+     *
+     * @return updated builder instance
+     */
+    T ignoreNumberFormat();
+
+    /**
      * Set date format and locale which should be used.
      *
      * @param dateFormat date format
@@ -120,12 +147,18 @@ public interface JsonbCustomizationBuilder<T extends JsonbCustomizationBuilder<T
     T dateFormat(DateFormat dateFormat);
 
     /**
-     * Ignores selected annotation on the component.
+     * Ignore date format customization of this component.
      *
-     * @param ignoredAnnotation annotation to be ignored
      * @return updated builder instance
      */
-    T ignoreAnnotation(Class<? extends Annotation> ignoredAnnotation);
+    T ignoreDateFormat();
+
+    /**
+     * Ignore all the customizations.
+     *
+     * @return updated builder instance
+     */
+    T ignoreAllCustomizations();
 
     /**
      * Build the new instance from this builder.

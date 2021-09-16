@@ -25,7 +25,7 @@ import jakarta.json.bind.config.PropertyVisibilityStrategy;
 /**
  * Builder of the specific type customization.
  */
-public interface TypeCustomizationBuilder extends SerializerCustomizationBuilder<TypeCustomizationBuilder, TypeCustomization> {
+public interface TypeCustomizationBuilder extends SerializationCustomizationBuilder<TypeCustomizationBuilder, TypeCustomization> {
 
     /**
      * Set {@link PropertyOrderStrategy} which should be used.
@@ -33,7 +33,14 @@ public interface TypeCustomizationBuilder extends SerializerCustomizationBuilder
      * @param strategy property order strategy
      * @return updated builder instance
      */
-    TypeCustomizationBuilder propertyOrder(PropertyOrderStrategy strategy);
+    TypeCustomizationBuilder propertyOrderStrategy(PropertyOrderStrategy strategy);
+
+    /**
+     * Ignore property order strategy.
+     *
+     * @return updated builder instance
+     */
+    TypeCustomizationBuilder ignorePropertyOrderStrategy();
 
     /**
      * Set {@link PropertyVisibilityStrategy} which should be used.
@@ -42,6 +49,13 @@ public interface TypeCustomizationBuilder extends SerializerCustomizationBuilder
      * @return updated builder instance
      */
     TypeCustomizationBuilder visibilityStrategy(PropertyVisibilityStrategy strategy);
+
+    /**
+     * Ignore visibility strategy.
+     *
+     * @return updated builder instance
+     */
+    TypeCustomizationBuilder ignoreVisibilityStrategy();
 
     /**
      * Add new {@link PropertyCustomization} of the property.

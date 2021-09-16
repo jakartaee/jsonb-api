@@ -62,13 +62,13 @@ public interface ParamCustomization extends JsonbCustomization, ScopelessCustomi
      *
      * @return parameter json name
      */
-    String jsonName();
+    String getJsonName();
 
     /**
      * Return parameter class.
      *
      * @return parameter class
      */
-    Class<?> parameterClass();
+    Class<?> getParameterClass();
 
 }

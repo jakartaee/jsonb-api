@@ -16,7 +16,6 @@
 
 package jakarta.json.bind.customization;
 
-import java.lang.annotation.Annotation;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -42,7 +41,7 @@ import jakarta.json.bind.annotation.JsonbDateFormat;
  * </p>
  */
 public interface PropertyCustomizationBuilder
-        extends SerializerCustomizationBuilder<PropertyCustomizationBuilder, PropertyCustomization> {
+        extends SerializationCustomizationBuilder<PropertyCustomizationBuilder, PropertyCustomization> {
 
     /**
      * Set custom property name for serialization and deserialization.
@@ -62,6 +61,24 @@ public interface PropertyCustomizationBuilder
      * @return updated builder instance
      */
     PropertyCustomizationBuilder name(String name, Scope scope);
+
+    /**
+     * Ignore custom property name.
+     *
+     * Custom property name will be ignored for serialization and deserialization.
+     *
+     * @return updated builder instance
+     */
+    default PropertyCustomizationBuilder ignoreName() {
+        return ignoreName(Scope.SERIALIZATION).ignoreName(Scope.DESERIALIZATION);
+    }
+
+    /**
+     * Ignore custom property name in the given {@link Scope}.
+     *
+     * @return updated builder instance
+     */
+    PropertyCustomizationBuilder ignoreName(Scope scope);
 
     /**
      * Whether this component can be nillable.
@@ -84,6 +101,26 @@ public interface PropertyCustomizationBuilder
      * @return updated builder instance
      */
     PropertyCustomizationBuilder nillable(boolean nillable, Scope scope);
+
+    /**
+     * Ignore nillable customization of this component.
+     *
+     * Nillable customization will be ignored for both serialization and deserialization.
+     *
+     * @return updated builder instance
+     */
+    @Override
+    default PropertyCustomizationBuilder ignoreNillable() {
+        return ignoreNillable(Scope.SERIALIZATION).ignoreNillable(Scope.DESERIALIZATION);
+    }
+
+    /**
+     * Ignore nillable customization of this component in the given {@link Scope}.
+     *
+     * @param scope ignored scope
+     * @return updated builder instance
+     */
+    PropertyCustomizationBuilder ignoreNillable(Scope scope);
 
     /**
      * Set number format which should be used.
@@ -178,6 +215,26 @@ public interface PropertyCustomizationBuilder
     default PropertyCustomizationBuilder numberFormat(Locale locale, Scope scope) {
         return numberFormat("", locale, scope);
     }
+
+    /**
+     * Ignore number format and locale customization of this property.
+     *
+     * Both number format and locale will be ignored for serialization and deserialization of the property.
+     *
+     * @return updated builder instance
+     */
+    @Override
+    default PropertyCustomizationBuilder ignoreNumberFormat() {
+        return ignoreNumberFormat(Scope.SERIALIZATION).ignoreTransient(Scope.DESERIALIZATION);
+    }
+
+    /**
+     * Ignore number format customization of this property in the given {@link Scope}.
+     *
+     * @param scope ignored scope
+     * @return updated builder instance
+     */
+    PropertyCustomizationBuilder ignoreNumberFormat(Scope scope);
 
     /**
      * Set date format and locale which should be used.
@@ -276,31 +333,62 @@ public interface PropertyCustomizationBuilder
     }
 
     /**
+     * Ignore date format customization of this property.
+     *
+     * The date format is ignored for serialization and deserialization of the property.
+     *
+     * @return updated builder instance
+     */
+    @Override
+    default PropertyCustomizationBuilder ignoreDateFormat() {
+        return ignoreDateFormat(Scope.SERIALIZATION).ignoreDateFormat(Scope.DESERIALIZATION);
+    }
+
+    /**
+     * Ignore date format customization of this property in the given {@link Scope}.
+     *
+     * @return updated builder instance
+     */
+    PropertyCustomizationBuilder ignoreDateFormat(Scope scope);
+
+    /**
      * Whether the property is transient.
      *
+     * This value of the property will be set for serialization and deserialization.
+     *
      * @param isTransient transient property
+     * @return updated builder instance
+     */
+    default PropertyCustomizationBuilder transientProperty(boolean isTransient) {
+        return transientProperty(isTransient, Scope.SERIALIZATION).transientProperty(isTransient, Scope.DESERIALIZATION);
+    }
+
+    /**
+     * Whether the property is transient in the given {@link Scope}.
+     *
+     * @param isTransient transient property
+     * @param scope transient scope
      * @return updated builder instance
      */
     PropertyCustomizationBuilder transientProperty(boolean isTransient, Scope scope);
 
     /**
-     * Ignore selected annotation in the given {@link Scope}.
+     * Ignore transient status of this property.
      *
-     * @param ignoredAnnotation annotation to be ignored
+     * Transient will be ignored for serialization and deserialization.
+     *
      * @return updated builder instance
      */
-    @Override
-    default PropertyCustomizationBuilder ignoreAnnotation(Class<? extends Annotation> ignoredAnnotation) {
-        return ignoreAnnotation(ignoredAnnotation, Scope.SERIALIZATION)
-                .ignoreAnnotation(ignoredAnnotation, Scope.DESERIALIZATION);
+    default PropertyCustomizationBuilder ignoreTransient() {
+        return ignoreTransient(Scope.SERIALIZATION).ignoreTransient(Scope.DESERIALIZATION);
     }
 
     /**
-     * Ignore selected annotation on the property/accessor method depending on the scope.
+     * Ignore transient status of this property in the given {@link Scope}.
      *
-     * @param ignoredAnnotation annotation to be ignored
+     * @param scope transient ignore scope
      * @return updated builder instance
      */
-    PropertyCustomizationBuilder ignoreAnnotation(Class<? extends Annotation> ignoredAnnotation, Scope scope);
+    PropertyCustomizationBuilder ignoreTransient(Scope scope);
 
 }

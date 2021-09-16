@@ -31,13 +31,13 @@ public interface JsonbCustomization {
      *
      * @return component deserializer instance, otherwise empty
      */
-    Optional<JsonbDeserializer<?>> deserializer();
+    Optional<JsonbDeserializer<?>> getDeserializer();
 
     /**
      * Return {@link JsonbAdapter} of the component.
      *
      * @return component adapter instance, otherwise empty
      */
-    Optional<JsonbAdapter<?, ?>> adapter();
+    Optional<JsonbAdapter<?, ?>> getAdapter();
 
 }

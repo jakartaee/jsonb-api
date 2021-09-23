@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,6 +20,7 @@
 
 package jakarta.json.bind.tck.customizedmapping.instantiation;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.lang.invoke.MethodHandles;
@@ -35,6 +36,7 @@ import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
 import jakarta.json.bind.tck.customizedmapping.instantiation.model.CreatorPlusFactoryContainer;
+import jakarta.json.bind.tck.customizedmapping.instantiation.model.CreatorWithDeserializerContainer;
 import jakarta.json.bind.tck.customizedmapping.instantiation.model.IllegalInstanceFactoryCreatorContainer;
 import jakarta.json.bind.tck.customizedmapping.instantiation.model.MultipleCreatorsContainer;
 import jakarta.json.bind.tck.customizedmapping.instantiation.model.MultipleFactoryCreatorsContainer;
@@ -251,5 +253,22 @@ public class InstantiationCustomizationTest {
     }
     fail(
         "A JsonbException is expected when unmarshalling to a class with a constructor annotated with JsonbCreator and there exists an unmappable property name.");
+  }
+
+  /*
+   * @testName: testJsonbTypeDeserializerOnCreatorParameter
+   *
+   * @assertion_ids: JSONB:SPEC:JSB-4.7.2-5
+   *
+   * @test_Strategy: Assert that object instance has been created with JsonbCreator
+   * and parameter annotated with @JsonbTypeDeserializer annotation has been properly
+   * deserialized.
+   */
+  @Test
+  public void testJsonbDeserializerOnCreatorParameter() {
+    CreatorWithDeserializerContainer c = jsonb.fromJson("{ \"instance\" : \"Test String\" }",
+                                                        CreatorWithDeserializerContainer.class);
+    String expected = "Test String Deserialized";
+    assertEquals("JsonbDeserializer on the JsonbCreator parameter was not executed." , expected, c.getStringInstance());
   }
 }

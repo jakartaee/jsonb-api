@@ -21,17 +21,31 @@
 package jakarta.json.bind.tck.customizedmapping.nullhandling.model;
 
 import jakarta.json.bind.annotation.JsonbNillable;
+import jakarta.json.bind.annotation.JsonbProperty;
 
-@JsonbNillable
-public class NonNillablePropertyNillableContainer {
-  @JsonbNillable(false)
-  private String stringInstance;
+public class NonNillableAndNillablePropertyContainer {
 
-  public String getStringInstance() {
-    return stringInstance;
+  @JsonbProperty(nillable = false)
+  @JsonbNillable
+  private String nillableStringInstance;
+
+  @JsonbProperty(nillable = true)
+  @JsonbNillable(value = false)
+  private String nonNullStringInstance;
+
+  public String getNillableStringInstance() {
+    return nillableStringInstance;
   }
 
-  public void setStringInstance(String stringInstance) {
-    this.stringInstance = stringInstance;
+  public void setNillableStringInstance(String nillableStringInstance) {
+    this.nillableStringInstance = nillableStringInstance;
+  }
+
+  public String getNonNullStringInstance() {
+    return nonNullStringInstance;
+  }
+
+  public void setNonNullStringInstance(String nonNullStringInstance) {
+    this.nonNullStringInstance = nonNullStringInstance;
   }
 }

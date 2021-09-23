@@ -367,9 +367,9 @@ public class NullHandlingCustomizationTest {
   public void testNullValuesConfigNonAndNillableProperty() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withNullValues(true));
     String jsonString = jsonb.toJson(new NonNillableAndNillablePropertyContainer());
-    if (!jsonString.matches("\\{\\s*\"nillableStringInstance\"\\s*\\:\\s*null\\s*\\}")) {
+    if (!jsonString.matches("\\{\\s*\\}")) {
       fail(
-          "Failed to correctly ignore null property annotated both JsonbProperty with nillable = false and JsonbNillable when using JsonbConfig().withNullValues(true)."
+          "Failed to correctly ignore null property annotated both JsonbProperty with nillable = true and JsonbNillable(false) when using JsonbConfig().withNullValues(true)."
                   + "JsonbNillable annotation should take precedence over the JsonbProperty");
     }
 

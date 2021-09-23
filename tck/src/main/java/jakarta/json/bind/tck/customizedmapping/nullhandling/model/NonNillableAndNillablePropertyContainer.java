@@ -25,13 +25,9 @@ import jakarta.json.bind.annotation.JsonbProperty;
 
 public class NonNillableAndNillablePropertyContainer {
 
-  @JsonbProperty(nillable = false)
-  @JsonbNillable
-  private String nillableStringInstance;
-
   @JsonbProperty(nillable = true)
   @JsonbNillable(value = false)
-  private String nonNullStringInstance;
+  private String nillableStringInstance;
 
   public String getNillableStringInstance() {
     return nillableStringInstance;
@@ -41,11 +37,4 @@ public class NonNillableAndNillablePropertyContainer {
     this.nillableStringInstance = nillableStringInstance;
   }
 
-  public String getNonNullStringInstance() {
-    return nonNullStringInstance;
-  }
-
-  public void setNonNullStringInstance(String nonNullStringInstance) {
-    this.nonNullStringInstance = nonNullStringInstance;
-  }
 }

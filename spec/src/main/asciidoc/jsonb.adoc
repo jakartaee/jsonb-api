@@ -320,7 +320,7 @@ Deserialization into anonymous classes is not supported. Serialization of anonym
 
 Polymorphic type handling is supported for deserialization and serialization. Polymorphic handling is ensured by annotation '@JsonbPolymorphicType' and '@JsonbSubtype'. '@JsonbPolymorphicType' defines overall strategy how polymorphic information will be serialized/deserialized. '@JsonbSubtype' ensures proper and safe mapping between class alias and type.
 
-Polymorphic information is obtained from '@JsonbSubtype' annotation as a type alias mapped to the type or if classNames property of the '@JsonbPolymorphicType' is enabled, it corresponds to the class name, if no suitable alias is found. Implementation MUST ensure to support 'whitelist' option of the '@JsonbPolymorphicType' which is only used when 'classNames' option is enabled, it is ignored otherwise. It is not allowed to create instances of the classes outside the whitelisted packages. In such cases an exception MUST be thrown.
+Polymorphic information is obtained from '@JsonbSubtype' annotation as a type alias mapped to the type or if classNames property of the '@JsonbPolymorphicType' is enabled, it corresponds to the class name, if no suitable alias is found. Implementation MUST ensure to support 'allowedPackages' option of the '@JsonbPolymorphicType' which is only used when 'classNames' option is enabled, it is ignored otherwise. It is not allowed to create instances of the classes outside the whitelisted packages. In such cases an exception MUST be thrown.
 
 Available serialization formats:
 

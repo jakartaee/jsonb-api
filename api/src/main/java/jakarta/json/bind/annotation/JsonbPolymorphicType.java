@@ -67,19 +67,19 @@ public @interface JsonbPolymorphicType {
     boolean classNames() default false;
 
     /**
-     * Whitelisted package names. This option is ignored if {@link JsonbPolymorphicType#classNames()}
+     * Allowed package names. This option is ignored if {@link JsonbPolymorphicType#classNames()}
      * option is set to false.
      * <br>
      * Only classes contained in the selected packages will be serialized/deserialized.
      * Classes with specified alias are not validated.
      * <br>
-     * It is strongly recommended having whitelist set up if classes without alias should be processed.
+     * It is strongly recommended having allowed packages set up if classes without alias should be processed.
      * <br>
-     * When no whitelist is specified, all classes without alias are allowed.
+     * When no package is specified, all classes without alias are allowed.
      *
-     * @return package whitelist
+     * @return list of allowed packages
      */
-    String[] whitelist() default "";
+    String[] allowedPackages() default "";
 
     /**
      * Format under which serialized polymorphic type should be handled.

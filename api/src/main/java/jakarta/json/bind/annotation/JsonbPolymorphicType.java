@@ -112,29 +112,6 @@ public @interface JsonbPolymorphicType {
         WRAPPING_OBJECT,
 
         /**
-         * Serialized object will be in form of json array with two values.
-         * <br>
-         * The first in the array is polymorphic information (alias/class name) and the second
-         * array value is an actual serialized object.
-         * <br>
-         * This format ignores specified {@link JsonbPolymorphicType#keyName()}.
-         * <pre>{@code
-         * // Example
-         * @JsonbPolymorphicType(format = Format.WRAPPING_ARRAY)
-         * @JsonbSubtype(alias = "dog", type = Dog.class)
-         * interface Animal {}
-         *
-         * class Dog implements Animal {
-         *     public String isDog = true;
-         * }
-         *
-         * //Resulting json after dog instance serialization
-         * ["dog",{"isDog":true}]
-         * }</pre>
-         */
-        WRAPPING_ARRAY,
-
-        /**
          * Serialized object will have one more property added to the resulting json.
          * This property will contain polymorphic information (alias/class name).
          * <br>

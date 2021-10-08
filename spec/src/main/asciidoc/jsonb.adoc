@@ -649,7 +649,22 @@ Mapping between parameters of constructor/factory method annotated with `JsonbCr
 
 In case `JsonbProperty` annotation on parameters is not used, parameters should be mapped from JSON fields with the same name. In this case the proper mapping is NOT guaranteed.
 
-In case a field required for a parameter mapping doesn’t exist in JSON document, `JsonbException` MUST be thrown.
+In case a field required for a parameter mapping doesn’t exist in JSON document, `JsonbException` MUST be thrown unless it is marked as an optional. See <<optional-creator-params, Optional JsonbCreator parameters>>
+
+[[optional-creator-params]]
+==== Optional JsonbCreator parameters
+Optional creator parameter is parameter which is not required to be present in the JSON document and if it is missing, not exception will be thrown. Value `null` is provided instead of any specific value. If the parameter type is `Optional`, empty `Optional` is used instead.
+
+It is possible to mark all `JsonbCreator` parameters as optional globally, by calling the`JsonbConfig::withOptionalCreatorParameters` method with either `true` to enable or `false` to disable this feature. Default value is `false`. When set to `true`, every `JsonbCreator` parameter is treated as optional, unless the `JsonbCreator` overrides this setting.
+
+Implementation must allow setting all parameters to be optional or required only for certain creator. This is achieved by setting `parameters` property of `JsonbCreator` annotation to `ParameterState.NILLABLE` or `ParameterState.REQUIRED`. `ParameterState.DEFAULT` option takes the value from the JSONB config.
+
+Implementation must allow making only certain parameters as optional, without setting the global property or creator specific property.
+
+Parameter can be declared an optional:
+
+* Object types have to be annotated with annotation `JsonbNillable`
+* Parameter is `Optional` type
 
 === Custom visibility
 

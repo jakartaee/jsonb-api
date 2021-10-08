@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
  * Such parameters could be annotated for instance with {@code @JsonbProperty}.</p>
  *
  * <p><b>Usage</b></p>
- * <p>The {@code @JsonbCreator} annotation can be used with the followingprogram elements:</p>
+ * <p>The {@code @JsonbCreator} annotation can be used with the following program elements:</p>
  * <ul>
  *   <li> method </li>
  *   <li> constructor </li>
@@ -43,4 +43,37 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR})
 public @interface JsonbCreator {
+
+    /**
+     * Whether creator parameters are required.
+     *
+     * @return state of the parameters
+     */
+    ParameterState parameters() default ParameterState.DEFAULT;
+
+    /**
+     * Determines the way, how creator parameters should be treated.
+     */
+    enum ParameterState {
+
+        /**
+         * Whether creator parameters are optional or not, is determined by the value obtained
+         * from {@link jakarta.json.bind.JsonbConfig}. Default value is false.
+         */
+        DEFAULT,
+
+        /**
+         * All parameters of the creator will be optional. Overrides the value set by the {@link jakarta.json.bind.JsonbConfig}.
+         */
+        OPTIONAL,
+
+        /**
+         * All parameters of the creator will be required. Overrides the value set by the {@link jakarta.json.bind.JsonbConfig}.
+         * <br>
+         * Individual parameters can be still marked as optional.
+         */
+        REQUIRED
+
+    }
+
 }

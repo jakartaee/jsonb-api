@@ -142,6 +142,11 @@ public class JsonbConfig {
     public static final String LOCALE = "jsonb.locale";
 
     /**
+     * Property used to specify optional creator parameters.
+     */
+    public static final String OPTIONAL_CREATOR_PARAMETERS = "jsonb.optional-creator-parameters";
+
+    /**
      * Set the particular configuration property to a new value. The method can
      * only be used to set one of the standard JSON Binding properties defined in
      * this class or a provider specific property.
@@ -402,6 +407,18 @@ public class JsonbConfig {
      */
     public final JsonbConfig withLocale(final Locale locale) {
         return setProperty(LOCALE, locale);
+    }
+
+    /**
+     * Property used to specify whether all creator parameters should be treated as optional.
+     * <br>
+     * Default value is {@code false}.
+     *
+     * @param optionalParameters Whether creator parameters are optional
+     * @return This JsonbConfig instance.
+     */
+    public final JsonbConfig withOptionalCreatorParameters(final boolean optionalParameters) {
+        return setProperty(OPTIONAL_CREATOR_PARAMETERS, optionalParameters);
     }
 
     @SuppressWarnings("unchecked")

@@ -547,4 +547,15 @@ public class JsonbConfigTest {
           "Failed to configure strict I-JSON support using JsonbConfig.withStrictIJSON method.");
     }
   }
+
+  @Test
+  public void testWithOptionalCreatorParameters() {
+    JsonbConfig jsonbConfig = new JsonbConfig().withOptionalCreatorParameters(true);
+
+    Optional<Object> property = jsonbConfig.getProperty(JsonbConfig.OPTIONAL_CREATOR_PARAMETERS);
+    if (!property.isPresent() || !(boolean) property.get()) {
+      fail("Failed to configure optional creator parameters using JsonbConfig.withOptionalCreatorParameters method.");
+    }
+  }
+
 }

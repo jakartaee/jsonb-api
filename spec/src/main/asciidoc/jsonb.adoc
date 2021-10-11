@@ -691,6 +691,8 @@ There are two ways how to register `JsonbSerializer/JsonbDeserializer`:
 . Using `JsonbConfig::withSerializers/ JsonbConfig::withDeserializers` method;
 . Annotating a type with `JsonbSerializer/JsonbDeserializer` annotation.
 
+It is possible to annotate `JsonbCreator` parameters with `JsonbTypeDeserializer` and provide deserializer for a parameter this way. However, if `JsonbTypeDeserializer` annotation is provided to any other parameter (such as setter method parameter) it will be ignored.
+
 Implementations must provide a CDI support in serializers/deserializers to allow injection of CDI managed beans into it.
 
 === Custom date format

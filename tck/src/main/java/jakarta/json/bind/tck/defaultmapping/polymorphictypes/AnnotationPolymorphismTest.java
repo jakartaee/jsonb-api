@@ -192,7 +192,7 @@ public class AnnotationPolymorphismTest {
         }
     }
 
-    @JsonbPolymorphicType(keyName = "@type")
+    @JsonbPolymorphicType(key = "@type")
     @JsonbSubtype(alias = "dog", type = Dog.class)
     @JsonbSubtype(alias = "cat", type = Cat.class)
     @JsonbSubtype(alias = "elephant", type = Elephant.class)
@@ -226,7 +226,7 @@ public class AnnotationPolymorphismTest {
 
     }
 
-    @JsonbPolymorphicType(keyName = "@dateType")
+    @JsonbPolymorphicType(key = "@dateType")
     @JsonbSubtype(alias = "constructor", type = DateConstructor.class)
     public interface SomeDateType {
 

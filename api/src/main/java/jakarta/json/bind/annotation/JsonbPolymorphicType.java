@@ -44,11 +44,11 @@ import java.lang.annotation.Target;
 public @interface JsonbPolymorphicType {
 
     /**
-     * Key name used for keeping polymorphic information when {@link Format#PROPERTY} is chosen.
+     * Key used for keeping polymorphic information when {@link Format#PROPERTY} is chosen.
      *
      * @return key name
      */
-    String keyName() default "";
+    String key() default "";
 
     /**
      * Specification of how the polymorphic information will be stored in the resulting JSON.
@@ -94,7 +94,7 @@ public @interface JsonbPolymorphicType {
          * polymorphic information (alias/class name) and a value assigned to this property is an actual
          * serialized object.
          * <br>
-         * This format ignores specified {@link JsonbPolymorphicType#keyName()}.
+         * This format ignores specified {@link JsonbPolymorphicType#key()}.
          * <pre>{@code
          * // Example
          * @JsonbPolymorphicType(format = Format.WRAPPING_OBJECT)
@@ -115,7 +115,7 @@ public @interface JsonbPolymorphicType {
          * Serialized object will have one more property added to the resulting json.
          * This property will contain polymorphic information (alias/class name).
          * <br>
-         * It is required to have nonempty {@link JsonbPolymorphicType#keyName()} specified when
+         * It is required to have nonempty {@link JsonbPolymorphicType#key()} specified when
          * using this format.
          * <pre>{@code
          * // Example

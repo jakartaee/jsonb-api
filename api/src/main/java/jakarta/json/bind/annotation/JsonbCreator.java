@@ -49,12 +49,12 @@ public @interface JsonbCreator {
      *
      * @return state of the parameters
      */
-    ParameterState parameters() default ParameterState.DEFAULT;
+    ParameterOptions parameters() default ParameterOptions.DEFAULT;
 
     /**
      * Determines the way, how creator parameters should be treated.
      */
-    enum ParameterState {
+    enum ParameterOptions {
 
         /**
          * Whether creator parameters are optional or not, is determined by the value obtained

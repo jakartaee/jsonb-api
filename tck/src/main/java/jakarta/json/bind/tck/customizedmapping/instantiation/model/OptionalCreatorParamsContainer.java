@@ -33,7 +33,7 @@ public class OptionalCreatorParamsContainer {
         this.paramTwo = paramTwo;
     }
 
-    @JsonbCreator(parameters = JsonbCreator.ParameterState.OPTIONAL)
+    @JsonbCreator(parameters = JsonbCreator.ParameterOptions.OPTIONAL)
     public OptionalCreatorParamsContainer create(@JsonbProperty("paramOne") String paramOne,
                                                  @JsonbProperty("paramTwo") Integer paramTwo) {
         return new OptionalCreatorParamsContainer(paramOne, paramTwo);

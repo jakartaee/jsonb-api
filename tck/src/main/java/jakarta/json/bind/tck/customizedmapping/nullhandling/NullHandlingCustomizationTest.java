@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -37,6 +37,7 @@ import jakarta.json.bind.JsonbConfig;
 import jakarta.json.bind.tck.customizedmapping.nullhandling.model.NillableContainer;
 import jakarta.json.bind.tck.customizedmapping.nullhandling.model.NillablePropertyContainer;
 import jakarta.json.bind.tck.customizedmapping.nullhandling.model.NillablePropertyNonNillableContainer;
+import jakarta.json.bind.tck.customizedmapping.nullhandling.model.NonNillableAndNillablePropertyContainer;
 import jakarta.json.bind.tck.customizedmapping.nullhandling.model.NonNillableContainer;
 import jakarta.json.bind.tck.customizedmapping.nullhandling.model.NonNillablePropertyContainer;
 import jakarta.json.bind.tck.customizedmapping.nullhandling.model.NonNillablePropertyNillableContainer;
@@ -347,6 +348,29 @@ public class NullHandlingCustomizationTest {
     if (!jsonString.matches("\\{\\s*\\}")) {
       fail(
           "Failed to correctly ignore null property annotated as JsonbProperty with nillable = false when using JsonbConfig().withNullValues(true).");
+    }
+
+    return; // passed
+  }
+
+  /*
+   * @testName: testNullValuesConfigNonAndNillableProperty
+   *
+   * @assertion_ids: JSONB:SPEC:JSB-4.3-1; JSONB:SPEC:JSB-4.3-3;
+   * JSONB:SPEC:JSB-4.3.1-2; JSONB:SPEC:JSB-4.3.2-1
+   *
+   * @test_Strategy: Assert that null properties annotated as JsonbProperty with
+   * nillable = false are ignored in marshalling when using
+   * JsonbConfig().withNullValues(true)
+   */
+  @Test
+  public void testNullValuesConfigNonAndNillableProperty() {
+    Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withNullValues(true));
+    String jsonString = jsonb.toJson(new NonNillableAndNillablePropertyContainer());
+    if (!jsonString.matches("\\{\\s*\\}")) {
+      fail(
+          "Failed to correctly ignore null property annotated both JsonbProperty with nillable = true and JsonbNillable(false) when using JsonbConfig().withNullValues(true)."
+                  + "JsonbNillable annotation should take precedence over the JsonbProperty");
     }
 
     return; // passed

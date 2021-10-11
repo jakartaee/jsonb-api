@@ -18,20 +18,23 @@
  * $Id$
  */
 
-package jakarta.json.bind.tck.customizedmapping.nullhandling.model.nonnillable;
+package jakarta.json.bind.tck.customizedmapping.nullhandling.model;
 
 import jakarta.json.bind.annotation.JsonbNillable;
+import jakarta.json.bind.annotation.JsonbProperty;
 
-@JsonbNillable
-public class NonNillablePackageNonNillablePropertyNillableContainer {
-  @JsonbNillable(false)
-  private String stringInstance;
+public class NonNillableAndNillablePropertyContainer {
 
-  public String getStringInstance() {
-    return stringInstance;
+  @JsonbProperty(nillable = true)
+  @JsonbNillable(value = false)
+  private String nillableStringInstance;
+
+  public String getNillableStringInstance() {
+    return nillableStringInstance;
   }
 
-  public void setStringInstance(String stringInstance) {
-    this.stringInstance = stringInstance;
+  public void setNillableStringInstance(String nillableStringInstance) {
+    this.nillableStringInstance = nillableStringInstance;
   }
+
 }

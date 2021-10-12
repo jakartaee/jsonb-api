@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 
 /**
  * Configuration annotation of the polymorphic type handling.
- * <br>
+ * <br/>
  * This annotation is required to be present on the most top of all the classes,
  * polymorphism should be applied to.
  * <pre>{@code
@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
  * }</pre>
  * This annotation is closely tight with {@link JsonbSubtype}. It is recommended to use
  * {@link JsonbSubtype} annotations to specify all the possible classes and their aliases.
- * <br>
+ * <br/>
  */
 @JsonbAnnotation
 @Retention(RetentionPolicy.RUNTIME)
@@ -59,7 +59,7 @@ public @interface JsonbPolymorphicType {
 
     /**
      * Whether exact class names should be processed if no alias is specified for processed class.
-     * <br>
+     * <br/>
      * Default value is false.
      *
      * @return classes without alias should be processed
@@ -69,21 +69,21 @@ public @interface JsonbPolymorphicType {
     /**
      * Allowed package names. This option is ignored if {@link JsonbPolymorphicType#classNames()}
      * option is set to false.
-     * <br>
+     * <br/>
      * Only classes contained in the selected packages will be serialized/deserialized.
      * Classes with specified alias are not validated.
-     * <br>
+     * <br/>
      * It is strongly recommended having allowed packages set up if classes without alias should be processed.
-     * <br>
+     * <br/>
      * When no package is specified, all classes without alias are allowed.
      *
      * @return list of allowed packages
      */
-    String[] allowedPackages() default "";
+    String[] allowedPackages() default {};
 
     /**
      * Format under which serialized polymorphic type should be handled.
-     * <br>
+     * <br/>
      * Default polymorphic format is {@link Format#PROPERTY}.
      */
     enum Format {
@@ -93,7 +93,7 @@ public @interface JsonbPolymorphicType {
          * This wrapping object will contain only one property with the name of the
          * polymorphic information (alias/class name) and a value assigned to this property is an actual
          * serialized object.
-         * <br>
+         * <br/>
          * This format ignores specified {@link JsonbPolymorphicType#key()}.
          * <pre>{@code
          * // Example
@@ -114,7 +114,7 @@ public @interface JsonbPolymorphicType {
         /**
          * Serialized object will have one more property added to the resulting json.
          * This property will contain polymorphic information (alias/class name).
-         * <br>
+         * <br/>
          * It is required to have nonempty {@link JsonbPolymorphicType#key()} specified when
          * using this format.
          * <pre>{@code

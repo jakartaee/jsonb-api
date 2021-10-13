@@ -45,16 +45,13 @@ public class CreatorWithDeserializerContainer {
   public static class SimpleStringDeserializer implements JsonbDeserializer<String> {
 
     public String deserialize(JsonParser jsonParser, DeserializationContext deserializationContext, Type type) {
-      while (jsonParser.hasNext()) {
+      if (jsonParser.hasNext()) {
         JsonParser.Event event = jsonParser.next();
-        if (event == JsonParser.Event.KEY_NAME) {
-          continue;
-        } else if (event == JsonParser.Event.VALUE_STRING) {
-          return jsonParser.getString() + " Deserialized";
+        if (event != JsonParser.Event.VALUE_STRING) {
+          throw new IllegalStateException("Unexpected event: " + event);
         }
-        throw new IllegalStateException("Unexpected event: " + event);
       }
-      throw new IllegalStateException("JsonParser didn't have any event.");
+      return jsonParser.getString() + " Deserialized";
     }
 
   }

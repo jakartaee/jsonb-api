@@ -22,6 +22,7 @@ package jakarta.json.bind.tck.customizedmapping.instantiation.model;
 
 import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbProperty;
+import jakarta.json.bind.annotation.JsonbRequired;
 
 public class RequiredCreatorParamsContainer {
 
@@ -33,7 +34,8 @@ public class RequiredCreatorParamsContainer {
         this.paramTwo = paramTwo;
     }
 
-    @JsonbCreator(parameters = JsonbCreator.ParameterOptions.REQUIRED)
+    @JsonbCreator
+    @JsonbRequired
     public RequiredCreatorParamsContainer create(@JsonbProperty("paramOne") String paramOne,
                                                  @JsonbProperty("paramTwo") Integer paramTwo) {
         return new RequiredCreatorParamsContainer(paramOne, paramTwo);

@@ -23,7 +23,6 @@ package jakarta.json.bind.tck.customizedmapping.instantiation.model;
 import java.util.Optional;
 
 import jakarta.json.bind.annotation.JsonbCreator;
-import jakarta.json.bind.annotation.JsonbNillable;
 import jakarta.json.bind.annotation.JsonbProperty;
 
 public class ParameterTypeOptionalContainer {

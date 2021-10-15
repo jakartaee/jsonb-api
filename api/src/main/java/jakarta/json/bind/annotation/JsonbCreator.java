@@ -43,37 +43,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR})
 public @interface JsonbCreator {
-
-    /**
-     * Whether creator parameters are required.
-     *
-     * @return state of the parameters
-     */
-    ParameterOptions parameters() default ParameterOptions.DEFAULT;
-
-    /**
-     * Determines the way, how creator parameters should be treated.
-     */
-    enum ParameterOptions {
-
-        /**
-         * Whether creator parameters are optional or not, is determined by the value obtained
-         * from {@link jakarta.json.bind.JsonbConfig}. Default value is false.
-         */
-        DEFAULT,
-
-        /**
-         * All parameters of the creator will be optional. Overrides the value set by the {@link jakarta.json.bind.JsonbConfig}.
-         */
-        OPTIONAL,
-
-        /**
-         * All parameters of the creator will be required. Overrides the value set by the {@link jakarta.json.bind.JsonbConfig}.
-         * <br>
-         * Individual parameters can be still marked as optional.
-         */
-        REQUIRED
-
-    }
-
 }

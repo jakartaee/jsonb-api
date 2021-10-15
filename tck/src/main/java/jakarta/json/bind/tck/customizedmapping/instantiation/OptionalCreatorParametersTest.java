@@ -29,7 +29,9 @@ import jakarta.json.bind.JsonbException;
 import jakarta.json.bind.tck.customizedmapping.instantiation.model.OptionalCreatorParamsContainer;
 import jakarta.json.bind.tck.customizedmapping.instantiation.model.OptionalStringParamContainer;
 import jakarta.json.bind.tck.customizedmapping.instantiation.model.ParameterTypeOptionalContainer;
+import jakarta.json.bind.tck.customizedmapping.instantiation.model.PrimitiveTypeContainer;
 import jakarta.json.bind.tck.customizedmapping.instantiation.model.RequiredCreatorParamsContainer;
+import jakarta.json.bind.tck.customizedmapping.instantiation.model.RequiredStringParamContainer;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -146,6 +148,39 @@ public class OptionalCreatorParametersTest {
                                             ParameterTypeOptionalContainer.class);
 
         if (!"some value".equals(unmarshalledObject.getParamOne()) || unmarshalledObject.getParamTwo() != 2) {
+            fail("Failed to instantiate type using JsonbCreator annotated factory method with parameter of type Optional");
+        }
+    }
+
+    @Test
+    public void testRequiredParameterParameter() {
+        try {
+            jsonbOptional.fromJson("{ \"paramTwo\" : 1 }", RequiredStringParamContainer.class);
+            fail("Instantiation of the type should have failed, because required creator parameter is missing");
+        } catch (JsonbException ignored) {
+            //Everything worked as expected
+        }
+
+        RequiredStringParamContainer unmarshalledObject = jsonbOptional.fromJson("{ \"paramOne\" : \"some value\" }",
+                                                                                 RequiredStringParamContainer.class);
+
+        if (!"some value".equals(unmarshalledObject.getParamOne()) || unmarshalledObject.getParamTwo() != null) {
+            fail("Failed to instantiate type using JsonbCreator annotated factory method with one required parameter");
+        }
+    }
+
+    @Test
+    public void testPrimitiveTypesDefaultValues() {
+        PrimitiveTypeContainer unmarshalledObject = jsonbOptional.fromJson("{ }", PrimitiveTypeContainer.class);
+
+        if (unmarshalledObject.getByteType() != 0
+                || unmarshalledObject.getShortType() != 0
+                || unmarshalledObject.getIntType() != 0
+                || unmarshalledObject.getLongType() != 0L
+                || unmarshalledObject.getFloatType() != 0.0F
+                || unmarshalledObject.getDoubleType() != 0.0
+                || unmarshalledObject.getBooleanType()
+                || unmarshalledObject.getCharType() != '\u0000') {
             fail("Failed to instantiate type using JsonbCreator annotated factory method with parameter of type Optional");
         }
     }

@@ -24,21 +24,20 @@ import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbRequired;
 
-public class OptionalCreatorParamsContainer {
+public class RequiredStringParamContainer {
 
     private final String paramOne;
     private final Integer paramTwo;
 
-    private OptionalCreatorParamsContainer(String paramOne, Integer paramTwo) {
+    private RequiredStringParamContainer(String paramOne, Integer paramTwo) {
         this.paramOne = paramOne;
         this.paramTwo = paramTwo;
     }
 
     @JsonbCreator
-    @JsonbRequired(false)
-    public OptionalCreatorParamsContainer create(@JsonbProperty("paramOne") String paramOne,
-                                                 @JsonbProperty("paramTwo") Integer paramTwo) {
-        return new OptionalCreatorParamsContainer(paramOne, paramTwo);
+    public RequiredStringParamContainer create(@JsonbProperty("paramOne") @JsonbRequired String paramOne,
+                                               @JsonbProperty("paramTwo") Integer paramTwo) {
+        return new RequiredStringParamContainer(paramOne, paramTwo);
     }
 
     public String getParamOne() {

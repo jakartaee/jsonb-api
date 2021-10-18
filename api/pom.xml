@@ -86,11 +86,11 @@
         <release.spec.feedback>jsonb-dev@eclipse.org</release.spec.feedback>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <milestone.number>01</milestone.number>
-        <new.spec.version>2.0.0</new.spec.version>
+        <new.spec.version>2.1.0</new.spec.version>
         <non.final>false</non.final>
         <skip.release.tests>false</skip.release.tests>
-        <spec.version>2.0</spec.version>
-        <jakarta.json.version>2.0.0</jakarta.json.version>
+        <spec.version>2.1</spec.version>
+        <jakarta.json.version>2.0.1</jakarta.json.version>
         <!-- The version of JSON-B API to compare against to verify we follow semantic versioning rules -->
         <baseline.compare.version>2.0.0</baseline.compare.version>
         <api_package>jakarta.json.bind</api_package>
@@ -473,6 +473,25 @@
             <plugin>
                 <groupId>org.glassfish.build</groupId>
                 <artifactId>spec-version-maven-plugin</artifactId>
+            </plugin>
+            <!-- Ensures that we follow semantic versioning rules -->
+            <plugin>
+                <groupId>biz.aQute.bnd</groupId>
+                <artifactId>bnd-baseline-maven-plugin</artifactId>
+                <version>6.0.0</version>
+                <configuration>
+                    <base>
+                        <version>${baseline.compare.version}</version>
+                    </base>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>baseline</id>
+                        <goals>
+                            <goal>baseline</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

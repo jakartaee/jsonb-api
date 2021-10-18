@@ -44,8 +44,8 @@ jobs:
       - name: API compilation
         run: cd api && mvn clean install
       - name: TCK test compilation
-        run: cd ../tck && mvn clean install
+        run: cd .. && cd tck && mvn clean install
       - name: Javadoc compilation
-        run: cd ../docs && mvn clean install
+        run: cd .. && cd docs && mvn clean install
       - name: Generating specification
-        run: cd ../spec && mvn clean install
+        run: cd .. && cd spec && mvn clean install

@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbProperty;
+import jakarta.json.bind.annotation.JsonbRequired;
 
 public class ParameterTypeOptionalContainer {
 
@@ -36,6 +37,7 @@ public class ParameterTypeOptionalContainer {
     }
 
     @JsonbCreator
+    @JsonbRequired
     public ParameterTypeOptionalContainer create(@JsonbProperty("paramOne") Optional<String> paramOne,
                                                  @JsonbProperty("paramTwo") Integer paramTwo) {
         return new ParameterTypeOptionalContainer(paramOne.orElse("no value"), paramTwo);

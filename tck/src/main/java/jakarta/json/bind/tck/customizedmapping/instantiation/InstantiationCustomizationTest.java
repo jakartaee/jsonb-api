@@ -233,29 +233,6 @@ public class InstantiationCustomizationTest {
   }
 
   /*
-   * @testName: testUnmappablePropertyName
-   *
-   * @assertion_ids: JSONB:SPEC:JSB-4.5-3
-   *
-   * @test_Strategy: Assert that a JsonbException is thrown when unmarshalling
-   * to a class with a constructor annotated with JsonbCreator and there exists
-   * an unmappable property name
-   */
-  @Test
-  public void testUnmappablePropertyName() {
-    try {
-      SimpleCreatorContainer c = jsonb.fromJson(
-          "{ \"instance\" : \"Test String\", \"integerInstance\" : 1, \"floatInstance\" : 1.0 }",
-          SimpleCreatorContainer.class);
-      System.out.println(c);
-    } catch (JsonbException x) {
-      return;
-    }
-    fail(
-        "A JsonbException is expected when unmarshalling to a class with a constructor annotated with JsonbCreator and there exists an unmappable property name.");
-  }
-
-  /*
    * @testName: testJsonbTypeDeserializerOnCreatorParameter
    *
    * @assertion_ids: JSONB:SPEC:JSB-4.7.2-5

@@ -52,7 +52,6 @@ public class OptionalCreatorParametersTest {
     }
 
     private final Jsonb jsonb = JsonbBuilder.create();
-    private final Jsonb jsonbOptional = JsonbBuilder.create(new JsonbConfig().withOptionalCreatorParameters(true));
 
     @Test
     public void testCreatorMethodWithOptionalParameter() {
@@ -71,62 +70,30 @@ public class OptionalCreatorParametersTest {
     }
 
     @Test
-    public void testCreatorMethodWithMissingRequiredParameter() {
-        try {
-            jsonb.fromJson("{ \"paramOne\" : \"some value\" }", OptionalStringParamContainer.class);
-            fail("Instantiation of the type should have failed, because required creator parameter was missing");
-        } catch (JsonbException ignored) {
-            //Everything worked as expected
-        }
-    }
-
-    @Test
-    public void testOptionalCreatorParamsSetByConfig() {
-        OptionalStringParamContainer unmarshalledObject = jsonbOptional.fromJson("{ }", OptionalStringParamContainer.class);
-
-        if (unmarshalledObject.getParamOne() != null || unmarshalledObject.getParamTwo() != null) {
-            fail("Failed to instantiate type using JsonbCreator annotated factory method with all optional parameters "
-                         + "set by the configuration");
-        }
-        unmarshalledObject = jsonbOptional.fromJson("{ \"paramOne\" : \"some value\" }", OptionalStringParamContainer.class);
-
-        if (!"some value".equals(unmarshalledObject.getParamOne()) || unmarshalledObject.getParamTwo() != null) {
-            fail("Failed to instantiate type using JsonbCreator annotated factory method with all optional parameters "
-                         + "set by the configuration");
-        }
-    }
-
-    @Test
-    public void testOptionalCreatorParamsSetByCreatorProperty() {
+    public void testPropertyOptionalityNotChanged() {
         OptionalCreatorParamsContainer unmarshalledObject = jsonb.fromJson("{ }", OptionalCreatorParamsContainer.class);
 
         if (unmarshalledObject.getParamOne() != null || unmarshalledObject.getParamTwo() != null) {
             fail("Failed to instantiate type using JsonbCreator annotated factory method with all optional parameters "
                          + "set by creator property");
         }
-        unmarshalledObject = jsonbOptional.fromJson("{ \"paramOne\" : \"some value\" }", OptionalCreatorParamsContainer.class);
-
-        if (!"some value".equals(unmarshalledObject.getParamOne()) || unmarshalledObject.getParamTwo() != null) {
-            fail("Failed to instantiate type using JsonbCreator annotated factory method with all optional parameters "
-                         + "set by creator property");
-        }
     }
 
     @Test
-    public void testOptionalCreatorParametersFromConfigOverrideByAnnotation() {
+    public void testAllParametersRequiredSetByMethodAnnotation() {
         try {
-            jsonbOptional.fromJson("{ }", RequiredCreatorParamsContainer.class);
+            jsonb.fromJson("{ }", RequiredCreatorParamsContainer.class);
             fail("Instantiation of the type should have failed, because required creator parameters were missing");
         } catch (JsonbException ignored) {
             //Everything worked as expected
         }
         try {
-            jsonbOptional.fromJson("{ \"paramOne\" : \"some value\" }", RequiredCreatorParamsContainer.class);
+            jsonb.fromJson("{ \"paramOne\" : \"some value\" }", RequiredCreatorParamsContainer.class);
             fail("Instantiation of the type should have failed, because required creator parameter was missing");
         } catch (JsonbException ignored) {
             //Everything worked as expected
         }
-        RequiredCreatorParamsContainer unmarshalledObject = jsonbOptional.fromJson("{ \"paramOne\" : \"some value\", "
+        RequiredCreatorParamsContainer unmarshalledObject = jsonb.fromJson("{ \"paramOne\" : \"some value\", "
                                                                                            + "\"paramTwo\" : 2 }",
                                                                                    RequiredCreatorParamsContainer.class);
 
@@ -136,7 +103,7 @@ public class OptionalCreatorParametersTest {
     }
 
     @Test
-    public void testCreatorParameterWithOptionalType() {
+    public void testRequiredCreatorParameterWithOptionalType() {
         ParameterTypeOptionalContainer unmarshalledObject = jsonb.fromJson("{ \"paramTwo\" : 1 }",
                                                                            ParameterTypeOptionalContainer.class);
 
@@ -155,13 +122,13 @@ public class OptionalCreatorParametersTest {
     @Test
     public void testRequiredParameterParameter() {
         try {
-            jsonbOptional.fromJson("{ \"paramTwo\" : 1 }", RequiredStringParamContainer.class);
+            jsonb.fromJson("{ \"paramTwo\" : 1 }", RequiredStringParamContainer.class);
             fail("Instantiation of the type should have failed, because required creator parameter is missing");
         } catch (JsonbException ignored) {
             //Everything worked as expected
         }
 
-        RequiredStringParamContainer unmarshalledObject = jsonbOptional.fromJson("{ \"paramOne\" : \"some value\" }",
+        RequiredStringParamContainer unmarshalledObject = jsonb.fromJson("{ \"paramOne\" : \"some value\" }",
                                                                                  RequiredStringParamContainer.class);
 
         if (!"some value".equals(unmarshalledObject.getParamOne()) || unmarshalledObject.getParamTwo() != null) {
@@ -171,7 +138,7 @@ public class OptionalCreatorParametersTest {
 
     @Test
     public void testPrimitiveTypesDefaultValues() {
-        PrimitiveTypeContainer unmarshalledObject = jsonbOptional.fromJson("{ }", PrimitiveTypeContainer.class);
+        PrimitiveTypeContainer unmarshalledObject = jsonb.fromJson("{ }", PrimitiveTypeContainer.class);
 
         if (unmarshalledObject.getByteType() != 0
                 || unmarshalledObject.getShortType() != 0

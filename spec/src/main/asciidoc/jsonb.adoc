@@ -320,13 +320,12 @@ Deserialization into anonymous classes is not supported. Serialization of anonym
 
 Polymorphic type handling is supported for deserialization and serialization. Polymorphic handling is ensured by annotation `@JsonbPolymorphicType` and `@JsonbSubtype`. `@JsonbPolymorphicType` defines overall strategy how polymorphic information will be serialized/deserialized. `@JsonbSubtype` ensures proper and safe mapping between class alias and type.
 
-Polymorphic information is obtained from `@JsonbSubtype` annotation as a type alias mapped to the type or if classNames property of the `@JsonbPolymorphicType` is enabled, it corresponds to the class name, if no suitable alias is found. Implementation MUST ensure to support `allowedPackages` option of the `@JsonbPolymorphicType` which is only used when `classNames` option is enabled, it is ignored otherwise. It is not allowed to create instances of the classes outside the allowed packages. In such cases an exception MUST be thrown.
+Polymorphic information is obtained from `@JsonbSubtype` annotation as a type alias mapped to the type or if `classNames` property of the `@JsonbPolymorphicType` is enabled, it corresponds to the fully qualified class name, if no suitable alias is found. Implementation must ensure to support `allowedPackages` option of the `@JsonbPolymorphicType` which is only used when `classNames` option is enabled, it is ignored otherwise. It is not allowed to create instances of the classes outside the allowed packages. In such cases an exception must be thrown. If allowed packages are empty, all classes are allowed.
 
 Available serialization formats:
 
 * Property - new property with polymorphic information is added to the serialized object. The property key name is taken from the `key` property of the annotation `@JsonbPolymorphicType`. This polymorphic information property key name has to be unique in the resulting JSON document. If any naming collision with class properties occurs, an exception must be thrown.
 * Wrapping object - serialized object is wrapped with another object with a single property. The key corresponds to the polymorphic information of the type and the value is the serialized object
-* Wrapping array - serialized object is wrapped by the array. This array contains only two values. The first MUST be polymorphic information of the type and the second value is the serialized object
 
 If no `@JsonbPolymorphicType` is used on handled class or its predecessors, it is not possible to ensure proper polymorphic handling and in such cases deserialization is not supported for polymorphic types.
 

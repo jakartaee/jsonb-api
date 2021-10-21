@@ -15,7 +15,7 @@
 
     <groupId>jakarta.json.bind</groupId>
     <artifactId>jakarta.json.bind-docs</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>JSON Binding Docs</name>
 
@@ -28,15 +28,8 @@
 
     <repositories>
         <repository>
-            <id>rubygems-proxy-releases2</id>
-            <name>RubyGems.org Proxy (Releases)</name>
-            <url>http://rubygems-proxy.torquebox.org/releases</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
+            <id>mavengems</id>
+            <url>mavengem:https://rubygems.org</url>
         </repository>
     </repositories>
 
@@ -119,5 +112,15 @@
                 </executions>
             </plugin>
         </plugins>
+
+        <!-- This extension converts reubygems repository to maven repository on the fly -->
+        <!-- This is needed because of the old maven proxy address does not support HTTPS -->
+        <extensions>
+            <extension>
+                <groupId>org.torquebox.mojo</groupId>
+                <artifactId>mavengem-wagon</artifactId>
+                <version>1.0.3</version>
+            </extension>
+        </extensions>
     </build>
 </project>

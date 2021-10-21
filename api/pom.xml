@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (c) 2016, 2020 Oracle and/or its affiliates. All rights reserved.
+    Copyright (c) 2016, 2021 Oracle and/or its affiliates. All rights reserved.
 
     This program and the accompanying materials are made available under the
     terms of the Eclipse Public License v. 2.0, which is available at
@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.eclipse.ee4j</groupId>
         <artifactId>project</artifactId>
-        <version>1.0.6</version>
+        <version>1.0.7</version>
     </parent>
 
     <groupId>jakarta.json.bind</groupId>
     <artifactId>jakarta.json.bind-api</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>JSON-B API</name>
@@ -86,13 +86,13 @@
         <release.spec.feedback>jsonb-dev@eclipse.org</release.spec.feedback>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <milestone.number>01</milestone.number>
-        <new.spec.version>2.0.0</new.spec.version>
+        <new.spec.version>3.0.0</new.spec.version>
         <non.final>false</non.final>
         <skip.release.tests>false</skip.release.tests>
-        <spec.version>2.0</spec.version>
-        <jakarta.json.version>2.0.0</jakarta.json.version>
+        <spec.version>3.0</spec.version>
+        <jakarta.json.version>2.0.1</jakarta.json.version>
         <!-- The version of JSON-B API to compare against to verify we follow semantic versioning rules -->
-        <baseline.compare.version>1.0.2</baseline.compare.version>
+        <baseline.compare.version>2.0.0</baseline.compare.version>
         <api_package>jakarta.json.bind</api_package>
         <legal.doc.source>${project.basedir}/..</legal.doc.source>
         <vendor.name>Oracle Corporation</vendor.name>
@@ -127,57 +127,6 @@
     </dependencies>
 
     <profiles>
-        <profile>
-            <id>jdk11</id>
-            <activation>
-                <jdk>[11,)</jdk>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>jdk-11</id>
-                                <goals>
-                                    <goal>compile</goal>
-                                </goals>
-                                <configuration>
-                                    <source>9</source>
-                                    <target>9</target>
-                                    <includes>
-                                        <include>module-info.java</include>
-                                    </includes>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>jdk8</id>
-            <activation>
-                <jdk>(,9)</jdk>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-checkstyle-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>findbugs-maven-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
         <profile>
             <id>final</id>
             <activation>
@@ -252,34 +201,8 @@
                         <compilerArgs>
                             <arg>-Xlint:all</arg>
                         </compilerArgs>
+                        <release>11</release>
                     </configuration>
-                    <executions>
-                        <execution>
-                            <id>default-compile</id>
-                            <configuration>
-                                <release>11</release>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>base-compile</id>
-                            <goals>
-                                <goal>compile</goal>
-                            </goals>
-                            <!-- recompile everything for 1.8 except the module-info.java -->
-                            <configuration>
-                                <release>8</release>
-                                <excludes>
-                                    <exclude>module-info.java</exclude>
-                                </excludes>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>default-testCompile</id>
-                            <configuration>
-                                <release>11</release>
-                            </configuration>
-                        </execution>
-                    </executions>
                 </plugin>
                 <plugin>
                     <!-- This plugin generates the buildNumber property used in maven-bundle-plugin -->
@@ -377,7 +300,7 @@
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>3.1.0</version>
                     <configuration>
-                        <source>8</source>
+                        <source>11</source>
                         <doctitle>Jakarta JSON Binding ${project.version} API Specification</doctitle>
                         <sourceFileExcludes>
                             <sourceFileExclude>**/module-info.java</sourceFileExclude>
@@ -385,7 +308,7 @@
                         </sourceFileExcludes>
                         <docfilessubdirs>true</docfilessubdirs>
                         <links>
-                            <link>http://docs.oracle.com/javase/8/docs/api/</link>
+                            <link>http://docs.oracle.com/en/java/javase/11/docs/api/</link>
                         </links>
                         <detectJavaApiLink>false</detectJavaApiLink>
                         <detectOfflineLinks>false</detectOfflineLinks>
@@ -393,7 +316,7 @@
                         </header>
                         <bottom><![CDATA[
                         Comments to: <a href="mailto:${release.spec.feedback}">${release.spec.feedback}</a>.<br>
-                        Copyright &#169; 2019, 2020 Eclipse Foundation. All Rights Reserved.<br>
+                        Copyright &#169; 2019, 2021 Eclipse Foundation. All Rights Reserved.<br>
                         Use is subject to <a href="{@docRoot}/doc-files/EFSL.html" target="_top">license terms</a>.]]>
                         </bottom>
                     </configuration>
@@ -435,7 +358,7 @@
                 <plugin>
                     <groupId>org.glassfish.copyright</groupId>
                     <artifactId>glassfish-copyright-maven-plugin</artifactId>
-                    <version>2.3</version>
+                    <version>2.4</version>
                     <configuration>
                         <excludeFile>${basedir}/../etc/config/copyright-exclude</excludeFile>
                         <scm>git</scm>
@@ -452,6 +375,7 @@
                     <executions>
                         <execution>
                             <goals>
+                                <goal>copyright</goal>
                                 <goal>check</goal>
                             </goals>
                             <phase>compile</phase>
@@ -554,12 +478,12 @@
             <plugin>
                 <groupId>biz.aQute.bnd</groupId>
                 <artifactId>bnd-baseline-maven-plugin</artifactId>
-                <version>4.3.0</version>
+                <version>6.0.0</version>
                 <configuration>
                     <base>
                         <version>${baseline.compare.version}</version>
                     </base>
-                 </configuration>
+                </configuration>
                 <executions>
                     <execution>
                         <id>baseline</id>

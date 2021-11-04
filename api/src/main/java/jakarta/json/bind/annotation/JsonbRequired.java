@@ -26,11 +26,11 @@ import static java.lang.annotation.ElementType.PARAMETER;
 
 /**
  * Specifies which parameters of the {@link JsonbCreator} are required.
- * <br/>
+ * <br>
  * There are two possible values for this parameter: false or true.
  * If set to false, parameters are marked as optional and will not be required in the JSON document.
  * If set to true, however, parameters will be required (default behavior).
- * <br/>
+ * <br>
  * Annotation can be specified on method or constructor annotated also by {@link JsonbCreator} and affects
  * all the creator parameters. It is also possible to use this annotation on the creator parameter.
  *

@@ -548,14 +548,4 @@ public class JsonbConfigTest {
     }
   }
 
-  @Test
-  public void testWithOptionalCreatorParameters() {
-    JsonbConfig jsonbConfig = new JsonbConfig().withOptionalCreatorParameters(true);
-
-    Optional<Object> property = jsonbConfig.getProperty(JsonbConfig.OPTIONAL_CREATOR_PARAMETERS);
-    if (!property.isPresent() || !(boolean) property.get()) {
-      fail("Failed to configure optional creator parameters using JsonbConfig.withOptionalCreatorParameters method.");
-    }
-  }
-
 }

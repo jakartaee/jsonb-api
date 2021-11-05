@@ -547,4 +547,5 @@ public class JsonbConfigTest {
           "Failed to configure strict I-JSON support using JsonbConfig.withStrictIJSON method.");
     }
   }
+
 }

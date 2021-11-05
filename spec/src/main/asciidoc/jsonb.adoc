@@ -647,9 +647,40 @@ Factory method annotated with `JsonbCreator` annotation should return instance o
 
 Mapping between parameters of constructor/factory method annotated with `JsonbCreator` and JSON fields is defined using `JsonbProperty` annotation on all parameters.
 
-In case `JsonbProperty` annotation on parameters is not used, parameters should be mapped from JSON fields with the same name. In this case the proper mapping is NOT guaranteed.
+If the `JsonbProperty` annotation on parameters is not used, then parameters should be mapped from JSON fields with the same name. In this case the proper mapping is NOT guaranteed.
 
-In case a field required for a parameter mapping doesn’t exist in JSON document, `JsonbException` MUST be thrown.
+If a required field for a parameter mapping does not exist in the JSON document, then `JsonbException` MUST be thrown unless it is marked as an optional. See <<optional-creator-params, Optional JsonbCreator parameters>>. All the parameters are treated as optional by default.
+
+[[optional-creator-params]]
+==== Optional JsonbCreator parameters
+An optional creator parameter is not required to be in the JSON document, and, if it is missing, then no exception will be thrown.
+
+Implementation must allow setting all parameters to be required of a certain creator. This is achieved by adding `JsonbRequired` annotation to the creator method/constructor. If the value of this annotation is set to false, all parameters of the creator will be treated as optional.
+
+Implementation must allow making only certain parameters as optional/required. A parameter can be declared required if annotated with `JsonbRequired`.
+
+A parameter can be declared optional by setting the JsonRequired annotation to false or being `Optional` type.
+
+If a property has an explicit value of `null` set in the JSON document, and the parameter is primitive type, then implementation must throw an exception.
+
+==== Optional parameter values
+When a property is missing from the JSON document, and is marked as optional, the proper default should be used. If the parameter is any type other than `Optional` or its variations, then the `null` value is used. If the parameter is `Optional` or its variations, then the corresponding empty object must be used.
+
+Primitive types cannot accept `null` values, so a corresponding value is required as listed in the following table:
+
+[cols=",",options="header",]
+.Provided primitive values instead of null
+|===
+|Primitive type |Provided value
+|byte |0
+|short |0
+|int |0
+|long |0L
+|float |0.0F
+|double |0.0
+|boolean |false
+|char |'\u0000'
+|===
 
 === Custom visibility
 

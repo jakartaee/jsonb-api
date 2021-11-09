@@ -35,7 +35,7 @@ public class OptionalStringParamContainer {
     }
 
     @JsonbCreator
-    public OptionalStringParamContainer create(@JsonbProperty("paramOne") String paramOne,
+    public static OptionalStringParamContainer create(@JsonbProperty("paramOne") String paramOne,
                                                @JsonbProperty("paramTwo") Integer paramTwo) {
         return new OptionalStringParamContainer(paramOne, paramTwo);
     }

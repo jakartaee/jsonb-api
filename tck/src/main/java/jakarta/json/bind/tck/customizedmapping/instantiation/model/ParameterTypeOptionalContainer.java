@@ -38,8 +38,8 @@ public class ParameterTypeOptionalContainer {
 
     @JsonbCreator
     @JsonbRequired
-    public ParameterTypeOptionalContainer create(@JsonbProperty("paramOne") Optional<String> paramOne,
-                                                 @JsonbProperty("paramTwo") Integer paramTwo) {
+    public static ParameterTypeOptionalContainer create(@JsonbProperty("paramOne") Optional<String> paramOne,
+                                                        @JsonbProperty("paramTwo") Integer paramTwo) {
         return new ParameterTypeOptionalContainer(paramOne.orElse("no value"), paramTwo);
     }
 

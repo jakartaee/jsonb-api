@@ -53,14 +53,14 @@ public class PrimitiveTypeContainer {
     }
 
     @JsonbCreator
-    public PrimitiveTypeContainer create(@JsonbProperty("byteType") byte byteType,
-                                         @JsonbProperty("shortType") short shortType,
-                                         @JsonbProperty("intType") int intType,
-                                         @JsonbProperty("longType") long longType,
-                                         @JsonbProperty("floatType") float floatType,
-                                         @JsonbProperty("doubleType") double doubleType,
-                                         @JsonbProperty("charType") char charType,
-                                         @JsonbProperty("booleanType") boolean booleanType) {
+    public static PrimitiveTypeContainer create(@JsonbProperty("byteType") byte byteType,
+                                                @JsonbProperty("shortType") short shortType,
+                                                @JsonbProperty("intType") int intType,
+                                                @JsonbProperty("longType") long longType,
+                                                @JsonbProperty("floatType") float floatType,
+                                                @JsonbProperty("doubleType") double doubleType,
+                                                @JsonbProperty("charType") char charType,
+                                                @JsonbProperty("booleanType") boolean booleanType) {
         return new PrimitiveTypeContainer(byteType, shortType, intType, longType, floatType, doubleType, charType, booleanType);
     }
 

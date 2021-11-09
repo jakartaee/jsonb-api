@@ -36,7 +36,7 @@ public class RequiredCreatorParamsContainer {
 
     @JsonbCreator
     @JsonbRequired
-    public RequiredCreatorParamsContainer create(@JsonbProperty("paramOne") String paramOne,
+    public static RequiredCreatorParamsContainer create(@JsonbProperty("paramOne") String paramOne,
                                                  @JsonbProperty("paramTwo") Integer paramTwo) {
         return new RequiredCreatorParamsContainer(paramOne, paramTwo);
     }

@@ -39,6 +39,7 @@ import jakarta.json.bind.tck.customizedmapping.nullhandling.model.nillable.Nilla
 import jakarta.json.bind.tck.customizedmapping.nullhandling.model.nonnillable.NonNillablePackageNillableContainer;
 import jakarta.json.bind.tck.customizedmapping.nullhandling.model.nonnillable.NonNillablePackageNonNillablePropertyNillableContainer;
 import jakarta.json.bind.tck.customizedmapping.nullhandling.model.nonnillable.NonNillablePackageSimpleContainer;
+
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -303,12 +304,9 @@ public class NullHandlingCustomizationTest {
   public void testNullValuesConfigNonAndNillableProperty() {
     Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withNullValues(true));
     String jsonString = jsonb.toJson(new NonNillableAndNillablePropertyContainer());
-    if (!jsonString.matches("\\{\\s*\\}")) {
-      fail(
-          "Failed to correctly ignore null property annotated both JsonbProperty with nillable = true and JsonbNillable(false) when using JsonbConfig().withNullValues(true)."
-                  + "JsonbNillable annotation should take precedence over the JsonbProperty");
-    }
-
-    return; // passed
+      assertThat("Failed to correctly ignore null property annotated both JsonbProperty with nillable = true and "
+                         + "JsonbNillable(false) when using JsonbConfig().withNullValues(true)."
+                         + "JsonbNillable annotation should take precedence over the JsonbProperty",
+                 jsonString, matchesPattern("\\{\\s*\\}"));
   }
 }

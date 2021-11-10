@@ -216,7 +216,8 @@ public class InstantiationCustomizationTest {
     CreatorWithDeserializerContainer c = jsonb.fromJson("{ \"instance\" : \"Test String\" }",
                                                         CreatorWithDeserializerContainer.class);
     String expected = "Test String Deserialized";
-    assertEquals("JsonbDeserializer on the JsonbCreator parameter was not executed." , expected, c.getStringInstance());
+    assertThat("JsonbDeserializer on the JsonbCreator parameter was not executed." ,
+               c.getStringInstance(), is(expected));
   }
 
   @Test

@@ -91,19 +91,6 @@ public class AnnotationPolymorphismObjectTest {
     }
 
     @Test
-    public void testExactTypeDeserialization() {
-        Dog dog = jsonb.fromJson("{\"isDog\":false}", Dog.class);
-        if (dog.isDog) {
-            fail("Incorrectly deserialized field of the Dog instance. Field \"isDog\" should have been false.");
-            return;
-        }
-        dog = jsonb.fromJson("{\"dog\":{\"isDog\":false}}", Dog.class);//TODO??????
-        if (dog.isDog) {
-            fail("Incorrectly deserialized field of the Dog instance. Field \"isDog\" should have been false.");
-        }
-    }
-
-    @Test
     public void testUnknownAliasDeserialization() {
         try {
             jsonb.fromJson("{\"rat\":{\"isRat\":false}}", Animal.class);
@@ -166,9 +153,10 @@ public class AnnotationPolymorphismObjectTest {
         }
     }
 
-    @JsonbPolymorphicType(format = JsonbPolymorphicType.Format.WRAPPING_OBJECT)
-    @JsonbSubtype(alias = "dog", type = Dog.class)
-    @JsonbSubtype(alias = "cat", type = Cat.class)
+    @JsonbPolymorphicType(format = JsonbPolymorphicType.Format.WRAPPING_OBJECT, value = {
+            @JsonbSubtype(alias = "dog", type = Dog.class),
+            @JsonbSubtype(alias = "cat", type = Cat.class)
+    })
     public interface Animal {
 
     }
@@ -191,8 +179,9 @@ public class AnnotationPolymorphismObjectTest {
 
     }
 
-    @JsonbPolymorphicType(format = JsonbPolymorphicType.Format.WRAPPING_OBJECT)
-    @JsonbSubtype(alias = "constructor", type = DateConstructor.class)
+    @JsonbPolymorphicType(format = JsonbPolymorphicType.Format.WRAPPING_OBJECT, value = {
+            @JsonbSubtype(alias = "constructor", type = DateConstructor.class)
+    })
     public interface SomeDateType {
 
     }

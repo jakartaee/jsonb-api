@@ -24,20 +24,21 @@ import java.lang.annotation.Target;
 
 /**
  * Subtype is tightly bound to the {@link JsonbPolymorphicType}.
- * <br/>
+ * <br>
  * Type defines class which instance will be created when processing specific alias, or when processing
  * instance of the specified type, to determine which alias should be used.
- * <br/>
+ * <br>
  * Alias is used instead of a class name. It has to be unique value among all the defined subtypes
  * bound to the specific {@link JsonbPolymorphicType}. An exception should be thrown when processing and
  * validating aliases and duplicate alias is found.
- * <br/>
+ * <br>
  * An exception have to be thrown when processing unknown alias and
  * <pre>{@code
  * // Example
- * @JsonbPolymorphicType(keyName = "@key")
- * @JsonbSubtype(alias = "dog", type = Dog.class)
- * @JsonbSubtype(alias = "cat", type = Cat.class)
+ * @JsonbPolymorphicType({
+ *      @JsonbSubtype(alias = "dog", type = Dog.class)
+ *      @JsonbSubtype(alias = "cat", type = Cat.class)
+ * })
  * interface Animal {}
  *
  * class Dog implements Animal {
@@ -56,9 +57,8 @@ import java.lang.annotation.Target;
  * }</pre>
  */
 @JsonbAnnotation
-@Repeatable(JsonbSubtypes.class)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
+@Target({})
 public @interface JsonbSubtype {
 
     /**

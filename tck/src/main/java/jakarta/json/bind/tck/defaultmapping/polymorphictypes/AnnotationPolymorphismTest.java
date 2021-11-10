@@ -16,19 +16,21 @@
 
 package jakarta.json.bind.tck.defaultmapping.polymorphictypes;
 
+import java.io.ByteArrayInputStream;
 import java.lang.invoke.MethodHandles;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
-import jakarta.json.bind.JsonbConfig;
 import jakarta.json.bind.JsonbException;
 import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbDateFormat;
 import jakarta.json.bind.annotation.JsonbPolymorphicType;
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbSubtype;
-import jakarta.json.bind.config.PropertyOrderStrategy;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -57,6 +59,8 @@ public class AnnotationPolymorphismTest {
     public void testBasicSerialization() {
         Dog dog = new Dog();
         String jsonString = jsonb.toJson(dog);
+        JsonObject object = Json.createParser(new ByteArrayInputStream(jsonString.getBytes(StandardCharsets.UTF_8))).getObject();
+
         if (!jsonString.matches("\\{\\s*\"@type\"\\s*:\\s*\"dog\"\\s*,\\s*\"isDog\"\\s*:\\s*true\\s*\\}")) {
             fail("Failed to serialize Dog class correctly in the polymorphic format: "
                          + JsonbPolymorphicType.Format.PROPERTY.name());
@@ -89,19 +93,6 @@ public class AnnotationPolymorphismTest {
         }
         if (((Cat) cat).isCat) {
             fail("Incorrectly deserialized field of the Cat instance. Field \"isCat\" should have been false.");
-        }
-    }
-
-    @Test
-    public void testExactTypeDeserialization() {
-        Dog dog = jsonb.fromJson("{\"isDog\":false}", Dog.class);
-        if (dog.isDog) {
-            fail("Incorrectly deserialized field of the Dog instance. Field \"isDog\" should have been false.");
-            return;
-        }
-        dog = jsonb.fromJson("{\"@type\":\"dog\", \"isDog\":false}", Dog.class);
-        if (dog.isDog) {
-            fail("Incorrectly deserialized field of the Dog instance. Field \"isDog\" should have been false.");
         }
     }
 
@@ -169,33 +160,11 @@ public class AnnotationPolymorphismTest {
         }
     }
 
-    @Test
-    public void testOrderStrategyIgnored() {
-        Jsonb jsonb = JsonbBuilder.create(new JsonbConfig().withPropertyOrderStrategy(PropertyOrderStrategy.REVERSE));
-        Elephant elephant = new Elephant();
-        String jsonString = jsonb.toJson(elephant);
-        if (!jsonString.matches("\\{\\s*\"@type\"\\s*:\\s*\"elephant\"\\s*,"
-                                        + "\\s*\"testProperty\"\\s*:\\s*\"value\"\\s*,"
-                                        + "\\s*\"isElephant\"\\s*:\\s*true\\s*"
-                                        + "\\}")) {
-            fail("PropertyOrderStrategy " + PropertyOrderStrategy.REVERSE + " was not ignored for added property with "
-                         + "polymorphic information");
-        }
-        jsonb = JsonbBuilder.create(new JsonbConfig().withPropertyOrderStrategy(PropertyOrderStrategy.LEXICOGRAPHICAL));
-        jsonString = jsonb.toJson(elephant);
-        if (!jsonString.matches("\\{\\s*\"@type\"\\s*:\\s*\"elephant\"\\s*,"
-                                        + "\\s*\"isElephant\"\\s*:\\s*true\\s*,"
-                                        + "\\s*\"testProperty\"\\s*:\\s*\"value\"\\s*"
-                                        + "\\}")) {
-            fail("PropertyOrderStrategy " + PropertyOrderStrategy.LEXICOGRAPHICAL + " was not ignored for added property with "
-                         + "polymorphic information");
-        }
-    }
-
-    @JsonbPolymorphicType(key = "@type")
-    @JsonbSubtype(alias = "dog", type = Dog.class)
-    @JsonbSubtype(alias = "cat", type = Cat.class)
-    @JsonbSubtype(alias = "elephant", type = Elephant.class)
+    @JsonbPolymorphicType({
+            @JsonbSubtype(alias = "dog", type = Dog.class),
+            @JsonbSubtype(alias = "cat", type = Cat.class),
+            @JsonbSubtype(alias = "elephant", type = Elephant.class)
+    })
     public interface Animal {
 
     }
@@ -218,7 +187,6 @@ public class AnnotationPolymorphismTest {
 
     }
 
-
     public static class Elephant implements Animal {
 
         public boolean isElephant = true;
@@ -226,8 +194,9 @@ public class AnnotationPolymorphismTest {
 
     }
 
-    @JsonbPolymorphicType(key = "@dateType")
-    @JsonbSubtype(alias = "constructor", type = DateConstructor.class)
+    @JsonbPolymorphicType(key = "@dateType", value = {
+            @JsonbSubtype(alias = "constructor", type = DateConstructor.class)
+    })
     public interface SomeDateType {
 
     }

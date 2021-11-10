@@ -26,14 +26,14 @@ import java.lang.annotation.Target;
  * <br>
  * This annotation is required to be present on the most top of all the classes,
  * polymorphism should be applied to.
- * <pre>{@code
+ * <pre><code>
  * // Example
- * @JsonbPolymorphicType(keyName = "@key")
+ * {@literal @}JsonbPolymorphicType(keyName = "@key")
  * interface Animal {}
  *
  * class Dog implements Animal {}
  * class Cat implements Animal {}
- * }</pre>
+ * </code></pre>
  * This annotation is closely tight with {@link JsonbSubtype}. It is recommended to use
  * {@link JsonbSubtype} annotations to specify all the possible classes and their aliases.
  * <br>
@@ -103,10 +103,10 @@ public @interface JsonbPolymorphicType {
          * serialized object.
          * <br>
          * This format ignores specified {@link JsonbPolymorphicType#key()}.
-         * <pre>{@code
+         * <pre>
          * // Example
-         * @JsonbPolymorphicType(format = Format.WRAPPING_OBJECT, value = {
-         *     @JsonbSubtype(alias = "dog", type = Dog.class)
+         * {@literal @}JsonbPolymorphicType(format = Format.WRAPPING_OBJECT, value = {
+         *     {@literal @}JsonbSubtype(alias = "dog", type = Dog.class)
          * })
          * interface Animal {}
          *
@@ -116,7 +116,7 @@ public @interface JsonbPolymorphicType {
          *
          * //Resulting json after dog instance serialization
          * {"dog":{"isDog":true}}
-         * }</pre>
+         * </pre>
          */
         WRAPPING_OBJECT,
 
@@ -126,10 +126,10 @@ public @interface JsonbPolymorphicType {
          * <br>
          * It is required to have nonempty {@link JsonbPolymorphicType#key()} specified when
          * using this format.
-         * <pre>{@code
+         * <pre>
          * // Example
-         * @JsonbPolymorphicType({
-         *     @JsonbSubtype(alias = "dog", type = Dog.class)
+         * {@literal @}JsonbPolymorphicType({
+         *     {@literal @}JsonbSubtype(alias = "dog", type = Dog.class)
          * })
          * interface Animal {}
          *
@@ -139,7 +139,7 @@ public @interface JsonbPolymorphicType {
          *
          * //Resulting json after dog instance serialization
          * {"@type":"dog","isDog":true}
-         * }</pre>
+         * </pre>
          * This is the default format of the polymorphic handling and does not need to be
          * explicitly specified.
          */

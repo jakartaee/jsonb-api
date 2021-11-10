@@ -33,11 +33,11 @@ import java.lang.annotation.Target;
  * validating aliases and duplicate alias is found.
  * <br>
  * An exception have to be thrown when processing unknown alias and
- * <pre>{@code
+ * <pre><code>
  * // Example
- * @JsonbPolymorphicType({
- *      @JsonbSubtype(alias = "dog", type = Dog.class)
- *      @JsonbSubtype(alias = "cat", type = Cat.class)
+ * {@literal @}JsonbPolymorphicType({
+ *      {@literal @}JsonbSubtype(alias = "dog", type = Dog.class)
+ *      {@literal @}JsonbSubtype(alias = "cat", type = Cat.class)
  * })
  * interface Animal {}
  *
@@ -54,7 +54,7 @@ import java.lang.annotation.Target;
  * jsonb.toJson(new Dog());// {"@type":"dog","isDog":true}
  * jsonb.toJson(new Cat());// {"@type":"cat","isCat":true}
  * jsonb.toJson(new Rat());// An exception thrown
- * }</pre>
+ * </code></pre>
  */
 @JsonbAnnotation
 @Retention(RetentionPolicy.RUNTIME)

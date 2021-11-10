@@ -355,7 +355,7 @@ class Car extends Vehicle {...}
 
 class MyCar extends Car {...}
 ----
-No exception is thrown since there is just one parent `@JsonbPolymorphicType` and one on the currently handled type. Aliases or any other setting is not merged. The order of the polymorphic information properties must be the same in which they appear in the polymorphic definition chain. Resulting JSON when serializing MyCar class would look like this:
+No exception is thrown since there is just one parent `@JsonbPolymorphicType` and one on the currently handled type. The order of the polymorphic information properties must be the same in which they appear in the polymorphic definition chain. Resulting JSON when serializing MyCar class would look like this:
 [source,json]
 ----
 {

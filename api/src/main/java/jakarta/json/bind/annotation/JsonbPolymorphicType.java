@@ -40,7 +40,7 @@ import java.lang.annotation.Target;
  */
 @JsonbAnnotation
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
+@Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE})
 public @interface JsonbPolymorphicType {
 
     /**

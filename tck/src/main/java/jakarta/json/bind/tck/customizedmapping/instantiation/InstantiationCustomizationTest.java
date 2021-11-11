@@ -21,6 +21,7 @@
 package jakarta.json.bind.tck.customizedmapping.instantiation;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.lang.invoke.MethodHandles;
@@ -36,6 +37,7 @@ import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
 import jakarta.json.bind.tck.customizedmapping.instantiation.model.CreatorPlusFactoryContainer;
+import jakarta.json.bind.tck.customizedmapping.instantiation.model.CreatorWithAdapterContainer;
 import jakarta.json.bind.tck.customizedmapping.instantiation.model.CreatorWithDeserializerContainer;
 import jakarta.json.bind.tck.customizedmapping.instantiation.model.IllegalInstanceFactoryCreatorContainer;
 import jakarta.json.bind.tck.customizedmapping.instantiation.model.MultipleCreatorsContainer;
@@ -247,5 +249,15 @@ public class InstantiationCustomizationTest {
                                                         CreatorWithDeserializerContainer.class);
     String expected = "Test String Deserialized";
     assertEquals("JsonbDeserializer on the JsonbCreator parameter was not executed." , expected, c.getStringInstance());
+  }
+
+  @Test
+  public void testJsonbAdapterOnCreatorParameter() {
+    CreatorWithAdapterContainer c = jsonb.fromJson("{ \"instance\" : \"string value\" }",
+                                                   CreatorWithAdapterContainer.class);
+    String expected = "string value";
+    assertNotNull("JsonbAdapter on the JsonbCreator parameter was not executed.", c.getStringWrapper());
+    assertEquals("JsonbAdapter on the JsonbCreator parameter was not executed.",
+                 expected, c.getStringWrapper().getWrapped());
   }
 }

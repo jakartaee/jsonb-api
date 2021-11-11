@@ -706,6 +706,8 @@ There are two ways how to register `JsonbAdapter`:
 
 `JsonbAdapter` registered via `JsonbConfig::withAdapters` is visible to all serialize/deserialize operations performed with given `JsonbConfig`. `JsonbAdapter` registered with annotation is visible to serialize/deserialize operation used only for annotated field.
 
+It is possible to annotate `JsonbCreator` parameter with `JsonbTypeAdapter` and provide adapter for a parameter this way. However, if `JsonbTypeAdapter` annotation is provided to any other parameter (such as setter method parameter) it will be ignored.
+
 Implementations must provide a CDI support in adapters to allow injection of CDI managed beans into it.
 
 ==== Serializers/Deserializers
@@ -722,7 +724,7 @@ There are two ways how to register `JsonbSerializer/JsonbDeserializer`:
 . Using `JsonbConfig::withSerializers/ JsonbConfig::withDeserializers` method;
 . Annotating a type with `JsonbSerializer/JsonbDeserializer` annotation.
 
-It is possible to annotate `JsonbCreator` parameters with `JsonbTypeDeserializer` and provide deserializer for a parameter this way. However, if `JsonbTypeDeserializer` annotation is provided to any other parameter (such as setter method parameter) it will be ignored.
+It is possible to annotate `JsonbCreator` parameter with `JsonbTypeDeserializer` and provide deserializer for a parameter this way. However, if `JsonbTypeDeserializer` annotation is provided to any other parameter (such as setter method parameter) it will be ignored.
 
 Implementations must provide a CDI support in serializers/deserializers to allow injection of CDI managed beans into it.
 

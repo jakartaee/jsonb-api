@@ -20,27 +20,23 @@
 
 package jakarta.json.bind.tck.customizedmapping.instantiation.model;
 
-import java.util.Optional;
-
 import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbProperty;
-import jakarta.json.bind.annotation.JsonbRequired;
 
-public class ParameterTypeOptionalContainer {
+public class SimpleCreatorParamContainer {
 
     private final String paramOne;
     private final Integer paramTwo;
 
-    private ParameterTypeOptionalContainer(String paramOne, Integer paramTwo) {
+    private SimpleCreatorParamContainer(String paramOne, Integer paramTwo) {
         this.paramOne = paramOne;
         this.paramTwo = paramTwo;
     }
 
     @JsonbCreator
-    @JsonbRequired
-    public static ParameterTypeOptionalContainer create(@JsonbProperty("paramOne") Optional<String> paramOne,
-                                                        @JsonbProperty("paramTwo") Integer paramTwo) {
-        return new ParameterTypeOptionalContainer(paramOne.orElse("no value"), paramTwo);
+    public static SimpleCreatorParamContainer create(@JsonbProperty("paramOne") String paramOne,
+                                                     @JsonbProperty("paramTwo") Integer paramTwo) {
+        return new SimpleCreatorParamContainer(paramOne, paramTwo);
     }
 
     public String getParamOne() {

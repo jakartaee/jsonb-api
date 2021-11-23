@@ -123,7 +123,7 @@ public class OptionalCreatorParametersTest {
         if (unmarshalledObject.getIntOptional() != 1
                 || unmarshalledObject.getLongOptional() != 2L
                 || unmarshalledObject.getDoubleOptional() != 3.0
-                || "stringValue".equals(unmarshalledObject.getStringOptional())) {
+                || !"stringValue".equals(unmarshalledObject.getStringOptional())) {
             fail("Failed to instantiate type using JsonbCreator annotated factory method with Optional type parameters");
         }
     }

@@ -61,7 +61,7 @@ include the TCK module and apply the appropriate Arquillian container. See the [
 
 - [Official web site](https://eclipse-ee4j.github.io/jsonb-api)
 - [Eclipse project](https://projects.eclipse.org/projects/ee4j.jsonb)
-- [User's Guide](http://json-b.net/docs/user-guide.html)
+- [User's Guide](https://eclipse-ee4j.github.io/jsonb-api/docs/user-guide.html)
 - [Jenkins Builds](https://ci.eclipse.org/jsonb/view/all/)
 - [Mailing list](https://www.eclipse.org/lists/jsonb-dev/)
 - [Yasson (Compatible Implementation)](https://github.com/eclipse-ee4j/yasson)

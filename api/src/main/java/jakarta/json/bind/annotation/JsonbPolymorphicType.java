@@ -24,8 +24,7 @@ import java.lang.annotation.Target;
 /**
  * Configuration annotation of the polymorphic type handling.
  * <br>
- * This annotation is required to be present on the most top of all the classes,
- * polymorphism should be applied to.
+ * This annotation is required on the most common parent of all classes when polymorphism will be applied.
  * <pre><code>
  * // Example
  * {@literal @}JsonbPolymorphicType(keyName = "@key")
@@ -34,7 +33,7 @@ import java.lang.annotation.Target;
  * class Dog implements Animal {}
  * class Cat implements Animal {}
  * </code></pre>
- * This annotation is closely tight with {@link JsonbSubtype}. It is recommended to use
+ * This annotation is tightly bound to {@link JsonbSubtype}. It is recommended to use
  * {@link JsonbSubtype} annotations to specify all the possible classes and their aliases.
  * <br>
  */
@@ -74,9 +73,9 @@ public @interface JsonbPolymorphicType {
      * Only classes contained in the selected packages will be serialized/deserialized.
      * Classes with specified alias are not validated.
      * <br>
-     * It is strongly recommended having allowed packages set up if classes without alias should be processed.
+     * It is strongly recommended that you set up allowed packages when classes without aliases will be processed.
      * <br>
-     * When no package is specified, all classes without alias are allowed.
+     * When no package is specified, all classes without aliases are allowed.
      *
      * @return list of allowed packages
      */
@@ -121,10 +120,10 @@ public @interface JsonbPolymorphicType {
         WRAPPING_OBJECT,
 
         /**
-         * Serialized object will have one more property added to the resulting json.
+         * Serialized object will have one more property added to the resulting JSON.
          * This property will contain polymorphic information (alias/class name).
          * <br>
-         * It is required to have nonempty {@link JsonbPolymorphicType#key()} specified when
+         * It is required to have a non-empty {@link JsonbPolymorphicType#key()} specified when
          * using this format.
          * <pre>
          * // Example

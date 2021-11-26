@@ -1,4 +1,4 @@
-:component-name: Json Binding 1.0.1 Users Guide
+:component-name: Json Binding 2.0.0 Users Guide
 :toc: left
 :toclevels: 3
 
@@ -18,7 +18,7 @@ JSON-B is a standard binding layer for converting Java objects to/from JSON mess
     <dependency>
         <groupId>org.glassfish</groupId>
         <artifactId>jakarta.json</artifactId>
-        <version>1.1.5</version>
+        <version>2.0.1</version>
         <scope>runtime</scope>
     </dependency>
 
@@ -26,14 +26,14 @@ JSON-B is a standard binding layer for converting Java objects to/from JSON mess
     <dependency>
         <groupId>jakarta.json.bind</groupId>
         <artifactId>jakarta.json.bind-api</artifactId>
-        <version>1.0.1</version>
+        <version>2.0.0</version>
     </dependency>
 
     <!-- Yasson (JSON-B implementation) -->
     <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>yasson</artifactId>
-        <version>1.0.3</version>
+        <version>2.0.2</version>
         <scope>runtime</scope>
     </dependency>
 </dependencies>

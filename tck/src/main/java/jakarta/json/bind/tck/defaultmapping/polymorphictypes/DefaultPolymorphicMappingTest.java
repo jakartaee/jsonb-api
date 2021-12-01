@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -42,7 +42,7 @@ import jakarta.json.bind.tck.defaultmapping.polymorphictypes.model.StringContain
  * @executeClass com.sun.ts.tests.jsonb.defaultmapping.polymorphictypes.PolymorphicMappingTest
  **/
 @RunWith(Arquillian.class)
-public class PolymorphicMappingTest {
+public class DefaultPolymorphicMappingTest {
     
     @Deployment
     public static WebArchive createTestArchive() {
@@ -55,10 +55,10 @@ public class PolymorphicMappingTest {
   /*
    * @testName: testPolymorphicTypes
    *
-   * @assertion_ids: JSONB:SPEC:JSB-3.8-1
+   * @assertion_ids: JSONB:SPEC:JSB-3.8-4
    *
    * @test_Strategy: Assert that unmarshalling into polymorphic types is not
-   * supported
+   * supported when polymorphic information is missing
    */
   @Test
   public void testPolymorphicTypes() {
@@ -73,7 +73,7 @@ public class PolymorphicMappingTest {
         StringContainer.class);
     if (StringContainerSubClass.class
         .isAssignableFrom(unmarshalledObject.getClass())) {
-      fail("Polymorphic types support is not expected.");
+      fail("Polymorphic types support is not expected for classes with no polymorphic information.");
     }
     return; // passed
   }

@@ -35,6 +35,12 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static jakarta.json.bind.tck.RegexMatcher.matches;
+
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 
 /**
@@ -153,6 +159,32 @@ public class AnnotationPolymorphismObjectTest {
         }
     }
 
+    @Test
+    public void testSerializationClassNamesWithCorrectAllowedPackages() {
+        String expected = "\\{\\s*\"jakarta.json.bind.tck.defaultmapping.polymorphictypes."
+                + "AnnotationPolymorphismObjectTest\\$ChildClassNamesWithCorrectAllowed\"\\s*:\\s*\\"
+                + "{\\s*\"parent\"\\s*:\\s*1\\s*,"
+                + "\\s*\"child\"\\s*:\\s*2\\s*\\}\\}";
+        assertThat(jsonb.toJson(new ChildClassNamesWithCorrectAllowed()), matches(expected));
+    }
+
+    @Test
+    public void testDeserializationClassNamesWithCorrectAllowedPackages() {
+        String json = "{\"jakarta.json.bind.tck.defaultmapping.polymorphictypes."
+                + "AnnotationPolymorphismObjectTest$ChildClassNamesWithCorrectAllowed\":{\"parent\":3,\"child\":4}}";
+        ParentClassNamesWithCorrectAllowed deserialized = jsonb.fromJson(json, ParentClassNamesWithCorrectAllowed.class);
+        assertThat(deserialized, instanceOf(ChildClassNamesWithCorrectAllowed.class));
+        assertThat(deserialized.parent, is(3));
+        assertThat(((ChildClassNamesWithCorrectAllowed)deserialized).child, is(4));
+    }
+
+    @Test
+    public void testDeserializationClassNamesWithIncorrectAllowedPackages() {
+        String json = "{\"jakarta.json.bind.tck.defaultmapping.polymorphictypes."
+                + "AnnotationPolymorphismObjectTest$ChildClassNamesWithIncorrectAllowed\":{\"parent\":1,\"child\":2}}";
+        assertThrows(JsonbException.class, () -> jsonb.fromJson(json, ParentClassNamesWithIncorrectAllowed.class));
+    }
+
     @JsonbPolymorphicType(format = JsonbPolymorphicType.Format.WRAPPING_OBJECT, value = {
             @JsonbSubtype(alias = "dog", type = Dog.class),
             @JsonbSubtype(alias = "cat", type = Cat.class)
@@ -195,6 +227,26 @@ public class AnnotationPolymorphismObjectTest {
             this.localDate = localDate;
         }
 
+    }
+
+    @JsonbPolymorphicType(format = JsonbPolymorphicType.Format.WRAPPING_OBJECT,
+                          classNames = true, allowedPackages = {"jakarta.json.bind.tck.defaultmapping.polymorphictypes"})
+    public static class ParentClassNamesWithCorrectAllowed {
+        public int parent = 1;
+    }
+
+    public static class ChildClassNamesWithCorrectAllowed extends ParentClassNamesWithCorrectAllowed {
+        public int child = 2;
+    }
+
+    @JsonbPolymorphicType(format = JsonbPolymorphicType.Format.WRAPPING_OBJECT,
+                          classNames = true, allowedPackages = {"jakarta.jsonb.incorrect"})
+    public static class ParentClassNamesWithIncorrectAllowed {
+        public int parent = 1;
+    }
+
+    public static class ChildClassNamesWithIncorrectAllowed extends ParentClassNamesWithIncorrectAllowed {
+        public int child = 2;
     }
 
 }

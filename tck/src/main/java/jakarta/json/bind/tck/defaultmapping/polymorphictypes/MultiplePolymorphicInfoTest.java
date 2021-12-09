@@ -20,22 +20,25 @@ import java.lang.invoke.MethodHandles;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
-import jakarta.json.bind.JsonbException;
 import jakarta.json.bind.annotation.JsonbPolymorphicType;
 import jakarta.json.bind.annotation.JsonbSubtype;
 
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static jakarta.json.bind.tck.RegexMatcher.matches;
 
-public class PolymorphismTest {
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-    private final Jsonb jsonb = JsonbBuilder.create();
+@RunWith(Arquillian.class)
+public class MultiplePolymorphicInfoTest {
+
+    private static final Jsonb JSONB = JsonbBuilder.create();
 
     @Deployment
     public static WebArchive createTestArchive() {
@@ -44,38 +47,32 @@ public class PolymorphismTest {
     }
 
     @Test
-    public void testSerializeMultiplePolymorphicTypesFromParallelSources() {
-        Dog shouldFail = new Dog();
-        try {
-            jsonb.toJson(shouldFail);
-            fail("Serialization of multiple @JsonbPolymorphicType from more than one source is not supported.");
-        } catch (JsonbException ignored) {
-            //expected
-        }
+    public void testMultiplePolymorphicInfoPropertySerialization() {
+        String expected = "\\{\\s*\"@living\"\\s*:\\s*\"animal\"\\s*,"
+                + "\\s*\"@animal\"\\s*:\\s*\"dog\"\\s*,"
+                + "\\s*\"@dogRace\"\\s*:\\s*\"labrador\"\\s*,"
+                + "\\s*\"isLabrador\"\\s*:\\s*true\\s*\\}";
+        Labrador labrador = new Labrador();
+        assertThat(JSONB.toJson(labrador), matches(expected));
     }
 
     @Test
-    public void testDeserializeMultiplePolymorphicTypesFromParallelSources() {
-        try {
-            jsonb.fromJson("{\"@animal\":\"dog\",\"@livingThing\":\"dog\"}", Dog.class);
-            fail("Deserialization of multiple @JsonbPolymorphicType from more than one source is not supported.");
-        } catch (JsonbException ignored) {
-            //expected
-        }
+    public void testMultiplePolymorphicInfoPropertyDeserialization() {
+        String json = "{\"@living\":\"animal\",\"@animal\":\"dog\",\"@dogRace\":\"labrador\",\"isLabrador\":true}";
+        assertThat(JSONB.fromJson(json, Labrador.class), instanceOf(Labrador.class));
     }
 
     @Test
     public void testSerializeMultiplePolyTypesInSingleChain() {
-        String expected = "{"
-                + "\"@machine\":\"vehicle\","
-                + "\"@vehicle\":\"car\","
-                + "\"machineProperty\":\"machineProperty\","
-                + "\"vehicleProperty\":\"vehicleProperty\","
-                + "\"carProperty\":\"carProperty\""
-                + "}";
+        String expected = "\\{"
+                + "\\s*\"@machine\"\\s*:\\s*\"vehicle\"\\s*,"
+                + "\\s*\"@vehicle\"\\s*:\\s*\"car\"\\s*,"
+                + "\\s*\"machineProperty\"\\s*:\\s*\"machineProperty\"\\s*,"
+                + "\\s*\"vehicleProperty\"\\s*:\\s*\"vehicleProperty\"\\s*,"
+                + "\\s*\"carProperty\"\\s*:\\s*\"carProperty\"\\s*"
+                + "\\}";
         Car car = new Car();
-        String json = jsonb.toJson(car);
-        assertEquals(expected, json);
+        assertThat(JSONB.toJson(car), matches(expected));
     }
 
     @Test
@@ -87,33 +84,32 @@ public class PolymorphismTest {
                 + "\"vehicleProperty\":\"vehicleProperty\","
                 + "\"carProperty\":\"carProperty\""
                 + "}";
-        Machine machine = jsonb.fromJson(json, Machine.class);
-        assertTrue(machine instanceof Car);
-        Vehicle vehicle = jsonb.fromJson(json, Vehicle.class);
-        assertTrue(vehicle instanceof Car);
+        Machine machine = JSONB.fromJson(json, Machine.class);
+        assertThat(machine, instanceOf(Car.class));
     }
 
-    @Test
-    public void testInvalidAlias() {
-        try {
-            jsonb.toJson(new InvalidAlias());
-            fail("Serialization should have failed since set alias is not the same class as it is defined on or its subtype.");
-        } catch (JsonbException ignored) {
-            //Everything as expected
-        }
-    }
+    @JsonbPolymorphicType(key = "@living", value = {
+            @JsonbSubtype(alias = "animal", type = Animal.class)
+    })
+    public interface LivingThing { }
 
     @JsonbPolymorphicType(key = "@animal", value = {
             @JsonbSubtype(alias = "dog", type = Dog.class)
     })
-    public interface Animal {}
+    public interface Animal extends LivingThing {
+    }
 
-    @JsonbPolymorphicType(key = "@livingThing", value = {
-            @JsonbSubtype(alias = "dog", type = Dog.class)
+    @JsonbPolymorphicType(key = "@dogRace", value = {
+            @JsonbSubtype(alias = "labrador", type = Labrador.class)
     })
-    public interface LivingEntity {}
+    public interface Dog extends Animal {
+    }
 
-    public static final class Dog implements Animal, LivingEntity {}
+    public static class Labrador implements Dog {
+
+        public boolean isLabrador = true;
+
+    }
 
     @JsonbPolymorphicType(key = "@machine", value = {
             @JsonbSubtype(alias = "vehicle", type = Vehicle.class)
@@ -132,10 +128,4 @@ public class PolymorphismTest {
     public static class Car extends Vehicle {
         public String carProperty = "carProperty";
     }
-
-    @JsonbPolymorphicType({
-            @JsonbSubtype(alias = "integer", type = Integer.class)
-    })
-    public static class InvalidAlias {}
-
 }

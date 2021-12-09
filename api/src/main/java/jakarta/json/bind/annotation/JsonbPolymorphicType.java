@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
  * This annotation is required on the most common parent of all classes when polymorphism will be applied.
  * <pre><code>
  * // Example
- * {@literal @}JsonbPolymorphicType(keyName = "@key")
+ * {@literal @}JsonbPolymorphicType(key = "@key")
  * interface Animal {}
  *
  * class Dog implements Animal {}
@@ -35,7 +35,6 @@ import java.lang.annotation.Target;
  * </code></pre>
  * This annotation is tightly bound to {@link JsonbSubtype}. It is recommended to use
  * {@link JsonbSubtype} annotations to specify all the possible classes and their aliases.
- * <br>
  */
 @JsonbAnnotation
 @Retention(RetentionPolicy.RUNTIME)
@@ -43,12 +42,17 @@ import java.lang.annotation.Target;
 public @interface JsonbPolymorphicType {
 
     /**
+     * Default polymorphic information key name.
+     */
+    String DEFAULT_KEY_NAME = "@type";
+
+    /**
      * Key used for keeping polymorphic information when {@link Format#PROPERTY} is chosen.
      * Default value is {@code @type}.
      *
      * @return key name
      */
-    String key() default "";
+    String key() default DEFAULT_KEY_NAME;
 
     /**
      * Specification of how the polymorphic information will be stored in the resulting JSON.
@@ -70,12 +74,10 @@ public @interface JsonbPolymorphicType {
      * Allowed package names. This option is ignored if {@link JsonbPolymorphicType#classNames()}
      * option is set to false.
      * <br>
-     * Only classes contained in the selected packages will be serialized/deserialized.
+     * Only classes contained in the selected packages will be deserialized.
      * Classes with specified alias are not validated.
      * <br>
-     * It is strongly recommended that you set up allowed packages when classes without aliases will be processed.
-     * <br>
-     * When no package is specified, all classes without aliases are allowed.
+     * It is required to have allowed packages set up when classes without aliases will be processed.
      *
      * @return list of allowed packages
      */

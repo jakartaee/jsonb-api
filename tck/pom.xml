@@ -4,7 +4,6 @@
     Copyright (c) 2020 IBM and/or its affiliates. All rights reserved.
     Copyright (c) 2021 Oracle and/or its affiliates. All rights reserved.
 
-
     This program and the accompanying materials are made available under the
     terms of the Eclipse Public License v. 2.0, which is available at
     http://www.eclipse.org/legal/epl-2.0.
@@ -54,11 +53,21 @@
         <maven.compiler.source>11</maven.compiler.source>
     </properties>
 
+    <!-- TODO: Temporarily enable snapshot repository -->
+    <!-- This can be removed once an official release of jakarta.json.bind-tck is available -->
+    <repositories>
+        <repository>
+            <id>jakarta-snapshots</id>
+            <url>https://jakarta.oss.sonatype.org/content/repositories/staging/</url>
+        </repository>
+    </repositories>
+
+
     <dependencies>
         <dependency>
             <groupId>jakarta.json.bind</groupId>
             <artifactId>jakarta.json.bind-api</artifactId>
-            <version>${project.version}</version>
+            <version>3.0.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -90,14 +99,25 @@
         </dependency>
     </dependencies>
 
-    <!-- TODO: Temporarily enable snapshot repository -->
-    <repositories>
-        <repository>
-            <id>jakarta-snapshots</id>
-            <url>https://jakarta.oss.sonatype.org/content/repositories/staging/</url>
-        </repository>
-    </repositories>
-
+    <profiles>
+      <profile>
+       <id>EFTL</id>
+         <properties>
+            <license>EFTL</license>
+            <bundle-name>jakarta-jsonb-tck</bundle-name>
+         </properties>
+      </profile>
+      <profile>
+         <id>EPL</id>
+         <properties>
+            <license>EPL</license>
+            <bundle-name>jsonb-tck</bundle-name>
+         </properties>
+         <activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+      </profile>
+   </profiles>
 
     <build>
         <plugins>
@@ -124,6 +144,36 @@
                 <configuration>
                     <doclint>none</doclint>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+              </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>distribution</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/assembly.xml</descriptor>
+                            </descriptors>
+                            <finalName>${bundle-name}-${project.version}</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>    

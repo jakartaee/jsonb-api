@@ -35,12 +35,6 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static jakarta.json.bind.tck.RegexMatcher.matches;
-
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 
 /**
@@ -62,14 +56,12 @@ public class AnnotationPolymorphismTest {
         Dog dog = new Dog();
         String jsonString = jsonb.toJson(dog);
         if (!jsonString.matches("\\{\\s*\"@type\"\\s*:\\s*\"dog\"\\s*,\\s*\"isDog\"\\s*:\\s*true\\s*\\}")) {
-            fail("Failed to serialize Dog class correctly in the polymorphic format: "
-                         + JsonbPolymorphicType.Format.PROPERTY.name());
+            fail("Failed to serialize Dog class correctly");
         }
         Cat cat = new Cat();
         jsonString = jsonb.toJson(cat);
         if (!jsonString.matches("\\{\\s*\"@type\"\\s*:\\s*\"cat\"\\s*,\\s*\"isCat\"\\s*:\\s*true\\s*\\}")) {
-            fail("Failed to serialize Cat class correctly in the polymorphic format: "
-                         + JsonbPolymorphicType.Format.PROPERTY.name());
+            fail("Failed to serialize Cat class correctly");
         }
     }
 
@@ -160,32 +152,6 @@ public class AnnotationPolymorphismTest {
         }
     }
 
-    @Test
-    public void testSerializationClassNamesWithCorrectAllowedPackages() {
-        String expected = "\\{\\s*\"@type\"\\s*:\\s*\"jakarta.json.bind.tck.defaultmapping.polymorphictypes"
-                + ".AnnotationPolymorphismTest\\$ChildClassNamesWithCorrectAllowed\"\\s*,"
-                + "\\s*\"parent\"\\s*:\\s*1\\s*,"
-                + "\\s*\"child\"\\s*:\\s*2\\s*\\}";
-        assertThat(jsonb.toJson(new ChildClassNamesWithCorrectAllowed()), matches(expected));
-    }
-
-    @Test
-    public void testDeserializationClassNamesWithCorrectAllowedPackages() {
-        String json = "{\"@type\":\"jakarta.json.bind.tck.defaultmapping.polymorphictypes"
-                + ".AnnotationPolymorphismTest$ChildClassNamesWithCorrectAllowed\",\"parent\":3,\"child\":4}";
-        ParentClassNamesWithCorrectAllowed deserialized = jsonb.fromJson(json, ParentClassNamesWithCorrectAllowed.class);
-        assertThat(deserialized, instanceOf(ChildClassNamesWithCorrectAllowed.class));
-        assertThat(deserialized.parent, is(3));
-        assertThat(((ChildClassNamesWithCorrectAllowed)deserialized).child, is(4));
-    }
-
-    @Test
-    public void testDeserializationClassNamesWithIncorrectAllowedPackages() {
-        String json = "{\"@type\":\"jakarta.json.bind.tck.defaultmapping.polymorphictypes."
-                + "AnnotationPolymorphismTest$ChildClassNamesWithIncorrectAllowed\",\"parent\":1,\"child\":2}";
-        assertThrows(JsonbException.class, () -> jsonb.fromJson(json, ParentClassNamesWithIncorrectAllowed.class));
-    }
-
     @JsonbPolymorphicType({
             @JsonbSubtype(alias = "dog", type = Dog.class),
             @JsonbSubtype(alias = "cat", type = Cat.class),
@@ -236,24 +202,6 @@ public class AnnotationPolymorphismTest {
             this.localDate = localDate;
         }
 
-    }
-
-    @JsonbPolymorphicType(classNames = true, allowedPackages = {"jakarta.json.bind.tck.defaultmapping.polymorphictypes"})
-    public static class ParentClassNamesWithCorrectAllowed {
-        public int parent = 1;
-    }
-
-    public static class ChildClassNamesWithCorrectAllowed extends ParentClassNamesWithCorrectAllowed {
-        public int child = 2;
-    }
-
-    @JsonbPolymorphicType(classNames = true, allowedPackages = {"jakarta.jsonb.incorrect"})
-    public static class ParentClassNamesWithIncorrectAllowed {
-        public int parent = 1;
-    }
-
-    public static class ChildClassNamesWithIncorrectAllowed extends ParentClassNamesWithIncorrectAllowed {
-        public int child = 2;
     }
 
 }

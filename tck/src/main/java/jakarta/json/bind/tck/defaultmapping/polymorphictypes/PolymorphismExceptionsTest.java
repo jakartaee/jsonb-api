@@ -73,26 +73,6 @@ public class PolymorphismExceptionsTest {
     }
 
     @Test
-    public void testSerializationDifferentFormatTypes() {
-        try {
-            jsonb.toJson(new Child());
-            fail("Serialization of the polymorphic chain with not consistent polymorphic information format, is not supported.");
-        } catch (JsonbException ignored) {
-            //expected
-        }
-    }
-
-    @Test
-    public void testDeserializationDifferentFormatTypes() {
-        try {
-            jsonb.fromJson("{\"@type\":\"object\"}", PropertyPolyType.class);
-            fail("Deserialization of the polymorphic chain with not consistent polymorphic information format, is not supported.");
-        } catch (JsonbException ignored) {
-            //expected
-        }
-    }
-
-    @Test
     public void testNameCollision() {
         try {
             jsonb.toJson(new PropertyNameCollision());
@@ -101,15 +81,6 @@ public class PolymorphismExceptionsTest {
         } catch (JsonbException ignored) {
             //expected
         }
-    }
-
-    @Test
-    public void testDeserializationClassNamesWithoutAllowedPackages() {
-        String json = "{\"@type\":\"jakarta.json.bind.tck.defaultmapping.polymorphictypes."
-                + "PolymorphicExceptionTests$ChildClassNamesWithoutAllowed\",\"parent\":1,\"child\":2}";
-        assertThrows("No allowed packages has been set. It is required to have allowed packages set "
-                             + "if class name handling is turned on",
-                     JsonbException.class, () -> jsonb.fromJson(json, ParentClassNamesWithoutAllowed.class));
     }
 
     //--------------
@@ -128,20 +99,6 @@ public class PolymorphismExceptionsTest {
 
     //--------------
 
-    @JsonbPolymorphicType(value = {
-            @JsonbSubtype(alias = "object", type = ObjectPolyType.class)
-    })
-    public static class PropertyPolyType {}
-
-    @JsonbPolymorphicType(format = JsonbPolymorphicType.Format.WRAPPING_OBJECT, value={
-            @JsonbSubtype(alias = "child", type = Child.class)
-    })
-    public static class ObjectPolyType extends PropertyPolyType {}
-
-    public static final class Child extends ObjectPolyType {}
-
-    //--------------
-
     @JsonbPolymorphicType(key = "keyName", value = {
             @JsonbSubtype(alias = "test", type = PropertyNameCollision.class)
     })
@@ -157,14 +114,4 @@ public class PolymorphismExceptionsTest {
     })
     public static class InvalidAlias {}
 
-    //--------------
-
-    @JsonbPolymorphicType(classNames = true)
-    public static class ParentClassNamesWithoutAllowed {
-        public int parent = 1;
-    }
-
-    public static class ChildClassNamesWithoutAllowed extends ParentClassNamesWithoutAllowed {
-        public int child = 2;
-    }
 }

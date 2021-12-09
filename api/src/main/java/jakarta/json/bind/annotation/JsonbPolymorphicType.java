@@ -47,7 +47,7 @@ public @interface JsonbPolymorphicType {
     String DEFAULT_KEY_NAME = "@type";
 
     /**
-     * Key used for keeping polymorphic information when {@link Format#PROPERTY} is chosen.
+     * Key used for keeping polymorphic information.
      * Default value is {@code @type}.
      *
      * @return key name
@@ -55,97 +55,10 @@ public @interface JsonbPolymorphicType {
     String key() default DEFAULT_KEY_NAME;
 
     /**
-     * Specification of how the polymorphic information will be stored in the resulting JSON.
-     *
-     * @return polymorphic information storage type
-     */
-    Format format() default Format.PROPERTY;
-
-    /**
-     * Whether exact class names should be processed if no alias is specified for processed class.
-     * <br>
-     * Default value is false.
-     *
-     * @return classes without alias should be processed
-     */
-    boolean classNames() default false;
-
-    /**
-     * Allowed package names. This option is ignored if {@link JsonbPolymorphicType#classNames()}
-     * option is set to false.
-     * <br>
-     * Only classes contained in the selected packages will be deserialized.
-     * Classes with specified alias are not validated.
-     * <br>
-     * It is required to have allowed packages set up when classes without aliases will be processed.
-     *
-     * @return list of allowed packages
-     */
-    String[] allowedPackages() default {};
-
-    /**
      * Allowed aliases of the given polymorphic type.
      *
      * @return list of allowed aliases
      */
     JsonbSubtype[] value() default {};
-
-    /**
-     * Format under which serialized polymorphic type should be handled.
-     * <br>
-     * Default polymorphic format is {@link Format#PROPERTY}.
-     */
-    enum Format {
-
-        /**
-         * Serialized object will be wrapped with another object.
-         * This wrapping object will contain only one property with the name of the
-         * polymorphic information (alias/class name) and a value assigned to this property is an actual
-         * serialized object.
-         * <br>
-         * This format ignores specified {@link JsonbPolymorphicType#key()}.
-         * <pre>
-         * // Example
-         * {@literal @}JsonbPolymorphicType(format = Format.WRAPPING_OBJECT, value = {
-         *     {@literal @}JsonbSubtype(alias = "dog", type = Dog.class)
-         * })
-         * interface Animal {}
-         *
-         * class Dog implements Animal {
-         *     public String isDog = true;
-         * }
-         *
-         * //Resulting json after dog instance serialization
-         * {"dog":{"isDog":true}}
-         * </pre>
-         */
-        WRAPPING_OBJECT,
-
-        /**
-         * Serialized object will have one more property added to the resulting JSON.
-         * This property will contain polymorphic information (alias/class name).
-         * <br>
-         * It is required to have a non-empty {@link JsonbPolymorphicType#key()} specified when
-         * using this format.
-         * <pre>
-         * // Example
-         * {@literal @}JsonbPolymorphicType({
-         *     {@literal @}JsonbSubtype(alias = "dog", type = Dog.class)
-         * })
-         * interface Animal {}
-         *
-         * class Dog implements Animal {
-         *     public String isDog = true;
-         * }
-         *
-         * //Resulting json after dog instance serialization
-         * {"@type":"dog","isDog":true}
-         * </pre>
-         * This is the default format of the polymorphic handling and does not need to be
-         * explicitly specified.
-         */
-        PROPERTY
-
-    }
 
 }

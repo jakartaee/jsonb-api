@@ -320,7 +320,7 @@ Deserialization into anonymous classes is not supported. Serialization of anonym
 
 Polymorphic type handling is supported for deserialization and serialization. Polymorphic handling is ensured by annotation `@JsonbPolymorphicType` and `@JsonbSubtype`. `@JsonbPolymorphicType` defines how the overall polymorphic information strategy will be serialized/deserialized and defines all the supported aliases using `@JsonbSubtype` annotations. `@JsonbSubtype` ensures proper and safe mapping between class alias and type. Implementation must validate mapped types if they are assignable from the annotated type. If not, an exception must be thrown.
 
-Polymorphic information is obtained from `@JsonbSubtype` annotation as a type alias mapped to the type. If no matching alias is found for the serialized instance, an exception must be thrown. In no matching class is found for obtained alias from the JSON, an exception must be thrown.
+Polymorphic information is obtained from `@JsonbSubtype` annotation as a type alias mapped to the type. If no matching alias is found for the serialized instance, an exception must be thrown. If no matching class is found for obtained alias from the JSON, an exception must be thrown.
 
 New property with polymorphic information is added to the serialized object. The property key name is taken from the `key` property of the annotation `@JsonbPolymorphicType`. This polymorphic information property key name has to be unique in the resulting JSON document. If any naming collision with class or any other `@JsonbPolymorphicType` properties occurs, an exception must be thrown. It is required for all polymorphism fields to be serialized as the first properties in the JSON and any actual object properties are serialized after.
 

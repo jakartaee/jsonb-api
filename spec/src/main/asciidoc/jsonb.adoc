@@ -320,13 +320,13 @@ Deserialization into anonymous classes is not supported. Serialization of anonym
 
 Polymorphic type handling is supported for deserialization and serialization. Polymorphic handling is ensured by annotation `@JsonbPolymorphicType` and `@JsonbSubtype`. `@JsonbPolymorphicType` defines how the overall polymorphic information strategy will be serialized/deserialized and defines all the supported aliases using `@JsonbSubtype` annotations. `@JsonbSubtype` ensures proper and safe mapping between class alias and type. Implementation must validate mapped types if they are assignable from the annotated type. If not, an exception must be thrown.
 
-Polymorphic information is obtained from `@JsonbSubtype` annotation as a type alias mapped to the type. If no matching alias is found for the serialized instance, an exception must be thrown. If no matching class is found for obtained alias from the JSON, an exception must be thrown.
+Polymorphic information is obtained from `@JsonbSubtype` annotation as a type alias mapped to the type. If no matching class is found for obtained alias during deserialization, an exception must be thrown.
 
 New property with polymorphic information is added to the serialized object. The property key name is taken from the `key` property of the annotation `@JsonbPolymorphicType`. This polymorphic information property key name has to be unique in the resulting JSON document. If any naming collision with class or any other `@JsonbPolymorphicType` properties occurs, an exception must be thrown. It is required for all polymorphism fields to be serialized as the first properties in the JSON and any actual object properties are serialized after.
 
 If no `@JsonbPolymorphicType` is used on handled class or its predecessors, it is not possible to ensure proper polymorphic handling and in such cases deserialization is not supported for polymorphic types.
 
-If there are multiple different polymorphic customizations that need to be merged, an exception must be thrown. For example, if class has a predecessor with `@JsonbPolymorphicType` and one of its interfaces also has `@JsonbPolymorphicType` set, or two or more interfaces do have `@JsonbPolymorphicType` set, then an exception must be thrown.
+If there are multiple different polymorphic customizations that need to be merged, an exception must be thrown. Multiple inheritance of this customization is not supported.
 
 [source,java]
 ----
@@ -350,7 +350,7 @@ class Car extends Vehicle {...}
 
 class MyCar extends Car {...}
 ----
-No exception is thrown since there is just one parent `@JsonbPolymorphicType` and one on the currently handled type. The order of the polymorphic information properties must be the same in which they appear in the polymorphic definition chain. Resulting JSON when serializing MyCar class would look like this:
+The order of the polymorphic information properties must be the same in which they appear in the polymorphic definition chain. Resulting JSON when serializing MyCar class would look like this:
 [source,json]
 ----
 {

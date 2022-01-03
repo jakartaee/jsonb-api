@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2021, 2022 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -24,7 +24,7 @@ import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
 import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbDateFormat;
-import jakarta.json.bind.annotation.JsonbPolymorphicType;
+import jakarta.json.bind.annotation.JsonbTypeInfo;
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbSubtype;
 
@@ -99,16 +99,6 @@ public class AnnotationPolymorphismTest {
     }
 
     @Test
-    public void testUnknownAliasSerialization() {
-        try {
-            jsonb.toJson(new Rat());
-            fail("Serialization should fail. There is no known alias for a class Rat.");
-        } catch (JsonbException ignored) {
-            //Expected
-        }
-    }
-
-    @Test
     public void testCreatorDeserialization() {
         SomeDateType creator = jsonb
                 .fromJson("{\"@dateType\":\"constructor\",\"localDate\":\"26-02-2021\"}", SomeDateType.class);
@@ -152,7 +142,7 @@ public class AnnotationPolymorphismTest {
         }
     }
 
-    @JsonbPolymorphicType({
+    @JsonbTypeInfo({
             @JsonbSubtype(alias = "dog", type = Dog.class),
             @JsonbSubtype(alias = "cat", type = Cat.class),
             @JsonbSubtype(alias = "elephant", type = Elephant.class)
@@ -173,12 +163,6 @@ public class AnnotationPolymorphismTest {
 
     }
 
-    public static class Rat implements Animal {
-
-        public boolean isRat = true;
-
-    }
-
     public static class Elephant implements Animal {
 
         public boolean isElephant = true;
@@ -186,7 +170,7 @@ public class AnnotationPolymorphismTest {
 
     }
 
-    @JsonbPolymorphicType(key = "@dateType", value = {
+    @JsonbTypeInfo(key = "@dateType", value = {
             @JsonbSubtype(alias = "constructor", type = DateConstructor.class)
     })
     public interface SomeDateType {

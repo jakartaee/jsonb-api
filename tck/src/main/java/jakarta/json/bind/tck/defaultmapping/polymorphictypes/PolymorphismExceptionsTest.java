@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2021, 2022 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -21,7 +21,7 @@ import java.lang.invoke.MethodHandles;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
-import jakarta.json.bind.annotation.JsonbPolymorphicType;
+import jakarta.json.bind.annotation.JsonbTypeInfo;
 import jakarta.json.bind.annotation.JsonbSubtype;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -85,12 +85,12 @@ public class PolymorphismExceptionsTest {
 
     //--------------
 
-    @JsonbPolymorphicType(key = "@animal", value = {
+    @JsonbTypeInfo(key = "@animal", value = {
             @JsonbSubtype(alias = "dog", type = Dog.class)
     })
     public interface Animal {}
 
-    @JsonbPolymorphicType(key = "@livingThing", value = {
+    @JsonbTypeInfo(key = "@livingThing", value = {
             @JsonbSubtype(alias = "dog", type = Dog.class)
     })
     public interface LivingEntity {}
@@ -99,7 +99,7 @@ public class PolymorphismExceptionsTest {
 
     //--------------
 
-    @JsonbPolymorphicType(key = "keyName", value = {
+    @JsonbTypeInfo(key = "keyName", value = {
             @JsonbSubtype(alias = "test", type = PropertyNameCollision.class)
     })
     public static class PropertyNameCollision {
@@ -108,7 +108,7 @@ public class PolymorphismExceptionsTest {
 
     //--------------
 
-    @JsonbPolymorphicType({
+    @JsonbTypeInfo({
             @JsonbSubtype(alias = "integer", type = Integer.class),
             @JsonbSubtype(alias = "invalid", type = InvalidAlias.class)
     })

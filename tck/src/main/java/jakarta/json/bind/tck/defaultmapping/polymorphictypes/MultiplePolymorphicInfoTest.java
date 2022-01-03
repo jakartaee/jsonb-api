@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2021, 2022 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,7 +20,7 @@ import java.lang.invoke.MethodHandles;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
-import jakarta.json.bind.annotation.JsonbPolymorphicType;
+import jakarta.json.bind.annotation.JsonbTypeInfo;
 import jakarta.json.bind.annotation.JsonbSubtype;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -88,18 +88,18 @@ public class MultiplePolymorphicInfoTest {
         assertThat(machine, instanceOf(Car.class));
     }
 
-    @JsonbPolymorphicType(key = "@living", value = {
+    @JsonbTypeInfo(key = "@living", value = {
             @JsonbSubtype(alias = "animal", type = Animal.class)
     })
     public interface LivingThing { }
 
-    @JsonbPolymorphicType(key = "@animal", value = {
+    @JsonbTypeInfo(key = "@animal", value = {
             @JsonbSubtype(alias = "dog", type = Dog.class)
     })
     public interface Animal extends LivingThing {
     }
 
-    @JsonbPolymorphicType(key = "@dogRace", value = {
+    @JsonbTypeInfo(key = "@dogRace", value = {
             @JsonbSubtype(alias = "labrador", type = Labrador.class)
     })
     public interface Dog extends Animal {
@@ -111,14 +111,14 @@ public class MultiplePolymorphicInfoTest {
 
     }
 
-    @JsonbPolymorphicType(key = "@machine", value = {
+    @JsonbTypeInfo(key = "@machine", value = {
             @JsonbSubtype(alias = "vehicle", type = Vehicle.class)
     })
     public static class Machine {
         public String machineProperty = "machineProperty";
     }
 
-    @JsonbPolymorphicType(key = "@vehicle", value = {
+    @JsonbTypeInfo(key = "@vehicle", value = {
             @JsonbSubtype(alias = "car", type = Car.class)
     })
     public static class Vehicle extends Machine {

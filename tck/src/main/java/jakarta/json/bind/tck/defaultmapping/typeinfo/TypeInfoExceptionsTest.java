@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package jakarta.json.bind.tck.defaultmapping.polymorphictypes;
+package jakarta.json.bind.tck.defaultmapping.typeinfo;
 
 import java.lang.invoke.MethodHandles;
 
@@ -32,7 +32,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 
-public class PolymorphismExceptionsTest {
+public class TypeInfoExceptionsTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
@@ -43,20 +43,20 @@ public class PolymorphismExceptionsTest {
     }
 
     @Test
-    public void testSerializeMultiplePolymorphicTypesFromParallelSources() {
+    public void testSerializeTypeInfoMultiInheritance() {
         try {
             jsonb.toJson(new Dog());
-            fail("Serialization of multiple @JsonbPolymorphicType from more than one source is not supported.");
+            fail("Serialization of @JsonbTypeInfo multi inheritance is not supported.");
         } catch (JsonbException ignored) {
             //expected
         }
     }
 
     @Test
-    public void testDeserializeMultiplePolymorphicTypesFromParallelSources() {
+    public void testDeserializeTypeInfoMultiInheritance() {
         try {
             jsonb.fromJson("{\"@animal\":\"dog\",\"@livingThing\":\"dog\"}", Dog.class);
-            fail("Deserialization of multiple @JsonbPolymorphicType from more than one source is not supported.");
+            fail("Deserialization of @JsonbTypeInfo multi inheritance is not supported.");
         } catch (JsonbException ignored) {
             //expected
         }
@@ -76,7 +76,7 @@ public class PolymorphismExceptionsTest {
     public void testNameCollision() {
         try {
             jsonb.toJson(new PropertyNameCollision());
-            fail("Serialization of the polymorphic information to the property with the name which collides "
+            fail("Serialization of the type information to the property with the name which collides "
                          + "with the class property, is not supported");
         } catch (JsonbException ignored) {
             //expected

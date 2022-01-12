@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package jakarta.json.bind.tck.defaultmapping.polymorphictypes;
+package jakarta.json.bind.tck.defaultmapping.typeinfo;
 
 import java.lang.invoke.MethodHandles;
 import java.time.LocalDate;
@@ -38,10 +38,10 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.fail;
 
 /**
- * Tests for verification of proper polymorphism handling based on annotation with property format.
+ * Tests for verification of proper type inheritance handling based on annotation with property format.
  */
 @RunWith(Arquillian.class)
-public class AnnotationPolymorphismTest {
+public class AnnotationTypeInfoTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
@@ -69,7 +69,7 @@ public class AnnotationPolymorphismTest {
     public void testBasicDeserialization() {
         Animal dog = jsonb.fromJson("{\"@type\":\"dog\",\"isDog\":false}", Animal.class);
         if (!(dog instanceof Dog)) {
-            fail("Incorrectly deserialized to the polymorphic type. Expected was Dog instance. "
+            fail("Incorrectly deserialized to the type. Expected was Dog instance. "
                          + "Got instance of class " + dog.getClass());
             return;
         }
@@ -79,7 +79,7 @@ public class AnnotationPolymorphismTest {
         }
         Animal cat = jsonb.fromJson("{\"@type\":\"cat\",\"isCat\":false}", Animal.class);
         if (!(cat instanceof Cat)) {
-            fail("Incorrectly deserialized to the polymorphic type. Expected was Cat instance. "
+            fail("Incorrectly deserialized to the type. Expected was Cat instance. "
                          + "Got instance of class " + cat.getClass());
             return;
         }
@@ -104,7 +104,7 @@ public class AnnotationPolymorphismTest {
                 .fromJson("{\"@dateType\":\"constructor\",\"localDate\":\"26-02-2021\"}", SomeDateType.class);
 
         if (!(creator instanceof DateConstructor)) {
-            fail("Incorrectly deserialized to the polymorphic type. Expected was DateConstructor instance. "
+            fail("Incorrectly deserialized according to the type information. Expected was DateConstructor instance. "
                          + "Got instance of class " + creator.getClass());
         }
     }
@@ -119,7 +119,7 @@ public class AnnotationPolymorphismTest {
         Animal[] animals = new Animal[] {new Dog(), new Cat(), new Dog()};
         String jsonString = jsonb.toJson(animals);
         if (!jsonString.matches(expected)) {
-            fail("Array values were not properly serialized with polymorphic information.");
+            fail("Array values were not properly serialized with type information.");
         }
     }
 
@@ -131,14 +131,14 @@ public class AnnotationPolymorphismTest {
         if (deserialized.length != 3) {
             fail("Array should have exactly 3 values.");
         } else if (!(deserialized[0] instanceof Dog)) {
-            fail("Array value at index 0 was incorrectly deserialized to the polymorphic type. Expected was Dog instance. "
-                         + "Got instance of class " + deserialized[0].getClass());
+            fail("Array value at index 0 was incorrectly deserialized according to the type information. "
+                         + "Expected was Dog instance. Got instance of class " + deserialized[0].getClass());
         } else if (!(deserialized[1] instanceof Cat)) {
-            fail("Array value at index 1 was incorrectly deserialized to the polymorphic type. Expected was Cat instance. "
-                         + "Got instance of class " + deserialized[1].getClass());
+            fail("Array value at index 1 was incorrectly deserialized  according to the type information. "
+                         + "Expected was Cat instance. Got instance of class " + deserialized[1].getClass());
         } else if (!(deserialized[2] instanceof Dog)) {
-            fail("Array value at index 2 was incorrectly deserialized to the polymorphic type. Expected was Dog instance. "
-                         + "Got instance of class " + deserialized[2].getClass());
+            fail("Array value at index 2 was incorrectly deserialized according to the type information. "
+                         + "Expected was Dog instance. Got instance of class " + deserialized[2].getClass());
         }
     }
 

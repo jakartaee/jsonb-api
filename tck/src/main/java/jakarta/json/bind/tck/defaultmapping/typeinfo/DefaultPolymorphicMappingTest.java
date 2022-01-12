@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package jakarta.json.bind.tck.defaultmapping.polymorphictypes;
+package jakarta.json.bind.tck.defaultmapping.typeinfo;
 
 import static org.junit.Assert.fail;
 
@@ -33,8 +33,8 @@ import org.junit.runner.RunWith;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
-import jakarta.json.bind.tck.defaultmapping.polymorphictypes.model.StringContainer;
-import jakarta.json.bind.tck.defaultmapping.polymorphictypes.model.StringContainerSubClass;
+import jakarta.json.bind.tck.defaultmapping.typeinfo.model.StringContainer;
+import jakarta.json.bind.tck.defaultmapping.typeinfo.model.StringContainerSubClass;
 
 /**
  * @test

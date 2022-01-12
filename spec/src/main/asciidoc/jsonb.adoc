@@ -316,24 +316,24 @@ Implementations MUST support the binding of public and protected static nested c
 
 Deserialization into anonymous classes is not supported. Serialization of anonymous classes is supported by default object mapping.
 
-=== Polymorphic Types
+=== Type Inheritance
 
-Polymorphic type handling is supported for deserialization and serialization. Polymorphic handling is ensured by annotation `JsonbTypeInfo` and `@JsonbSubtype`. `JsonbTypeInfo` defines how the overall polymorphic information strategy will be serialized/deserialized and defines all the supported aliases using `@JsonbSubtype` annotations. `@JsonbSubtype` ensures proper and safe mapping between class alias and type. Implementation must validate mapped types if they are assignable from the annotated type. If not, an exception must be thrown.
+Type inheritance handling is supported for deserialization and serialization. It is ensured by annotation `JsonbTypeInfo` and `@JsonbSubtype`. `JsonbTypeInfo` defines key name of the property to store type information in it and defines all the supported aliases using `@JsonbSubtype` annotations. `@JsonbSubtype` ensures proper and safe mapping between class alias and type. Implementation must validate mapped types if they are assignable from the annotated type. If not, an exception must be thrown.
 
-Polymorphic information is obtained from `@JsonbSubtype` annotation as a type alias mapped to the type. If no matching class is found for obtained alias during deserialization, an exception must be thrown.
+Type information is obtained from `@JsonbSubtype` annotation as a type alias mapped to the type. If no matching class is found for obtained alias during deserialization, an exception must be thrown.
 
-New property with polymorphic information is added to the serialized object. The property key name is taken from the `key` property of the annotation `JsonbTypeInfo`. This polymorphic information property key name has to be unique in the resulting JSON document. If any naming collision with class or any other `JsonbTypeInfo` properties occurs, an exception must be thrown. It is required for all polymorphism fields to be serialized as the first properties in the JSON and any actual object properties are serialized after.
+New property with type information is added to the serialized object. The property key name is taken from the `key` property of the annotation `JsonbTypeInfo`. This type information property key name has to be unique in the resulting JSON document. If any naming collision with class or any other `JsonbTypeInfo` properties occurs, an exception must be thrown. It is required for all polymorphism fields to be serialized as the first properties in the JSON and any actual object properties are serialized after.
 
-If no `JsonbTypeInfo` is used on handled class or its predecessors, it is not possible to ensure proper polymorphic handling and in such cases deserialization is not supported for polymorphic types.
+If no `JsonbTypeInfo` is used on handled class or its predecessors, it is not possible to ensure proper type inheritance handling and in such cases deserialization is not supported.
 
-If there are multiple different polymorphic customizations that need to be merged, an exception must be thrown. Multiple inheritance of this customization is not supported.
+If there are multiple different type information customizations that need to be merged, an exception must be thrown. Multiple inheritance of this customization is not supported.
 
 [source,java]
 ----
-@JsonbPolymorphicType({...})
+@JsonbTypeInfo({...})
 interface Vehicle {}
 
-@JsonbPolymorphicType({...})
+@JsonbTypeInfo({...})
 interface Machine {}
 
 class Car implements Vehicle, Machine {}
@@ -342,15 +342,15 @@ class Car implements Vehicle, Machine {}
 In case of the following example:
 [source,java]
 ----
-@JsonbPolymorphicType(key = "@vehicle", value = {@JsonbSubtype(alias = "car", type = Car.class)})
+@JsonbTypeInfo(key = "@vehicle", value = {@JsonbSubtype(alias = "car", type = Car.class)})
 class Vehicle {...}
 
-@JsonbPolymorphicType(key = "@car", value = {@JsonbSubtype(alias = "myCar", type = MyCar.class)})
+@JsonbTypeInfo(key = "@car", value = {@JsonbSubtype(alias = "myCar", type = MyCar.class)})
 class Car extends Vehicle {...}
 
 class MyCar extends Car {...}
 ----
-The order of the polymorphic information properties must be the same in which they appear in the polymorphic definition chain. Resulting JSON when serializing MyCar class would look like this:
+The order of the type information properties must be the same in which they appear in the type chain. Resulting JSON when serializing MyCar class would look like this:
 [source,json]
 ----
 {

@@ -29,11 +29,9 @@ import java.lang.annotation.Target;
  * Alias is used instead of a class name. It has to be unique value among all the defined subtypes
  * bound to the specific {@link JsonbTypeInfo}. An exception should be thrown when processing and
  * validating aliases and duplicate alias is found.
- * <br>
- * An exception have to be thrown when processing unknown alias and
  * <pre><code>
  * // Example
- * {@literal @}JsonbPolymorphicType({
+ * {@literal @}JsonbTypeInfo({
  *      {@literal @}JsonbSubtype(alias = "dog", type = Dog.class)
  *      {@literal @}JsonbSubtype(alias = "cat", type = Cat.class)
  * })
@@ -51,7 +49,7 @@ import java.lang.annotation.Target;
  *
  * jsonb.toJson(new Dog());// {"@type":"dog","isDog":true}
  * jsonb.toJson(new Cat());// {"@type":"cat","isCat":true}
- * jsonb.toJson(new Rat());// An exception thrown
+ * jsonb.toJson(new Rat());// {"isRat":true}
  * </code></pre>
  */
 @JsonbAnnotation

@@ -18,16 +18,16 @@
  * $Id$
  */
 
-package jakarta.json.bind.tck.defaultmapping.polymorphictypes.model;
+package jakarta.json.bind.tck.defaultmapping.typeinfo.model;
 
-public class StringContainerSubClass extends StringContainer {
-  private String newInstance = "SubClass Test String";
+public class StringContainer {
+  private String instance = "Test String";
 
-  public String getNewInstance() {
-    return newInstance;
+  public String getInstance() {
+    return instance;
   }
 
-  public void setNewInstance(String newInstance) {
-    this.newInstance = newInstance;
+  public void setInstance(String instance) {
+    this.instance = instance;
   }
 }

@@ -22,12 +22,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Configuration annotation of the polymorphic type handling.
+ * Configuration annotation of the type information handling.
  * <br>
- * This annotation is required on the most common parent of all classes when polymorphism will be applied.
+ * This annotation is required on the most common parent of all classes when type information will be applied.
  * <pre><code>
  * // Example
- * {@literal @}JsonbPolymorphicType(key = "@key")
+ * {@literal @}JsonbTypeInfo(key = "@key")
  * interface Animal {}
  *
  * class Dog implements Animal {}
@@ -42,12 +42,12 @@ import java.lang.annotation.Target;
 public @interface JsonbTypeInfo {
 
     /**
-     * Default polymorphic information key name.
+     * Default type information key name.
      */
     String DEFAULT_KEY_NAME = "@type";
 
     /**
-     * Key used for keeping polymorphic information.
+     * Key used for keeping the type information (alias).
      * Default value is {@code @type}.
      *
      * @return key name
@@ -55,7 +55,7 @@ public @interface JsonbTypeInfo {
     String key() default DEFAULT_KEY_NAME;
 
     /**
-     * Allowed aliases of the given polymorphic type.
+     * Allowed aliases of the handled type.
      *
      * @return list of allowed aliases
      */

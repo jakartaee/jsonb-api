@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package jakarta.json.bind.tck.defaultmapping.polymorphictypes;
+package jakarta.json.bind.tck.defaultmapping.typeinfo;
 
 import java.lang.invoke.MethodHandles;
 
@@ -36,7 +36,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(Arquillian.class)
-public class MultiplePolymorphicInfoTest {
+public class MultipleTypeInfoTest {
 
     private static final Jsonb JSONB = JsonbBuilder.create();
 
@@ -47,7 +47,7 @@ public class MultiplePolymorphicInfoTest {
     }
 
     @Test
-    public void testMultiplePolymorphicInfoPropertySerialization() {
+    public void testMultipleTypeInfoPropertySerialization() {
         String expected = "\\{\\s*\"@living\"\\s*:\\s*\"animal\"\\s*,"
                 + "\\s*\"@animal\"\\s*:\\s*\"dog\"\\s*,"
                 + "\\s*\"@dogRace\"\\s*:\\s*\"labrador\"\\s*,"
@@ -57,13 +57,13 @@ public class MultiplePolymorphicInfoTest {
     }
 
     @Test
-    public void testMultiplePolymorphicInfoPropertyDeserialization() {
+    public void testMultipleTypeInfoPropertyDeserialization() {
         String json = "{\"@living\":\"animal\",\"@animal\":\"dog\",\"@dogRace\":\"labrador\",\"isLabrador\":true}";
         assertThat(JSONB.fromJson(json, Labrador.class), instanceOf(Labrador.class));
     }
 
     @Test
-    public void testSerializeMultiplePolyTypesInSingleChain() {
+    public void testSerializeMultipleTypeInfoInSingleChain() {
         String expected = "\\{"
                 + "\\s*\"@machine\"\\s*:\\s*\"vehicle\"\\s*,"
                 + "\\s*\"@vehicle\"\\s*:\\s*\"car\"\\s*,"
@@ -76,7 +76,7 @@ public class MultiplePolymorphicInfoTest {
     }
 
     @Test
-    public void testDeserializeMultiplePolyTypesInSingleChain() {
+    public void testDeserializeMultipleTypeInfoInSingleChain() {
         String json = "{"
                 + "\"@machine\":\"vehicle\","
                 + "\"@vehicle\":\"car\","

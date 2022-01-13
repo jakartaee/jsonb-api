@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2021, 2022 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -16,26 +16,22 @@
 
 package jakarta.json.bind.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Subtype is tightly bound to the {@link JsonbPolymorphicType}.
+ * Subtype is tightly bound to the {@link JsonbTypeInfo}.
  * <br>
  * Type defines class which instance will be created when processing specific alias, or when processing
  * instance of the specified type, to determine which alias should be used.
  * <br>
  * Alias is used instead of a class name. It has to be unique value among all the defined subtypes
- * bound to the specific {@link JsonbPolymorphicType}. An exception should be thrown when processing and
+ * bound to the specific {@link JsonbTypeInfo}. An exception should be thrown when processing and
  * validating aliases and duplicate alias is found.
- * <br>
- * An exception have to be thrown when processing unknown alias and
  * <pre><code>
  * // Example
- * {@literal @}JsonbPolymorphicType({
+ * {@literal @}JsonbTypeInfo({
  *      {@literal @}JsonbSubtype(alias = "dog", type = Dog.class)
  *      {@literal @}JsonbSubtype(alias = "cat", type = Cat.class)
  * })
@@ -53,7 +49,7 @@ import java.lang.annotation.Target;
  *
  * jsonb.toJson(new Dog());// {"@type":"dog","isDog":true}
  * jsonb.toJson(new Cat());// {"@type":"cat","isCat":true}
- * jsonb.toJson(new Rat());// An exception thrown
+ * jsonb.toJson(new Rat());// {"isRat":true}
  * </code></pre>
  */
 @JsonbAnnotation

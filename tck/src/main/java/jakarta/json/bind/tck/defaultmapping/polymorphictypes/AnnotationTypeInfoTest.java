@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2021, 2022 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -24,7 +24,7 @@ import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
 import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbDateFormat;
-import jakarta.json.bind.annotation.JsonbPolymorphicType;
+import jakarta.json.bind.annotation.JsonbTypeInfo;
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbSubtype;
 
@@ -35,19 +35,13 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static jakarta.json.bind.tck.RegexMatcher.matches;
-
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 
 /**
- * Tests for verification of proper polymorphism handling based on annotation with property format.
+ * Tests for verification of proper type inheritance handling based on annotation with property format.
  */
 @RunWith(Arquillian.class)
-public class AnnotationPolymorphismTest {
+public class AnnotationTypeInfoTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
@@ -62,14 +56,12 @@ public class AnnotationPolymorphismTest {
         Dog dog = new Dog();
         String jsonString = jsonb.toJson(dog);
         if (!jsonString.matches("\\{\\s*\"@type\"\\s*:\\s*\"dog\"\\s*,\\s*\"isDog\"\\s*:\\s*true\\s*\\}")) {
-            fail("Failed to serialize Dog class correctly in the polymorphic format: "
-                         + JsonbPolymorphicType.Format.PROPERTY.name());
+            fail("Failed to serialize Dog class correctly");
         }
         Cat cat = new Cat();
         jsonString = jsonb.toJson(cat);
         if (!jsonString.matches("\\{\\s*\"@type\"\\s*:\\s*\"cat\"\\s*,\\s*\"isCat\"\\s*:\\s*true\\s*\\}")) {
-            fail("Failed to serialize Cat class correctly in the polymorphic format: "
-                         + JsonbPolymorphicType.Format.PROPERTY.name());
+            fail("Failed to serialize Cat class correctly");
         }
     }
 
@@ -77,7 +69,7 @@ public class AnnotationPolymorphismTest {
     public void testBasicDeserialization() {
         Animal dog = jsonb.fromJson("{\"@type\":\"dog\",\"isDog\":false}", Animal.class);
         if (!(dog instanceof Dog)) {
-            fail("Incorrectly deserialized to the polymorphic type. Expected was Dog instance. "
+            fail("Incorrectly deserialized to the type. Expected was Dog instance. "
                          + "Got instance of class " + dog.getClass());
             return;
         }
@@ -87,7 +79,7 @@ public class AnnotationPolymorphismTest {
         }
         Animal cat = jsonb.fromJson("{\"@type\":\"cat\",\"isCat\":false}", Animal.class);
         if (!(cat instanceof Cat)) {
-            fail("Incorrectly deserialized to the polymorphic type. Expected was Cat instance. "
+            fail("Incorrectly deserialized to the type. Expected was Cat instance. "
                          + "Got instance of class " + cat.getClass());
             return;
         }
@@ -107,22 +99,12 @@ public class AnnotationPolymorphismTest {
     }
 
     @Test
-    public void testUnknownAliasSerialization() {
-        try {
-            jsonb.toJson(new Rat());
-            fail("Serialization should fail. There is no known alias for a class Rat.");
-        } catch (JsonbException ignored) {
-            //Expected
-        }
-    }
-
-    @Test
     public void testCreatorDeserialization() {
         SomeDateType creator = jsonb
                 .fromJson("{\"@dateType\":\"constructor\",\"localDate\":\"26-02-2021\"}", SomeDateType.class);
 
         if (!(creator instanceof DateConstructor)) {
-            fail("Incorrectly deserialized to the polymorphic type. Expected was DateConstructor instance. "
+            fail("Incorrectly deserialized according to the type information. Expected was DateConstructor instance. "
                          + "Got instance of class " + creator.getClass());
         }
     }
@@ -137,7 +119,7 @@ public class AnnotationPolymorphismTest {
         Animal[] animals = new Animal[] {new Dog(), new Cat(), new Dog()};
         String jsonString = jsonb.toJson(animals);
         if (!jsonString.matches(expected)) {
-            fail("Array values were not properly serialized with polymorphic information.");
+            fail("Array values were not properly serialized with type information.");
         }
     }
 
@@ -149,44 +131,18 @@ public class AnnotationPolymorphismTest {
         if (deserialized.length != 3) {
             fail("Array should have exactly 3 values.");
         } else if (!(deserialized[0] instanceof Dog)) {
-            fail("Array value at index 0 was incorrectly deserialized to the polymorphic type. Expected was Dog instance. "
-                         + "Got instance of class " + deserialized[0].getClass());
+            fail("Array value at index 0 was incorrectly deserialized according to the type information. "
+                         + "Expected was Dog instance. Got instance of class " + deserialized[0].getClass());
         } else if (!(deserialized[1] instanceof Cat)) {
-            fail("Array value at index 1 was incorrectly deserialized to the polymorphic type. Expected was Cat instance. "
-                         + "Got instance of class " + deserialized[1].getClass());
+            fail("Array value at index 1 was incorrectly deserialized  according to the type information. "
+                         + "Expected was Cat instance. Got instance of class " + deserialized[1].getClass());
         } else if (!(deserialized[2] instanceof Dog)) {
-            fail("Array value at index 2 was incorrectly deserialized to the polymorphic type. Expected was Dog instance. "
-                         + "Got instance of class " + deserialized[2].getClass());
+            fail("Array value at index 2 was incorrectly deserialized according to the type information. "
+                         + "Expected was Dog instance. Got instance of class " + deserialized[2].getClass());
         }
     }
 
-    @Test
-    public void testSerializationClassNamesWithCorrectAllowedPackages() {
-        String expected = "\\{\\s*\"@type\"\\s*:\\s*\"jakarta.json.bind.tck.defaultmapping.polymorphictypes"
-                + ".AnnotationPolymorphismTest\\$ChildClassNamesWithCorrectAllowed\"\\s*,"
-                + "\\s*\"parent\"\\s*:\\s*1\\s*,"
-                + "\\s*\"child\"\\s*:\\s*2\\s*\\}";
-        assertThat(jsonb.toJson(new ChildClassNamesWithCorrectAllowed()), matches(expected));
-    }
-
-    @Test
-    public void testDeserializationClassNamesWithCorrectAllowedPackages() {
-        String json = "{\"@type\":\"jakarta.json.bind.tck.defaultmapping.polymorphictypes"
-                + ".AnnotationPolymorphismTest$ChildClassNamesWithCorrectAllowed\",\"parent\":3,\"child\":4}";
-        ParentClassNamesWithCorrectAllowed deserialized = jsonb.fromJson(json, ParentClassNamesWithCorrectAllowed.class);
-        assertThat(deserialized, instanceOf(ChildClassNamesWithCorrectAllowed.class));
-        assertThat(deserialized.parent, is(3));
-        assertThat(((ChildClassNamesWithCorrectAllowed)deserialized).child, is(4));
-    }
-
-    @Test
-    public void testDeserializationClassNamesWithIncorrectAllowedPackages() {
-        String json = "{\"@type\":\"jakarta.json.bind.tck.defaultmapping.polymorphictypes."
-                + "AnnotationPolymorphismTest$ChildClassNamesWithIncorrectAllowed\",\"parent\":1,\"child\":2}";
-        assertThrows(JsonbException.class, () -> jsonb.fromJson(json, ParentClassNamesWithIncorrectAllowed.class));
-    }
-
-    @JsonbPolymorphicType({
+    @JsonbTypeInfo({
             @JsonbSubtype(alias = "dog", type = Dog.class),
             @JsonbSubtype(alias = "cat", type = Cat.class),
             @JsonbSubtype(alias = "elephant", type = Elephant.class)
@@ -207,12 +163,6 @@ public class AnnotationPolymorphismTest {
 
     }
 
-    public static class Rat implements Animal {
-
-        public boolean isRat = true;
-
-    }
-
     public static class Elephant implements Animal {
 
         public boolean isElephant = true;
@@ -220,7 +170,7 @@ public class AnnotationPolymorphismTest {
 
     }
 
-    @JsonbPolymorphicType(key = "@dateType", value = {
+    @JsonbTypeInfo(key = "@dateType", value = {
             @JsonbSubtype(alias = "constructor", type = DateConstructor.class)
     })
     public interface SomeDateType {
@@ -236,24 +186,6 @@ public class AnnotationPolymorphismTest {
             this.localDate = localDate;
         }
 
-    }
-
-    @JsonbPolymorphicType(classNames = true, allowedPackages = {"jakarta.json.bind.tck.defaultmapping.polymorphictypes"})
-    public static class ParentClassNamesWithCorrectAllowed {
-        public int parent = 1;
-    }
-
-    public static class ChildClassNamesWithCorrectAllowed extends ParentClassNamesWithCorrectAllowed {
-        public int child = 2;
-    }
-
-    @JsonbPolymorphicType(classNames = true, allowedPackages = {"jakarta.jsonb.incorrect"})
-    public static class ParentClassNamesWithIncorrectAllowed {
-        public int parent = 1;
-    }
-
-    public static class ChildClassNamesWithIncorrectAllowed extends ParentClassNamesWithIncorrectAllowed {
-        public int child = 2;
     }
 
 }

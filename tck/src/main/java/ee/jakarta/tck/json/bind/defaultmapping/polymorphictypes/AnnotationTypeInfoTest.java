@@ -66,7 +66,7 @@ public class AnnotationTypeInfoTest {
 
         Animal cat = jsonb.fromJson("{\"@type\":\"cat\",\"isCat\":false}", Animal.class);
         assertThat("Incorrectly deserialized to the type. Expected was Cat instance. Got instance of class " + cat.getClass(),
-                   dog, instanceOf(Cat.class));
+                   cat, instanceOf(Cat.class));
         assertThat("Incorrectly deserialized field of the Cat instance. Field \"isCat\" should have been false.",
                    ((Cat) cat).isCat, is(false));
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2021, 2022 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -76,9 +76,9 @@ public class OptionalCreatorParametersTest {
     public void testPrimitiveTypesDefaultValues() {
         PrimitiveTypeContainer unmarshalledObject = jsonb.fromJson("{ }", PrimitiveTypeContainer.class);
         assertThat("Failed to set proper default byte value to the optional creator parameter",
-                   unmarshalledObject.getByteType(), is(0));
+                   unmarshalledObject.getByteType(), is((byte) 0));
         assertThat("Failed to set proper default short value to the optional creator parameter",
-                   unmarshalledObject.getShortType(), is(0));
+                   unmarshalledObject.getShortType(), is((short) 0));
         assertThat("Failed to set proper default int value to the optional creator parameter.",
                    unmarshalledObject.getIntType(), is(0));
         assertThat("Failed to set proper default long value to the optional creator parameter.",
@@ -99,9 +99,9 @@ public class OptionalCreatorParametersTest {
         assertThat("Failed to set empty OptionalInt instance the the optional creator parameter",
                    unmarshalledObject.getIntOptional(), is(-1));
         assertThat("Failed to set empty OptionalLong instance the the optional creator parameter",
-                   unmarshalledObject.getLongOptional(), is(-1));
+                   unmarshalledObject.getLongOptional(), is(-1L));
         assertThat("Failed to set empty OptionalDouble instance the the optional creator parameter",
-                   unmarshalledObject.getDoubleOptional(), is(-1));
+                   unmarshalledObject.getDoubleOptional(), is(-1.0));
         assertThat("Failed to set empty Optional instance the the optional creator parameter",
                    unmarshalledObject.getStringOptional(), nullValue());
     }

@@ -64,7 +64,7 @@
         <dependency>
             <groupId>jakarta.json</groupId>
             <artifactId>jakarta.json-api</artifactId>
-            <version>2.0.1</version>
+            <version>2.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -94,10 +94,42 @@
             <artifactId>hamcrest</artifactId>
             <version>2.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.netbeans.tools</groupId>
+            <artifactId>sigtest-maven-plugin</artifactId>
+            <version>1.4</version>
+        </dependency>
     </dependencies>
+
+    <!-- TODO: Temporarily enable snapshot repository -->
+    <repositories>
+        <repository>
+            <id>jakarta-snapshots</id>
+            <url>https://jakarta.oss.sonatype.org/content/repositories/staging/</url>
+        </repository>
+    </repositories>
+
 
     <build>
         <plugins>
+            <!--
+            <plugin>
+                <groupId>org.netbeans.tools</groupId>
+                <artifactId>sigtest-maven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <FileName>${project.build.directory}/jakarta.json.bind.sig_${version}</FileName>
+                    <packages>"jakarta.json.bind","jakarta.json.bind.adapter","jakarta.json.bind.annotation","jakarta.json.bind.config","jakarta.json.bind.serializer","jakarta.json.bind.spi"</packages>
+                </configuration>
+            </plugin>
+            -->
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>

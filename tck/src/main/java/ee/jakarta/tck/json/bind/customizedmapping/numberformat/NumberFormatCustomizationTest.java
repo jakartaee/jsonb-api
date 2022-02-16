@@ -160,7 +160,7 @@ public class NumberFormatCustomizationTest {
                            + "package during marshalling using JsonbNumberFormat annotation on type.",
                    jsonString, matchesPattern("\\{\\s*\"instance\"\\s*:\\s*\"123,456.79\"\\s*\\}"));
 
-        PackageCustomizedTypeOverriddenDoubleContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : \"123 456.789\" }",
+        PackageCustomizedTypeOverriddenDoubleContainer unmarshalledObject = jsonb.fromJson("{ \"instance\" : \"123,456.789\" }",
                                                                                            PackageCustomizedTypeOverriddenDoubleContainer.class);
         assertThat("Failed to correctly override number format customization using JsonbNumberFormat annotation on "
                            + "package during unmarshalling using JsonbNumberFormat annotation on type.",

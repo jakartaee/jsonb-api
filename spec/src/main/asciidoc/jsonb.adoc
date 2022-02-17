@@ -1,7 +1,5 @@
 :sectnums:
-= Jakarta JSON Binding Specification, Version 1.0
-
-Copyright (c) 2019 Eclipse Foundation 
+= Jakarta JSON Binding Specification
 
 == Introduction
 
@@ -39,7 +37,7 @@ Support binding (serialization and deserialization) for all RFC 7159-compatible 
 * *Relationships to JSON Related specifications* +
 JSON-related specifications will be surveyed to determine their relationship to JSON-Binding.
 * *Consistency* +
-Maintain consistency with JAXB (Java API for XML Binding) and other Jakarta EE and Java SE APIs where appropriate.
+Maintain consistency with Jakarta XML Binding and other Jakarta EE and Java SE APIs where appropriate.
 * *Convention* +
 Define default mapping of Java classes and instances to JSON document counterparts.
 * *Customization* +
@@ -320,7 +318,49 @@ Deserialization into anonymous classes is not supported. Serialization of anonym
 
 === Polymorphic Types
 
-Deserialization into polymorphic types is not supported by default mapping.
+Polymorphic type handling is supported for deserialization and serialization. Polymorphic handling is ensured by annotation `JsonbTypeInfo` and `@JsonbSubtype`. `JsonbTypeInfo` defines key name of the property to store type information in it and defines all the supported aliases using `@JsonbSubtype` annotations. `@JsonbSubtype` ensures proper and safe mapping between class alias and type. Implementation must validate mapped types if they are assignable from the annotated type. If not, an exception must be thrown.
+
+Type information is obtained from `@JsonbSubtype` annotation as a type alias mapped to the type. If no matching class is found for obtained alias during deserialization, an exception must be thrown.
+
+New property with type information is added to the serialized object. The property key name is taken from the `key` property of the annotation `JsonbTypeInfo`. This type information property key name has to be unique in the resulting JSON document. If any naming collision with class or any other `JsonbTypeInfo` properties occurs, an exception must be thrown. It is required for all polymorphism fields to be serialized as the first properties in the JSON and any actual object properties are serialized after.
+
+If no `JsonbTypeInfo` is used on handled class or its predecessors, it is not possible to ensure proper polymorphic type handling and in such cases deserialization is not supported.
+
+If there are multiple different type polymorphic customizations that need to be merged, an exception must be thrown. Multiple inheritance of this customization is not supported.
+
+[source,java]
+----
+@JsonbTypeInfo({...})
+interface Vehicle {}
+
+@JsonbTypeInfo({...})
+interface Machine {}
+
+class Car implements Vehicle, Machine {}
+----
+
+In case of the following example:
+[source,java]
+----
+@JsonbTypeInfo(key = "@vehicle", value = {@JsonbSubtype(alias = "car", type = Car.class)})
+class Vehicle {...}
+
+@JsonbTypeInfo(key = "@car", value = {@JsonbSubtype(alias = "myCar", type = MyCar.class)})
+class Car extends Vehicle {...}
+
+class MyCar extends Car {...}
+----
+The order of the type information properties must be the same in which they appear in the polymorphic type chain. Resulting JSON when serializing MyCar class would look like this:
+[source,json]
+----
+{
+    "@vehicle" : "car",
+    "@car" : "myCar",
+    ... Vehicle properties
+    ... Car properties
+    ... MyCar properties
+}
+----
 
 === Enum
 
@@ -506,6 +546,8 @@ Serialization of supported `jakarta.json.*` objects/interfaces/fields MUST have 
 
 Deserialization into supported `jakarta.json.*` objects/interfaces/fields MUST have the same result as deserialization into such objects with `jakarta.json.JsonReader`.
 
+If the null value is deserialized into the JsonValue, it is handled as `JsonValue.NULL`. `JsonValue.NULL` is not assigned as a default value if no value is set.
+
 == Customizing Mapping
 
 This section defines several ways how to customize the default behavior. The default behavior can be customized annotating a given field, JavaBean property, type or package, or by providing an implementation of particular strategy, e.g. `PropertyOrderStrategy`. JSON Binding provider MUST support these customization options.
@@ -585,17 +627,19 @@ The order is applied to already renamed properties as stated in 4.1.
 
 === Customizing Null Handling
 
-There are three ways how to change default null handling. The first option is to annotate type or package with `jakarta.json.bind.annotation.JsonbNillable` annotation. The second option is to annotate field or JavaBean property with `jakarta.json.bind.annotation.JsonbProperty` and to set nillable parameter to true. The third option is to set config-wide configuration via `JsonbConfig::withNullValues` method.
+There are two main ways how to change default null handling. The first option is to annotate type, package, field or JavaBean property with `jakarta.json.bind.annotation.JsonbNillable` annotation. The second option is to set config-wide configuration via `JsonbConfig::withNullValues` method. There is also a third option to annotate a field or JavaBean property with `jakarta.json.bind.annotation.JsonbProperty` and to set nillable parameter to true. However, this option is currently deprecated, and it is recommended to use `jakarta.json.bind.annotation.JsonbNillable` instead.
 
 If annotations (`JsonbNillable` or `JsonbProperty`) on different level apply to the same field (or JavaBean property) or if there is config wide configuration and some annotation (`JsonbNillable` or `JsonbProperty`) which apply to the same field (or JavaBean property), the annotation with the smallest scope applies. For example, if there is type level `JsonbNillable` annotation applied to some class with field which is annotated with `JsonbProperty` annotation with nillable = false, then `JsonbProperty` annotation overrides `JsonbNillable` annotation.
 
+If `JsonbNillable` and `JsonbProperty` are applied on the same level, `JsonbNillable` takes precedence.
+
 ==== jakarta.json.bind.annotation.JsonbNillable
 
-To customize the result of serializing field (or JavaBean property) with null value, JSON Binding provides `jakarta.json.bind.annotation.JsonbNillable` and `jakarta.json.bind.annotation.JsonbProperty` annotations.
+To customize the result of serializing field (or JavaBean property) with null value, JSON Binding provides `jakarta.json.bind.annotation.JsonbNillable` annotation.
 
-When given object (type or package) is annotated with `jakarta.json.bind.annotation.JsonbNillable` annotation, the result of null value will be presence of associated property in JSON document with explicit null value.
+When given object (type, package, field or JavaBean property) is annotated with `jakarta.json.bind.annotation.JsonbNillable` annotation, the result of null value will be presence of associated property in JSON document with explicit null value.
 
-The same behavior as `JsonbNillable`, but only at field, parameter and method (JavaBean property) level is provided by `jakarta.json.bind.annotation.JsonbProperty` annotation with its `nillable` parameter.
+The same behavior as `JsonbNillable`, but only at field, parameter and method (JavaBean property) level is provided by `jakarta.json.bind.annotation.JsonbProperty` annotation with its `nillable` parameter. This option is currently deprecated, and it is recommended to use `jakarta.json.bind.annotation.JsonbNillable` instead.
 
 JSON Binding implementations MUST implement override of annotations according to target of the annotation (FIELD, PARAMETER, METHOD, TYPE, PACKAGE). Type level annotation overrides behavior set at the package level. Method, parameter or field level annotation overrides behavior set at the type level.
 
@@ -645,9 +689,33 @@ Factory method annotated with `JsonbCreator` annotation should return instance o
 
 Mapping between parameters of constructor/factory method annotated with `JsonbCreator` and JSON fields is defined using `JsonbProperty` annotation on all parameters.
 
-In case `JsonbProperty` annotation on parameters is not used, parameters should be mapped from JSON fields with the same name. In this case the proper mapping is NOT guaranteed.
+If the `JsonbProperty` annotation on parameters is not used, then parameters should be mapped from JSON fields with the same name. In this case the proper mapping is NOT guaranteed.
 
-In case a field required for a parameter mapping doesn’t exist in JSON document, `JsonbException` MUST be thrown.
+All the `JsonbCreator` parameters are treated as optional by default. See <<optional-parameter-values, Optional parameter values>> chapter for default optional parameter values.
+
+All the `JsonbCreator` parameters can be turned to required by using configuration method `Config::withCreatorParametersRequired`.
+
+If a required field for a parameter mapping does not exist in the JSON document, then `JsonbException` MUST be thrown.
+
+[[optional-parameter-values]]
+==== Optional parameter values
+When a property is marked as optional, the proper default should be used. If the parameter is any type other than `Optional` or its variations, then the `null` value is used. If the parameter is `Optional` or its variations, then the corresponding empty object must be used.
+
+Primitive types cannot accept `null` values, so a corresponding value is required as listed in the following table:
+
+[cols=",",options="header",]
+.Provided primitive values instead of null
+|===
+|Primitive type |Provided value
+|byte |0
+|short |0
+|int |0
+|long |0L
+|float |0.0F
+|double |0.0
+|boolean |false
+|char |'\u0000'
+|===
 
 === Custom visibility
 
@@ -673,6 +741,8 @@ There are two ways how to register `JsonbAdapter`:
 
 `JsonbAdapter` registered via `JsonbConfig::withAdapters` is visible to all serialize/deserialize operations performed with given `JsonbConfig`. `JsonbAdapter` registered with annotation is visible to serialize/deserialize operation used only for annotated field.
 
+It is possible to annotate `JsonbCreator` parameter with `JsonbTypeAdapter` and provide adapter for a parameter this way. However, if `JsonbTypeAdapter` annotation is provided to any other parameter (such as setter method parameter) it will be ignored.
+
 Implementations must provide a CDI support in adapters to allow injection of CDI managed beans into it.
 
 ==== Serializers/Deserializers
@@ -688,6 +758,8 @@ There are two ways how to register `JsonbSerializer/JsonbDeserializer`:
 [arabic]
 . Using `JsonbConfig::withSerializers/ JsonbConfig::withDeserializers` method;
 . Annotating a type with `JsonbSerializer/JsonbDeserializer` annotation.
+
+It is possible to annotate `JsonbCreator` parameter with `JsonbTypeDeserializer` and provide deserializer for a parameter this way. However, if `JsonbTypeDeserializer` annotation is provided to any other parameter (such as setter method parameter) it will be ignored.
 
 Implementations must provide a CDI support in serializers/deserializers to allow injection of CDI managed beans into it.
 

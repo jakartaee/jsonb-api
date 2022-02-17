@@ -1,0 +1,51 @@
+#
+# Copyright (c) 2021 Oracle and/or its affiliates. All rights reserved.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Eclipse Public License v. 2.0, which is available at
+# http://www.eclipse.org/legal/epl-2.0.
+#
+# This Source Code may also be made available under the following Secondary
+# Licenses when the conditions for such availability set forth in the
+# Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+# version 2 with the GNU Classpath Exception, which is available at
+# https://www.gnu.org/software/classpath/license.html.
+#
+# SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+#
+
+name: JSON-B API
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: JSON-B API compilation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout for build
+        uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 0
+      - name: Set up compile JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+      - name: Maven cache
+        uses: actions/cache@v2
+        env:
+          cache-name: maven-cache
+        with:
+          path:
+            ~/.m2
+          key: build-${{ env.cache-name }}
+      - name: API compilation
+        run: cd api && mvn clean install
+      - name: TCK test compilation
+        run: cd tck && mvn clean install
+      - name: Javadoc compilation
+        run: cd docs && mvn clean install
+      - name: Generating specification
+        run: cd spec && mvn clean install

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2020 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -260,7 +260,8 @@ public interface Jsonb extends AutoCloseable {
      *      The root object of the object content tree to be serialized. Must not be null.
      *
      * @param runtimeType
-     *      Runtime type of the content tree's root object.
+     *      Runtime type of the content tree's root object. Provided type needs to be
+     *      related to the type of the instance.
      *
      * @return String instance with serialized JSON data.
      *
@@ -298,7 +299,8 @@ public interface Jsonb extends AutoCloseable {
      *      The object content tree to be serialized.
      *
      * @param runtimeType
-     *      Runtime type of the content tree's root object.
+     *      Runtime type of the content tree's root object. Provided type needs to be
+     *      related to the type of the instance.
      *
      * @param writer
      *      The JSON will be sent as a character stream to the given
@@ -339,7 +341,8 @@ public interface Jsonb extends AutoCloseable {
      *      The object content tree to be serialized.
      *
      * @param runtimeType
-     *      Runtime type of the content tree's root object.
+     *      Runtime type of the content tree's root object. Provided type needs to be
+     *      related to the type of the instance.
      *
      * @param stream
      *      The JSON will be sent as a byte stream to the given

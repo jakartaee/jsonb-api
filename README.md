@@ -2,7 +2,7 @@
 
 [![Maven Central](https://img.shields.io/maven-central/v/jakarta.json.bind/jakarta.json.bind-api.svg?label=Maven%20Central)](https://mvnrepository.com/artifact/jakarta.json.bind/jakarta.json.bind-api)
 [![Javadoc](https://javadoc.io/badge2/jakarta.json.bind/jakarta.json.bind-api/javadoc.io.svg)](https://javadoc.io/doc/jakarta.json.bind/jakarta.json.bind-api)
-[![Snapshots](https://img.shields.io/nexus/s/https/oss.sonatype.org/jakarta.json.bind/jakarta.json.bind-api.svg?label=Snapshots)](https://oss.sonatype.org/content/repositories/snapshots/jakarta/json/bind/jakarta.json.bind-api/)
+[![Snapshots](https://img.shields.io/nexus/s/https/jakarta.oss.sonatype.org/jakarta.json.bind/jakarta.json.bind-api.svg?label=Snapshots)](https://jakarta.oss.sonatype.org/content/repositories/staging/jakarta/json/bind/jakarta.json.bind-api/)
 [![Gitter](https://badges.gitter.im/eclipse/jsonb.svg)](https://gitter.im/eclipse/jsonb)
 [![License](https://img.shields.io/badge/License-EPL%202.0-green.svg)](https://opensource.org/licenses/EPL-2.0)
 
@@ -16,7 +16,7 @@ JSON-B is a standard binding layer for converting Java objects to/from JSON mess
 <dependency>
     <groupId>jakarta.json.bind</groupId>
     <artifactId>jakarta.json.bind-api</artifactId>
-    <version>1.0.1</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
@@ -61,7 +61,7 @@ include the TCK module and apply the appropriate Arquillian container. See the [
 
 - [Official web site](https://eclipse-ee4j.github.io/jsonb-api)
 - [Eclipse project](https://projects.eclipse.org/projects/ee4j.jsonb)
-- [User's Guide](http://json-b.net/docs/user-guide.html)
+- [User's Guide](https://eclipse-ee4j.github.io/jsonb-api/docs/user-guide.html)
 - [Jenkins Builds](https://ci.eclipse.org/jsonb/view/all/)
 - [Mailing list](https://www.eclipse.org/lists/jsonb-dev/)
 - [Yasson (Compatible Implementation)](https://github.com/eclipse-ee4j/yasson)

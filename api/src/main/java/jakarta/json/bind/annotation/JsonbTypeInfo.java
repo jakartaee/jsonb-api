@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
  * class Dog implements Animal {}
  * class Cat implements Animal {}
  * </code></pre>
- * This annotation is tightly bound to {@link JsonbSubtype}. It is recommended to use
+ * This annotation is tightly bound to {@link JsonbSubtype}. It is required to use
  * {@link JsonbSubtype} annotations to specify all the possible classes and their aliases.
  */
 @JsonbAnnotation

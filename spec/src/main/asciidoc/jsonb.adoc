@@ -699,7 +699,7 @@ If a required field for a parameter mapping does not exist in the JSON document,
 
 [[optional-parameter-values]]
 ==== Optional parameter values
-When a property is marked as optional, the proper default should be used. If the parameter is any type other than `Optional` or its variations, then the `null` value is used. If the parameter is `Optional` or its variations, then the corresponding empty object must be used.
+When a property is marked as optional, the proper default should be used. If the parameter is any type other than `Optional` or its variations, then the `null` value is used. If the parameter is `java.util.Optional`, `OptionalInt`, `OptionalLong`, `OptionalDouble`, then the corresponding empty object must be used.
 
 Primitive types cannot accept `null` values, so a corresponding value is required as listed in the following table:
 

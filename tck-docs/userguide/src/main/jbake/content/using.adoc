@@ -129,7 +129,7 @@ Repackage and Run the TCK Against the Vendor Implementation."]
 link:config.html#GCLIL[Section 4.3.3, "Deploying the
 Test Applications Against the Vendor Implementation."]
 3.  Run the tests, as described in link:#GBFUZ[Section 5.1, "Starting
-JavaTest,"] and, if desired, link:#GBFWM[Section 5.2, "Running a Subset
+ the Test run,"] and, if desired, link:#GBFWM[Section 5.2, "Running a Subset
 of the Tests."]
 
 [[GBFVK]][[test-reports]]

@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.eclipse.ee4j</groupId>
         <artifactId>project</artifactId>
-        <version>1.0.5</version>
+        <version>1.0.7</version>
     </parent>
     <groupId>jakarta.json.bind</groupId>
     <artifactId>jakarta.json.bind-tck-ug</artifactId>
@@ -101,7 +101,7 @@
                         </goals>
                         <configuration>
                             <chapterPatterns>
-                                [0-9]+\s.*,Preface.*,Part\s.*
+                                [A-C0-9]+\s.*,Preface.*,Part\s.*
                             </chapterPatterns>
                         </configuration>
                     </execution>

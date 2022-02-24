@@ -50,13 +50,15 @@ slashes as a path separator instead.
   b. `sigTestClasspath` This property must be set when running signature tests.
   This property should be set to a list of jar files and/or directories which contain your
   Jakarta EE and Java SE classes. Paths must be separated by the appropriate path separator (';' windows, ':' Unixes).
+  c. `jsonb-impl.groupId` property is set to the Maven Group Id of the CI to test.
+  d. `jsonb-impl.artifactId` property is set to the Maven Artifact Id of the CI to test.
+  e. `jsonb-impl.version` property is set to the Maven Version of the CI to test.
 
 3.  Set the below jars to the classpath
   a. JAR file for the {TechnologyShortName} {TechnologyVersion} CI. +
   `jakarta.json.bind-api.jar`.
   b. JUnit 5 jars ({JunitVersion})
-  c. sigtest-maven-plugin (1.4) to run the signature tests.
-  d. {TechnologyShortName} TCK tests (`jakarta.json.bind:jakarta.json.bind-tck`)
+  c. {TechnologyShortName} TCK tests (`jakarta.json.bind:jakarta.json.bind-tck`)
 
 +
 .Example: Maven configuration
@@ -84,7 +86,7 @@ slashes as a path separator instead.
         <dependency>
             <groupId>org.jboss.weld.se</groupId>
             <artifactId>weld-se-core</artifactId>
-            <version>4.0.2.Final</version>
+            <version>5.0.0.Beta1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -93,26 +95,6 @@ slashes as a path separator instead.
             <scope>test</scope>
         </dependency>
     </dependencies>
-    ----
-    <plugins>
-        <plugin>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M5</version>
-            <configuration>
-                <trimStackTrace>false</trimStackTrace>
-                <failIfNoTests>true</failIfNoTests>
-                <dependenciesToScan>jakarta.json.bind:jakarta.json.bind-tck</dependenciesToScan>
-                <systemPropertyVariables>
-                    <!-- Needed for signature tests to pass -->
-                    <jimage.dir>${project.build.directory}/jdk-bundles</jimage.dir>
-                    <signature.sigTestClasspath>
-                        ${project.build.directory}/signaturedirectory/jakarta.json.bind-api.jar:
-                        ${jimage.dir}/java.base:${jimage.dir}/java.rmi:${jimage.dir}/java.sql:${jimage.dir}/java.naming
-                    </signature.sigTestClasspath>
-                </systemPropertyVariables>
-            </configuration>
-        </plugin>
-    </plugins>
 ----
 +
 
@@ -157,13 +139,15 @@ slashes as a path separator instead.
   b. `sigTestClasspath` This property must be set when running signature tests.
   This property should be set to a list of jar files and/or directories which contain your
   Java EE and Java SE classes. Paths must be separated by the appropriate path separator (';' windows, ':' Unixes).
+  c. `jsonb-api.groupId` property is set to the Maven Group Id of the VI to test.
+  d. `jsonb-api.artifactId` property is set to the Maven Artifact Id of the VI to test.
+  e. `jsonb-api.version` property is set to the Maven Version of the VI to test.
 
 3.  Set the below jars to the classpath
   a. JAR file for the {TechnologyShortName} {TechnologyVersion} VI. +
   `yasson.jar`.
   b. JUnit 5 jars ({JunitVersion})
-  c. sigtest-maven-plugin (1.4) to run the signature tests.
-  d. {TechnologyShortName} TCK tests (`jakarta.json.bind:jakarta.json.bind-tck`)
+  c. {TechnologyShortName} TCK tests (`jakarta.json.bind:jakarta.json.bind-tck`)
 
 +
 .Example: Maven configuration
@@ -191,7 +175,7 @@ slashes as a path separator instead.
         <dependency>
             <groupId>org.jboss.weld.se</groupId>
             <artifactId>weld-se-core</artifactId>
-            <version>4.0.2.Final</version>
+            <version>5.0.0.Beta1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -200,27 +184,6 @@ slashes as a path separator instead.
             <scope>test</scope>
         </dependency>
     </dependencies>
-    ----
-    <plugins>
-        <plugin>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M5</version>
-            <configuration>
-                <trimStackTrace>false</trimStackTrace>
-                <failIfNoTests>true</failIfNoTests>
-                <dependenciesToScan>jakarta.json.bind:jakarta.json.bind-tck</dependenciesToScan>
-                <systemPropertyVariables>
-                    <!-- Needed for signature tests to pass -->
-                    <jimage.dir>${project.build.directory}/jdk-bundles</jimage.dir>
-                    <signature.sigTestClasspath>
-                        ${project.build.directory}/signaturedirectory/jakarta.json.bind-api.jar:
-                        ${jimage.dir}/java.base:${jimage.dir}/java.rmi:${jimage.dir}/java.sql:${jimage.dir}/java.naming
-                    </signature.sigTestClasspath>
-                </systemPropertyVariables>
-            </configuration>
-        </plugin>
-    </plugins>
-
 ----
 +
 

@@ -66,6 +66,7 @@
             <properties>
                 <license>EFTL</license>
                 <bundle-name>jakarta-jsonb-tck</bundle-name>
+                <assembly-descriptor>src/main/assembly/assembly-eftl.xml</assembly-descriptor>
             </properties>
         </profile>
         <profile>
@@ -73,6 +74,7 @@
             <properties>
                 <license>EPL</license>
                 <bundle-name>jsonb-tck</bundle-name>
+                <assembly-descriptor>src/main/assembly/assembly.xml</assembly-descriptor>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -83,7 +85,9 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <id>distribution</id>
@@ -93,8 +97,9 @@
                         </goals>
                         <configuration>
                             <descriptors>
-                                <descriptor>src/main/assembly/assembly.xml</descriptor>
+                                <descriptor>${assembly-descriptor}</descriptor>
                             </descriptors>
+                            <escapeString>\</escapeString>
                             <appendAssemblyId>false</appendAssemblyId>
                             <finalName>${bundle-name}-${project.version}</finalName>
                         </configuration>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2022 Oracle and/or its affiliates. All rights reserved.
+
+    This program and the accompanying materials are made available under the
+    terms of the Eclipse Public License v. 2.0, which is available at
+    http://www.eclipse.org/legal/epl-2.0.
+
+    This Source Code may also be made available under the following Secondary
+    Licenses when the conditions for such availability set forth in the
+    Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+    version 2 with the GNU Classpath Exception, which is available at
+    https://www.gnu.org/software/classpath/license.html.
+
+    SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.eclipse.ee4j</groupId>
+        <artifactId>project</artifactId>
+        <version>1.0.7</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>jakarta.json.bind</groupId>
+    <artifactId>jakarta.json.bind-tck-tests</artifactId>
+    <version>${project.version}</version>
+
+    <properties>
+        <!-- Vendor Implementation (VI) -->
+        <jsonb-api.groupId>jakarta.json.bind</jsonb-api.groupId>
+        <jsonb-api.artifactId>jakarta.json.bind-api</jsonb-api.artifactId>
+        <jsonb-api.version>3.0.0</jsonb-api.version>
+
+        <!-- Compatible Implementation (CI) -->
+        <jsonb-impl.groupId>org.eclipse</jsonb-impl.groupId>
+        <jsonb-impl.artifactId>yasson</jsonb-impl.artifactId>
+        <jsonb-impl.version>3.0.0-RC1</jsonb-impl.version>
+
+        <!-- TCK -->
+        <jsonb.tck.version>${project.version}</jsonb.tck.version>
+
+        <!-- properties -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jimage.dir>\${project.build.directory}/jdk-bundle</jimage.dir>
+
+        <!-- !!! DO NOT EDIT !!! -->
+        <jakarta.jsonb-api.version>3.0.0</jakarta.jsonb-api.version>
+        <jakarta.json-api.version>2.1.0</jakarta.json-api.version>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>jakarta.json.bind</groupId>
+            <artifactId>jakarta.json.bind-tck</artifactId>
+            <version>\${jsonb.tck.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>\${jsonb-api.groupId}</groupId>
+            <artifactId>\${jsonb-api.artifactId}</artifactId>
+            <version>\${jsonb-api.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>\${jsonb-impl.groupId}</groupId>
+            <artifactId>\${jsonb-impl.artifactId}</artifactId>
+            <version>\${jsonb-impl.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.weld.se</groupId>
+            <artifactId>weld-se-core</artifactId>
+            <version>5.0.0.Beta1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <defaultGoal>verify</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>jakarta.json.bind</groupId>
+                                    <artifactId>jakarta.json.bind-api</artifactId>
+                                    <version>\${jakarta.jsonb-api.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>\${project.build.directory}/signaturedirectory</outputDirectory>
+                                    <destFileName>jakarta.json.bind-api.jar</destFileName>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>jakarta.json</groupId>
+                                    <artifactId>jakarta.json-api</artifactId>
+                                    <version>\${jakarta.json-api.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>\${project.build.directory}/signaturedirectory</outputDirectory>
+                                    <destFileName>jakarta.json-api.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <configuration>
+                    <trimStackTrace>false</trimStackTrace>
+                    <failIfNoTests>true</failIfNoTests>
+                    <dependenciesToScan>jakarta.json.bind:jakarta.json.bind-tck</dependenciesToScan>
+                    <systemPropertyVariables>
+                        <jimage.dir>\${jimage.dir}</jimage.dir>
+                        <signature.sigTestClasspath>\${project.build.directory}/signaturedirectory/jakarta.json.bind-api.jar:\${jimage.dir}/java.base:\${jimage.dir}/java.rmi:\${jimage.dir}/java.sql:\${jimage.dir}/java.naming</signature.sigTestClasspath>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>3.0.0-M4</version>
+                <executions>
+                    <execution>
+                        <id>post-unit-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

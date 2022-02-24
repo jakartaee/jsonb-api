@@ -72,6 +72,7 @@ To run all tests, enter the following command:
 
 [source,subs="attributes"]
 ----
+cd ${TechnologyHomeEnv}/bin
 mvn verify
 ----
 
@@ -96,6 +97,7 @@ To run a single test, enter the following command: +
 
 [source,subs="attributes"]
 ----
+cd ${TechnologyHomeEnv}/bin
 mvn verify -Dtest={singleTestExample}
 ----
 
@@ -108,6 +110,7 @@ To run a subset of tests, enter the following command:
 
 [source,subs="attributes"]
 ----
+cd ${TechnologyHomeEnv}/bin
 mvn verify -Dtest={subsetTestDirectoryExample}
 ----
 
@@ -121,6 +124,7 @@ following command:
 
 [source,subs="attributes"]
 ----
+cd ${TechnologyHomeEnv}/bin
 mvn verify -Dtest={sigTestExample}
 ----
 

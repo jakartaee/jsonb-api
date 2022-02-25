@@ -1,0 +1,433 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Setup and Configuration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://use.fontawesome.com/96c4d89611.js"></script>
+  </head>
+  <body>
+<table id="doc-title" cellspacing="0" cellpadding="0">
+  <tr>
+  <td align="left" valign="top">
+  <b>Setup and Configuration</b><br />
+  </td>
+  </tr>
+</table>
+<hr />
+
+<table width="90%" id="top-nav" cellspacing="0" cellpadding="0">
+	<colgroup>
+		<col width="12%"/>
+		<col width="12%"/>
+		<col width="*"/>
+	</colgroup>
+	<tr>
+		<td align="left">
+		<a href="install.html">
+			<span class="vector-font"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Previous</span>
+		</a>
+		</td>
+
+		<td align="left">
+		<a href="using.html">
+			<span class=" vector-font"><i class="fa fa-arrow-circle-right vector-font" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Next</span>
+		</a>
+		</td>
+
+		<td align="right">
+		<a href="toc.html">
+			<span class=" vector-font"><i class="fa fa-list vector-font" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Contents</span>
+		</a>
+		</td>
+	</tr>
+</table>
+
+
+<div class="sect1">
+<h2 id="setup-and-configuration">4 Setup and Configuration</h2>
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The Jakarta EE Specification process provides for any number of compatible implementations.
+As additional implementations become available, refer to project or product documentation from
+those vendors for specific TCK setup and operational guidance.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This chapter describes how to set up the JSON Binding TCK.
+Before proceeding with the instructions in
+this chapter, be sure to install all required software, as described in
+<a href="install.html#GBFTP">Chapter 3, "Installation."</a></p>
+</div>
+<div class="paragraph">
+<p>After completing the instructions in this chapter, proceed to
+<a href="using.html#GBFWO">Chapter 5, "Executing Tests,"</a> for instructions on
+running the JSON Binding TCK.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The JSON Binding TCK is not depended on any particular build
+tool to run the tests. It will be convenient and advisable to create a
+Apache Maven project to setup and run the TCK.
+This chapter will henceforth use instructions and steps to provide setup
+with Apache Maven as a build tool.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><a id="GBFVU"></a><a id="configuring-your-environment-to-run-the-tck-against-the-reference-implementation"></a></p>
+</div>
+<div class="sect2">
+<h3 id="_4_1_configuring_your_environment_to_run_the_tck_against_the_reference_implementation">4.1 Configuring Your Environment to Run the TCK Against the Reference Implementation</h3>
+<div class="paragraph">
+<p>After configuring your environment as described in this section,
+continue with the instructions in <a href="using.html#GBFWO">Chapter 5, "Executing Tests."</a></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In these instructions, variables in angle brackets need to be expanded
+for each platform. For example, <code>&lt;JAVA_HOME&gt;</code> becomes <code>$JAVA_HOME</code> on
+Solaris/Linux and <code>%JAVA_HOME%</code> on Windows. In addition, the forward
+slashes (<code>/</code>) used in all of the examples need to be replaced with
+backslashes (<code>\</code>) for Windows. Finally, be sure to use the appropriate
+separator for your operating system when specifying multiple path
+entries (<code>;</code> on Windows, <code>:</code> on UNIX/Linux).</p>
+</div>
+<div class="paragraph">
+<p>On Windows, you must escape any backslashes with an extra backslash in
+path separators used in any of the following properties, or use forward
+slashes as a path separator instead.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Set the following environment variables in your shell environment:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha">
+<li>
+<p><code>JAVA_HOME</code> to the directory in which Java SE 11+ is installed</p>
+</li>
+<li>
+<p><code>M2_HOME</code> to the directory in which the Apache Maven build tool is installed.</p>
+</li>
+<li>
+<p><code>JSONB_HOME</code> to the directory in which the JSON Binding
+3.0 CI has been installed</p>
+</li>
+<li>
+<p><code>PATH</code> to include the following directories: <code>JAVA_HOME/bin</code>,
+and <code>M2_HOME/bin</code></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Set below Maven/System properties</p>
+<div class="olist loweralpha">
+<ol class="loweralpha">
+<li>
+<p><code>jimage.dir</code> This property specifies the directory where Java 11+ modules will be expanded by the
+jimage tool for use in sigTestClasspath</p>
+</li>
+<li>
+<p><code>sigTestClasspath</code> This property must be set when running signature tests.
+This property should be set to a list of jar files and/or directories which contain your
+Jakarta EE and Java SE classes. Paths must be separated by the appropriate path separator (<em>;</em> windows, <em>:</em> Unixes).</p>
+</li>
+<li>
+<p><code>jsonb-impl.groupId</code> property is set to the Maven Group Id of the CI to test.</p>
+</li>
+<li>
+<p><code>jsonb-impl.artifactId</code> property is set to the Maven Artifact Id of the CI to test.</p>
+</li>
+<li>
+<p><code>jsonb-impl.version</code> property is set to the Maven Version of the CI to test.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Set the below jars to the classpath</p>
+<div class="olist loweralpha">
+<ol class="loweralpha">
+<li>
+<p>JAR file for the JSON Binding 3.0 CI.<br>
+<code>jakarta.json.bind-api.jar</code>.</p>
+</li>
+<li>
+<p>JUnit 5 jars (5.7.2+)</p>
+</li>
+<li>
+<p>JSON Binding TCK tests (<code>jakarta.json.bind:jakarta.json.bind-tck</code>)</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="title">Example: Maven configuration</div>
+<div class="content">
+<pre class="prettyprint highlight linenums"><code data-lang="oac_no_warn">    &lt;dependencies&gt;
+        &lt;dependency&gt;
+          &lt;groupId&gt;CI.group.id&lt;/groupId&gt;
+          &lt;artifactId&gt;CI.artifact.id&lt;/artifactId&gt;
+          &lt;version&gt;CI.version&lt;/version&gt;
+          &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+          &lt;groupId&gt;jakarta.json.bind&lt;/groupId&gt;
+          &lt;artifactId&gt;jakarta.json.bind-api&lt;/artifactId&gt;
+          &lt;version&gt;3.0.0&lt;/version&gt;
+          &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.json&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.json-api&lt;/artifactId&gt;
+            &lt;version&gt;2.1.0&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.jboss.weld.se&lt;/groupId&gt;
+            &lt;artifactId&gt;weld-se-core&lt;/artifactId&gt;
+            &lt;version&gt;5.0.0.Beta1&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.json.bind&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.json.bind-tck&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="paragraph">
+<p><a id="GCLHU"></a><a id="configuring-your-environment-run-the-tck-against-the-vendor-implementation"></a></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>4.2 Configuring Your Environment to Run the TCK Against the Vendor Implementation
+<sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub>~~</p>
+</div>
+<div class="paragraph">
+<p>After configuring your environment as described in this section,
+continue with the instructions in <a href="using.html#GBFWO">Chapter 5, "Executing Tests."</a></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In these instructions, variables in angle brackets need to be expanded
+for each platform. For example, <code>&lt;JAVA_HOME&gt;</code> becomes <code>$JAVA_HOME</code> on
+Solaris/Linux and <code>%JAVA_HOME%</code> on Windows. In addition, the forward
+slashes (<code>/</code>) used in all of the examples need to be replaced with
+backslashes (<code>\</code>) for Windows. Finally, be sure to use the appropriate
+separator for your operating system when specifying multiple path
+entries (<code>;</code> on Windows, <code>:</code> on UNIX/Linux).</p>
+</div>
+<div class="paragraph">
+<p>On Windows, you must escape any backslashes with an extra backslash in
+path separators used in any of the following properties, or use forward
+slashes as a path separator instead.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Set the following environment variables in your shell environment:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha">
+<li>
+<p><code>JAVA_HOME</code> to the directory in which Java SE 11+ is installed</p>
+</li>
+<li>
+<p><code>M2_HOME</code> to the directory in which the Apache Maven build tool is installed.</p>
+</li>
+<li>
+<p><code>JSONB_HOME</code> to the directory in which the JSON Binding
+3.0 CI has been installed</p>
+</li>
+<li>
+<p><code>PATH</code> to include the following directories: <code>JAVA_HOME/bin</code>,
+and <code>M2_HOME/bin</code></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Set below Maven/System properties</p>
+<div class="olist loweralpha">
+<ol class="loweralpha">
+<li>
+<p><code>jimage.dir</code> This property specifies the directory where Java 11+ modules will be expanded by the
+jimage tool for use in sigTestClasspath</p>
+</li>
+<li>
+<p><code>sigTestClasspath</code> This property must be set when running signature tests.
+This property should be set to a list of jar files and/or directories which contain your
+Java EE and Java SE classes. Paths must be separated by the appropriate path separator (<em>;</em> windows, <em>:</em> Unixes).</p>
+</li>
+<li>
+<p><code>jsonb-api.groupId</code> property is set to the Maven Group Id of the VI to test.</p>
+</li>
+<li>
+<p><code>jsonb-api.artifactId</code> property is set to the Maven Artifact Id of the VI to test.</p>
+</li>
+<li>
+<p><code>jsonb-api.version</code> property is set to the Maven Version of the VI to test.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Set the below jars to the classpath</p>
+<div class="olist loweralpha">
+<ol class="loweralpha">
+<li>
+<p>JAR file for the JSON Binding 3.0 VI.<br>
+<code>yasson.jar</code>.</p>
+</li>
+<li>
+<p>JUnit 5 jars (5.7.2+)</p>
+</li>
+<li>
+<p>JSON Binding TCK tests (<code>jakarta.json.bind:jakarta.json.bind-tck</code>)</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="title">Example: Maven configuration</div>
+<div class="content">
+<pre class="prettyprint highlight linenums"><code data-lang="oac_no_warn">    &lt;dependencies&gt;
+        &lt;dependency&gt;
+          &lt;groupId&gt;VI.grou.id&lt;/groupId&gt;
+          &lt;artifactId&gt;VI.artefact.id&lt;/artifactId&gt;
+          &lt;version&gt;VI.version&lt;/version&gt;
+          &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+          &lt;groupId&gt;org.eclipse&lt;/groupId&gt;
+          &lt;artifactId&gt;yasson&lt;/artifactId&gt;
+          &lt;version&gt;3.0.0-R1&lt;/version&gt;
+          &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.json&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.json-api&lt;/artifactId&gt;
+            &lt;version&gt;2.1.0&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.jboss.weld.se&lt;/groupId&gt;
+            &lt;artifactId&gt;weld-se-core&lt;/artifactId&gt;
+            &lt;version&gt;5.0.0.Beta1&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.json.bind&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.json.bind-tck&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="paragraph">
+<p><a id="GHGDG"></a><a id="publishing-the-test-applications"></a></p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_4_3_publishing_the_test_applications">4.3 Publishing the Test Applications</h3>
+<div class="paragraph">
+<p>Not needed for the JSON Binding TCK.</p>
+</div>
+</div>
+</div>
+</div>
+
+<hr />
+
+<table width="90%" id="bottom-nav" cellspacing="0" cellpadding="0">
+	<colgroup>
+		<col width="12%"/>
+		<col width="12%"/>
+		<col width="*"/>
+	</colgroup>
+	<tr>		
+		<td align="left">
+		<a href="install.html">
+			<span class=" vector-font"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Previous</span>
+		</a>
+		</td>
+
+		<td align="left">
+		<a href="using.html">
+			<span class="vector-font"><i class="fa fa-arrow-circle-right vector-font" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Next</span>
+		</a>
+		</td>
+
+		<td align="right">
+		<a href="toc.html">
+			<span class="vector-font"><i class="fa fa-list vector-font" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Contents</span>
+		</a>
+		</td>
+	</tr>
+</table>
+
+<span id="copyright">
+		<img src="img/eclipse_foundation_logo_tiny.png" height="20px" alt="Eclipse Foundation Logo" align="top"/>&nbsp;			
+		<span >Copyright&nbsp;&copy;&nbsp;2017,&nbsp;2022&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span>
+</span>
+
+</body>
+</html>

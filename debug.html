@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Debugging Test Problems</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://use.fontawesome.com/96c4d89611.js"></script>
+  </head>
+  <body>
+<table id="doc-title" cellspacing="0" cellpadding="0">
+  <tr>
+  <td align="left" valign="top">
+  <b>Debugging Test Problems</b><br />
+  </td>
+  </tr>
+</table>
+<hr />
+
+<table width="90%" id="top-nav" cellspacing="0" cellpadding="0">
+	<colgroup>
+		<col width="12%"/>
+		<col width="12%"/>
+		<col width="*"/>
+	</colgroup>
+	<tr>
+		<td align="left">
+		<a href="using.html">
+			<span class="vector-font"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Previous</span>
+		</a>
+		</td>
+
+		<td align="left">
+		<a href="faq.html">
+			<span class=" vector-font"><i class="fa fa-arrow-circle-right vector-font" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Next</span>
+		</a>
+		</td>
+
+		<td align="right">
+		<a href="toc.html">
+			<span class=" vector-font"><i class="fa fa-list vector-font" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Contents</span>
+		</a>
+		</td>
+	</tr>
+</table>
+
+
+<div class="sect1">
+<h2 id="debugging-test-problems">6 Debugging Test Problems</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are a number of reasons that tests can fail to execute properly.
+This chapter provides some approaches for dealing with these failures.
+Please note that most of these suggestions are only relevant when
+running the test harness in GUI mode.</p>
+</div>
+<div class="paragraph">
+<p>This chapter includes the following topics:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#GBFYP">Overview</a></p>
+</li>
+<li>
+<p><a href="#GBFYF">Configuration Failures</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a id="GBFYP"></a><a id="overview"></a></p>
+</div>
+<div class="sect2">
+<h3 id="_6_1_overview">6.1 Overview</h3>
+<div class="paragraph">
+<p>The goal of a test run is for all tests in the test suite that are not
+filtered out to have passing results. If the root test suite folder
+contains tests with errors or failing results, you must troubleshoot and
+correct the cause to satisfactorily complete the test run.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Errors: Tests with errors could not be executed by the Junit
+framework. These errors usually occur because the test environment is not
+properly configured.</p>
+</li>
+<li>
+<p>Failures: Tests that fail were executed but had failing results.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For every test run, the Junit framework creates a set of report files
+in the target directory.</p>
+</div>
+<div class="paragraph">
+<p>If a large number of tests failed, you should read
+<a href="#GBFYF">Configuration Failures</a> to see if a
+configuration issue is the cause of the failures.</p>
+</div>
+<div class="paragraph">
+<p>If a large number of tests failed, you should read
+<a href="#GBFYF">Configuration Failures</a> to see if a
+configuration issue is the cause of the failures.</p>
+</div>
+<div class="paragraph">
+<p><a id="GBFYF"></a><a id="configuration-failures"></a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_6_2_configuration_failures">6.2 Configuration Failures</h3>
+<div class="paragraph">
+<p>Configuration failures are easily recognized because many tests fail the
+same way. When all your tests begin to fail, you may want to stop the
+run immediately and start viewing individual test output.</p>
+</div>
+</div>
+</div>
+</div>
+
+<hr />
+
+<table width="90%" id="bottom-nav" cellspacing="0" cellpadding="0">
+	<colgroup>
+		<col width="12%"/>
+		<col width="12%"/>
+		<col width="*"/>
+	</colgroup>
+	<tr>		
+		<td align="left">
+		<a href="using.html">
+			<span class=" vector-font"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Previous</span>
+		</a>
+		</td>
+
+		<td align="left">
+		<a href="faq.html">
+			<span class="vector-font"><i class="fa fa-arrow-circle-right vector-font" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Next</span>
+		</a>
+		</td>
+
+		<td align="right">
+		<a href="toc.html">
+			<span class="vector-font"><i class="fa fa-list vector-font" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Contents</span>
+		</a>
+		</td>
+	</tr>
+</table>
+
+<span id="copyright">
+		<img src="img/eclipse_foundation_logo_tiny.png" height="20px" alt="Eclipse Foundation Logo" align="top"/>&nbsp;			
+		<span >Copyright&nbsp;&copy;&nbsp;2017,&nbsp;2022&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span>
+</span>
+
+</body>
+</html>

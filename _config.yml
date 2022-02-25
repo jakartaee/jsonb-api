@@ -1,12 +1,14 @@
 remote_theme: jakartaee/jekyll-theme-jakarta-ee
 
-title: [Jakarta JSON Binding (JSON-B)]
-description: [JSON-B is a standard binding layer for converting Java objects to/from JSON messages]
+title: [tck_jsonb_v1_0]
+description: [Oracle Technology Compatibility Kit User's Guide for Java API for JSON Binding 3.0 for Technology Licensees, Release 3.0]
 
+# sidebar links url
 links:
-  source: https://github.com/eclipse-ee4j/jsonb-api
-  docs: docs/user-guide.html
-  javadocs: docs/api/
-  download: https://github.com/eclipse-ee4j/jsonb-api/releases
-  mailinglist: https://accounts.eclipse.org/mailing-list/jsonb-dev
-  #faq: FAQ
+  source: https://github.com/javaee/tck_jsonb_v1_0
+  download: https://github.com/javaee/tck_jsonb_v1_0/releases
+  #mailinglist: https://javaee.groups.io/g/tck_jsonb_v1_0
+  #javadocs:
+  docs: https://javaee.github.io/tck_jsonb_v1_0
+  #faq:
+

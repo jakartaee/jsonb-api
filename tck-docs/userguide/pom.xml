@@ -27,7 +27,7 @@
     <groupId>jakarta.json.bind</groupId>
     <artifactId>jakarta.json.bind-tck-ug</artifactId>
     <packaging>pom</packaging>
-    <version>3.0.0</version>
+    <version>3.0.1-SNAPSHOT</version>
     <name>Eclipse Foundation Technology Compatibility Kit User's Guide for Jakarta JSON Binding for Jakarta EE, Release 3.0</name>
 
     <properties>

@@ -16,7 +16,7 @@ JSON-B is a standard binding layer for converting Java objects to/from JSON mess
 <dependency>
     <groupId>jakarta.json.bind</groupId>
     <artifactId>jakarta.json.bind-api</artifactId>
-    <version>2.0.0</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2023 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,8 +20,10 @@
 
 package ee.jakarta.tck.json.bind.customizedmapping.binarydata.model;
 
+import java.nio.charset.StandardCharsets;
+
 public class BinaryDataContainer {
-    private byte[] data = "Test String".getBytes();
+    private byte[] data = "Test String".getBytes(StandardCharsets.UTF_8); // Data must be UTF-8 for assertions
 
     public byte[] getData() {
         return data;

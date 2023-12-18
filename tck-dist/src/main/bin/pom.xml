@@ -16,47 +16,35 @@
     SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>org.eclipse.ee4j</groupId>
         <artifactId>project</artifactId>
         <version>1.0.7</version>
         <relativePath/>
     </parent>
-
     <groupId>jakarta.json.bind</groupId>
     <artifactId>jakarta.json.bind-tck-tests</artifactId>
     <version>${project.version}</version>
-
     <properties>
         <!-- Vendor Implementation (VI) -->
         <jsonb-api.groupId>jakarta.json.bind</jsonb-api.groupId>
         <jsonb-api.artifactId>jakarta.json.bind-api</jsonb-api.artifactId>
         <jsonb-api.version>3.0.0</jsonb-api.version>
-
         <!-- Compatible Implementation (CI) -->
         <jsonb-impl.groupId>org.eclipse</jsonb-impl.groupId>
         <jsonb-impl.artifactId>yasson</jsonb-impl.artifactId>
         <jsonb-impl.version>3.0.0-RC1</jsonb-impl.version>
-
         <!-- TCK -->
         <jsonb.tck.version>${project.version}</jsonb.tck.version>
-
         <!-- properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jimage.dir>\${project.build.directory}/jdk-bundle</jimage.dir>
-
         <!-- !!! DO NOT EDIT !!! -->
         <jakarta.jsonb-api.version>3.0.0</jakarta.jsonb-api.version>
         <jakarta.json-api.version>2.1.0</jakarta.json-api.version>
     </properties>
-
-
     <dependencies>
         <dependency>
             <groupId>jakarta.json.bind</groupId>
@@ -83,7 +71,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
     <build>
         <defaultGoal>verify</defaultGoal>
         <plugins>
@@ -127,6 +114,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
                 <configuration>
+                    <useModulePath>false</useModulePath>
                     <trimStackTrace>false</trimStackTrace>
                     <failIfNoTests>true</failIfNoTests>
                     <dependenciesToScan>jakarta.json.bind:jakarta.json.bind-tck</dependenciesToScan>

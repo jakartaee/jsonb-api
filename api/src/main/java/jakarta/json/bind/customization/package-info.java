@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -15,19 +15,11 @@
  */
 
 /**
- * Jakarta JSON Binding API.
+ * <p>
+ * Defines customizations for different components to provide runtime customization with the same capability as
+ * annotation approach.
+ * </p>
+ *
+ * @since JSON Binding 2.1
  */
-module jakarta.json.bind {
-    exports jakarta.json.bind;
-    exports jakarta.json.bind.adapter;
-    exports jakarta.json.bind.annotation;
-    exports jakarta.json.bind.config;
-    exports jakarta.json.bind.customization;
-    exports jakarta.json.bind.serializer;
-    exports jakarta.json.bind.spi;
-
-    requires jakarta.json;
-    requires java.logging;
-
-    uses jakarta.json.bind.spi.JsonbProvider;
-}
+package jakarta.json.bind.customization;

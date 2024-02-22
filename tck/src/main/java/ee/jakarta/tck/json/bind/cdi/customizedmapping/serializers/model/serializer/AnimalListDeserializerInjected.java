@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2023 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -39,11 +39,16 @@ public class AnimalListDeserializerInjected
 
     public List<Animal> deserialize(JsonParser jsonParser,
                                     DeserializationContext deserializationContext, Type type) {
-        // start array
         List<Animal> animals = new ArrayList<>();
-        while (jsonParser.next() == JsonParser.Event.START_OBJECT) {
-            animals.add(animalDeserializer.deserialize(jsonParser,
-                                                       deserializationContext, type));
+
+        // start array
+        while (jsonParser.hasNext()) {
+            JsonParser.Event event = jsonParser.next();
+            while (event == JsonParser.Event.START_OBJECT) {
+                animals.add(animalDeserializer.deserialize(jsonParser,
+                        deserializationContext, type));
+                event = jsonParser.next();
+            }
         }
 
         return animals;

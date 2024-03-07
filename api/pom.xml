@@ -34,7 +34,7 @@
     <name>JSON-B API</name>
     <description>Jakarta JSON Binding is a standard binding layer for converting Java objects to/from JSON documents.</description>
     <inceptionYear>2016</inceptionYear>
-    <url>https://eclipse-ee4j.github.io/jsonb-api</url>
+    <url>https://jakartaee.github.io/jsonb-api</url>
 
     <issueManagement>
         <system>github</system>

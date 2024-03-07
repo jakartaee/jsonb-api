@@ -1,6 +1,7 @@
-:component-name: Json Binding 1.0.1 Users Guide
+:component-name: Json Binding 3.0.1 Users Guide
 :toc: left
 :toclevels: 3
+:source-highlighter: coderay
 
 = {component-name}
 
@@ -14,11 +15,18 @@ JSON-B is a standard binding layer for converting Java objects to/from JSON mess
 .Maven Dependencies
 ----
 <dependencies>
-    <!-- JSON-P -->
+    <!-- JSON-P API -->
     <dependency>
-        <groupId>org.glassfish</groupId>
-        <artifactId>jakarta.json</artifactId>
-        <version>1.1.5</version>
+        <groupId>jakarta.json</groupId>
+        <artifactId>jakarta.json-api</artifactId>
+        <version>2.1.3</version>
+    </dependency>
+
+    <!-- Eclipse Parsson (JSON-P implementation) -->
+    <dependency>
+        <groupId>org.eclipse.parsson</groupId>
+        <artifactId>parsson</artifactId>
+        <version>1.1.6</version>
         <scope>runtime</scope>
     </dependency>
 
@@ -26,14 +34,14 @@ JSON-B is a standard binding layer for converting Java objects to/from JSON mess
     <dependency>
         <groupId>jakarta.json.bind</groupId>
         <artifactId>jakarta.json.bind-api</artifactId>
-        <version>1.0.1</version>
+        <version>3.0.1</version>
     </dependency>
 
     <!-- Yasson (JSON-B implementation) -->
     <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>yasson</artifactId>
-        <version>1.0.3</version>
+        <version>3.0.4</version>
         <scope>runtime</scope>
     </dependency>
 </dependencies>
@@ -706,7 +714,7 @@ Jsonb jsonb = JsonbBuilder.create(config);
 
 == Further Information
 
-- JSON-B official web site: https://eclipse-ee4j.github.io/jsonb-api
+- JSON-B official web site: https://jakartaee.github.io/jsonb-api
 - Jakarta JSON Binding: https://projects.eclipse.org/projects/ee4j.jsonb
 - Mailing list: jsonb-dev@eclipse.org
 - Yasson (Compatible Implementation): https://github.com/eclipse-ee4j/yasson

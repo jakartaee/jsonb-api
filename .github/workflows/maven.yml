@@ -35,10 +35,10 @@ jobs:
           java-version: 11
           cache: 'maven'
       - name: API compilation
-        run: cd api && mvn clean install -Pstaging
+        run: cd api && mvn clean install -Pstaging -B
       - name: TCK test compilation
-        run: cd tck && mvn clean install -Pstaging
+        run: cd tck && mvn clean install -Pstaging -B
       - name: Javadoc compilation
-        run: cd docs && mvn clean install -Pstaging
+        run: cd docs && mvn clean install -Pstaging -B
       - name: Generating specification
-        run: cd spec && mvn clean install -Pstaging
+        run: cd spec && mvn clean install -Pstaging -B

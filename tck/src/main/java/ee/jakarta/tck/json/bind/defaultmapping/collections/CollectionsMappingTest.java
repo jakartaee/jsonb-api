@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2024 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -603,7 +603,7 @@ public class CollectionsMappingTest {
      * an error when unmarshalling
      */
     @Test
-    @Disabled("See: https://github.com/eclipse-ee4j/jakartaee-tck/issues/103")
+    @Disabled("See: https://github.com/jakartaee/platform-tck/issues/103")
     public void testEnumSet() {
         EnumSet<EnumSetContainer.Enum> instance = EnumSet.allOf(EnumSetContainer.Enum.class);
         String jsonString = jsonb.toJson(new EnumSetContainer() {{
@@ -627,7 +627,7 @@ public class CollectionsMappingTest {
      * an error when unmarshalling
      */
     @Test
-    @Disabled("See: https://github.com/eclipse-ee4j/jakartaee-tck/issues/103")
+    @Disabled("See: https://github.com/jakartaee/platform-tck/issues/103")
     public void testEnumMap() {
         EnumMap<EnumSetContainer.Enum, String> instance =
                 new EnumMap<EnumSetContainer.Enum, String>(EnumSetContainer.Enum.class) {{

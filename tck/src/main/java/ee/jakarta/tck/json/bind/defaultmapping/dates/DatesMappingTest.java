@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2024 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -257,7 +257,7 @@ public class DatesMappingTest {
      * marshalled as and unmarshalled from ISO_DATE_TIME
      */
     @Test
-    @Disabled("See: https://github.com/eclipse-ee4j/jakartaee-tck/issues/102")
+    @Disabled("See: https://github.com/jakartaee/platform-tck/issues/102")
     public void testGregorianCalendarWithTimeMapping() {
         GregorianCalendar calendar = GregorianCalendar.from(
                 ZonedDateTime.of(LocalDateTime.of(1970, Month.FEBRUARY, 1, 1, 0, 0),

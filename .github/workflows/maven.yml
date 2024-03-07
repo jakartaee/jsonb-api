@@ -18,6 +18,17 @@ name: JSON-B API
 
 on: [push, pull_request]
 
+permissions:
+  security-events: read
+  contents: write
+  actions: read
+  id-token: write
+  checks: write
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: JSON-B API compilation

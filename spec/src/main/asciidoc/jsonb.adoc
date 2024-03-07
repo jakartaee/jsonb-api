@@ -13,13 +13,13 @@ This specification defines binding API between Java objects and https://tools.ie
 A list of open issues can be found at:
 
 ____
-https://github.com/eclipse-ee4j/jsonb-api/issues
+https://github.com/jakartaee/jsonb-api/issues
 ____
 
 The corresponding source code can be found online at:
 
 ____
-https://github.com/eclipse-ee4j/jsonb-api
+https://github.com/jakartaee/jsonb-api
 ____
 
 The committer group is seeking feedback from the community on any aspect of this specification. Please join our discussion groups at:

@@ -733,13 +733,14 @@ On serialization of Original type JSONB calls `JsonbAdapter::adaptToJson` method
 
 On deserialization JSONB deserializes Adapted from JSON and converts it to Original using `JsonbAdapter::adaptFromJson` method.
 
-There are two ways how to register `JsonbAdapter`:
+There are three ways how to register `JsonbAdapter`:
 
 [arabic]
 . Using `JsonbConfig::withAdapters` method;
 . Annotating a class field with `JsonbTypeAdapter` annotation.
+. Annotating a type with `JsonbTypeAdapter` annotation.
 
-`JsonbAdapter` registered via `JsonbConfig::withAdapters` is visible to all serialize/deserialize operations performed with given `JsonbConfig`. `JsonbAdapter` registered with annotation is visible to serialize/deserialize operation used only for annotated field.
+`JsonbAdapter` registered via `JsonbConfig::withAdapters` is visible to all serialize/deserialize operations performed with given `JsonbConfig`. `JsonbAdapter` registered with annotation on a *field* is visible to serialize/deserialize operation used only for annotated field. `JsonbAdapter` registered with annotation on a *class* is visible to all serialize/deserialize operations of the annotated class.
 
 It is possible to annotate `JsonbCreator` parameter with `JsonbTypeAdapter` and provide adapter for a parameter this way. However, if `JsonbTypeAdapter` annotation is provided to any other parameter (such as setter method parameter) it will be ignored.
 

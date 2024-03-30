@@ -42,7 +42,7 @@ jobs:
       - name: Set up compile JDK
         uses: actions/setup-java@v4
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: 11
           cache: 'maven'
       - name: API compilation

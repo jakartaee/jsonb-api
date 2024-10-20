@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2024 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -24,10 +24,10 @@ import jakarta.json.bind.annotation.JsonbNumberFormat;
 
 import ee.jakarta.tck.json.bind.TypeContainer;
 
-@JsonbNumberFormat(value = "###,###.##")
+@JsonbNumberFormat(value = "###,###.##", locale = "en_US")
 public class TypeCustomizedFieldOverriddenDoubleContainer
         implements TypeContainer<Double> {
-    @JsonbNumberFormat(value = "###,###.#")
+    @JsonbNumberFormat(value = "###,###.#", locale = "en_US")
     private Double instance;
 
     @Override

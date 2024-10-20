@@ -20,6 +20,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Locale;
 
 /**
  * <p>Annotation provides way how to set custom number format to field or JavaBean property.</p>
@@ -35,6 +36,11 @@ import java.lang.annotation.Target;
  *   <li> parameter </li>
  *   <li> package </li>
  * </ul>
+ *
+ * <p>Note that even when specifying a pattern format your JSON is depending on the Locale of the JVM you run on.
+ * For best portability it is recommended to either specify the {@link #locale()} or define a default Locale via
+ * {@link jakarta.json.bind.JsonbConfig#withLocale(Locale)}.
+ * </p>
  *
  * @since JSON Binding 1.0
  */

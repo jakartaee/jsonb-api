@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2020 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2024 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,7 +20,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.Locale;
 
 /**
  * <p>Annotation provides way how to set custom number format to field or JavaBean property.</p>
@@ -37,9 +36,9 @@ import java.util.Locale;
  *   <li> package </li>
  * </ul>
  *
- * <p>Note that even when specifying a pattern format your JSON is depending on the Locale of the JVM you run on.
- * For best portability it is recommended to either specify the {@link #locale()} or define a default Locale via
- * {@link jakarta.json.bind.JsonbConfig#withLocale(Locale)}.
+ * <p>Note that even when specifying a pattern, the format of the JSON value also depends on the Locale.
+ * For best portability it is recommended to either specify the {@link #locale()} or define a default Locale
+ * for JSON-B via {@link jakarta.json.bind.JsonbConfig#withLocale(java.util.Locale)}.
  * </p>
  *
  * @since JSON Binding 1.0

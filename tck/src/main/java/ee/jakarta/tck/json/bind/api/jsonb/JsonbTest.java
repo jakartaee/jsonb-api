@@ -246,7 +246,7 @@ public class JsonbTest {
             String jsonString = new String(rememberingStream.toByteArray(), StandardCharsets.UTF_8);
             assertThat("Failed to marshal using Jsonb.toJson method with Object and OutputStream arguments.",
                        jsonString, matchesPattern(MATCHING_PATTERN));
-            assertThat("Failed to close stream upon a successful completion", rememberingStream.isCloseCalled());
+            assertThat("Failed to close stream upon a successful completion", rememberingStream.isClosed());
         }
     }
 
@@ -266,28 +266,28 @@ public class JsonbTest {
             String jsonString = new String(rememberingStream.toByteArray(), StandardCharsets.UTF_8);
             assertThat("Failed to marshal using Jsonb.toJson method with Object, Type and OutputStream arguments.",
                        jsonString, matchesPattern(MATCHING_PATTERN));
-            assertThat("Failed to close stream upon a successful completion", rememberingStream.isCloseCalled());
+            assertThat("Failed to close stream upon a successful completion", rememberingStream.isClosed());
         }
     }
 
-    static final class CloseRememberingOutputStream extends OutputStream {
+    private static final class CloseRememberingOutputStream extends OutputStream {
 
-        private ByteArrayOutputStream delegate;
-        private boolean closeCalled;
+        private final ByteArrayOutputStream delegate;
+        private boolean closed;
 
         CloseRememberingOutputStream(ByteArrayOutputStream delegate) {
             this.delegate = delegate;
-            this.closeCalled = false;
+            this.closed = false;
         }
 
         @Override
         public void close() throws IOException {
-            closeCalled = true;
+            closed = true;
             delegate.close();
         }
 
-        boolean isCloseCalled() {
-            return closeCalled;
+        boolean isClosed() {
+            return closed;
         }
 
         byte[] toByteArray() {
@@ -311,9 +311,9 @@ public class JsonbTest {
 
     }
 
-    static final class CloseRememberingInputStream extends InputStream {
+    private static final class CloseRememberingInputStream extends InputStream {
 
-        private InputStream delegate;
+        private final InputStream delegate;
         private boolean closeCalled;
 
         CloseRememberingInputStream(InputStream delegate) {
@@ -336,6 +336,7 @@ public class JsonbTest {
             return delegate.read();
         }
 
+        @Override
         public int read(byte[] b) throws IOException {
             return delegate.read(b);
         }
@@ -390,6 +391,6 @@ public class JsonbTest {
             return delegate.transferTo(out);
         }
 
-
     }
+
 }

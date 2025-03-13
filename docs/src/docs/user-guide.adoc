@@ -268,7 +268,7 @@ The resulting JSON document will look like this:
 }
 ----
 
-The same JSON document will be produced if @JsonbProperty annotation is placed on getter like this:
+The same JSON document will be produced if @JsonbProperty annotation is placed on accessor like this:
 
 [source,java]
 ----

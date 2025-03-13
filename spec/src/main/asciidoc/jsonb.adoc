@@ -290,7 +290,7 @@ JSON object values are deserialized into an implementation of `java.util.Map<Str
 
 Any class instance passed to a deserialization operation must have a public or protected no-argument constructor. Implementations SHOULD throw an error if this condition is not met. This limitation does not apply to serialization operations, as well as to classes which specify explicit instantiation methods as described in section 4.5.
 
-Any record instance passed to a deserialization operation must have only default generated constructor. Implementations SHOULD throw an error if this condition is not met. This limitation does not apply to serialization operations, as well as to records which specify explicit instantiation methods as described in section 4.5.
+Any record instance passed to a deserialization operation must have its default generated constructor (and optionally a compact constructor that does not reassign any record component values) as its only constructor. Implementations SHOULD throw an error if this condition is not met. This limitation does not apply to serialization operations, as well as to records which specify explicit instantiation methods as described in section 4.5.
 
 ==== Scope and Field access strategy
 

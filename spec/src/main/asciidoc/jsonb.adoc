@@ -492,7 +492,7 @@ For bounded parameter type, let’s use bounds `B~1~,…,B~m~`.
 
 If `m = 1`, then the most specific parameter type MUST be derived from the given bound.
 
-If is class, record or interface, the most specific parameter type MUST be the class, record or interface.
+If it is a class, record or interface, the most specific parameter type MUST be the class, record or interface.
 
 Otherwise, the most specific parameter type SHOULD be `java.lang.Object`.
 

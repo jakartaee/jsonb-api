@@ -92,6 +92,26 @@ String result = jsonb.toJson(dog);
 dog = jsonb.fromJson("{\"name\":\"Falco\",\"age\":4,\"bites\":false}", Dog.class);
 ----
 
+==== Mapping a record object
+
+The sample below demonstrates serialization and deserialization of a simple record.
+
+[source,java]
+----
+public record Dog(String name, int age, boolean bites) {
+}
+
+// Create a dog instance
+Dog dog = new Dog("Falco", 4, false);
+
+// Create Jsonb and serialize
+Jsonb jsonb = JsonbBuilder.create();
+String result = jsonb.toJson(dog);
+
+// Deserialize back
+dog = jsonb.fromJson("{\"name\":\"Falco\",\"age\":4,\"bites\":false}", Dog.class);
+----
+
 ==== Mapping a collection
 
 JSON-B supports raw collections serialization.
@@ -169,7 +189,7 @@ By default, JSON property name is the same as Java property name. A common use c
 
 @JsonbProperty is used to change name of one particular property. It can be placed
 
- - on field, in this case it will affect serialization and deserialization
+ - on field or record component, in this case it will affect serialization and deserialization
  - on getter, in this case it will affect serialization only
  - on setter, in this case it will affect deserialization only
 
@@ -235,6 +255,38 @@ public class Person {
     }
 
     // other public getters/setters ...
+}
+----
+
+Java Record component property name will be serialized as 'person-name'.
+
+[source,java]
+----
+public record Person(@JsonbProperty("person-name") String name, String profession) {
+}
+----
+
+The resulting JSON document will look like this:
+
+[source,json]
+----
+{
+    "person-name": "Jason Bourne",
+    "profession": "Super Agent"
+}
+----
+
+The same JSON document will be produced if @JsonbProperty annotation is placed on accessor like this:
+
+[source,java]
+----
+public record Person(String name, String profession) {
+
+    @JsonbProperty("person-name")
+    public String name() {
+        return name;
+    }
+
 }
 ----
 
@@ -316,7 +368,7 @@ Excluding properties can be done with a @JsonbTransient annotation. Class proper
 @JsonbTransient annotation are ignored by JSON Binding engine. The behavior is different depending on
 where @JsonbTransient annotation is placed.
 
-- On field: Property is ignored during serialization and deserialization.
+- On field or record component: Property is ignored during serialization and deserialization.
 - On getter: Property is ignored during serialization only.
 - On setter: Property is ignored during deserialization only.
 
@@ -415,7 +467,10 @@ Jsonb jsonb = JsonbBuilder.create(nillableConfig);
 
 ==== Custom instantiation
 
-By default, public default no-arguments constructor is required for deserialization. In many scenarios this requirement is too strict. JSON-B provides @JsonbCreator annotation which can be used to annotate a custom constructor with parameters or a static factory method used to create a class instance.
+By default, a public default no-arguments constructor is required for deserialization of the class.
+In the case of records, the record's default constructor is required for deserialization of the record. The record can include a compact constructor if the compact constructor does not reassign any of the record components. 
+
+In many scenarios this requirement is too strict. JSON-B provides @JsonbCreator annotation which can be used to annotate a custom constructor with parameters or a static factory method used to create a class instance.
 
 The sample below shows how @JsonbCreator annotation can be used on a custom constructor. @JsonbProperty annotation on the constructor parameter is required for proper parameter substitution. In this case a value of JSON property 'name' will be passed to the constructor.
 
@@ -434,9 +489,23 @@ public class Person {
 }
 ----
 
+Example of record with creator:
+
+[source,java]
+----
+public record Person(String name, String profession) {
+
+    @JsonbCreator
+    public Person(@JsonbProperty("name") String name) {
+        this(name, "someValue");
+    }
+
+}
+----
+
 ==== Date/Number Formats
 
-By default JSON-B uses ISO formats to serialize and deserialize date and number fields. Sometimes it's required to override these settings. It can be done using @JsonbDateFormat and @JsonbNumberFormat annotations on fields:
+By default, JSON-B uses ISO formats to serialize and deserialize date and number fields. Sometimes it's required to override these settings. It can be done using @JsonbDateFormat and @JsonbNumberFormat annotations on fields or record components:
 
 [source,java]
 ----
@@ -450,6 +519,15 @@ public class Person {
     private BigDecimal salary;
 
     // public getters/setters ...
+}
+----
+
+on the record:
+[source,java]
+----
+public record Person(String name,
+                     @JsonbDateFormat("dd.MM.yyyy") LocalDate birthDate,
+                     @JsonbNumberFormat("#0.00") BigDecimal salary) {
 }
 ----
 
@@ -493,7 +571,7 @@ Jsonb jsonb = JsonbBuilder.create(config);
 
 ==== Adapters
 
-In some cases it may be difficult to serialize/deserialize a class the desired way. Sometimes it's not possible to put custom annotations on the source code because you don't have access to it or custom annotations don't solve the problem. In this case adapters is another option to try.
+In some cases it may be difficult to serialize/deserialize a class/record the desired way. Sometimes it's not possible to put custom annotations on the source code because you don't have access to it or custom annotations don't solve the problem. In this case adapters is another option to try.
 
 Adapter is a class implementing jakarta.json.bind.adapter.JsonbAdapter interface. It has a custom code to convert the “unmappable” type (Original) into another one (Adapted) that is serialized/deserialized the desired way. It's similar to how type adapters in JAXB work.
 

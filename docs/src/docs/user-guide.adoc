@@ -459,8 +459,8 @@ Jsonb jsonb = JsonbBuilder.create(nillableConfig);
 
 ==== Custom instantiation
 
-By default, public default no-arguments constructor is required for deserialization of the classes.
-In the case of records, it is required to have only default constructor, which was generated for the record.
+By default, a public default no-arguments constructor is required for deserialization of the class.
+In the case of records, the record's default constructor is required for deserialization of the record. The record can include a compact constructor if the compact constructor does not reassign any of the record components. 
 
 In many scenarios this requirement is too strict. JSON-B provides @JsonbCreator annotation which can be used to annotate a custom constructor with parameters or a static factory method used to create a class instance.
 

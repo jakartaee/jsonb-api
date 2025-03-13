@@ -567,7 +567,7 @@ JSON Binding implementations MUST NOT process fields, record components, JavaBea
 * Class field or record component is annotated with `@JsonbTransient`
 ** Exception must be thrown when this field, record component, getter or setter is annotated with other JSON Binding annotations.
 * Getter is annotated with `@JsonbTransient`
-** Exception is thrown if when the field, record component or this getter are annotated with other JSON Binding annotations. Exception is not thrown if JSON Binding annotations are presented on the setter.
+** An exception is thrown if the field, record component or this getter are annotated with other JSON Binding annotations. An exception is not thrown if JSON Binding annotations are present on the setter.
 * Setter is annotated with `@JsonbTransient`
 ** Exception is thrown if when the field or this setter are annotated with other JSON Binding annotations. Exception is not thrown if JSON Binding annotations are presented on the getter.
 

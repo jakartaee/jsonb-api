@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2023 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -32,6 +32,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * @test
  * @sources BinaryDataCustomizationTest.java
@@ -60,7 +62,7 @@ public class BinaryDataCustomizationTest {
         BinaryDataContainer container = jsonb.fromJson("{ \"data\" : [ 84, 101, 115, 116, 32, 83, 116, 114, 105, 110, 103 ] }",
                                                        BinaryDataContainer.class);
         assertThat("Failed to correctly unmarshal binary data using BYTE binary data encoding.",
-                   new String(container.getData()), is("Test String"));
+                   new String(container.getData(), StandardCharsets.UTF_8), is("Test String")); //Data was encoded using UTF-8
     }
 
     /*
@@ -81,7 +83,7 @@ public class BinaryDataCustomizationTest {
 
         BinaryDataContainer unmarshalledObject = jsonb.fromJson("{ \"data\" : \"VGVzdCBTdHJpbmc\" }", BinaryDataContainer.class);
         assertThat("Failed to correctly unmarshal binary data using BASE_64 binary data encoding.",
-                   new String(unmarshalledObject.getData()), is("Test String"));
+                   new String(unmarshalledObject.getData(), StandardCharsets.UTF_8), is("Test String")); //Data was encoded using UTF-8
     }
 
     /*
@@ -102,6 +104,6 @@ public class BinaryDataCustomizationTest {
 
         BinaryDataContainer unmarshalledObject = jsonb.fromJson("{ \"data\" : \"VGVzdCBTdHJpbmc=\" }", BinaryDataContainer.class);
         assertThat("Failed to correctly unmarshal binary data using BASE_64_URL binary data encoding.",
-                   new String(unmarshalledObject.getData()), is("Test String"));
+                   new String(unmarshalledObject.getData(), StandardCharsets.UTF_8), is("Test String")); //Data was encoded using UTF-8
     }
 }

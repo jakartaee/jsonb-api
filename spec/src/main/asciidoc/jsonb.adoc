@@ -477,30 +477,30 @@ JSON Binding implementations MUST use the most specific type derived from the in
 
 Let’s consider situation when there is only a static type information of a given field/class/interface known, and there is no runtime type information available.
 
-Let `GenericClass<T~1~…T~n~>` be part of generic type declaration, where `GenericClass` is name of the generic type and `T~1~…T~n~` are type parameters. For every , where `i` in `1…n`, there are 3 possible options:
+Let `GenericClass<T~1~…T~n~>` be part of generic type declaration, where `GenericClass` is name of the generic type and `T~1~…T~n~` are type parameters. For every `T~i~`, where `i` in `1…n`, there are 3 possible options:
 
 [arabic]
-. is concrete parameter type
-. is bounded parameter type
-. is wildcard parameter type without bounds
+. `T~i~` is concrete parameter type
+. `T~i~` is bounded parameter type
+. `T~i~` is wildcard parameter type without bounds
 
-In case 1, the most specific parameter type MUST be given concrete parameter type.
+In case 1, the most specific parameter type MUST be given concrete parameter type `T~i~`.
 
 For bounded parameter type, let’s use bounds `B~1~,…,B~m~`.
 
-If `m = 1`, then the most specific parameter type MUST be derived from the given bound.
+If `m = 1`, then the most specific parameter type MUST be derived from the given bound `B~1~`.
 
-If is class or interface, the most specific parameter type MUST be the class or interface.
+If `B~1~` is class or interface, the most specific parameter type MUST be the class or interface.
 
 Otherwise, the most specific parameter type SHOULD be `java.lang.Object`.
 
 If multiple bounds are specified, the first step is to resolve every bound separately. Let’s define result of such resolution as `S~1~,…,S~m~` specific parameter types.
 
-If `S~1~,…,S~m~` are `java.lang.Object`, then the bounded parameter type MUST be `java.lang.Object`.
+If `S~1~,…,S~m~` are `java.lang.Object`, then the bounded parameter type `T~i~` MUST be `java.lang.Object`.
 
-If there is exactly one , where `1<=k<=m` is different than `java.lang.Object`, then the most specific parameter type for this bounded parameter type MUST be .
+If there is exactly one `S~k~`, where `1<=k<=m` is different than `java.lang.Object`, then the most specific parameter type for this bounded parameter type `T~i~` MUST be `S~k~`.
 
-If there exists `S~k1~,S~k2~`, where `1<=k1<=k2<=m`, then the most specific parameter type is .
+If there exists `S~k1~,S~k2~`, where `1<=k1<=k2<=m`, then the most specific parameter type is `S~k1~`.
 
 For wildcard parameter type without bounds, the most specific parameter type MUST be `java.lang.Object`.
 

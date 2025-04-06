@@ -177,6 +177,7 @@ Implementations MUST support binding of the following standard Java SE classes:
 * java.util.OptionalInt
 * java.util.OptionalLong
 * java.util.OptionalDouble
+* java.util.UUID
 
 ==== java.math.BigInteger, BigDecimal
 
@@ -197,6 +198,10 @@ Deserializing into `Optional`, `OptionalInt`, `OptionalLong`, `OptionalDouble` r
 Instances of type `java.util.Optional<T>` are serialized to a JSON value as JSON objects when T alone would be serialized as JSON object. When T would be serialized as a JSON value (e.g. `java.lang.String`, `java.lang.Integer`), an instance of `java.util.Optional<T>` is serialized as a JSON value (without curly brackets).
 
 Deserialization of a JSON value into `java.util.Optional<T>` MUST be supported if deserialization of a JSON value into instance of T is supported.
+
+==== java.util.UUID
+
+Serialization of type `java.util.UUID` to a JSON String MUST follow the conversion process defined in the javadoc specification for the `toString()` method. Deserialization of a JSON value into a `java.util.UUID` instance MUST follow the conversion process defined in the javadoc specification for the static `fromString(String)` method.
 
 === Dates
 

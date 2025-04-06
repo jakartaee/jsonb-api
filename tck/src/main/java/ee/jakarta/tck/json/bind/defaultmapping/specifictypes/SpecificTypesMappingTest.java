@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2025 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -29,6 +29,7 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
+import java.util.UUID;
 
 import ee.jakarta.tck.json.bind.MappingTester;
 import ee.jakarta.tck.json.bind.SimpleMappingTester;
@@ -44,6 +45,7 @@ import ee.jakarta.tck.json.bind.defaultmapping.specifictypes.model.OptionalTypeC
 import ee.jakarta.tck.json.bind.defaultmapping.specifictypes.model.SimpleContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.specifictypes.model.URIContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.specifictypes.model.URLContainer;
+import ee.jakarta.tck.json.bind.defaultmapping.specifictypes.model.UUIDContainer;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -296,5 +298,21 @@ public class SpecificTypesMappingTest {
                 "\\{\\s*}",
                 "{ \"instance\" : null }",
                 optionalContainer);
+    }
+
+    /*
+     * @testName: testUUIDMapping
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.4-1; JSONB:SPEC:JSB-3.4.4-1;
+     * JSONB:SPEC:JSB-3.4.4-2
+     *
+     * @test_Strategy: Assert that marshalling and unmarshalling of java.util.UUID
+     * type are performed according to the toString method and applicable UUID#fromString(String) methods
+     */
+    @Test
+    public void testUUIDMapping() {
+        new MappingTester<>(UUIDContainer.class).test(
+                UUID.fromString("e3a3a246-7314-4964-a4dc-807550d83e14"),
+                "\"e3a3a246-7314-4964-a4dc-807550d83e14\"");
     }
 }

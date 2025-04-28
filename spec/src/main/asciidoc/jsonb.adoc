@@ -630,7 +630,7 @@ The way to set custom property order strategy is to use `jakarta.json.bind.Jsonb
 
 To customize the order of serialized properties only for one specific type, JSON Binding provides `jakarta.json.bind.annotation.JsonbPropertyOrder` annotation. Order specified by `JsonbPropertyOrder` annotation overrides order specified by `PropertyOrderStrategy`.
 
-The order is applied to already renamed properties as stated in 4.1.
+A `PropertyOrderStrategy` determines the order based on the already renamed properties that have been customized according to the rules outlined under section 4.1.
 
 === Customizing Null Handling
 

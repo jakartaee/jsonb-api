@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (c) 2016, 2024 Oracle and/or its affiliates. All rights reserved.
+    Copyright (c) 2016, 2026 Oracle and/or its affiliates. All rights reserved.
 
     This program and the accompanying materials are made available under the
     terms of the Eclipse Public License v. 2.0, which is available at
@@ -21,66 +21,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.eclipse.ee4j</groupId>
-        <artifactId>project</artifactId>
-        <version>1.0.9</version>
+        <groupId>jakarta.json.bind</groupId>
+        <artifactId>jakarta.json.bind-parent</artifactId>
+        <version>3.1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>jakarta.json.bind</groupId>
     <artifactId>jakarta.json.bind-api</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>JSON-B API</name>
-    <description>Jakarta JSON Binding is a standard binding layer for converting Java objects to/from JSON documents.</description>
-    <inceptionYear>2016</inceptionYear>
-    <url>https://jakartaee.github.io/jsonb-api</url>
-
-    <issueManagement>
-        <system>github</system>
-        <url>https://github.com/jakartaee/jsonb-api/issues</url>
-    </issueManagement>
-
-    <mailingLists>
-        <mailingList>
-            <name>Mailing list</name>
-            <archive>jsonb-dev@eclipse.org</archive>
-        </mailingList>
-    </mailingLists>
-
-    <licenses>
-        <license>
-            <name>Eclipse Public License 2.0</name>
-            <url>https://projects.eclipse.org/license/epl-2.0</url>
-            <distribution>repo</distribution>
-        </license>
-        <license>
-            <name>GNU General Public License, version 2 with the GNU Classpath Exception</name>
-            <url>https://projects.eclipse.org/license/secondary-gpl-2.0-cp</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <scm>
-        <connection>scm:git:git://github.com/jakartaee/jsonb-api.git</connection>
-        <developerConnection>scm:git:git@github.com:jakartaee/jsonb-api.git</developerConnection>
-        <url>https://github.com/jakartaee/jsonb-api</url>
-        <tag>HEAD</tag>
-    </scm>
-
-    <developers>
-        <developer>
-          	<id>m0mus</id>
-            <name>Dmitry Kornilov</name>
-            <email>dmitry.kornilov@oracle.com</email>
-            <url>https://dmitrykornilov.net</url>
-            <organization>Oracle</organization>
-            <roles>
-                <role>Project Lead</role>
-            </roles>
-            <timezone>CET</timezone>
-        </developer>
-    </developers>
+    <name>Jakarta JSON Binding API</name>
 
     <properties>
         <release.spec.feedback>jsonb-dev@eclipse.org</release.spec.feedback>

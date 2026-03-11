@@ -24,12 +24,6 @@
 
     <name>Jakarta JSON Binding Documentation</name>
 
-    <properties>
-        <asciidoctor.maven.plugin.version>3.0.0</asciidoctor.maven.plugin.version>
-        <asciidoctorj.version>2.5.11</asciidoctorj.version>
-        <asciidoctorj.pdf.version>2.3.13</asciidoctorj.pdf.version>
-    </properties>
-
     <build>
         <defaultGoal>process-resources</defaultGoal>
         <plugins>

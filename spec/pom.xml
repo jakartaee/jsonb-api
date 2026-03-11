@@ -33,10 +33,7 @@
     <properties>
         <site.output.dir>${project.build.directory}/staging</site.output.dir>
         <maven.site.skip>true</maven.site.skip>
-        <asciidoctor.maven.plugin.version>1.6.0</asciidoctor.maven.plugin.version>
-        <asciidoctorj.version>1.6.2</asciidoctorj.version>
-        <asciidoctorj.pdf.version>1.5.0-rc.1</asciidoctorj.pdf.version>
-        <jruby.version>9.2.9.0</jruby.version>
+
         <!-- status: DRAFT, BETA, etc., or blank for final -->
         <status>DRAFT</status>
         <maven.build.timestamp.format>MMMM dd, yyyy</maven.build.timestamp.format>
@@ -62,7 +59,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>1.4.1</version>
+                <version>3.6.2</version>
                 <executions>
                     <execution>
                         <id>enforce-versions</id>
@@ -72,8 +69,8 @@
                         <configuration>
                             <rules>
                                 <requireJavaVersion>
-                                    <version>[1.8.0,)</version>
-                                    <message>You need JDK8 or later</message>
+                                    <version>[17,)</version>
+                                    <message>You need JDK17 or newer</message>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>

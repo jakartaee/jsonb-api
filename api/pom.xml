@@ -259,7 +259,7 @@
                         </sourceFileExcludes>
                         <docfilessubdirs>true</docfilessubdirs>
                         <links>
-                            <link>http://docs.oracle.com/en/java/javase/11/docs/api/</link>
+                            <link>http://docs.oracle.com/en/java/javase/17/docs/api/</link>
                         </links>
                         <detectJavaApiLink>false</detectJavaApiLink>
                         <detectOfflineLinks>false</detectOfflineLinks>

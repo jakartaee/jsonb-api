@@ -50,7 +50,7 @@
         <dependency>
             <groupId>jakarta.json.bind</groupId>
             <artifactId>jakarta.json.bind-api</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -128,6 +128,8 @@
                     <doclint>none</doclint>
                 </configuration>
             </plugin>
+        <!-- This plugin marks all files as needing a copyright header update in the CI builds. Even though no files are actually updated.
+             This plugin is no longer actively maintained and should be removed/replaced
             <plugin>
                 <groupId>org.glassfish.copyright</groupId>
                 <artifactId>glassfish-copyright-maven-plugin</artifactId>
@@ -138,9 +140,7 @@
                     <debug>false</debug>
                     <scmOnly>true</scmOnly>
                     <warn>false</warn>
-                    <!-- for use with repair -->
                     <update>false</update>
-                    <!-- check that year is correct -->
                     <ignoreYear>false</ignoreYear>
                     <templateFile>${basedir}/../etc/config/epl-copyright.txt</templateFile>
                     <bsdTemplateFile>${basedir}/../etc/config/edl-copyright.txt</bsdTemplateFile>
@@ -155,6 +155,7 @@
                     </execution>
                 </executions>
             </plugin>
+        -->
              <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>

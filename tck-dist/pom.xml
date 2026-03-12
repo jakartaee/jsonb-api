@@ -32,13 +32,11 @@
 
     <name>Jakarta JSON Binding TCK Distribution</name>
 
+    <properties>
+        <jakarta.jsonb.tck.version>3.1.0</jakarta.jsonb.tck.version>
+    </properties>
+
     <dependencies>
-        <dependency>
-            <groupId>jakarta.json.bind</groupId>
-            <artifactId>jakarta.json.bind-tck-ug</artifactId>
-            <version>${project.version}</version>
-            <type>zip</type>
-        </dependency>
         <dependency>
             <groupId>jakarta.json.bind</groupId>
             <artifactId>jakarta.json.bind-tck</artifactId>
@@ -136,7 +134,7 @@
                         <configuration>
                             <backend>html5</backend>
                             <outputFile>
-                                ${project.build.directory}/generated-docs/jsonb-tck-reference-guide-${jakarta.data.tck.version}.html</outputFile>
+                                ${project.build.directory}/generated-docs/jsonb-tck-reference-guide-${jakarta.jsonb.tck.version}.html</outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -148,14 +146,12 @@
                         <configuration>
                             <backend>pdf</backend>
                             <outputFile>
-                                ${project.build.directory}/generated-docs/jsonb-tck-reference-guide-${jakarta.data.tck.version}.pdf</outputFile>
+                                ${project.build.directory}/generated-docs/jsonb-tck-reference-guide-${jakarta.jsonb.tck.version}.pdf</outputFile>
                         </configuration>
                     </execution>
                 </executions>
                 <configuration>
-                    <toc>left</toc>
                     <sourceDocumentName>jsonb-tck-reference-guide.adoc</sourceDocumentName>
-                    <sourceHighlighter>coderay</sourceHighlighter>
                     <skip>${maven.adoc.skip}</skip>
                 </configuration>
             </plugin>

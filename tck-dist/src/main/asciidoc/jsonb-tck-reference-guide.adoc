@@ -1,5 +1,5 @@
 = Jakarta JSON Binding TCK Reference Guide
-:author: Kyle Aure
+:author: JSONB Development Team
 :email: jsonb-dev@eclipse.org
 :revnumber: 1.0
 :toc:

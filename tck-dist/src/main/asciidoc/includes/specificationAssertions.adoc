@@ -1,0 +1,2017 @@
+.Summary
+[cols="5*", options="header"]
+|===
+| Type | Total | Active | Deprecated | Removed
+| # of Assertions | 171 | 170 | 0 | 1
+| # of Required Assertions | 164 | 163 | 0 | 1
+| # of Optional Assertions | 7 | 7 | 0 | 0
+|===
+
+.Detail
+[%collapsible]
+==============
+
+[cols="10*", options="header"]
+|========================================================================================================================
+| ID | Chapter | Section | Description | Required | Dependency | Implementation Specific | Defined by | Status | Testable
+
+| JSONB:SPEC:JSB-3.1-1
+| 3
+| 3.1
+| JSON Binding implementations MUST support binding of JSON documents as defined in RFC 7159 JSON Grammar. Serialized JSON output MUST conform to the RFC 7159 JSON Grammar and be encoded in UTF-8 encoding as defined in Section 8.1 (Character Encoding) of RFC 7159
+| true
+| 
+| false
+| technology
+| active
+| false
+
+| JSONB:SPEC:JSB-3.1-2
+| 3
+| 3.1
+| Implementations MUST support deserialization of documents conforming to RFC 7159 JSON Grammar
+| true
+| 
+| false
+| technology
+| active
+| false
+
+| JSONB:SPEC:JSB-3.1-3
+| 3
+| 3.1
+| In addition, implementations SHOULD NOT allow deserialization of RFC 7159 non-conforming text (e.g. unsupported encoding, ...) and report error in such case
+| false
+| 
+| false
+| technology
+| active
+| false
+
+| JSONB:SPEC:JSB-3.1-4
+| 3
+| 3.1
+| Detection of UTF encoding of deserialized document is done as defined in the Section 3 (Encoding) of RFC 4627
+| true
+| 
+| false
+| technology
+| active
+| false
+
+| JSONB:SPEC:JSB-3.1-5
+| 3
+| 3.1
+| Implementations SHOULD ignore presence of UTF byte order mark (BOM) and not treat it as an error.
+| false
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.2-1
+| 3
+| 3.2
+| Implementations SHOULD NOT allow unmarshalling of RFC 7159 non-conforming text (e.g. unsupported encoding) and report error in such case.
+| false
+| 
+| false
+| technology
+| active
+| false
+
+| JSONB:SPEC:JSB-3.2-2
+| 3
+| 3.2
+| Implementation SHOULD also report error also during unmarshalling operation, if it is not possible to represent JSON document value in the expected Java type
+| false
+| 
+| false
+| technology
+| active
+| false
+
+| JSONB:SPEC:JSB-3.3-1
+| 3
+| 3.3
+a|
+Implementation MUST report binding of the following basic java classes and their corresponding primitive types
+
+* java.lang.String
+* java.lang.Character
+* java.lang.Byte
+* java.lang.Short
+* java.lang.Integer
+* java.lang.Long
+* java.lang.Float
+* java.lang.Double
+* java.lang.Boolean
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.3.1-1
+| 3
+| 3.3.1
+| Instances of type java.lang.String and java.lang.Character are marshalled to JSON String values as defined within RFC 7159 Section 7 (Strings) in UTF-8 encoding without byte order mark.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.3.1-2
+| 3
+| 3.3.1
+| Implementations SHOULD support deserialization of JSON text in other (than UTF-8) UTF encodings into java.lang.String instances
+| false
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.3.2-1
+| 3
+| 3.3.2
+| Serialization of type java.lang.Byte, Short, Integer, Long, Float, Double and their corresponding primitive types to JSON Number MUST follow the conversion process defined in javadoc specification for the corresponding toString method
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.3.2-2
+| 3
+| 3.3.2
+| Deserialization of a JSON value into java.lang.Byte, Short, Integer, Long, Float, Double instance or corresponding primitive type MUST follow the conversion process as defined in the specification for their corresponding parse$Type method, such as java.lang.Byte.parseByte for Byte.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.3.3-1
+| 3
+| 3.3.3
+| Serialization of type java.lang.Boolean and its corresponding boolean primitive type to JSON value MUST follow conversion process defined in specification for java.lang.Boolean.toString method
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.3.3-2
+| 3
+| 3.3.3
+| Deserialization of a JSON value into java.lang.Boolean instance or boolean primitive type MUST follow the conversion process as defined in specification for java.lang.Boolean.parseBoolean method.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.3.4-1
+| 3
+| 3.3.4
+| Serialization of type java.lang.Number (if their more concrete type is not defined elsewhere in this chapter) to JSON string MUST retrieve double value returned from java.lang.Number.doubleValue() method and converting the value to JSON Number as defined in subsection 3.3.2
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.3.4-2
+| 3
+| 3.3.4
+| Deserialization of a JSON value into Java type java.lang.Number should return instance of java.math.BigDecimal by using conversion as defined in the specification for constructor of java.math.BigDecimal with java.lang.String.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.4-1
+| 3
+| 3.4
+a|
+Implementations MUST support binding of the following standard Java SE classes:
+
+* java.math.BigInteger
+* java.math.BigDecimal
+* java.net.URL
+* java.net.URI
+* java.util.Optional
+* java.util.OptionalInt
+* java.util.OptionalLong
+* java.util.OptionalDouble
+* java.util.UUID
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.4.1-1
+| 3
+| 3.4.1
+| Serialization of type java.math.BigInteger, BigDecimal to s JSON Number MUST follow the conversion process defined in specification for their toString method
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.4.1-2
+| 3
+| 3.4.1
+| Deserialization of JSON value into java.math.BigInteger, BigDecimal instance MUST follow the conversion process as defined in the specification for constructor of java.math.BigInteger, BigDecimal with java.lang.String.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.4.2-1
+| 3
+| 3.4.2
+| Serialization of type java.net.URL, URI to a JSON String value MUST follow the conversion process defined in specification for their toString method
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.4.2-2
+| 3
+| 3.4.2
+| Deserialization of a JSON value into java.net.URL, URI instance MUST follow the conversion process as defined in the specification for constructor of java.net.URL, URI with java.lang.String input.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.4.3-1
+| 3
+| 3.4.3
+| Non-empty instances of type java.util.Optional, OptionalInt, OptionalLong, OptionalDouble are serialized to a JSON value by retrieving their contained instance and converting it to JSON value based on its type and corresponding mapping definitions within this chapter.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.4.3-2
+| 3
+| 3.4.3
+| Class fields containing empty optional instances are treated as having a null value and serialized based on 3.14.1.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.4.3-3
+| 3
+| 3.4.3
+| Empty optional instances in array items are serialized as null.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.4.3-4
+| 3
+| 3.4.3
+| Deserializing into Optional, OptionalInt, OptionalLong, OptionalDouble return empty optional value for properties containing a null value.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.4.3-5
+| 3
+| 3.4.3
+| Otherwise any non-empty Optional, OptionalInt, OptionalLong, OptionalDouble value is constructed of type unmarshalled based on mappings defined in this chapter.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.4.3-6
+| 3
+| 3.4.3
+| Instances of type java.util.Optional T are serialized to a JSON value as JSON objects when T alone would be serialized as JSON object. When T would be serialized as a JSON value (e.g. java.lang.String, java.lang.Integer), an instance of java.util.Optional T is serialized as a JSON value (without curly brackets).
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.4.3-7
+| 3
+| 3.4.3
+| Deserialization of a JSON value into java.util.Optional(T) MUST be supported if deserialization of a JSON value into instance of T is supported.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.4.4-1
+| 3
+| 3.4.4
+| Serialization of type java.util.UUID, UUID to a JSON String value MUST follow the conversion process defined in specification for their toString method
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.4.4-2
+| 3
+| 3.4.4
+| Deserialization of a JSON value into java.util.UUID, UUID instance MUST follow the conversion process as defined in the specification for the static method java.util.UUID#fromString with java.lang.String input.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5-1
+| 3
+| 3.5
+a|
+Implementations MUST support binding of the following standard Java date/time classes:
+
+* java.util.Date
+* java.util.Calendar
+* java.util.GregorianCalendar
+* java.util.TimeZone
+* java.util.SimpleTimeZone
+* java.time.Instant
+* java.time.Duration
+* java.time.Period
+* java.time.LocalDate
+* java.time.LocalTime
+* java.time.LocalDateTime
+* java.time.ZonedDateTime
+* java.time.ZoneId
+* java.time.ZoneOffset
+* java.time.OffsetDateTime
+* java.time.OffsetTime
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5-2
+| 3
+| 3.5
+| If not specified otherwise in this section, GMT standard time zone and offset specified from UTC Greenwich is used.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5-3
+| 3
+| 3.5
+| If not specified otherwise, date time format for marshalling and unmarshalling is ISO 8601 without offset, as specified in java.time.format.DateTimeFormatter.ISO_DATE.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5-4
+| 3
+| 3.5
+| Implementations MUST report error if the date/time string in JSON document does not correspond to the expected datetime format.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5-5
+| 3
+| 3.5
+| If in strict I-JSON compliance mode, default date format is changed as it's described in 4.4.1.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.1-1
+| 3
+| 3.5.1
+| The serialization format of java.util.Date, Calendar, GregorianCalendar instances with no time information is ISO_DATE.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.1-2
+| 3
+| 3.5.1
+| If time information is present, the format is ISO_DATE_TIME
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.1-3
+| 3
+| 3.5.1
+| Implementations MUST support deserialization of both ISO_DATE and ISO_DATE_TIME into java.util.Date, Calendar and GregorianCalendar instances.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.2-1
+| 3
+| 3.5.2
+| Implementations MUST support deserialization of any time zone format specified in java.util.TimeZone into a field or property of type java.util.TimeZone and SimpleTimeZone.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.2-2
+| 3
+| 3.5.2
+| Implementations MUST report an error for deprecated three-letter time zone IDs as specified in java.util.Timezone.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.2-3
+| 3
+| 3.5.2
+| The serialization format of java.util.TimeZone and SimpleTimeZone is NormalizedCustomID as specified in java.util.TimeZone.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.3-1
+| 3
+| 3.5.3
+| The serialization output for a java.time.Instant instance MUST be in a ISO_INSTANT format, as specified in java.time.format.DateTimeFormatter.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.3-2
+| 3
+| 3.5.3
+| Implementations MUST support the deserialization of an ISO_INSTANT formatted JSON string to a java.time.Instant instance.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.3-3
+| 3
+| 3.5.3
+a|
+Analogically, for other java.time.* classes, following mapping table matches Java types and corresponding formats:
+
+* java.time.Instant ISO_INSTANT
+* java.time.LocalDate ISO_LOCAL_DATE
+* java.time.LocalTime ISO_LOCAL_TIME
+* java.time.LocalDateTime ISO_LOCAL_DATE_TIME
+* java.time.ZonedDateTime ISO_ZONED_DATE_TIME
+* java.time.OffsetDateTime ISO_OFFSET_DATE_TIME
+* java.time.OffsetTime ISO_OFFSET_TIME
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.3-4
+| 3
+| 3.5.3
+| Implementations MUST support the deserialization of any time zone ID format specified in java.time.ZoneId into a field or property of type java.time.ZoneId.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.3-5
+| 3
+| 3.5.3
+| The serialization format of java.time.ZoneId is the normalized zone ID as specified in java.time.ZoneId.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.3-6
+| 3
+| 3.5.3
+| Implementations MUST support the deserialization of any time zone ID format specified in java.time.ZoneOffset into a field or property of type java.time.ZoneOffset.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.3-7
+| 3
+| 3.5.3
+| The serialization format of java.time.ZoneOffset is the normalized zone ID as specified in java.time.ZoneOffset.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.3-8
+| 3
+| 3.5.3
+| Implementations MUST support the deserialization of any duration format specified in java.time.Duration into a field or property of type java.time.Duration.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.3-9
+| 3
+| 3.5.3
+| This is super-set of ISO 8601 duration format. The serialization format of java.time.Duration is the ISO 8601 seconds based representation, such as PT8H6M12.345S.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.3-10
+| 3
+| 3.5.3
+| Implementations MUST support the deserialization of any period format specified in java.time.Period into a field or property of type java.time.Period.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.3-11
+| 3
+| 3.5.3
+| This is a super-set of ISO 8601 period format. The serialization format of java.time.Period is ISO 8601 period representation.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.5.3-12
+| 3
+| 3.5.3
+| A zero-length period is represented as zero days 'P0D'.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.6-1
+| 3
+| 3.6
+a|
+For an unspecified output type of a deserialization operation, as well as where output type is specified as Object.class, implementations MUST deserialize a JSON document using Java runtime types specified in table below:
+
+* object java.util.Map<String,Object>
+* array java.util.List<Object>
+* string java.lang.String
+* number java.math.BigDecimal
+* true/false java.lang.Boolean
+* null null
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.6-2
+| 3
+| 3.6
+| JSON object values are deserialized into an implementation of java.util.Map(String, Object) with a predictable iteration order.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.7-1
+| 3
+| 3.7
+| Any instance passed to a deserialization operation must have a public or protected no-argument constructor. Implementations SHOULD throw an error if this condition is not met.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.7-2
+| 3
+| 3.7
+| This limitation does not apply to serialization operations, as well as to classes which specify explicit instantiation methods as described in section 4.5.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.7.1-1
+| 3
+| 3.7.1
+| For a deserialization operation of a Java property, if a matching public setter method exists, the method is called to set the value of the property. If a matching setter method with private, protected, or defaulted to package-only access exists, then this field is ignored. If no matching setter method exists and the field is public, then direct field assignment is used.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.7.1-2
+| 3
+| 3.7.1
+| For a serialization operation, if a matching public getter method exists, the method is called to obtain the value of the property. If a matching getter method with private, protected, or defaulted to package-only access exists, then this field is ignored. If no matching getter method exists and the field is public, then the value is obtained directly from the field.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.7.1-3
+| 3
+| 3.7.1
+| JSON Binding implementations MUST NOT deserialize into transient, final or static fields and MUST ignore name/value pairs corresponding to such fields.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.7.1-4
+| 3
+| 3.7.1
+| Implementations MUST support serialization of final fields.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.7.1-5
+| 3
+| 3.7.1
+| Transient and static fields MUST be ignored during serialization operation.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.7.1-6
+| 3
+| 3.7.1
+| If a JSON document contains a name/value pair not corresponding to field or setter method, then this name/value pair MUST be ignored.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.7.1-7
+| 3
+| 3.7.1
+| Public getter/setter methods without a corresponding field MUST be supported. When only public getter/setter method without corresponding field is present in the class, the getter method is called to obtain the value to serialize, and the setter method is called during deserialization operation.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.7.2-1
+| 3
+| 3.7.2
+| Implementations MUST support the binding of public and protected nested classes.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.7.2-2
+| 3
+| 3.7.2
+| For deserialization operations, both nested and encapsulating classes MUST fulfill the same instantiation requirements as specified in 3.7.1.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.7.3-1
+| 3
+| 3.7.3
+| Implementations MUST support the binding of public and protected static nested classes.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.7.3-2
+| 3
+| 3.7.3
+| For deserialization operations, the nested class MUST fulfill the same instantiation requirements as specified in 3.7.1.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.7.4-1
+| 3
+| 3.7.4
+| Deserialization into anonymous classes is not supported. Serialization of anonymous classes is supported by default object mapping.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.8-1
+| 3
+| 3.8
+| Polymorphic type handling is supported for deserialization and serialization. Polymorphic handling is ensured by annotation JsonbTypeInfo and @JsonbSubtype.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.8-2
+| 3
+| 3.8
+| JsonbTypeInfo defines key name of the property to store type information in it and defines all the supported aliases using @JsonbSubtype annotations.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.8-3
+| 3
+| 3.8
+| @JsonbSubtype ensures proper and safe mapping between class alias and type.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.8-4
+| 3
+| 3.8
+| Implementation must validate mapped types if they are assignable from the annotated type. If not, an exception must be thrown.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.8-5
+| 3
+| 3.8
+| Type information is obtained from @JsonbSubtype annotation as a type alias mapped to the type. If no matching class is found for obtained alias during deserialization, an exception must be thrown.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.8-6
+| 3
+| 3.8
+| New property with type information is added to the serialized object.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.8-7
+| 3
+| 3.8
+| The property key name is taken from the key property of the annotation JsonbTypeInfo.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.8-8
+| 3
+| 3.8
+| This type information property key name has to be unique in the resulting JSON document. If any naming collision with class or any other JsonbTypeInfo properties occurs, an exception must be thrown.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.8-9
+| 3
+| 3.8
+| It is required for all polymorphism fields to be serialized as the first properties in the JSON and any actual object properties are serialized after.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.8-10
+| 3
+| 3.8
+| If no JsonbTypeInfo is used on handled class or its predecessors, it is not possible to ensure proper polymorphic type handling and in such cases deserialization is not supported.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.8-11
+| 3
+| 3.8
+| If there are multiple different type polymorphic customizations that need to be merged, an exception must be thrown.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.8-12
+| 3
+| 3.8
+| The order of the type information properties must be the same in which they appear in the
+polymorphic type chain.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.9-1
+| 3
+| 3.9
+| Serialization of an Enum instance to a JSON String value MUST follow the conversion process defined in javadoc specification for their name().
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.9-2
+| 3
+| 3.9
+| Deserialization of a JSON value into an enum instance MUST be done by calling the enum's valueOf(String) method.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.10-1
+| 3
+| 3.10
+| Implementations MUST support the deserialization of specific interfaces defined in 3.11 and 3.3.4.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.10-2
+| 3
+| 3.10
+| Deserialization to other interfaces is not supported and implementations SHOULD report error in such case.
+| false
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.10-3
+| 3
+| 3.10
+| If a class property is defined with an interface and not concrete type, then the mapping for a serialized property is resolved based on its runtime type.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.11-1
+| 3
+| 3.11
+a|
+Implementations MUST support binding of the following collection interfaces, classes and their implementations.
+
+* java.util.Collection
+* java.util.Map
+* java.util.Set
+* java.util.HashSet
+* java.util.NavigableSet
+* java.util.SortedSet
+* java.util.TreeSet
+* java.util.LinkedHashSet
+* java.util.TreeHashSet
+* java.util.HashMap
+* java.util.NavigableMap
+* java.util.SortedMap
+* java.util.TreeMap
+* java.util.LinkedHashMap
+* java.util.TreeHashMap
+* java.util.List
+* java.util.ArrayList
+* java.util.LinkedList
+* java.util.Deque
+* java.util.ArrayDeque
+* java.util.Queue
+* java.util.PriorityQueue
+* java.util.EnumSet
+* java.util.EnumMap
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.11-2
+| 3
+| 3.11
+| Implementations of interfaces below must provide accessible default constructor. JSON Binding implementations MUST report unmarshalling error if default constructor is not present or is not in accessible scope.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.12-1
+| 3
+| 3.12
+| JSON Binding implementations MUST support binding of Java arrays of all supported Java types from this chapter into/from JSON array structures as defined in Section 5 of RFC 7159
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.12-2
+| 3
+| 3.12
+| Arrays of primitive types and multi-dimensional arrays MUST be supported.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.13-1
+| 3
+| 3.13
+| Declared fields MUST be serialized in lexicographical order into the resulting JSON document. In case of inheritance, declared fields of super class MUST be serialized before declared fields of child class.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.13-2
+| 3
+| 3.13
+| When deserializing a JSON document, declared fields MUST be set in the order of attributes present in the JSON document.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.14.1-1
+| 3
+| 3.14.1
+| The result of serializing a java field with a null value is the absence of the property in the resulting JSON document.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.14.1-2
+| 3
+| 3.14.1
+| The deserialization operation of a property absent in JSON document MUST not set the value of the field, the setter (if available) MUST not be called, and thus original value of the field MUST be preserved.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.14.1-3
+| 3
+| 3.14.1
+| The deserialization operation of a property with a null value in a JSON document MUST set the value of the field to null value (or call setter with null value if setter is present). The exception is java.util.Optional, OptionalInt, OptionalLong, OptionalDouble instances. In this case the value of the field is set to an empty optional value.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.14.2-1
+| 3
+| 3.14.2
+| The result of deserialization n-ary array represented in JSON document is n-ary Java array.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.14.2-2
+| 3
+| 3.14.2
+| Null value in JSON array is represented by null value in Java array.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.14.2-3
+| 3
+| 3.14.2
+| Serialization operation on Java array with null value at index i MUST output null value at index i of the array in resulting JSON document.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.15-1
+| 3
+| 3.15
+| According to RFC 7159 Section 7 , every Java identifier name can be transformed using identity function into a valid JSON String. Identity function MUST be used for transforming Java identifier names into name Strings in JSON document.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.15-2
+| 3
+| 3.15
+| For deserialization operations defined in 3.6 section, identity function is used to transform JSON name strings into Java String instances in the resulting map Map(String, Object).
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.15-3
+| 3
+| 3.15
+| Identity function is used also for other deseralization operations.
+| true
+| 
+| false
+| technology
+| removed
+| true
+
+| JSONB:SPEC:JSB-3.15-4
+| 3
+| 3.15
+| If a Java identifier with corresponding name does not exist or is not accessible, the implementations MUST report error.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.16-1
+| 3
+| 3.16
+| JSON Binding implementation MUST serialize numbers that express greater magnitude or precision than an IEEE 754 double precision number as strings.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17-1
+| 3
+| 3.17
+| JSON Binding implementations MUST support binding of generic types.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17-2
+| 3
+| 3.17
+| Due to type erasure, there are situations when it is not possible to obtain generic type information.  There are two ways for JSON Binding implementations to obtain generic type information. If there is a class file available (in the following text referred as static type information), it is possible to obtain generic type information (effectively generic type declaration) from Signature attribute (if this information is present).
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17-3
+| 3
+| 3.17
+| The second option is to provide generic type information at runtime. To provide generic type information at runtime, an argument of java.lang.reflect.Type MUST be passed to Jsonb::toJson or to Jsonb::fromJson method.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17.1-1
+| 3
+| 3.17.1
+a|
+There are several levels of information JSON Binding implementations may obtain about the type of field/class/interface:
+
+1. runtime type provided via java.lang.reflect.Type parameter passed to Jsonb::toJson or Jsonb::fromJson method
+2. static type provided in class file (effectively stored in Signature attribute)
+3. raw type
+4. no information about the type
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17.1-2
+| 3
+| 3.17.1
+| If there is no information about the type, JSON Binding implementation MUST treat this type as java.lang.Object.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17.1-3
+| 3
+| 3.17.1
+| If only raw type of given field/class/interface is known, then the type MUST be treated like raw type.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17.1-4
+| 3
+| 3.17.1
+| For example, if the only available information is that given field/class/interface is of type java.util.ArrayList, than the type MUST be treated as java.util.ArrayList Object.  JSON Binding implementations MUST use the most specific type derived from the information available.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17.1-5
+| 3
+| 3.17.1
+| Let's consider situation where there is only static type information of a given field/class/interface known,
+and there is no runtime type information available. Let GenericClass T1. . .Tn  be part of generic type
+declaration, where GenericClass is name of the generic type and T1. . .Tn are type parameters. For every
+Ti, where i in 1. . .n, there are 3 possible options:
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17.1-6
+| 3
+| 3.17.1
+a|
+
+1. Ti is concrete parameter type
+  - the most specific parameter type MUST be given concrete parameter type Ti.
+2. Ti is bounded parameter type
+3. Ti is wildcard parameter type without bounds
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17.1-7
+| 3
+| 3.17.1
+| For bounded parameter type, using bounds B1. . .Bm. If m = 1, then the most specific parameter type MUST be derived from the given bound B1.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17.1-8
+| 3
+| 3.17.1
+| If B1 is class or interface, the most specific parameter type MUST be the class or interface.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17.1-9
+| 3
+| 3.17.1
+| Otherwise, the most specific parameter type SHOULD be java.lang.Object.
+| false
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17.1-10
+| 3
+| 3.17.1
+| If multiple bounds are specified, the first step is to resolve every bound separately. Let's define result of such resolution as S1. . . Sm specific parameter types. If S1. . . Sm are java.lang.Object, then the bounded parameter type Ti MUST be java.lang.Object.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17.1-11
+| 3
+| 3.17.1
+| If there is exactly one Sk, where 1 <= k <= m is different than java.lang.Object, then the most specific parameter type for this bounded parameter type Ti MUST be Sk.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17.1-12
+| 3
+| 3.17.1
+| If there exists Sk1; Sk2, where 1 <= k1 <= k2 <= m, then the most specific parameter type is Sk1.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17.1-13
+| 3
+| 3.17.1
+| For wildcard parameter type without bounds, the most specific parameter type MUST be java.lang.Object.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17.1-14
+| 3
+| 3.17.1
+| Any unresolved type parameter MUST be treated as java.lang.Object.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.17.1-15
+| 3
+| 3.17.1
+| If runtime type is provided via java.lang.reflect.Type parameter passed to Jsonb::toJson or Jsonb::fromJson method, than that runtime type overrides static type declaration wherever applicable
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.18-1
+| 3
+| 3.18
+| When JSON Binding implementation encounters key in key/value pair that it does not recognize, it should treat the rest of the JSON document as if the element simply did not appear, and in particular, the implementation MUST NOT treat this as an error condition.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.19-1
+| 3
+| 3.19
+| JSON Binding implementations MUST NOT produce JSON documents with members with duplicate names. In this context, "duplicate" means that the names, after processing any escaped characters, are identical sequences of Unicode characters.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.19-2
+| 3
+| 3.19
+| When non-unique property (after override and rename) is found, implementation MUST throw an exception.  This doesn't apply for customized user serialization behavior implemented with the usage of JsonbAdapter mechanism.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.20-1
+| 3
+| 3.20
+a|
+JSON Binding implementations MUST support binding of the following JSON Processing types.
+
+* jakarta.json.JsonObject
+* jakarta.json.JsonArray
+* jakarta.json.JsonStructure
+* jakarta.json.JsonValue
+* jakarta.json.JsonPointer
+* jakarta.json.JsonString
+* jakarta.json.JsonNumber
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.20-2
+| 3
+| 3.20
+| Serialization of supported jakarta.json.* objects/interfaces/fields MUST have the same result as serialization these objects with jakarta.json.JsonWriter.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.20-3
+| 3
+| 3.20
+| Deserialization into supported jakarta.json.* objects/interfaces/fields MUST have the same result as deserialization into such objects with jakarta.json.JsonReader.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-3.20-4
+| 3
+| 3.20
+| If the null value is deserialized into the JsonValue, it is handled as JsonValue.NULL. JsonValue.NULL is not assigned as a default value if no value is set.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.1.1-1
+| 4
+| 4.1.1
+| JSON Binding implementations MUST NOT serialize fields, JavaBean properties or types annotated with jakarta.json.bind.annotation.JsonbTransient.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.1.1-2
+| 4
+| 4.1.1
+| JsonbTransient annotation is mutually exclusive with all other JSON Binding defined annotations. Implementations must throw JsonbException in the following cases: Class field is annotated with @JsonbTransient. Exception must be thrown when this field, getter or setter is annotated with other JSON Binding annotations.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.1.1-3
+| 4
+| 4.1.1
+| Getter is annotated with @JsonbTransient. Exception is thrown if when the field or this getter are annotated with other JSON Binding annotations. Exception is not thrown if JSON Binding annotations are presented on the setter.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.1.1-4
+| 4
+| 4.1.1
+| Setter is annotated with @JsonbTransient. Exception is thrown if when the field or this setter are annotated with other JSON Binding annotations. Exception is not thrown if JSON Binding annotations are presented on the getter.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.1.2-1
+| 4
+| 4.1.2
+| To provide custom name for given field (or JavaBean property),
+jakarta.json.bind.annotation.JsonbProperty may be used. JsonbProperty annotation may be specified on
+field, getter or setter method. If specified on field, custom name is used both for serialization and
+deserialization.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.1.2-2
+| 4
+| 4.1.2
+| If jakarta.json.bind.annotation.JsonbProperty is specified on getter method, it is used only for serialization.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.1.2-3
+| 4
+| 4.1.2
+| If jakarta.json.bind.annotation.JsonbProperty is specified on setter method, it is used only for deserialization.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.1.2-4
+| 4
+| 4.1.2
+| It is possible to specify different values for getter and setter method for jakarta.json.bind.annotation.JsonbProperty annotation. In such case the different custom name will be used for serialization and deserialization.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.1.3-1
+| 4
+| 4.1.3
+| The way to set custom property naming strategy is to use jakarta.json.bin.JsonbConfig::withPropertyNamingStrategy method.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.1.4-1
+| 4
+| 4.1.4
+| If duplicate name is found exception MUST be thrown. The definition of duplicate (non-unique) property
+can be found in 3.19.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.2
+| 4
+| 4.2
+| The way to set custom property order strategy is to use jakarta.json.bin.JsonbConfig::withPropertyOrderStrategy method.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.2-2
+| 4
+| 4.2
+| To customize the order of serialized properties only for one specific type, JSON Binding provides jakarta.json.bind.annotation.JsonbPropertyOrder annotation. Order specified by JsonbPropertyOrder annotation overrides order specified by PropertyOrderStrategy.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.3-1
+| 4
+| 4.3
+| If annotations (JsonbNillable or JsonbProperty) on different level apply to the same field (or JavaBean property) or if there is config wide configuration and some annotation (JsonbNillable or JsonbProperty) which apply to the same field (or JavaBean property), the annotation with the smallest scope applies.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.3-2
+| 4
+| 4.3
+| JsonbNillable and JsonbProperty are applied on the same level, JsonbNillable takes precedence.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.3.1-1
+| 4
+| 4.3.1
+| When given object (type or package) is annotated with jakarta.json.bind.annotation.JsonbNillable annotation, the result of null value will be presence of associated property in JSON document with explicit null value.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.3.1-2
+| 4
+| 4.3.1
+| The same behavior as JsonbNillable, but only at field, parameter and method (JavaBean property) level is provided by jakarta.json.bind.annotation.JsonbProperty annotation with its nillable parameter. This option is currently deprecated, and it is recommended to use jakarta.json.bind.annotation.JsonbNillable instead.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.3.1-3
+| 4
+| 4.3.1
+| JSON Binding implementations MUST implement override of annotations according to target of the annotation (FIELD, PARAMETER, METHOD, TYPE, PACKAGE). Type level annotation overrides behavior set at the package level. Method, parameter or field level annotation overrides behavior set at the type level.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.3.2-1
+| 4
+| 4.3.2
+| The way to enforce serialization of null values, is to call method jakarta.json.bind.JsonbConfig::withNullValues with parameter true. The way to skip serialization of null values is to call method jakarta.json.bind.JsonbConfig::withNullValues with parameter false.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.4-1
+| 4
+| 4.4
+| To enforce strict compliance of serialized JSON documents, JSON Binding implementations MUST implement configuration option jsonb.i-json.strict-ser-compliance.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.4.1-1
+| 4
+| 4.4.1
+| Uppercase rather than lowercase letters MUST be used.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.4.1-2
+| 4
+| 4.4.1
+| The timezone MUST always be included and optional trailing seconds MUST be included even when their value is 00.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.4.1-3
+| 4
+| 4.4.1
+| JSON Binding implementations MUST serialize java.util.Date, java.util.Calendar, java.util.GregorianCalendar, java.time.LocalDate, java.time.LocalDateTime and java.time.Instant in the same format as java.time.ZonedDateTime.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.4.1-4
+| 4
+| 4.4.1
+| The result of serialization of duration must conform to the duration production in Appendix A of RFC 3339, with the same additional restrictions
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.5-1
+| 4
+| 4.5
+| At most one JsonbCreator annotation can be used to annotate custom constructor or static void factory method in a class, otherwise JsonbException MUST be thrown.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.5-2
+| 4
+| 4.5
+| Factory method annotated with JsonbCreator annotation should return instance of particular class this annotation is used for, otherwise JsonbException MUST be thrown.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.5-3
+| 4
+| 4.5
+| Mapping between parameters of constructor/factory method annotated with JsonbCreator and JSON fields is defined using JsonbProperty annotation on all parameters.
+If the JsonbProperty annotation on parameters is not used, then parameters should be mapped from JSON fields with the same name. In this case the proper mapping is NOT guaranteed.
+All the JsonbCreator parameters are treated as optional by default. See Optional parameter values chapter for default optional parameter values.
+All the JsonbCreator parameters can be turned to required by using configuration method Config::withCreatorParametersRequired.
+If a required field for a parameter mapping does not exist in the JSON document, then JsonbException MUST be thrown.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.5.1-1
+| 4
+| 4.5
+| When a property is marked as optional, the proper default should be used. If the parameter is any type other than Optional or its variations, then the null value is used. If the parameter is java.util.Optional, OptionalInt, OptionalLong, OptionalDouble, then the corresponding empty object must be used.
+Primitive types cannot accept null values, so a corresponding value is required as listed in the following table:.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.6-1
+| 4
+| 4.5
+| To customize scope and field access strategy as specified in section 3.7.1, it is possible to specify jakarta.json.bind.annotation.JsonbVisibility annotation or to override default behavior globally calling JsonbConfig::withPropertyVisibilityStrategy method with given custom property visibility strategy.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.7.1-1
+| 4
+| 4.7.1
+| On serialization of Original type JSONB calls JsonbAdapter::adaptToJson method of the adapter to convert Original to Adapted and serializes Adapted the standard way. On deserialization JSONB deserializes Adapted from JSON and converts it to Original using JsonbAdapter::adaptFromJson method.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.7.1-2
+| 4
+| 4.7.1
+| There are two ways how to register JsonbAdapter: Using JsonbConfig::withAdapters method & Annotating a class field with JsonbTypeAdapter annotation.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.7.1-3
+| 4
+| 4.7.1
+| Implementations must provide a CDI support in adapters to allow injection of CDI managed beans into it.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.7.1-4
+| 4
+| 4.7.1
+| JsonbAdapter registered via JsonbConfig::withAdapters is visible to all serialize/deserialize operations
+performed with given JsonbConfig. JsonbAdapter registered with annotation is visible to serialize/deserialize operation used only for annotated field.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.7.1-5
+| 4
+| 4.7.1
+| It is possible to annotate JsonbCreator parameter with JsonbTypeAdapter and provide adapter for a parameter this way. However, if JsonbTypeAdapter annotation is provided to any other parameter (such as setter method parameter) it will be ignored.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.7.2-1
+| 4
+| 4.7.2
+| Serializer is a class implementing jakarta.json.bind.serializers.JsonbSerializer interface. It is used to serialize the type it's registered on (Original). On marshalling of Original type JSONB calls JsonbSerializer::serialize method. This method has to contain a custom code to serialize Original type using provided JsonpGenerator.Deserializer is a class implementing jakarta.json.bind.serializers.JsonbDeserializer interface. It is used to deserialize the type it's registered on (Original). On deserialization of Original type JSONB calls JsonbDeserializer::deserialize method. This method has to contain a custom code to deserialize Original type using provided JsonpParser. There are two ways how to register JsonbSerializer/JsonbDeserializer:Using JsonbConfig::withSerializers/ JsonbConfig::withDeserializers method;
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.7.2-2
+| 4
+| 4.7.2
+| Annotating a type with JsonbSerializer/JsonbDeserializer annotation.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.7.2-3
+| 4
+| 4.7.2
+| Implementations must provide a CDI support in serializers/deserializers to allow injection of CDI managed beans into it.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.7.2-4
+| 4
+| 4.7.2
+| It is possible to annotate JsonbCreator parameter with JsonbTypeDeserializer and provide deserializer for a parameter this way. However, if JsonbTypeDeserializer annotation is provided to any other parameter (such as setter method parameter) it will be ignored.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.8-1
+| 4
+| 4.8
+| JsonbDateFormat annotation can be applied to the following targets: field, method, type, parameter, package
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.8-2
+| 4
+| 4.8
+| Annotation applied to more specific target overrides the same annotation applied to target with wider scope and global configuration. For example, annotation applied to type target will override the same annotation applied to package target.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.8-3
+| 4
+| 4.8
+| Default date format and default locale can be customized globally using jakarta.json.bind.JsonbConfig::withDateFormat and jakarta.json.bind.JsonbConfig::withLocale methods.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.9-1
+| 4
+| 4.9
+| JsonbNumberFormat annotation can be applied to the following targets: field, getter/setter, method, type, parameter, package
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.9-2
+| 4
+| 4.9
+| Annotation applied to more specific target overrides the same annotation applied to target with wider scope. For example, annotation applied to type target will override the same annotation applied to package target.
+| true
+| 
+| false
+| technology
+| active
+| true
+
+| JSONB:SPEC:JSB-4.10-1
+| 4
+| 4.10
+| The way to set custom binary data handling strategy is to use jakarta.json.bin.JsonbConfig::withBinaryDataStrategy method.
+| true
+| 
+| false
+| technology
+| active
+| true
+|========================================================================================================================
+
+==============

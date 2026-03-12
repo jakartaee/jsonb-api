@@ -62,4 +62,6 @@ include::sections/07execution.adoc[]
 
 include::sections/08debugging.adoc[]
 
-include::sections/09appendix.adoc[]
+include::sections/09assertions.adoc[]
+
+include::sections/appendix.adoc[]

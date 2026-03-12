@@ -1,0 +1,65 @@
+= Jakarta JSON Binding TCK Reference Guide
+:author: Kyle Aure
+:email: jsonb-dev@eclipse.org
+:revnumber: 1.0
+:toc:
+:sectnums:
+
+:TechnologyShortName: JSON Binding
+:TechnologyFullName: Jakarta JSON Binding
+:LegacyAcronym: JSONB
+:techID: JSONB
+
+:ReleaseDate: March 2022
+:CopyrightDates: 2017, 2026
+
+:TechnologyVersion: 3.1
+:SEversion: 17+
+:MavenVersion: 3.6.3+
+:JunitVersion: 5.7.2+
+:JakartaEEVersion: 10
+:TechnologyRI: Eclipse Yasson 3.1
+
+:TechnologyRIURL: https://projects.eclipse.org/projects/ee4j.yasson
+:SpecificationURL: https://jakarta.ee/specifications/jsonb/
+
+:SpecificationInquiryList: mailto:jsonb-dev@eclipse.org[jsonb-dev@eclipse.org]
+:TCKInquiryList: mailto:jsonb-dev@eclipse.org[jsonb-dev@eclipse.org]
+
+:APIEclipseSite: https://projects.eclipse.org/projects/ee4j.jsonb
+:APIGitSite: https://github.com/jakartaee/jsonb-api
+
+:excludeListFileName: TCK-Exclude-List.txt
+:TCKPackageName: jakarta-jsonb-tck-{TechnologyVersion}.zip
+
+:sigTestDirectoryExample: ee.jakarta.tck.json.bind.signaturetest.jsonb
+:singleTestDirectoryExample: ee.jakarta.tck.json.bind.api.annotation
+:subsetTestDirectoryExample: ee.jakarta.tck.json.bind.api
+:singleTestExample: ee.jakarta.tck.json.bind.api.jsonb.JsonbTest
+:sigTestExample: ee.jakarta.tck.json.bind.signaturetest.jsonb.JSONBSigTest
+
+:license: Eclipse Foundation Technology Compatibility Kit License
+:licenseURL: https://www.eclipse.org/legal/tck.php
+
+:TCKProcess: 1.4.1
+:TCKProcessDoc: https://jakarta.ee/committees/specification/tckprocess
+
+:last-update-label!:
+
+include::sections/01title.adoc[]
+
+include::sections/02preface.adoc[]
+
+include::sections/03intro.adoc[]
+
+include::sections/04certification.adoc[]
+
+include::sections/05installation.adoc[]
+
+include::sections/06setup.adoc[]
+
+include::sections/07execution.adoc[]
+
+include::sections/08debugging.adoc[]
+
+include::sections/09appendix.adoc[]

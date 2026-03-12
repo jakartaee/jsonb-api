@@ -336,6 +336,12 @@ If the appeal is rejected, the `challenge-appeal` issue should closed with a lab
 If there is a concern that a TCK process issue has not been resolved satisfactorily, the
 https://www.eclipse.org/projects/dev_process/#6_5_Grievance_Handling[Eclipse Development Process Grievance Handling] procedure should be followed to escalate the resolution. Note that this is not a mechanism to attempt to handle implementation specific issues.
 
+=== Successful Challenges
+
+The following tests are exempt from TCK testing due to challenges:
+
+include::../includes/successfulChallenges.adoc[]
+
 === Specifications for {TechnologyFullName}
 
 The {TechnologyFullName} specification is available from the specification

@@ -1,18 +1,10 @@
-// Installation
-// ============
-
-[[GBFTP]]
-
-
-[[installation]]
-3 Installation
---------------
+== Installation
 
 This chapter explains how to install the {TechnologyFullName} TCK software.
 
 After installing the software according to the instructions in this
-chapter, proceed to link:config.html#GBFVV[Chapter 4, "Setup and
-Configuration,"] for instructions on configuring your test environment.
+chapter, proceed to <<Setup and Configuration>>, 
+for instructions on configuring your test environment.
 
 [NOTE]
 =======================================================================
@@ -25,20 +17,14 @@ be used that is Jupiter API compatible.
 
 =======================================================================
 
-[[GBFUD]][[obtaining-the-reference-implementation]]
-
-3.1 Obtaining a Compatible Implementation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Obtaining a Compatible Implementation
 
 Each compatible implementation (CI) will provide instructions for obtaining
 their implementation.
 {TechnologyRI} is a compatible implementation which may be obtained
 from {TechnologyRIURL}
 
-[[GBFTS]][[installing-the-software]]
-
-3.2 Installing the Software
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Installing the Software
 
 Before you can run the {TechnologyShortName} TCK tests, you must
 install and set up the following software components:
@@ -74,7 +60,7 @@ Implementation. +
 A Compatible Implementation is used to validate your initial
 configuration and setup of the {TechnologyShortName} TCK
 {TechnologyVersion} tests, which are explained further in
-link:config.html#GBFVV[Chapter 4, "Setup and Configuration."] +
+<<Setup and Configuration>>. +
 The Compatible Implementations for {TechnologyShortName} are listed on
 the Jakarta EE Specifications web site: {SpecificationURL}.
 .  Install the {TechnologyShortName} VI to be tested. +

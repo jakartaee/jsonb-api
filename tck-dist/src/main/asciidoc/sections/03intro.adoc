@@ -1,12 +1,4 @@
-// Introduction
-// ============
-
-[[GBFOW]]
-
-
-[[introduction]]
-1 Introduction
---------------
+== Introduction
 
 This chapter provides an overview of the principles that apply
 generally to all Technology Compatibility Kits (TCKs) and describes the
@@ -17,14 +9,11 @@ TCK.
 
 This chapter includes the following topics:
 
-* link:#GBFTK[Compatibility Testing]
-* link:#GBFQR[About the TCK]
-* link:#GBFQW[Getting Started With the TCK]
+* <<Compatibility Testing>>
+* <<About the TCK>>
+* <<Getting Started With the TCK>>
 
-[[GBFTK]][[compatibility-testing]]
-
-1.1 Compatibility Testing
-~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Compatibility Testing
 
 Compatibility testing differs from traditional product testing in a
 number of ways. The focus of compatibility testing is to test those
@@ -40,10 +29,7 @@ specification and compatible implementation (CI) for that feature.
 Compatibility testing is not primarily concerned with robustness,
 performance, nor ease of use.
 
-[[GBFQN]][[why-compatibility-testing-is-important]]
-
-1.1.1 Why Compatibility Testing is Important
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Why Compatibility Testing is Important
 
 Jakarta platform compatibility is important to different groups involved
 with Jakarta technologies for different reasons:
@@ -60,20 +46,14 @@ from disparate sources and deploy them with confidence.
 * Conformance testing benefits Jakarta platform implementors by ensuring a
 level playing field for all Jakarta platform ports.
 
-[[GBFPR]][[tck-compatibility-rules]]
-
-1.1.2 TCK Compatibility Rules
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== TCK Compatibility Rules
 
 Compatibility criteria for all technology implementations are embodied
 in the TCK Compatibility Rules that apply to a specified technology.
 Each TCK tests for adherence to these Rules as described in
-link:rules.html#GBFSN[Chapter 2, "Procedure for Certification."]
+<<Procedure for Certification>>
 
-[[GBFPW]][[tck-overview]]
-
-1.1.3 TCK Overview
-^^^^^^^^^^^^^^^^^^
+==== TCK Overview
 
 A TCK is a set of tools and tests used to verify that a vendor's compatible
 implementation of a Jakarta EE technology conforms to the applicable
@@ -95,10 +75,7 @@ The definition of required tests will change over time. Before your
 final certification test pass, be sure to download the latest version
 of this TCK.
 
-[[GBFPB]][[java-community-process-jcp-program-and-compatibility-testing]]
-
-1.1.4 Jakarta EE Specification Process (JESP) Program and Compatibility Testing
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Jakarta EE Specification Process (JESP) Program and Compatibility Testing
 
 The Jakarta EE Specification Process (JESP) program is the formalization of the
 open process that has been used since 2019 to develop and revise Jakarta EE
@@ -114,20 +91,14 @@ release under the direction of the responsible Expert Group:
 For further information about the JESP program, go to Jakarta EE Specification
 Process community page https://jakarta.ee/specifications.
 
-[[GBFQR]][[about-the-tck]]
-
-1.2 About the TCK
-~~~~~~~~~~~~~~~~~
+=== About the TCK
 
 The {TechnologyShortName} TCK {TechnologyVersion} is designed as a
 portable, configurable, automated test suite for verifying the
 compatibility of a vendor's implementation of the
 {TechnologyShortName} {TechnologyVersion} Specification.
 
-[[GBFQV]][[tck-specifications-and-requirements]]
-
-1.2.1 TCK Specifications and Requirements
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== TCK Specifications and Requirements
 
 This section lists the applicable requirements and specifications.
 
@@ -149,10 +120,7 @@ See the {TechnologyShortName} TCK Release Notes for more specific
 information about Java SE version requirements, supported platforms,
 restrictions, and so on.
 
-[[GBFSQ]][[tck-components]]
-
-1.2.2 TCK Components
-^^^^^^^^^^^^^^^^^^^^
+==== TCK Components
 
 The {TechnologyShortName} TCK {TechnologyVersion} includes the
 following components:
@@ -177,11 +145,7 @@ The {TechnologyShortName} TCK tests run on the following platforms:
 
 * CentOS Linux 7
 
-
-[[GBFRA]][[tck-compatibility-test-suite]]
-
-1.2.3 TCK Compatibility Test Suite
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== TCK Compatibility Test Suite
 
 The test suite is the collection of tests 
 to test a particular technology implementation. In this case, it is the
@@ -195,10 +159,7 @@ specification.
 The tests that make up the TCK compatibility test suite are precompiled
 and indexed within the TCK test directory structure. 
 
-[[GBFSH]][[exclude-lists]]
-
-1.2.4 Exclude Lists
-^^^^^^^^^^^^^^^^^^^
+==== Exclude Lists
 
 Each version of a TCK includes an Exclude List contained in a `TCK-Exclude-List.txt`
 file. 
@@ -249,21 +210,15 @@ based on a particular file system behavior, and so on) may be excluded.
 
 Vendors are not permitted to alter or modify Exclude Lists. Changes to
 an Exclude List can only be made by using the procedure described in
-link:rules.html#CJAJEAEI[Section 2.3.1, "TCK Test Appeals Steps."]
+<<TCK Test Appeals Steps>>.
 
 =======================================================================
 
-
-[[GBFRR]][[tck-configuration]]
-
-1.2.5 TCK Configuration
-^^^^^^^^^^^^^^^^^^^^^^^
+==== TCK Configuration
 
 You need to set several variables in your test environment, 
 and run the {TechnologyShortName} tests, as described in
-link:config.html#GBFVV[Chapter 4, "Setup and Configuration."]
-
-[[GBFQW]][[getting-started-with-the-tck]]
+<<Setup and Configuration>>.
 
 [NOTE]
 ====
@@ -274,8 +229,7 @@ by that implementation for specific instructions and procedures.
 
 ====
 
-1.3 Getting Started With the TCK
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Getting Started With the TCK
 
 This section provides an general overview of what needs to be done to
 install, set up, test, and use the {TechnologyShortName} TCK. These
@@ -293,12 +247,12 @@ on the system:
 * Any Jupiter API compatible test runner
 --
 See the documentation for each of these software applications for
-installation instructions. See link:install.html#GBFTP[Chapter 3,
-"Installation,"] for instructions on installing the {TechnologyShortName} TCK.
+installation instructions. See <<Installation>>, for instructions on 
+installing the {TechnologyShortName} TCK.
 2.  Set up the {TechnologyShortName} TCK software. +
-See link:config.html#GBFVV[Chapter 4, "Setup and Configuration,"] for
+See <<Setup and Configuration>>, for
 details about the following steps.
   a.  Set up your shell environment.
 3.  Test the {TechnologyShortName} {TechnologyVersion} implementation. +
 Test the {TechnologyShortName} implementation installation by running
-the test suite.  See link:using.html#GBFWO[Chapter 5, "Executing Tests."]
+the test suite.  See <<Executing Tests>>.

@@ -1,12 +1,4 @@
-// Debugging Test Problems
-// =======================
-
-[[GBFUV]]
-
-
-[[debugging-test-problems]]
-6 Debugging Test Problems
--------------------------
+== Debugging Test Problems
 
 There are a number of reasons that tests can fail to execute properly.
 This chapter provides some approaches for dealing with these failures.
@@ -15,13 +7,10 @@ running the test harness in GUI mode.
 
 This chapter includes the following topics:
 
-* link:#GBFYP[Overview]
-* link:#GBFYF[Configuration Failures]
+* <<Overview>>
+* <<Configuration Failures>>
 
-[[GBFYP]][[overview]]
-
-6.1 Overview
-~~~~~~~~~~~~
+=== Overview
 
 The goal of a test run is for all tests in the test suite that are not
 filtered out to have passing results. If the root test suite folder
@@ -39,18 +28,15 @@ in the target directory.
 
 
 If a large number of tests failed, you should read
-link:#GBFYF[Configuration Failures] to see if a
+<<Configuration Failures>> to see if a
 configuration issue is the cause of the failures.
 
 
 If a large number of tests failed, you should read
-link:#GBFYF[Configuration Failures] to see if a
+<<Configuration Failures>> to see if a
 configuration issue is the cause of the failures.
 
-[[GBFYF]][[configuration-failures]]
-
-6.2 Configuration Failures
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Configuration Failures
 
 Configuration failures are easily recognized because many tests fail the
 same way. When all your tests begin to fail, you may want to stop the

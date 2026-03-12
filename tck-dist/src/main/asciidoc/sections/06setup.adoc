@@ -1,14 +1,4 @@
-// Setup and Configuration
-// =======================
-
-[[GBFVV]]
-
-
-
-[[setup-and-configuration]]
-4 Setup and Configuration
--------------------------
-
+== Setup and Configuration
 
 [NOTE]
 ====
@@ -21,10 +11,10 @@ those vendors for specific TCK setup and operational guidance.
 This chapter describes how to set up the {TechnologyShortName} TCK. 
 Before proceeding with the instructions in
 this chapter, be sure to install all required software, as described in
-link:install.html#GBFTP[Chapter 3, "Installation."]
+<<Installation>>.
 
 After completing the instructions in this chapter, proceed to
-link:using.html#GBFWO[Chapter 5, "Executing Tests,"] for instructions on
+<<Executing Tests>>, for instructions on
 running the {TechnologyShortName} TCK.
 
 [NOTE]
@@ -48,13 +38,10 @@ at the top of config.adoc will need to be changed as well as well
 as toc.adoc.
 ///////////////////////////////////////////////////////////////////////
 
-[[GBFVU]][[configuring-your-environment-to-run-the-tck-against-the-reference-implementation]]
-
-4.1 Configuring Your Environment to Run the TCK Against the Reference Implementation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Configuring Your Environment to Run the TCK Against the Reference Implementation
 
 After configuring your environment as described in this section,
-continue with the instructions in link:using.html#GBFWO[Chapter 5, "Executing Tests."]
+continue with the instructions in <<Executing Tests>>.
 
 
 [NOTE]
@@ -98,7 +85,6 @@ slashes as a path separator instead.
   b. JUnit 5 jars ({JunitVersion})
   c. {TechnologyShortName} TCK tests (`jakarta.json.bind:jakarta.json.bind-tck`)
 
-+
 .Example: Maven configuration
 [source,oac_no_warn,xml]
 ----
@@ -134,16 +120,11 @@ slashes as a path separator instead.
         </dependency>
     </dependencies>
 ----
-+
 
-[[GCLHU]][[configuring-your-environment-run-the-tck-against-the-vendor-implementation]]
-
-4.2 Configuring Your Environment to Run the TCK Against the Vendor Implementation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Configuring Your Environment to Run the TCK Against the Vendor Implementation
 
 After configuring your environment as described in this section,
-continue with the instructions in link:using.html#GBFWO[Chapter 5, "Executing Tests."]
-
+continue with the instructions in <<Executing Tests>>.
 
 [NOTE]
 =======================================================================
@@ -187,7 +168,6 @@ slashes as a path separator instead.
   b. JUnit 5 jars ({JunitVersion})
   c. {TechnologyShortName} TCK tests (`jakarta.json.bind:jakarta.json.bind-tck`)
 
-+
 .Example: Maven configuration
 [source,oac_no_warn,xml]
 ----
@@ -223,12 +203,8 @@ slashes as a path separator instead.
         </dependency>
     </dependencies>
 ----
-+
 
-[[GHGDG]][[publishing-the-test-applications]]
-
-4.3 Publishing the Test Applications
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Publishing the Test Applications
 
 Not needed for the {TechnologyShortName} TCK.
 

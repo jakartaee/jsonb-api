@@ -1,9 +1,4 @@
-// TCK User's Guide for {TechnologyFullName}, Release {TechnologyVersion} for Jakarta EE
-// =====================================================================================
-
-[[eclipse-foundation]]
-Eclipse Foundation
-------------------
+== Licensing and Copyright
 
 Technology Compatibility Kit User's Guide for {TechnologyFullName}
 
@@ -11,14 +6,12 @@ Release {TechnologyVersion} for Jakarta EE
 
 {ReleaseDate}
 
-[[sthref1]]
-
 '''''
 
 Technology Compatibility Kit User's Guide for {TechnologyFullName},
 Release {TechnologyVersion} for Jakarta EE
 
-Copyright © {CopyrightDates} Oracle and/or its affiliates. All rights reserved.
+Copyright © {CopyrightDates} Oracle and/or its affiliates. All rights reserved.
 
 This program and the accompanying materials are made available under
 the terms of the Eclipse Public License v. 2.0, which is available at

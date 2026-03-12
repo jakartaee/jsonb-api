@@ -1,27 +1,16 @@
-// Procedure for Certification
-// ===========================
-
-[[GBFSN]]
-
-
-[[procedure-for-certification]]
-2 Procedure for Certification
------------------------------
+== Procedure for Certification
 
 This chapter describes the compatibility testing procedure and
 compatibility requirements for {TechnologyFullName}.
 This chapter contains the following sections:
 
-* link:#CJAFFDGI[Certification Overview]
-* link:#CJAFGIGG[Compatibility Requirements]
-* link:#CJAIIBDJ[Test Appeals Process]
-* link:#CJAJECIE[Specifications for {TechnologyFullName}]
-* link:#CJABAHGI[Libraries for {TechnologyFullName}]
+* <<Certification Overview>>
+* <<Compatibility Requirements>>
+* <<Test Appeals Process>>
+* <<Specifications for {TechnologyFullName}>>
+* <<Libraries for {TechnologyFullName}>>
 
-[[CJAFFDGI]][[certification-overview]]
-
-2.1 Certification Overview
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Certification Overview
 
 The certification process for {technologyShortName} {TechnologyVersion}
 consists of the following activities:
@@ -30,32 +19,23 @@ consists of the following activities:
 (TCK) and execute it in accordance with the instructions in this User's
 Guide.
 * Ensure that you meet the requirements outlined in
-link:#CJAFGIGG[Compatibility Requirements] below.
+<<Compatibility Requirements>> below.
 * Certify to the Eclipse Foundation that you have finished
 testing and that you meet all of the compatibility requirements,
 as required by the Eclipse Foundation TCK License.
 
-[[CJAFGIGG]][[compatibility-requirements]]
-
-2.2 Compatibility Requirements
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Compatibility Requirements
 
 The compatibility requirements for {TechnologyShortName}
 {TechnologyVersion} consist of meeting the requirements set forth by
 the rules and associated definitions contained in this section.
 
-[[sthref4]][[definitions]]
-
-2.2.1 Definitions
-^^^^^^^^^^^^^^^^^
+==== Definitions
 
 These definitions are for use only with these compatibility requirements
 and are not intended for any other purpose.
 
-[[sthref5]][[sthref6]]
-
-Table 2-1 Definitions 
-
+.Definitions
 [width="100%",cols="25%,75%",options="header",]
 |=======================================================================
 |Term |Definition
@@ -193,11 +173,7 @@ Jakarta EE Specification Process (JESP).
 
 |=======================================================================
 
-
-[[sthref7]][[rules-for-products]]
-
-2.2.2 Rules for {TechnologyFullName} Products
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Rules for {TechnologyFullName} Products
 
 The following rules apply for each version of an operating system,
 software component, and hardware platform Documented as supporting the
@@ -289,10 +265,7 @@ compliance.
 *{techID}9* The functional programmatic behavior of any binary class or
 interface must be that defined by the Specifications.
 
-[[CJAIIBDJ]][[test-appeals-process]]
-
-2.3 Test Appeals Process
-~~~~~~~~~~~~~~~~~~~~~~~~
+=== Test Appeals Process
 
 Jakarta has a well established process for managing challenges to its
 TCKs. Any implementor may submit a challenge to one or more tests in the
@@ -300,8 +273,8 @@ TCKs. Any implementor may submit a challenge to one or more tests in the
 means the entity as a whole in charge of producing the final certified release.
 *Challenges filed should represent the consensus of that entity*.
 
-2.3.1 Valid Challenges
-^^^^^^^^^^^^^^^^^^^^^^
+==== Valid Challenges
+
 Any test case (e.g., test class, @Test method), test case configuration (e.g., deployment descriptor), test beans, annotations, and other resources considered part of the TCK may be challenged.
 
 The following scenarios are considered in scope for test challenges:
@@ -311,8 +284,8 @@ The following scenarios are considered in scope for test challenges:
 * Claims that an assertion of the specification is not sufficiently implementable.
 * Claims that a test is not portable or depends on a particular implementation.
 
-2.3.2 Invalid Challenges
-^^^^^^^^^^^^^^^^^^^^^^^^
+==== Invalid Challenges
+
 The following scenarios are considered out of scope for test challenges and will be immediately closed if filed:
 
 * Challenging an implementation’s claim of passing a test.  Certification is an honor system and these issues must be raised directly with the implementation.
@@ -323,16 +296,12 @@ The following scenarios are considered out of scope for test challenges and will
 * Challenges that an excluded test should not have been excluded and should be re-added should be opened as a new enhancement request
 
 Test challenges must be made in writing via the {TechnologyShortName} specification project issue tracker
-as described in link:#CJAJEAEI[Section 2.3.3, "TCK Test Appeals Steps."]
+as described in <<TCK Test Appeals Steps>>.
 
 All tests found to be invalid will be placed on the Exclude List
 for that version of the {TechnologyShortName} TCK.
 
-
-[[CJAJEAEI]][[tck-test-appeals-steps]]
-
-2.3.3 TCK Test Appeals Steps
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== TCK Test Appeals Steps
 
 1. Challenges should be filed via the {TechnologyFullName} specification project’s issue tracker using the label `challenge` and include the following information:
 * The relevant specification version and section number(s)
@@ -367,19 +336,14 @@ If the appeal is rejected, the `challenge-appeal` issue should closed with a lab
 If there is a concern that a TCK process issue has not been resolved satisfactorily, the
 https://www.eclipse.org/projects/dev_process/#6_5_Grievance_Handling[Eclipse Development Process Grievance Handling] procedure should be followed to escalate the resolution. Note that this is not a mechanism to attempt to handle implementation specific issues.
 
-
-[[CJAJECIE]][[specifications-for-technology]]
-
-2.4 Specifications for {TechnologyFullName}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Specifications for {TechnologyFullName}
 
 The {TechnologyFullName} specification is available from the specification
 project web-site: {SpecificationURL}.
 
 [[CJABAHGI]][[libraries-for-technology]]
 
-2.5 Libraries for {TechnologyFullName}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Libraries for {TechnologyFullName}
 
 The following is a list of the packages comprising the required class
 libraries for {TechnologyShortName} {TechnologyVersion}:

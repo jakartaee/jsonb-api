@@ -99,6 +99,8 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
 
+        <nexus.staging.repository>jsonb-maven2-staging</nexus.staging.repository>
+
         <!-- JBake determins the versions of asciidoctor we can use -->
         <!-- Which in turn determins the version of jruby we can use-->
         <jbake.maven.plugin.version>2.7.0</jbake.maven.plugin.version>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (c) 2017, 2024 Oracle and/or its affiliates. All rights reserved.
+    Copyright (c) 2017, 2026 Oracle and/or its affiliates. All rights reserved.
 
     This program and the accompanying materials are made available under the
     terms of the Eclipse Public License v. 2.0, which is available at
@@ -19,26 +19,22 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
-        <groupId>org.eclipse.ee4j</groupId>
-        <artifactId>project</artifactId>
-        <version>1.0.9</version>
+        <groupId>jakarta.json.bind</groupId>
+        <artifactId>jakarta.json.bind-parent</artifactId>
+        <version>3.1.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
-    <groupId>jakarta.json.bind</groupId>
+    
     <artifactId>jakarta.json.bind-tck-ug</artifactId>
     <packaging>pom</packaging>
-    <version>3.0.0-SNAPSHOT</version>
-    <name>Eclipse Foundation Technology Compatibility Kit User's Guide for Jakarta JSON Binding for Jakarta EE, Release 3.0</name>
+
+    <name>Jakarta JSON Binding TCK User Guide</name>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <site.output.dir>${project.build.directory}/staging</site.output.dir>
         <maven.site.skip>true</maven.site.skip>
-        <asciidoctorj.version>2.4.2</asciidoctorj.version>
-        <asciidoctorj.diagram.version>2.1.0</asciidoctorj.diagram.version>
-        <asciidoctorj.maven.plugin.version>2.1.0</asciidoctorj.maven.plugin.version>
-        <asciidoctorj.pdf.version>1.5.3</asciidoctorj.pdf.version>
-        <jbake.maven.plugin.version>0.3.3</jbake.maven.plugin.version>
         <freemarker.version>2.3.30</freemarker.version>
         <!-- status: DRAFT, BETA, etc., or blank for final -->
         <status></status>
@@ -81,8 +77,8 @@
                         <configuration>
                             <rules>
                                 <requireJavaVersion>
-                                    <version>[11,)</version>
-                                    <message>You need JDK11 or newer</message>
+                                    <version>[17,)</version>
+                                    <message>You need JDK17 or newer</message>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
@@ -261,7 +257,7 @@
                 <plugin>
                     <groupId>org.asciidoctor</groupId>
                     <artifactId>asciidoctor-maven-plugin</artifactId>
-                    <version>${asciidoctorj.maven.plugin.version}</version>
+                    <version>${asciidoctor.maven.plugin.version}</version>
                     <dependencies>
                         <dependency>
                             <groupId>org.asciidoctor</groupId>

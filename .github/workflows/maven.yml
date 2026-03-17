@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2021, 2024 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2021, 2026 Oracle and/or its affiliates. All rights reserved.
 #
 # This program and the accompanying materials are made available under the
 # terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,16 +14,21 @@
 # SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
 #
 
-name: JSON-B API
+name: Java CI with Maven
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - 'master' #TODO switch to main when the default branch is renamed
+      - '*-BRANCH'
+  pull_request:
+    branches:
+      - 'master' #TODO switch to main when the default branch is renamed
+      - '*-BRANCH'
 
+# Minimum permissions required for the workflow to run.
 permissions:
-  security-events: read
-  contents: write
-  actions: read
-  id-token: write
-  checks: write
+  contents: read
 
 concurrency:
   group: ${{ github.ref }}
@@ -31,25 +36,22 @@ concurrency:
 
 jobs:
   build:
-    name: JSON-B API compilation
+
+    strategy:
+      matrix:
+        java-version: [ '17', '21', '25' ]
+
+    name: Jakarta JSON Binding project compilation
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout for build
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Set up compile JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: 11
-          cache: 'maven'
-      - name: API compilation
-        run: cd api && mvn clean install -Pstaging -B
-      - name: TCK test compilation
-        run: cd tck && mvn clean install -Pstaging -B
-      - name: Javadoc compilation
-        run: cd docs && mvn clean install -Pstaging -B
-      - name: Generating specification
-        run: cd spec && mvn clean install -Pstaging -B
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - name: Set up JDK ${{ matrix.java-version }}
+      uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'temurin'
+        cache: maven
+    - name: Compile Project
+      run: mvn -B clean install
+

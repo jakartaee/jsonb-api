@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (c) 2011, 2024 Oracle and/or its affiliates. All rights reserved.
+    Copyright (c) 2011, 2026 Oracle and/or its affiliates. All rights reserved.
 
     This program and the accompanying materials are made available under the
     terms of the Eclipse Distribution License v. 1.0, which is available at
@@ -13,17 +13,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>jakarta.json.bind</groupId>
-    <artifactId>jakarta.json.bind-docs</artifactId>
-    <version>3.0.0</version>
-    <packaging>pom</packaging>
-    <name>JSON Binding Docs</name>
+    <parent>
+        <groupId>jakarta.json.bind</groupId>
+        <artifactId>jakarta.json.bind-parent</artifactId>
+        <version>3.1.0-SNAPSHOT</version>
+    </parent>
 
-    <properties>
-        <asciidoctor.maven.plugin.version>3.0.0</asciidoctor.maven.plugin.version>
-        <asciidoctorj.version>2.5.11</asciidoctorj.version>
-        <asciidoctorj.pdf.version>2.3.13</asciidoctorj.pdf.version>
-    </properties>
+    <artifactId>jakarta.json.bind-docs</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Jakarta JSON Binding Documentation</name>
 
     <build>
         <defaultGoal>process-resources</defaultGoal>

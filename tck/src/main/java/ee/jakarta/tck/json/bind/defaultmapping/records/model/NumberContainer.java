@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026 Eclipse and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -18,10 +18,17 @@
  * $Id$
  */
 
-package ee.jakarta.tck.json.bind.records;
+package ee.jakarta.tck.json.bind.defaultmapping.records.model;
 
-public interface RecordContainer<T> {
-    
-    T instance();
-    
+import ee.jakarta.tck.json.bind.records.RecordContainer;
+
+public record NumberContainer(Number instance) implements RecordContainer<Number> {
+
+    @Override
+    public boolean equals(Object obj) {
+        if (NumberContainer.class.isInstance(obj)) {
+            return instance.equals(((NumberContainer) obj).instance);
+        }
+        return false;
+    }
 }

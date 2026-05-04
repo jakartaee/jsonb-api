@@ -348,7 +348,7 @@ public class RecordMappingTester<T> {
             try {
                 return recordContainerClass.getDeclaredConstructor(components[0].getType());
             } catch (Exception e) {
-                throw new RuntimeException("Could not find cononical constuctor for record container of type " + recordContainerClass);
+                throw new RuntimeException("Could not find canonical constuctor for record container of type " + recordContainerClass);
             }
         }
         
@@ -382,7 +382,7 @@ public class RecordMappingTester<T> {
             int valBits = value.unscaledValue().abs().bitLength();
             // bit value of scaled number
             int intBitsScaled = value.toBigInteger().bitLength();
-            // Number whose bit length is than 53 or is not in range is considered as non
+            // Number whose bit length is less than 53 or is not in range is considered as non
             // IEEE 754-2008 binary64 compliant
             return valBits <= MAX_BIT_SIZE && intBitsScaled <= MAX_BIT_SIZE && MIN_RANGE <= scale && scale <= MAX_RANGE;
         }

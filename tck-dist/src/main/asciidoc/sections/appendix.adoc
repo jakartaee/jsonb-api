@@ -1,0 +1,34 @@
+[appendix]
+== Frequently Asked Questions
+
+This appendix contains the following questions.
+
+* <<Where do I start to debug a test failure?>>
+* <<How do I restart a crashed test run?>>
+* <<What would cause tests be added to the exclude list?>>
+
+=== Where do I start to debug a test failure?
+
+See <<Debugging Test Problems>>, for more information.
+
+=== How do I restart a crashed test run?
+
+If you need to restart a test run, you can figure out which test crashed
+the test suite by looking at the logs.
+
+=== What would cause tests be added to the exclude list?
+
+The exclude file (+{excludeListFileName}+) contains all tests that are not
+required to be run. The following is a list of reasons for a test to be
+included in the Exclude List:
+
+* An error in a Compatible Implementation that does not allow the test to
+execute properly has been discovered.
+* An error in the specification that was used as the basis of the test
+has been discovered.
+* An error in the test has been discovered.
+
+[appendix]
+== Rebuild Rules
+
+Rebuild Rules is not used for the {TechnologyShortName} TCK.

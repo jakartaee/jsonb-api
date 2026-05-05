@@ -1,0 +1,43 @@
+== Debugging Test Problems
+
+There are a number of reasons that tests can fail to execute properly.
+This chapter provides some approaches for dealing with these failures.
+Please note that most of these suggestions are only relevant when
+running the test harness in GUI mode.
+
+This chapter includes the following topics:
+
+* <<Overview>>
+* <<Configuration Failures>>
+
+=== Overview
+
+The goal of a test run is for all tests in the test suite that are not
+filtered out to have passing results. If the root test suite folder
+contains tests with errors or failing results, you must troubleshoot and
+correct the cause to satisfactorily complete the test run.
+
+* Errors: Tests with errors could not be executed by the Junit
+framework. These errors usually occur because the test environment is not
+properly configured.
+* Failures: Tests that fail were executed but had failing results.
+
+
+For every test run, the Junit framework creates a set of report files
+in the target directory.
+
+
+If a large number of tests failed, you should read
+<<Configuration Failures>> to see if a
+configuration issue is the cause of the failures.
+
+
+If a large number of tests failed, you should read
+<<Configuration Failures>> to see if a
+configuration issue is the cause of the failures.
+
+=== Configuration Failures
+
+Configuration failures are easily recognized because many tests fail the
+same way. When all your tests begin to fail, you may want to stop the
+run immediately and start viewing individual test output.

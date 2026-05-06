@@ -616,7 +616,7 @@ If duplicate name is found exception MUST be thrown. The definition of duplicate
 
 === Customizing Property Order
 
-To customize the order of serialized properties, JSON Binding provides `jakarta.json.bind.config.PropertyOrderStrategy` class.
+To customize the order of serialized properties, JSON Binding provides the `jakarta.json.bind.config.PropertyOrderStrategy` class.
 
 Class `jakarta.json.bind.config.PropertyOrderStrategy` provides the most common property order strategies.
 
@@ -624,13 +624,13 @@ Class `jakarta.json.bind.config.PropertyOrderStrategy` provides the most common 
 * ANY
 * REVERSE
 
-The detailed description of property order strategies can be found in javadoc.
+Detailed descriptions of property order strategies can be found in the javadoc.
 
-The way to set custom property order strategy is to use `jakarta.json.bind.JsonbConfig::withPropertyOrderStrategy` method.
+Use the `jakarta.json.bind.JsonbConfig::withPropertyOrderStrategy` method to configure a custom property order strategy.
 
-To customize the order of serialized properties only for one specific type, JSON Binding provides `jakarta.json.bind.annotation.JsonbPropertyOrder` annotation. Order specified by `JsonbPropertyOrder` annotation overrides order specified by `PropertyOrderStrategy`.
+To customize the order of serialized properties only for one specific type, JSON Binding provides the `jakarta.json.bind.annotation.JsonbPropertyOrder` annotation. The order specified by the `JsonbPropertyOrder` annotation overrides the order specified by `PropertyOrderStrategy`.
 
-The order is applied to already renamed properties as stated in 4.1.
+A `PropertyOrderStrategy` determines the order based on the already renamed properties that have been customized according to the rules outlined under section 4.1.
 
 === Customizing Null Handling
 

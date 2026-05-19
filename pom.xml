@@ -101,8 +101,8 @@
 
         <nexus.staging.repository>jsonb-maven2-staging</nexus.staging.repository>
 
-        <!-- JBake determins the versions of asciidoctor we can use -->
-        <!-- Which in turn determins the version of jruby we can use-->
+        <!-- JBake determines the versions of asciidoctor we can use -->
+        <!-- Which in turn determines the version of jruby we can use-->
         <jbake.maven.plugin.version>2.7.0</jbake.maven.plugin.version>
         <asciidoctorj.version>2.5.7</asciidoctorj.version>
         <asciidoctorj.pdf.version>2.1.6</asciidoctorj.pdf.version>

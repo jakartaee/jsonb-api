@@ -1,8 +1,8 @@
 # Jakarta JSON Binding (JSON-B)
 
 [![Maven Central](https://img.shields.io/maven-central/v/jakarta.json.bind/jakarta.json.bind-api.svg?label=Maven%20Central)](https://mvnrepository.com/artifact/jakarta.json.bind/jakarta.json.bind-api)
+[![Static Badge](https://img.shields.io/badge/https%3A%2F%2Frepo.eclipse.org%2Fservice%2Frest%2Frepository%2Fbrowse%2Fjsonb-maven2-staging%2F?label=Staging)](https://repo.eclipse.org/service/rest/repository/browse/jsonb-maven2-staging/)
 [![Javadoc](https://javadoc.io/badge2/jakarta.json.bind/jakarta.json.bind-api/javadoc.io.svg)](https://javadoc.io/doc/jakarta.json.bind/jakarta.json.bind-api)
-[![Snapshots](https://img.shields.io/nexus/s/https/jakarta.oss.sonatype.org/jakarta.json.bind/jakarta.json.bind-api.svg?label=Snapshots)](https://jakarta.oss.sonatype.org/content/repositories/staging/jakarta/json/bind/jakarta.json.bind-api/)
 [![Gitter](https://badges.gitter.im/eclipse/jsonb.svg)](https://gitter.im/eclipse/jsonb)
 [![License](https://img.shields.io/badge/License-EPL%202.0-green.svg)](https://opensource.org/licenses/EPL-2.0)
 

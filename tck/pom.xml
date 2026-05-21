@@ -170,4 +170,137 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+    <profile>
+      <!-- 
+      ~ This profile can be used to (re)generate signatures of Data API.
+      ~ Note that they differ based on JDK used to build them 
+      ~ All .sig files should be included in the generated jar files! 
+      -->
+      <id>signature-generation</id>
+      <activation>
+        <property>
+          <name>signature</name>
+        </property>
+      </activation>
+      <properties>
+        <!--Default assumed JDK version, can be overriden via -Dmajor.jdk.version=X -->
+        <jdk.major.version>17</jdk.major.version>
+      </properties>
+      <build>
+        <plugins>
+          <!-- Extract api into output directory for use by signature plugin -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>jakarta.json.bind</groupId>
+                      <artifactId>jakarta.json.bind-api</artifactId>
+                      <version>${project.version}</version>
+                      <type>jar</type>
+                      <overWrite>false</overWrite>
+                      <outputDirectory>${project.build.directory}/jakarta.json.bind-api</outputDirectory>
+                      <includes>**/*.class,**/*.xml</includes>
+                    </artifactItem>
+                  </artifactItems>
+                  <includes>**/*.java</includes>
+                  <excludes>**/*.properties</excludes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <!-- Extract JDK modules into output directory for use by signature plugin -->
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>${exec.maven.plugin.version}</version>
+            <executions>
+                <execution>
+                    <id>extractModules</id>
+                    <phase>generate-sources</phase>
+                    <goals>
+                        <goal>exec</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <executable>jimage</executable>
+                <arguments>
+                    <argument>extract</argument>
+                    <argument>--dir=${project.build.directory}/jimage</argument>
+                    <argument>${java.home}/lib/modules</argument>
+                </arguments>
+            </configuration>
+          </plugin>
+          
+          <!-- Run signature plugin to generate signature file -->
+          <plugin>
+            <groupId>jakarta.tck</groupId>
+            <artifactId>sigtest-maven-plugin</artifactId>
+            <version>${sigtest.version}</version>
+            <executions>
+              <execution>
+                <id>createSigFile</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <classes>${project.build.directory}/jakarta.json.bind-api</classes>
+              <classes>${project.build.directory}/jimage/java.base</classes>
+              <packages>
+                  jakarta.json.bind,
+                  jakarta.json.bind.adapter,
+                  jakarta.json.bind.annotation,
+                  jakarta.json.bind.config,
+                  jakarta.json.bind.serializer,
+                  jakarta.json.bind.spi
+              </packages>
+              <version>${project.version}</version>
+              <attach>false</attach>
+              <sigfile>${project.build.directory}/jakarta.json.bind.sig_${project.version}</sigfile>
+            </configuration>
+          </plugin>
+          
+          <!-- Copy signature file to tck resources with major java version -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>${maven.antrun.plugin.version}</version>
+            <executions>
+              <execution>
+                <id>copySigFile</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <mkdir dir="${project.basedir}/src/main/resources/ee/jakarta/tck/json/bind/signaturetest/"/>
+                    <copy todir="${project.basedir}/src/main/resources/ee/jakarta/tck/json/bind/signaturetest/">
+                      <fileset dir="${project.build.directory}" includes="jakarta.json.bind.sig_${project.version}"/>
+                      <mapper from="^(jakarta.json.bind.sig_[0-9\.]+)" to="\1" type="regexp"/>
+                    </copy>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

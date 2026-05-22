@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (c) 2022 Oracle and/or its affiliates. All rights reserved.
+    Copyright (c) 2022, 2026 Oracle and/or its affiliates. All rights reserved.
 
     This program and the accompanying materials are made available under the
     terms of the Eclipse Public License v. 2.0, which is available at
@@ -17,10 +17,11 @@
 
 -->
 
-<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.0 http://maven.apache.org/xsd/assembly-2.1.0.xsd">
+
     <id>distribution</id>
-    <baseDirectory>jsonb-tck</baseDirectory>
     <formats>
         <format>zip</format>
     </formats>
@@ -28,21 +29,37 @@
     <files>
         <!-- license -->
         <file>
-            <source>${project.basedir}/src/main/resources/LICENSE_${license}.md</source>
+            <source>src/main/resources/LICENSE_${license}.md</source>
             <destName>LICENSE.md</destName>
+        </file>
+        <!-- The readme included in the distribution zip -->
+        <file>
+            <source>src/main/readme/README.md</source>
+            <destName>README.md</destName>
         </file>
     </files>
     <fileSets>
+        <!-- The artifacts -->
         <fileSet>
-            <directory>${project.build.scriptSourceDirectory}</directory>
+            <directory>src/main/artifacts</directory>
             <outputDirectory>artifacts</outputDirectory>
             <fileMode>755</fileMode>
             <includes>
                 <include>**/*.sh</include>
             </includes>
         </fileSet>
+        <!-- The docs -->
         <fileSet>
-            <directory>${project.basedir}/src/main/bin</directory>
+            <directory>target/generated-docs</directory>
+            <outputDirectory>/docs</outputDirectory>
+            <includes>
+                <include>**/*.html</include>
+                <include>**/*.pdf</include>
+            </includes>
+        </fileSet>
+        <!-- The starter -->
+        <fileSet>
+            <directory>src/main/bin</directory>
             <outputDirectory>bin</outputDirectory>
             <includes>
                 <include>**/*.xml</include>
@@ -59,13 +76,5 @@
             <outputDirectory>artifacts</outputDirectory>
             <useProjectArtifact>false</useProjectArtifact>
         </dependencySet>
-        <dependencySet>
-            <includes>
-                <include>jakarta.json.bind:jakarta.json.bind-tck-ug</include>
-            </includes>
-            <unpack>true</unpack>
-            <outputDirectory>.</outputDirectory>
-        </dependencySet>
     </dependencySets>
-
 </assembly>

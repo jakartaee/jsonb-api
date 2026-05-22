@@ -1,0 +1,26 @@
+.challenges
+[cols="3*", options="header"]
+|===
+| Class | Method | Reason
+
+| jakarta/jsonb/bind/tck/defaultmapping/dates/DatesMappingTest
+| testGregorianCalendarWithTimeMapping_from_standalone
+| https://github.com/jakartaee/platform-tck/issues/102
+
+| jakarta/jsonb/bind/tck/defaultmapping/collections/CollectionsMappingTest
+| testEnumMap_from_standalone
+| https://github.com/jakartaee/platform-tck/issues/103
+
+| jakarta/jsonb/bind/tck/defaultmapping/collections/CollectionsMappingTest
+| testEnumSet_from_standalone
+| https://github.com/jakartaee/platform-tck/issues/103
+
+| jakarta/jsonb/bind/tck/defaultmapping/basictypes/BasicJavaTypesMappingTest
+| testLongMapping_from_standalone
+| https://github.com/jakartaee/jsonb-api/issues/180
+
+| jakarta/jsonb/bind/tck/defaultmapping/bignumbers/BigNumbersMappingTest
+| testBigNumberMarshalling_from_standalone
+| https://github.com/jakartaee/jsonb-api/issues/180
+
+|===

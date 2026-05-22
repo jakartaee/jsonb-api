@@ -119,7 +119,6 @@
         <module>spec</module>
         <module>tck</module>
         <module>tck-dist</module>
-        <module>tck-docs/userguide</module>
     </modules>
 
 </project>

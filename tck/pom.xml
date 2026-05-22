@@ -174,7 +174,7 @@
     <profiles>
     <profile>
       <!-- 
-      ~ This profile can be used to (re)generate signatures of Data API.
+      ~ This profile can be used to (re)generate signatures of Jakarta JSON Binding API.
       ~ Note that they differ based on JDK used to build them 
       ~ All .sig files should be included in the generated jar files! 
       -->

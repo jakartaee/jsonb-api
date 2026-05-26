@@ -22,7 +22,7 @@
     <parent>
         <groupId>jakarta.json.bind</groupId>
         <artifactId>jakarta.json.bind-parent</artifactId>
-        <version>3.1.0-M1</version>
+        <version>3.1.0-SNAPSHOT</version>
     </parent>
     
     <artifactId>jakarta.json.bind-spec</artifactId>

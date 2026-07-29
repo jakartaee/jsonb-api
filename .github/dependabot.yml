@@ -1,8 +1,15 @@
 version: 2
 updates:
+  # Github Actions dependencies
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: daily
+      
+  # Documentation dependencies
+  - package-ecosystem: maven
+    directory: /docs/src/include
+    schedule:
+      interval: weekly
 
 # TODO Add support for maven dependencies once a manual review of dependencies has been made.

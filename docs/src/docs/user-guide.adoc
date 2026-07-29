@@ -1,4 +1,4 @@
-:component-name: Json Binding 3.0.1 Users Guide
+:component-name: Json Binding 3.1.0 Users Guide
 :toc: left
 :toclevels: 3
 :source-highlighter: coderay
@@ -14,37 +14,7 @@ JSON-B is a standard binding layer for converting Java objects to/from JSON mess
 [source,xml]
 .Maven Dependencies
 ----
-<dependencies>
-    <!-- JSON-P API -->
-    <dependency>
-        <groupId>jakarta.json</groupId>
-        <artifactId>jakarta.json-api</artifactId>
-        <version>2.1.3</version>
-    </dependency>
-
-    <!-- Eclipse Parsson (JSON-P implementation) -->
-    <dependency>
-        <groupId>org.eclipse.parsson</groupId>
-        <artifactId>parsson</artifactId>
-        <version>1.1.6</version>
-        <scope>runtime</scope>
-    </dependency>
-
-    <!-- JSON-B API -->
-    <dependency>
-        <groupId>jakarta.json.bind</groupId>
-        <artifactId>jakarta.json.bind-api</artifactId>
-        <version>3.0.1</version>
-    </dependency>
-
-    <!-- Yasson (JSON-B implementation) -->
-    <dependency>
-        <groupId>org.eclipse</groupId>
-        <artifactId>yasson</artifactId>
-        <version>3.0.4</version>
-        <scope>runtime</scope>
-    </dependency>
-</dependencies>
+include::../include/pom.xml[tag=dep]
 ----
 
 == JSON Binding API
@@ -687,9 +657,9 @@ Sometimes adapters mechanism is not enough and low level access to JSONP parser/
 
 From the spec:
 
-Serializer is a class implementing jakarta.json.bind.serializers.JsonbSerializer interface. It is used to serialize the type it’s registered on (Original). On serializing of Original type JSONB calls JsonbSerializer::serialize method. This method has to contain a custom code to serialize Original type using provided JsonpGenerator.
+Serializer is a class implementing jakarta.json.bind.serializers.JsonbSerializer interface. It is used to serialize the type it's registered on (Original). On serializing of Original type JSONB calls JsonbSerializer::serialize method. This method has to contain a custom code to serialize Original type using provided JsonpGenerator.
 
-Deserializer is a class implementing jakarta.json.bind.serializers.JsonbDeserializer interface. It is used to deserialize the type it’s registered on (Original). On deserialization of Original type JSONB calls JsonbDeserializer::deserialize method. This method has to contain a custom code to deserialize Original type using provided JsonpParser.
+Deserializer is a class implementing jakarta.json.bind.serializers.JsonbDeserializer interface. It is used to deserialize the type it's registered on (Original). On deserialization of Original type JSONB calls JsonbDeserializer::deserialize method. This method has to contain a custom code to deserialize Original type using provided JsonpParser.
 
 Let's take a look at the sample. Imagine that we would like to serialize and deserialize a list of pet carriers. A carried pet defined by an abstract class Animal. It can be any of its subclasses. We would like to properly serialize and deserialize it. In order to do it we need to preserve a type information in JSON document and use it on deserialization. It can be done using custom serializer/deserializer pair.
 

@@ -1,7 +1,12 @@
 # Release Plan Format
 
 This document defines the standard format for release plan files in `_context/releases/`.
-Read this file whenever you are writing, updating, or interpreting a release plan.
+Read this file whenever you are writing, updating, or interpreting a **release plan**.
+
+> **Scope:** This file covers release planning only — goals, FRs, acceptance criteria, and
+> progress tracking for a named version. It does **not** apply to individual task plans stored
+> in `_context/plans/`. For task-level planning, refer to `wiki/preferences.md` and the task
+> context directly.
 
 ---
 
@@ -126,3 +131,15 @@ history is preserved. When all questions are resolved, replace the body with:
 3. Populate the Section 0 table with one row per FR, all starting at `⬜ TODO`.
 4. Complete sections 1–7.
 5. Get explicit approval from the spec lead before beginning implementation.
+
+---
+
+## Recording completed task work
+
+When a task plan in `_context/plans/` is finished, the agent must ask the user whether to
+**delete** the plan file or **archive** it into the release plan. If archiving:
+
+1. Locate the matching FR row in Section 0 of the relevant `_context/releases/<version>.md`.
+2. Set its status to `✅ DONE`.
+3. Do not modify any other section — sections 1–7 are written once and remain stable.
+4. Delete the task plan file from `_context/plans/` after the release plan is updated.

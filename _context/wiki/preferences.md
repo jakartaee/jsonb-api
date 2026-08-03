@@ -32,7 +32,7 @@ These apply to every file touched in this repository.
 - **Always** produce a written plan and wait for explicit approval before modifying any file
 - Plan files go in the `_context/plans/` directory (e.g. `_context/plans/my-feature-plan.md`)
 - Plans must list affected modules (api, spec, tck) and why
-- When a task is complete, ask the user whether to **delete** the plan file (one-off task) or **record** it in the relevant `_context/releases/` file as a completed item
+- When a task is complete, ask the user whether to **delete** the plan file (one-off task) or **archive** it by recording the completed work in the relevant `_context/releases/` file (see `wiki/releases.md` for release plan format)
 
 ### Stay concise
 - Skip pleasantries and filler phrases — get straight to code, spec text, or analysis

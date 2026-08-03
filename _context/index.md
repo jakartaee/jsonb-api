@@ -16,7 +16,7 @@ Quick navigation for AI-assisted work on this repository.
 |------|----------|
 | [project.md](wiki/project.md) | Project overview, goals, key modules, stakeholders, release workflow |
 | [preferences.md](wiki/preferences.md) | Working standards, AI interaction preferences, Jakarta EE conventions |
-| [planning.md](wiki/planning.md) | Standard format for release plans: section structure, status values, and work-tracking rules |
+| [releases.md](wiki/releases.md) | Standard format for release plans: section structure, status values, and work-tracking rules |
 
 ## When to reference context
 
@@ -24,5 +24,5 @@ Quick navigation for AI-assisted work on this repository.
 - **Always** read `wiki/preferences.md` before generating code, spec text, or a plan so the output matches project conventions.
 - **Always** search `releases/` directory for a corresponding release plan, and read the plan, when you know which release is being worked on.
 - **When starting a task** check `plans/` for an existing plan file for the current task before creating a new one.
-- **Only when writing or updating a release plan** read `wiki/planning.md` for the required section structure, status values, and work-tracking rules.
+- **Only when writing or updating a release plan** read `wiki/releases.md` for the required section structure, status values, and work-tracking rules.
 - Skip full reads of the `plans`, `releases`, and `wiki` directories; follow links only when relevant to the current task.

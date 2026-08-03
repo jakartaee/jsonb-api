@@ -6,7 +6,7 @@ Jakarta JSON Binding (JSON-B) is a standard binding layer for the Jakarta EE pla
 
 - **Repository:** <https://github.com/jakartaee/jsonb-api>
 - **Java package root:** `jakarta.json.bind`
-- **Current development version:** 3.1.0-SNAPSHOT
+- **Current development version:** 3.1.0
 - **License:** EPL 2.0 / GPL 2.0 with Classpath Exception
 
 ---
@@ -23,7 +23,7 @@ Goals are organised into **releases**. Each release targets a defined subset of 
 
 ### Active release goals
 
-Are found in the `_context/releases/` directory and are organized into individual plans based on the release version. For example the plan for release version 3.1.0 would be in the `_context/releases/3.1.0.md` file.
+Are found in the `_context/releases/` directory and are organized into individual plans based on the release version. For example the plan for release version 1.1.0 would be in the `_context/releases/1.1.0.md` file.
 
 ---
 
@@ -31,7 +31,7 @@ Are found in the `_context/releases/` directory and are organized into individua
 
 | Stakeholder | Role |
 |-------------|------|
-| Spec leads (Nathan Rauh & Dmitry Kornilov) | Final authority on specification decisions |
+| Spec leads | Final authority on specification decisions |
 | Fellow spec committers | Co-authors of API changes and spec text |
 | Eclipse Yasson team | Eclipse managed compatible implementation |
 | Jakarta EE platform committee | Coordinates inclusion of JSON-B releases into platform releases |

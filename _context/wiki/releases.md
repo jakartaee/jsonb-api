@@ -12,7 +12,7 @@ Read this file whenever you are writing, updating, or interpreting a **release p
 
 ## File location and naming
 
-Release plans live at `_context/releases/<version>.md` (e.g. `3.1.0.md`).
+Release plans live at `_context/releases/<version>.md` (e.g. `1.1.0.md`).
 One file per release. Do not create sub-files or split a plan across multiple documents.
 
 ---
@@ -32,7 +32,8 @@ tracker, public release page).
 ```markdown
 ## 0. Work-Item Status
 
-> **AI agents: read this table first.** Each row corresponds to a functional requirement
+> **AI agents: read this table first.**
+> Each row corresponds to a functional requirement
 > defined in section 4. Before acting on any FR, check its `Status` cell.
 > Skip items marked `✅ DONE` — they are complete and must not be reopened or re-implemented.
 > Only act on items marked `⬜ TODO` or `🔄 IN PROGRESS`.

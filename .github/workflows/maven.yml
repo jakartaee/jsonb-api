@@ -19,11 +19,11 @@ name: Java CI with Maven
 on:
   push:
     branches:
-      - 'master' #TODO switch to main when the default branch is renamed
+      - 'main'
       - '*-BRANCH'
   pull_request:
     branches:
-      - 'master' #TODO switch to main when the default branch is renamed
+      - 'main'
       - '*-BRANCH'
 
 # Minimum permissions required for the workflow to run.

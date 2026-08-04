@@ -12,7 +12,7 @@ if [ "$(git ls-remote --heads origin refs/heads/$branch | wc -l)" -eq "1" ]; the
     git checkout -t origin/$branch
     echo "branch_existed=true" >> $GITHUB_OUTPUT
 else
-    git checkout master
+    git checkout main
     git checkout -b $branch
     echo "branch_existed=false" >> $GITHUB_OUTPUT
 fi

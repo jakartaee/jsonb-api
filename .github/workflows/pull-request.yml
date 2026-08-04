@@ -31,7 +31,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr create \
-            --base master \
+            --base main \
             --head ${{ inputs.branch }} \
             --title "${{ inputs.title }}" \
             --body "${{ inputs.body }}" \

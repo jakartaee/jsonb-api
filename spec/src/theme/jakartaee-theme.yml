@@ -2,7 +2,7 @@
 # Following is the asciidoctor-pdf default theme [1], with small
 # customizations, mostly for header and footer, marked "EE".
 #
-# [1] https://github.com/asciidoctor/asciidoctor-pdf/blob/master/data/themes/default-theme.yml
+# [1] https://github.com/asciidoctor/asciidoctor-pdf/blob/main/data/themes/default-theme.yml
 #
 font:
   catalog:

@@ -8,6 +8,7 @@ description: [Homepage for resources related to the Jakarta JSON Binding project
 links:
   source: https://github.com/jakartaee/jsonb-api
   download: https://github.com/jakartaee/jsonb-api/releases
+  hide_issuetracker: true # Issue tracker never populates correctly
   mailinglist: https://accounts.eclipse.org/mailing-list/jsonb-dev
   #javadocs:
   #docs:

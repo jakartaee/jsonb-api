@@ -10,7 +10,7 @@ links:
   download: https://github.com/jakartaee/jsonb-api/releases
   hide_issuetracker: true # Issue tracker never populates correctly
   mailinglist: https://accounts.eclipse.org/mailing-list/jsonb-dev
-  #javadocs:
-  #docs:
-  #faq:
+  javadocs: SNAPSHOT/api/apidocs/
+  docs: SNAPSHOT/docs/
+  faq: SNAPSHOT/tck/
 

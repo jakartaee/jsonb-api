@@ -62,17 +62,17 @@ jobs:
         fi
     - name: Assemble documentation
       run: |
-        DEST=_site/${{ steps.target_dir.outputs.subdir }}
-        mkdir -p "$DEST/docs"
-        mkdir -p "$DEST/api"
-        mkdir -p "$DEST/tck"
+        mkdir -p "_site/docs"
+        mkdir -p "_site/api"
+        mkdir -p "_site/tck"
 
         cp README.md "_site/README.md"
-        cp docs/target/generated-docs/user-guide.html "$DEST/docs/index.html"
-        cp -r api/target/apidocs/ "$DEST/api/"
-        cp tck-dist/target/generated-docs/jsonb-tck-reference-guide-*.html "$DEST/tck/index.html"
+        cp docs/target/generated-docs/user-guide.html "_site/docs/index.html"
+        cp -r api/target/apidocs/ "_site/api/"
+        cp tck-dist/target/generated-docs/jsonb-tck-reference-guide-*.html "_site/tck/index.html"
     - name: Deploy to GitHub Pages
       uses: jamesives/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
       with:
         folder: _site
         branch: gh-pages
+        target-folder: ${{ steps.target_dir.outputs.subdir }}

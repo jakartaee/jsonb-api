@@ -1,0 +1,85 @@
+#
+# Copyright (c) 2026 Eclipse Foundation and/or its affiliates. All rights reserved.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Eclipse Public License v. 2.0, which is available at
+# http://www.eclipse.org/legal/epl-2.0.
+#
+# This Source Code may also be made available under the following Secondary
+# Licenses when the conditions for such availability set forth in the
+# Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+# version 2 with the GNU Classpath Exception, which is available at
+# https://www.gnu.org/software/classpath/license.html.
+#
+# SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+#
+
+# This workflow is triggered on push to the default branch and on release published events.
+# It is used to build the documentation for the project, and update the github pages branch with the generated documentation.
+# This will include the following:
+# - The user guide (docs/target/generated-docs/user-guide.html)
+# - The API Javadoc (api/target/apidocs/)
+# - The TCK guide (tck-dist/target/jsonb-tck-reference-guide.html)
+
+name: Documentation
+
+on:
+  push:
+    branches:
+      - 'main'
+  release:
+    types: [published]
+  workflow_dispatch: #For testing purposes
+
+# pages: write and id-token: write are required by actions/deploy-pages.
+permissions:
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+    - name: Set up JDK 17
+      uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build documentation
+      run: mvn -B clean package
+    - name: Determine target subdirectory
+      id: target_dir
+      run: |
+        if [ "${{ github.event_name }}" = "release" ]; then
+          echo "subdir=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+        else
+          echo "subdir=SNAPSHOT" >> $GITHUB_OUTPUT
+        fi
+    - name: Assemble documentation
+      run: |
+        DEST=site/${{ steps.target_dir.outputs.subdir }}
+        mkdir -p "$DEST/docs"
+        mkdir -p "$DEST/api"
+        mkdir -p "$DEST/tck"
+
+        cp docs/target/generated-docs/user-guide.html "$DEST/docs/index.html"
+        cp -r api/target/apidocs/. "$DEST/api/"
+        cp tck-dist/target/generated-docs/jsonb-tck-reference-guide-*.html "$DEST/tck/index.html"
+    - name: Upload pages artifact
+      id: deployment
+      uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+      with:
+        path: ./site/${{ steps.target_dir.outputs.subdir }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deploy
+      uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0

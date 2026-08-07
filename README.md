@@ -1,4 +1,67 @@
-# About
+# Jakarta JSON Binding (JSON-B)
 
-The {{site.title}} project contains the [AsciiDoc](http://asciidoc.org/)
-source code for the ...
+[![Maven Central](https://img.shields.io/maven-central/v/jakarta.json.bind/jakarta.json.bind-api.svg?label=Maven%20Central)](https://mvnrepository.com/artifact/jakarta.json.bind/jakarta.json.bind-api)
+[![Static Badge](https://img.shields.io/badge/https%3A%2F%2Frepo.eclipse.org%2Fservice%2Frest%2Frepository%2Fbrowse%2Fjsonb-maven2-staging%2F?label=Staging)](https://repo.eclipse.org/service/rest/repository/browse/jsonb-maven2-staging/)
+[![Javadoc](https://javadoc.io/badge2/jakarta.json.bind/jakarta.json.bind-api/javadoc.io.svg)](https://javadoc.io/doc/jakarta.json.bind/jakarta.json.bind-api)
+[![Gitter](https://badges.gitter.im/eclipse/jsonb.svg)](https://gitter.im/eclipse/jsonb)
+[![License](https://img.shields.io/badge/License-EPL%202.0-green.svg)](https://opensource.org/licenses/EPL-2.0)
+
+JSON-B is a standard binding layer for converting Java objects to/from JSON messages. It defines a default mapping algorithm for converting existing Java classes to JSON, while enabling developers to customize the mapping process through the use of Java annotations.
+
+## Get it
+
+### Maven
+```xml
+<!-- https://mvnrepository.com/artifact/jakarta.json.bind/jakarta.json.bind-api -->
+<dependency>
+    <groupId>jakarta.json.bind</groupId>
+    <artifactId>jakarta.json.bind-api</artifactId>
+    <version>3.0.0</version>
+</dependency>
+```
+
+## Mapping a simple class
+
+Suppose we have the following Java object, which we want to represent with JSON data:
+```java
+public class User {
+  public long id;
+  public String name;
+  public int age;
+}
+```
+
+Using the default mapping, this class can be serialized (as-is) to a JSON string:
+```java
+Jsonb jsonb = JsonbBuilder.create();
+
+User bob = new User();
+bob.id = 1234;
+bob.name = "Bob";
+bob.age = 42;
+
+String bobJson = jsonb.toJson(bob);
+System.out.println(bobJson); // {"id":1234,"name":"Bob","age":42}
+```
+
+Likewise, JSON data can be deserialized back into Java objects:
+```java
+Jsonb jsonb = JsonbBuilder.create();
+
+String aliceJson = "{\"id\":5678,\"name\":\"Alice\",\"age\":42}";
+User alice = jsonb.fromJson(aliceJson, User.class);
+```
+
+## How to run the TCK tests
+
+The JSON-B TCK tests are produced as a Maven artifact where the tests use Arquillian + JUnit. To run the TCK tests using your implementation,
+include the TCK module and apply the appropriate Arquillian container. See the [Eclipse Yasson](https://github.com/eclipse-ee4j/yasson) repository for an example of this.
+
+## Links
+
+- [Official web site](https://jakartaee.github.io/jsonb-api)
+- [Eclipse project](https://projects.eclipse.org/projects/ee4j.jsonb)
+- [User's Guide](https://jakartaee.github.io/jsonb-api/docs/user-guide.html)
+- [Jenkins Builds](https://ci.eclipse.org/jsonb/view/all/)
+- [Mailing list](https://www.eclipse.org/lists/jsonb-dev/)
+- [Yasson (Compatible Implementation)](https://github.com/eclipse-ee4j/yasson)

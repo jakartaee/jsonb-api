@@ -27,6 +27,10 @@ on:
   push:
     branches:
       - 'main'
+    paths: # Limit rebuilding the site to only when the following directories are changed.
+      - 'docs/src/**'
+      - 'api/src/**'
+      - 'tck-dist/src/**'
   release:
     types: [published]
   workflow_dispatch: #For testing purposes
@@ -59,19 +63,18 @@ jobs:
         fi
     - name: Assemble documentation
       run: |
-        DEST=site/${{ steps.target_dir.outputs.subdir }}
+        DEST=_site/${{ steps.target_dir.outputs.subdir }}
         mkdir -p "$DEST/docs"
         mkdir -p "$DEST/api"
         mkdir -p "$DEST/tck"
 
+        cp README.md "_site/README.md"
         cp docs/target/generated-docs/user-guide.html "$DEST/docs/index.html"
-        cp -r api/target/apidocs/. "$DEST/api/"
+        cp -r api/target/apidocs/ "$DEST/api/"
         cp tck-dist/target/generated-docs/jsonb-tck-reference-guide-*.html "$DEST/tck/index.html"
     - name: Upload pages artifact
       id: deployment
       uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
-      with:
-        path: ./site/${{ steps.target_dir.outputs.subdir }}
 
   deploy:
     needs: build

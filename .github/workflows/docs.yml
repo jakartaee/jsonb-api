@@ -26,7 +26,7 @@ name: Documentation
 on:
   push:
     branches:
-      - 'master' #TODO switch to main when the default branch is renamed
+      - 'main'
   release:
     types: [published]
   workflow_dispatch: #For testing purposes

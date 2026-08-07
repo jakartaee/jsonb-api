@@ -52,7 +52,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build documentation
-      run: mvn -B clean package
+      run: mvn -B clean package -DskipTests -Prelease
     - name: Determine target subdirectory
       id: target_dir
       run: |

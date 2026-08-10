@@ -47,18 +47,18 @@ Default use of the APIs should not require prior knowledge of the JSON document 
 * *Partial Mapping* +
 In many use cases, only a subset of JSON Document is required to be mapped to a Java object instance.
 * *Integration* +
-Define or enable integration with Jakarta JSON Processing (JSON-P) 1.1.
+Define or enable integration with Jakarta JSON Processing (JSON-P) 2.2.
 
 === Non-Goals
 
 The following are non-goals:
 
 * *Preserving equivalence (Round-trip)* +
-The specification recommends, but does not require equivalence of content for deserialized and serialized JSON documents.
+The specification recommends, but does not require, equivalence of content for deserialized and serialized JSON documents.
 * *JSON Schema* +
 Generation of JSON Schema from Java classes, as well as validation based on JSON schema.
 * *JEP 198 Lightweight JSON API* +
-Support and integration with Lightweight JSON API as defined within JEP 198 is out of scope of this specification. Will be reconsidered in future specification revisions.
+Support and integration with Lightweight JSON API as defined within JEP 198 is out of scope of this specification. This will be reconsidered in future specification revisions.
 
 === Conventions
 
@@ -94,7 +94,7 @@ Process which defines the representation of information in a JSON document as an
 Process of reading a JSON document and constructing a tree of content objects, where each object corresponds to part of JSON document, thus the content tree reflects the document’s content.
 
 *Serialization* +
-Inverse process to deserialization. Process of traversing content object tree and writing a JSON document that reflects the tree’s content.
+Inverse process to deserialization. Process of traversing a content object tree and writing a JSON document that reflects the tree’s content.
 
 === Acknowledgements
 
@@ -117,7 +117,7 @@ This specification was originally developed as part of JSR 367 under the Java Co
 
 During the course of JSR 367 we received many excellent suggestions. Special thanks to Heather VanCura, David Delabassee and Reza Rahman for feedback and help with evangelizing the specification, and John Clingan for feedback and language corrections.
 
-During the course of JSR 367 we also received many excellent suggestions. Thanks in particular to Mark Struberg, Olena Syrota, Oleg Tsal-Tsalko and whole JUG UA for their contributions.
+During the course of JSR 367 we also received many excellent suggestions. Thanks in particular to Mark Struberg, Olena Syrota, Oleg Tsal-Tsalko and the whole JUG UA for their contributions.
 
 == Runtime API
 

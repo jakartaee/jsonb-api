@@ -129,11 +129,11 @@ This section defines the default binding (representation) of Java components and
 
 === General
 
-JSON Binding implementations (_implementations_ in further text) MUST support binding of JSON documents as defined in https://tools.ietf.org/html/rfc7159[RFC 7159 JSON Grammar]]. Serialized JSON output MUST conform to the RFC 7159 JSON Grammar and be encoded in UTF-8 encoding as defined in Section 8.1 (Character Encoding) of RFC 7159. Implementations MUST support deserialization of documents conforming to RFC 7159 JSON Grammar. In addition, implementations SHOULD NOT allow deserialization of RFC 7159 non-conforming text (e.g. unsupported encoding, ...) and report error in such cases. Detection of UTF encoding of a deserialized document MUST follow the encoding process defined in the Section 3 (Encoding) of https://tools.ietf.org/html/rfc4627[RFC 4627]. Implementations SHOULD ignore the presence of an UTF byte order mark (BOM) and not treat it as an error.
+JSON Binding implementations (_implementations_ in further text) MUST support binding of JSON documents as defined in https://tools.ietf.org/html/rfc7159[RFC 7159 JSON Grammar]]. Serialized JSON output MUST conform to the RFC 7159 JSON Grammar and be encoded in UTF-8 encoding as defined in Section 8.1 (Character Encoding) of RFC 7159. Implementations MUST support deserialization of documents conforming to RFC 7159 JSON Grammar. In addition, implementations SHOULD NOT allow deserialization of RFC 7159 non-conforming text (e.g. unsupported encoding, ...) and SHOULD report errors in such cases. Detection of UTF encoding of a deserialized document MUST follow the encoding process defined in the Section 3 (Encoding) of https://tools.ietf.org/html/rfc4627[RFC 4627]. Implementations SHOULD ignore the presence of a UTF byte order mark (BOM) and not treat it as an error.
 
 === Errors
 
-Implementations SHOULD NOT allow deserialization of RFC 7159 non-conforming text (e.g. unsupported encoding, ...) and report an error in such case. Implementations SHOULD also report an error during a deserialization operation, if it is not possible to represent a JSON document value with the expected Java type.
+Implementations SHOULD NOT allow deserialization of RFC 7159 non-conforming text (e.g. unsupported encoding, ...) and SHOULD report an error in such case. Implementations SHOULD also report an error during a deserialization operation if it is not possible to represent a JSON document value with the expected Java type.
 
 === Basic Java Types
 
@@ -151,19 +151,19 @@ Implementations MUST support binding of the following basic Java classes and the
 
 ==== java.lang.String, Character
 
-Instances of type `java.lang.String` and `java.lang.Character` are serialized to JSON String values as defined within RFC 7159 Section 7 (Strings) in UTF-8 encoding without a byte order mark. [JSB-3.3.1-1] Implementations SHOULD support deserialization of JSON text in other (than UTF-8) UTF encodings into `java.lang.String` instances.
+Instances of type `java.lang.String` and `java.lang.Character` are serialized to JSON String values as defined within RFC 7159 Section 7 (Strings) in UTF-8 encoding without a byte order mark. [[JSB-3.3.1-1]] Implementations SHOULD support deserialization of JSON text in other (than UTF-8) UTF encodings into `java.lang.String` instances.
 
 ==== java.lang.Byte, Short, Integer, Long, Float, Double
 
-Serialization of type `java.lang.Byte`, `Short`, `Integer`, `Long`, `Float` or `Double` (and their corresponding primitive types) to a JSON Number MUST follow the conversion process defined in the javadoc specification for the corresponding type’s `toString()` method [JSB-3.3.2-1]. Deserialization of a JSON value into `java.lang.Byte`, `Short`, `Integer`, `Long`, `Float` or `Double` instance (or their corresponding primitive types) MUST follow the conversion process defined in the javadoc specification for the corresponding `parse$Type` method, such as `java.lang.Byte.parseByte()` for `Byte`.
+Serialization of type `java.lang.Byte`, `Short`, `Integer`, `Long`, `Float` or `Double` (and their corresponding primitive types) to a JSON Number MUST follow the conversion process defined in the javadoc specification for the corresponding type’s `toString()` method. [[JSB-3.3.2-1]] Deserialization of a JSON value into `java.lang.Byte`, `Short`, `Integer`, `Long`, `Float` or `Double` instance (or their corresponding primitive types) MUST follow the conversion process defined in the javadoc specification for the corresponding `parse$Type` method, such as `java.lang.Byte.parseByte()` for `Byte`.
 
 ==== java.lang.Boolean
 
-Serialization of type `java.lang.Boolean` and its corresponding `boolean` primitive type to a JSON value MUST follow the conversion process defined in the javadoc specification for `java.lang.Boolean.toString()` method. Deserialization of a JSON value into `java.lang.Boolean` instance or `boolean` primitive type MUST follow the conversion process defined in the javadoc specification for `java.lang.Boolean.parseBoolean()` method.
+Serialization of type `java.lang.Boolean` and its corresponding `boolean` primitive type to a JSON value MUST follow the conversion process defined in the javadoc specification for the `java.lang.Boolean.toString()` method. Deserialization of a JSON value into `java.lang.Boolean` instance or `boolean` primitive type MUST follow the conversion process defined in the javadoc specification for the `java.lang.Boolean.parseBoolean()` method.
 
 ==== java.lang.Number
 
-Serialization of `java.lang.Number` instances (if their more concrete type is not defined elsewhere in this chapter) to a JSON string MUST retrieve double value from `java.lang.Number.doubleValue()` method and convert it to a JSON Number as defined in section-3.3.2,section 3.3.2. Deserialization of a JSON value into `java.lang.Number` type MUST return an instance of `java.math.BigDecimal` by using conversion process defined in the javadoc specification for constructor of `java.math.BigDecimal` with `java.lang.String` argument.
+Serialization of `java.lang.Number` instances (if their more concrete type is not defined elsewhere in this chapter) to a JSON string MUST retrieve a double value from the `java.lang.Number.doubleValue()` method and convert it to a JSON Number as defined in <<java-lang-byte-short-integer-long-float-double,section 3.3.2>>. Deserialization of a JSON value into a `java.lang.Number` type MUST return an instance of `java.math.BigDecimal` by using the conversion process defined in the javadoc specification for constructor of `java.math.BigDecimal` with a `java.lang.String` argument.
 
 === Specific Standard Java SE Types
 
@@ -181,23 +181,23 @@ Implementations MUST support binding of the following standard Java SE classes:
 
 ==== java.math.BigInteger, BigDecimal
 
-Serialization of type `java.math.BigInteger` or `BigDecimal` to a JSON Number MUST follow the conversion process defined in the javadoc specification for the corresponding type’s `toString()` method. Deserialization of a JSON value into `java.math.BigInteger` or `BigDecimal` instance MUST follow the conversion process defined in the javadoc specification for the constructor of `java.math.BigInteger` or `BigDecimal` with `java.lang.String` argument.
+Serialization of type `java.math.BigInteger` or `BigDecimal` to a JSON Number MUST follow the conversion process defined in the javadoc specification for the corresponding type’s `toString()` method. Deserialization of a JSON value into `java.math.BigInteger` or `BigDecimal` instance MUST follow the conversion process defined in the javadoc specification for the constructor of `java.math.BigInteger` or `BigDecimal` with a `java.lang.String` argument.
 
 ==== java.net.URL, URI
 
-Serialization of type `java.net.URL` or `URI` to a JSON String MUST follow the conversion process defined in the javadoc specification for the corresponding type’s `toString()` method. Deserialization of a JSON value into `java.net.URL` or `URI` instance MUST follow the conversion process defined in the javadoc specification for the constructor of `java.net.URL` or `URI` with `java.lang.String` argument.
+Serialization of type `java.net.URL` or `URI` to a JSON String MUST follow the conversion process defined in the javadoc specification for the corresponding type’s `toString()` method. Deserialization of a JSON value into a `java.net.URL` or `URI` instance MUST follow the conversion process defined in the javadoc specification for the constructor of `java.net.URL` or `URI` with a `java.lang.String` argument.
 
 ==== java.util.Optional, OptionalInt, OptionalLong, OptionalDouble
 
-Non-empty instances of type java.util.Optional, OptionalInt, OptionalLong, OptionalDouble are serialized to a JSON value by retrieving their contained instance and converting it to JSON value based on its type and corresponding mapping definitions within this chapter. Class fields containing empty optional instances are treated as having a null value and serialized based on section 3.14.1.
+Non-empty instances of type java.util.Optional, OptionalInt, OptionalLong, and OptionalDouble are serialized to a JSON value by retrieving their contained instance and converting it to a JSON value based on its type and corresponding mapping definitions within this chapter. Class fields containing empty optional instances are treated as having a null value and serialized based on section 3.14.1.
 
 Empty optional instances in array items are serialized as null.
 
-Deserializing into `Optional`, `OptionalInt`, `OptionalLong`, `OptionalDouble` return empty optional value for properties containing a null value. Otherwise any non-empty `Optional`, `OptionalInt`, `OptionalLong`, `OptionalDouble` value is constructed of type which deserialized based on mappings defined in this chapter.
+Deserializing into `Optional`, `OptionalInt`, `OptionalLong`, and `OptionalDouble` results in an empty optional value for properties containing a null value. Otherwise, any non-empty `Optional`, `OptionalInt`, `OptionalLong`, `OptionalDouble` value is constructed by deserializing its contained value according to the type mappings defined in this chapter.
 
-Instances of type `java.util.Optional<T>` are serialized to a JSON value as JSON objects when T alone would be serialized as JSON object. When T would be serialized as a JSON value (e.g. `java.lang.String`, `java.lang.Integer`), an instance of `java.util.Optional<T>` is serialized as a JSON value (without curly brackets).
+Instances of type `java.util.Optional<T>` are serialized to a JSON value as JSON objects when T alone would be serialized as a JSON object. When T would be serialized as a JSON value (e.g. `java.lang.String`, `java.lang.Integer`), an instance of `java.util.Optional<T>` is serialized as a JSON value (without curly brackets).
 
-Deserialization of a JSON value into `java.util.Optional<T>` MUST be supported if deserialization of a JSON value into instance of T is supported.
+Deserialization of a JSON value into `java.util.Optional<T>` MUST be supported if deserialization of a JSON value into an instance of T is supported.
 
 ==== java.util.UUID
 
@@ -224,15 +224,15 @@ Implementations MUST support binding of the following standard Java date/time cl
 * java.time.OffsetDateTime
 * java.time.OffsetTime
 
-If not specified otherwise in this section, GMT standard time zone and offset specified from UTC Greenwich is used. If not specified otherwise, the date time format for serialization and deserialization is ISO 8601 without offset, as specified in `java.time.format.DateTimeFormatter.ISO_DATE`.
+Unless otherwise specified in this section, GMT standard time zone (UTC offset +00:00) is used. Unless otherwise specified, the date time format for serialization and deserialization is ISO 8601 without offset, as specified in `java.time.format.DateTimeFormatter.ISO_DATE`.
 
 Implementations MUST report an error if the date/time string in a JSON document does not correspond to the expected date/time format.
 
-If in strict I-JSON compliance mode, default date format is changed as it’s described in 4.4.1.
+If <<i-json-support,strict I-JSON compliance mode>> is configured, the default date format is changed as described in 4.4.1.
 
 ==== java.util.Date, Calendar, GregorianCalendar
 
-The serialization format of `java.util.Date`, `Calendar`, `GregorianCalendar` instances with no time information is `ISO_DATE`.
+The serialization format of `java.util.Date`, `Calendar`, and `GregorianCalendar` instances with no time information is `ISO_DATE`.
 
 If time information is present, the format is `ISO_DATE_TIME`.
 
@@ -242,13 +242,13 @@ Implementations MUST support deserialization of both `ISO_DATE` and `ISO_DATE_TI
 
 Implementations MUST support deserialization of any time zone format specified in `java.util.TimeZone` into a field or property of type `java.util.TimeZone` and `SimpleTimeZone`.
 
-Implementations MUST report an error for deprecated three-letter time zone IDs as specified in `java.util.Timezone`.
+Implementations MUST report an error for deprecated three-letter time zone IDs as specified in `java.util.TimeZone`.
 
 The serialization format of `java.util.TimeZone` and `SimpleTimeZone` is `NormalizedCustomID` as specified in `java.util.TimeZone`.
 
 ==== java.time.*
 
-The serialization output for a java.time.Instant instance MUST be in a `ISO_INSTANT` format, as specified in `java.time.format.DateTimeFormatter`. Implementations MUST support the deserialization of an `ISO_INSTANT` formatted JSON string to a `java.time.Instant` instance.
+The serialization output for a java.time.Instant instance MUST be in an `ISO_INSTANT` format, as specified in `java.time.format.DateTimeFormatter`. Implementations MUST support the deserialization of an `ISO_INSTANT` formatted JSON string to a `java.time.Instant` instance.
 
 For other `java.time.*` classes, the following mapping table maps Java types to their corresponding formats:
 
@@ -269,7 +269,7 @@ Implementations MUST support the deserialization of any time zone ID format spec
 
 Implementations MUST support the deserialization of any time zone ID format specified in `java.time.ZoneOffset` into a field or property of type `java.time.ZoneOffset`. The serialization format of `java.time.ZoneOffset` is the normalized zone ID as specified in `java.time.ZoneOffset`.
 
-Implementations MUST support the deserialization of any duration format specified in `java.time.Duration` into a field or property of type `java.time.Duration`. This is super-set of ISO 8601 duration format. The serialization format of `java.time.Duration` is the ISO 8601 seconds based representation, such as PT8H6M12.345S.
+Implementations MUST support the deserialization of any duration format specified in `java.time.Duration` into a field or property of type `java.time.Duration`. This is a super-set of ISO 8601 duration format. The serialization format of `java.time.Duration` is the ISO 8601 seconds based representation, such as PT8H6M12.345S.
 
 Implementations MUST support the deserialization of any period format specified in `java.time.Period` into a field or property of type `java.time.Period`. This is a super-set of ISO 8601 period format. The serialization format of `java.time.Period` is ISO 8601 period representation. A zero-length period is represented as zero days 'P0D'.
 
@@ -658,6 +658,7 @@ The way to enforce serialization of null values, is to call method `jakarta.json
 
 The way to skip serialization of null values is to call method `jakarta.json.bind.JsonbConfig::withNullValues` with parameter `false`.
 
+[[i-json-support]]
 === I-JSON support
 
 I-JSON (short for "Internet JSON") is a restricted profile of JSON designed to maximize interoperability and increase confidence that software can process it successfully with predictable results. The profile is defined in https://tools.ietf.org/html/rfc7493[The I-JSON Message Format].

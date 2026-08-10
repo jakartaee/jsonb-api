@@ -1,4 +1,5 @@
 :sectnums:
+:jsonp-version: 2.2
 = Jakarta JSON Binding Specification
 
 == Introduction
@@ -47,7 +48,7 @@ Default use of the APIs should not require prior knowledge of the JSON document 
 * *Partial Mapping* +
 In many use cases, only a subset of JSON Document is required to be mapped to a Java object instance.
 * *Integration* +
-Define or enable integration with Jakarta JSON Processing (JSON-P) 2.2.
+Define or enable integration with Jakarta JSON Processing (JSON-P) {jsonp-version}.
 
 === Non-Goals
 

@@ -295,7 +295,7 @@ JSON object values are deserialized into an implementation of `java.util.Map<Str
 
 Any class instance passed to a deserialization operation must have a public or protected no-argument constructor. Implementations SHOULD throw an error if this condition is not met. This limitation does not apply to serialization operations, as well as to classes which specify explicit instantiation methods as described in section 4.5.
 
-Any record instance passed to a deserialization operation must have its default generated constructor (and optionally a compact constructor that does not reassign any record component values) as its only constructor. Implementations SHOULD throw an error if this condition is not met. This limitation does not apply to serialization operations, as well as to records which specify explicit instantiation methods as described in section 4.5.
+Any record instance passed to a deserialization operation is instantiated via its canonical constructor. A compact constructor whose body is merged into the canonical constructor at compile time is indistinguishable at runtime and serves as the same deserialization path. Implementations SHOULD throw an error if this condition is not met. This limitation does not apply to serialization operations, as well as to records which specify explicit instantiation methods as described in section 4.5.
 
 ==== Scope and Field access strategy
 
@@ -692,7 +692,7 @@ In many scenarios instantiation with the use of the default constructor or canon
 
 At most one `@JsonbCreator` annotation can be used to annotate a custom constructor or static factory method in a class or record, otherwise a `JsonbException` MUST be thrown.
 
-A factory method annotated with the `@JsonbCreator` annotation must return an instance of the class or record the annotated custom constructor or static factory method is defined within, otherwise a `JsonbException` MUST be thrown.
+A factory method annotated with the `@JsonbCreator` annotation must return an instance of the class or record the annotated factory method is defined within, otherwise a `JsonbException` MUST be thrown.
 
 A JSON field is mapped to the parameter of the same name on the custom constructor or static factory method annotated by `@JsonbCreator` when the application is compiled with the `-parameters` compiler options and the parameter is not annotated with the `@JsonbProperty` annotation.
 
@@ -700,7 +700,7 @@ Otherwise, applications must explicitly define the mapping between JSON field an
 
 All the `@JsonbCreator` parameters are treated as optional by default. See <<optional-parameter-values, Optional parameter values>> chapter for default optional parameter values.
 
-All the `JsonbCreator` parameters can be turned to required by using configuration method `Config::withCreatorParametersRequired`.
+All the `@JsonbCreator` parameters can be turned to required by using configuration method `Config::withCreatorParametersRequired`.
 
 If a required field for a parameter mapping does not exist in the JSON document, then `JsonbException` MUST be thrown.
 

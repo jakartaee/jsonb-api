@@ -22,10 +22,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>By default, deserialization creates an instance object by invoking the class's default constructor
- * or the record's canonical constructor. The canonical constructor of a record can be explicitly overridden
- * by declaring an all-args constructor or a compact constructor and will still be used as the default path 
- * for deserialization without requiring {@code @JsonbCreator}.</p>
+ * <p>By default, deserialization of a class invokes its no-argument constructor, and deserialization
+ * of a record invokes its canonical constructor. A record may also declare a compact constructor
+ * whose body is merged into the canonical constructor at compile time; the two are indistinguishable
+ * at runtime and both serve as the canonical deserialization path without requiring
+ * {@code @JsonbCreator}.</p>
  *
  * <p>This annotation identifies a custom constructor or static factory method to invoke when
  * creating an instance of the associated class or record during deserialization.</p>
@@ -42,6 +43,9 @@ import java.lang.annotation.Target;
  *   <li> method </li>
  *   <li> constructor </li>
  * </ul>
+ *
+ * <p><b>Since 3.1:</b> {@code @JsonbCreator} may also be placed on a non-canonical constructor
+ * or static factory method of a Java record to designate an alternative deserialization path.</p>
  *
  * @since JSON Binding 1.0
  */

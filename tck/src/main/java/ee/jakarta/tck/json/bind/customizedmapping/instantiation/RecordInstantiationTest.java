@@ -68,7 +68,8 @@ public class RecordInstantiationTest {
      *
      * @test_Strategy: Assert that a static factory method annotated with
      * JsonbCreator annotation can be used to customize record instantiation
-     * during unmarshalling, with the remaining components defaulted
+     * during unmarshalling, with components not covered by the factory method
+     * set to fixed values within the factory method body
      */
     @Test
     public void testFactoryMethodPlusFields() {
@@ -212,6 +213,15 @@ public class RecordInstantiationTest {
                    c.stringInstance(), is(expected));
     }
 
+    /*
+     * @testName: testJsonbAdapterOnCreatorParameter
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-4.7.1-1
+     *
+     * @test_Strategy: Assert that a record instance has been created with
+     * JsonbCreator and a component annotated with @JsonbTypeAdapter has
+     * been properly deserialized via the adapter.
+     */
     @Test
     public void testJsonbAdapterOnCreatorParameter() {
         CreatorWithAdapterRecord c = jsonb.fromJson("{ \"instance\" : \"string value\" }",

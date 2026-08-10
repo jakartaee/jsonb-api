@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Tests for verification of proper type inheritance handling for records based on annotation with property format.
  */
-public class RecordsPloymorphicMappingTest {
+public class RecordsPolymorphicMappingTest {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 

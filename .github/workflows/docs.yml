@@ -71,7 +71,7 @@ jobs:
         cp -r api/target/apidocs/ "_site/api/"
         cp tck-dist/target/generated-docs/jsonb-tck-reference-guide-*.html "_site/tck/index.html"
     - name: Deploy to GitHub Pages
-      uses: jamesives/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
+      uses: jamesives/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445 # v4.9.0
       with:
         folder: _site
         branch: gh-pages

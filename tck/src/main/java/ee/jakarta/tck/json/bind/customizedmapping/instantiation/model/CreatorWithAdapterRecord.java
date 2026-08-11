@@ -21,6 +21,10 @@ import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbTypeAdapter;
 
+/**
+ * Used to verify that an @JsonbTypeAdapter can be used on a parameter of a 
+ * custom constructor used by @JsonbCreator
+ */
 public record CreatorWithAdapterRecord(StringWrapper stringWrapper) {
 
     @JsonbCreator

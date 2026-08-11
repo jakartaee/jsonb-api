@@ -19,11 +19,17 @@ package ee.jakarta.tck.json.bind.customizedmapping.instantiation.model;
 import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbProperty;
 
+/**
+ * Used to verify that a static factory method used by @JsonbCreator
+ * throws an error when returning an instance of type other than 
+ * the record it is defined within.
+ */
 public record IllegalInstanceFactoryCreatorRecord(String stringInstance, Integer integerInstance, float floatInstance) {
 
     @JsonbCreator
     public static SimpleCreatorRecord createInstance(
             @JsonbProperty("stringInstance") String stringInstance) {
+        // supplied values are intentionally ignored for testing
         return new SimpleCreatorRecord("Factory String", 2, 3f);
     }
 }

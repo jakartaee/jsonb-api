@@ -19,6 +19,10 @@ package ee.jakarta.tck.json.bind.customizedmapping.instantiation.model;
 import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbProperty;
 
+/**
+ * Used to verify a @JsonbCreator annotation on multiple
+ * static factory methods results in an exception being thrown.
+ */
 public record MultipleFactoryCreatorsRecord(String stringInstance, Integer integerInstance, float floatInstance) {
 
     @JsonbCreator

@@ -19,6 +19,10 @@ package ee.jakarta.tck.json.bind.customizedmapping.instantiation.model;
 import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbProperty;
 
+/**
+ * Used to verify a @JsonbCreator annotation on both a static factory method, 
+ * and constructor results in an exception being thrown.
+ */
 public record CreatorPlusFactoryRecord(String stringInstance, Integer integerInstance, float floatInstance) {
 
     @JsonbCreator
@@ -26,6 +30,7 @@ public record CreatorPlusFactoryRecord(String stringInstance, Integer integerIns
             @JsonbProperty("stringInstance") String stringInstance,
             @JsonbProperty("integerInstance") Integer integerInstance,
             @JsonbProperty("floatInstance") float floatInstance) {
+        // supplied values are intentionally ignored for testing
         this.stringInstance = "Constructor String";
         this.integerInstance = 2;
         this.floatInstance = 2f;

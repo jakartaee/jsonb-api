@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2026 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -23,6 +23,11 @@ package ee.jakarta.tck.json.bind.customizedmapping.instantiation.model;
 import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbProperty;
 
+/**
+ * Used to verify that a custom constructor used by @JsonbCreator
+ * can be used to customize fields and that primitive fields not 
+ * supplied to the constructor are defaulted based on the specification.
+ */
 public class SimpleCreatorPlusFieldsContainer {
     private String stringInstance;
 
@@ -34,6 +39,7 @@ public class SimpleCreatorPlusFieldsContainer {
     public SimpleCreatorPlusFieldsContainer(
             @JsonbProperty("stringInstance") String stringInstance,
             @JsonbProperty("integerInstance") Integer integerInstance) {
+        // supplied values are intentionally ignored for testing
         this.stringInstance = "Constructor String";
         this.integerInstance = 2;
     }

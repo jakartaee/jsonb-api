@@ -19,11 +19,16 @@ package ee.jakarta.tck.json.bind.customizedmapping.instantiation.model;
 import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbProperty;
 
+/**
+ * Verify that a static factory method used by @JsonbCreator can be used
+ * to customize record instantiation during unmarshalling.
+ */
 public record SimpleFactoryCreatorRecord(String stringInstance, Integer integerInstance, float floatInstance) {
 
     @JsonbCreator
     public static SimpleFactoryCreatorRecord createInstance(
             @JsonbProperty("constructorString") String stringInstance) {
+        // supplied values are intentionally ignored for testing
         return new SimpleFactoryCreatorRecord("Factory String", 2, 3f);
     }
 }

@@ -19,12 +19,18 @@ package ee.jakarta.tck.json.bind.customizedmapping.instantiation.model;
 import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbProperty;
 
+/**
+ * Used to verify that a custom constructor used by @JsonbCreator
+ * can be used to customize fields and that primitive fields not 
+ * supplied to the constructor are defaulted based on the specification.
+ */
 public record SimpleCreatorPlusFieldsRecord(String stringInstance, Integer integerInstance, float floatInstance) {
 
     @JsonbCreator
     public static SimpleCreatorPlusFieldsRecord create(
             @JsonbProperty("stringInstance") String stringInstance,
             @JsonbProperty("integerInstance") Integer integerInstance) {
+        // supplied values are intentionally ignored for testing
         return new SimpleCreatorPlusFieldsRecord("Constructor String", 2, 0f);
     }
 }

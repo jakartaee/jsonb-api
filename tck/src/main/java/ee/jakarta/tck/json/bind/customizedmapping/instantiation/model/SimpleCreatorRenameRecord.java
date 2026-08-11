@@ -19,6 +19,10 @@ package ee.jakarta.tck.json.bind.customizedmapping.instantiation.model;
 import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbProperty;
 
+/**
+ * Used to verify that a custom constructor used by @JsonbCreator
+ * can utilize @JsonbProperty to rename a record component name.
+ */
 public record SimpleCreatorRenameRecord(String stringInstance, Integer integerInstance, float floatInstance) {
 
     @JsonbCreator
@@ -26,6 +30,7 @@ public record SimpleCreatorRenameRecord(String stringInstance, Integer integerIn
             @JsonbProperty("stringInstance") String stringInstance,
             @JsonbProperty("intInstance") Integer integerInstance,
             @JsonbProperty("floatInstance") float floatInstance) {
+        // some supplied values are intentionally ignored for testing
         this.stringInstance = "Constructor String";
         this.integerInstance = integerInstance;
         this.floatInstance = 2f;

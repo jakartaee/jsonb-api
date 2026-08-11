@@ -25,6 +25,10 @@ import jakarta.json.bind.serializer.DeserializationContext;
 import jakarta.json.bind.serializer.JsonbDeserializer;
 import jakarta.json.stream.JsonParser;
 
+/**
+ * Used to verify that an @JsonbTypeDeserializer can be used on a parameter of a 
+ * custom constructor used by @JsonbCreator
+ */
 public record CreatorWithDeserializerRecord(String stringInstance) {
 
     @JsonbCreator

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2026 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -22,6 +22,10 @@ package ee.jakarta.tck.json.bind.customizedmapping.instantiation.model;
 
 import jakarta.json.bind.annotation.JsonbCreator;
 
+/**
+ * Used to verify a @JsonbCreator annotation on both a static factory method, 
+ * and constructor results in an exception being thrown.
+ */
 public class CreatorPlusFactoryContainer {
     private String stringInstance;
 
@@ -32,6 +36,7 @@ public class CreatorPlusFactoryContainer {
     @JsonbCreator
     public CreatorPlusFactoryContainer(String stringInstance,
                                        Integer integerInstance, float floatInstance) {
+        // supplied values are intentionally ignored for testing
         this.stringInstance = "Constructor String";
         this.integerInstance = 2;
         this.floatInstance = 2;

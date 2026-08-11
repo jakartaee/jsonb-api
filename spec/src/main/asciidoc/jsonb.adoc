@@ -295,7 +295,7 @@ JSON object values are deserialized into an implementation of `java.util.Map<Str
 
 Any class instance passed to a deserialization operation must have a public or protected no-argument constructor. Implementations SHOULD throw an error if this condition is not met. This limitation does not apply to serialization operations, as well as to classes which specify explicit instantiation methods as described in section 4.5.
 
-Any record instance passed to a deserialization operation is instantiated via its canonical constructor. A compact constructor whose body is merged into the canonical constructor at compile time is indistinguishable at runtime and serves as the same deserialization path. Implementations SHOULD throw an error if this condition is not met. This limitation does not apply to serialization operations, as well as to records which specify explicit instantiation methods as described in section 4.5.
+Any record instance passed to a deserialization operation is instantiated via its canonical constructor. A compact constructor whose body is merged into the canonical constructor at compile time is indistinguishable at runtime and corresponds to the same deserialization path. Implementations SHOULD throw an error if this condition is not met. This limitation does not apply to serialization operations, as well as to records which specify explicit instantiation methods as described in section 4.5.
 
 ==== Scope and Field access strategy
 
@@ -700,7 +700,7 @@ Otherwise, applications must explicitly define the mapping between JSON field an
 
 All the `@JsonbCreator` parameters are treated as optional by default. See <<optional-parameter-values, Optional parameter values>> chapter for default optional parameter values.
 
-All the `@JsonbCreator` parameters can be turned to required by using configuration method `Config::withCreatorParametersRequired`.
+All the `@JsonbCreator` parameters can be made required by using configuration method `Config::withCreatorParametersRequired`.
 
 If a required field for a parameter mapping does not exist in the JSON document, then `JsonbException` MUST be thrown.
 

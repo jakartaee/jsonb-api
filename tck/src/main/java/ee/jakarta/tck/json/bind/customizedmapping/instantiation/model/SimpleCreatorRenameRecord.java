@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2026 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,36 +14,25 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
-
 package ee.jakarta.tck.json.bind.customizedmapping.instantiation.model;
 
 import jakarta.json.bind.annotation.JsonbCreator;
+import jakarta.json.bind.annotation.JsonbProperty;
 
 /**
- * Used to verify a @JsonbCreator annotation on multiple
- * constructors results in an exception being thrown.
+ * Used to verify that a custom constructor used by @JsonbCreator
+ * can utilize @JsonbProperty to rename a record component name.
  */
-public class MultipleCreatorsContainer {
-    private String stringInstance;
-
-    private Integer integerInstance;
-
-    private float floatInstance;
+public record SimpleCreatorRenameRecord(String stringInstance, Integer integerInstance, float floatInstance) {
 
     @JsonbCreator
-    public MultipleCreatorsContainer(String stringInstance,
-                                     Integer integerInstance) {
-        this.stringInstance = stringInstance;
+    public SimpleCreatorRenameRecord(
+            @JsonbProperty("stringInstance") String stringInstance,
+            @JsonbProperty("intInstance") Integer integerInstance,
+            @JsonbProperty("floatInstance") float floatInstance) {
+        // some supplied values are intentionally ignored for testing
+        this.stringInstance = "Constructor String";
         this.integerInstance = integerInstance;
-    }
-
-    @JsonbCreator
-    public MultipleCreatorsContainer(Integer integerInstance,
-                                     float floatInstance) {
-        this.integerInstance = integerInstance;
-        this.floatInstance = floatInstance;
+        this.floatInstance = 2f;
     }
 }

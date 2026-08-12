@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2021 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2026 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -22,13 +22,22 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>This annotation identifies the custom constructor or factory method to use when creating an instance
- * of the associated class.</p>
+ * <p>Annotates a constructor or static factory method to use for deserialization.</p>
  *
- * <p>Only one constructor or static factory method can be annotated with {@code JsonbCreator} in a given class.</p>
+ * <p>By default, deserialization of a class invokes its no-argument constructor, and deserialization
+ * of a record invokes its canonical constructor. A record may also declare a compact constructor
+ * whose body is merged into the canonical constructor at compile time; the two are indistinguishable
+ * at runtime and both serve as the canonical deserialization path without requiring
+ * {@code @JsonbCreator}.</p>
  *
- * <p>The {@code @JsonbCreator} annotation is intended to be used with constructors/methods with parameters.
- * Such parameters could be annotated for instance with {@code @JsonbProperty}.</p>
+ * <p>This annotation identifies a custom constructor or static factory method to invoke when
+ * creating an instance of the associated class or record during deserialization.</p>
+ *
+ * <p>Only one constructor or static factory method per class or record may be annotated
+ * with {@code @JsonbCreator}.</p>
+ *
+ * <p>Parameters of the annotated constructor or static factory method may themselves be
+ * annotated, for example with {@link JsonbProperty}.</p>
  *
  * <p><b>Usage</b></p>
  * <p>The {@code @JsonbCreator} annotation can be used with the following program elements:</p>
@@ -36,6 +45,9 @@ import java.lang.annotation.Target;
  *   <li> method </li>
  *   <li> constructor </li>
  * </ul>
+ *
+ * <p><b>Since 3.1:</b> {@code @JsonbCreator} may also be placed on a non-canonical constructor
+ * or static factory method of a Java record to designate an alternative deserialization path.</p>
  *
  * @since JSON Binding 1.0
  */

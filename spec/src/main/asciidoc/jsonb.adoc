@@ -296,7 +296,7 @@ JSON object values are deserialized into an implementation of `java.util.Map<Str
 
 Any class instance passed to a deserialization operation must have a public or protected no-argument constructor. Implementations SHOULD throw an error if this condition is not met. This limitation does not apply to serialization operations, as well as to classes which specify explicit instantiation methods as described in section 4.5.
 
-Any record instance passed to a deserialization operation must have its default generated constructor (and optionally a compact constructor that does not reassign any record component values) as its only constructor. Implementations SHOULD throw an error if this condition is not met. This limitation does not apply to serialization operations, as well as to records which specify explicit instantiation methods as described in section 4.5.
+Any record instance passed to a deserialization operation is instantiated via its canonical constructor. A compact constructor whose body is merged into the canonical constructor at compile time is indistinguishable at runtime and corresponds to the same deserialization path. Implementations SHOULD throw an error if this condition is not met. This limitation does not apply to serialization operations, as well as to records which specify explicit instantiation methods as described in section 4.5.
 
 ==== Scope and Field access strategy
 
@@ -690,19 +690,19 @@ The result of serialization of duration must conform to the "duration" productio
 
 === Custom instantiation
 
-In many scenarios instantiation with the use of default constructor is not enough. To support these scenarios, JSON Binding provides `jakarta.json.bind.annotation.JsonbCreator` annotation.
+In many scenarios instantiation with the use of the default constructor or canonical constructor is not enough. To support these scenarios, JSON Binding provides the `jakarta.json.bind.annotation.JsonbCreator` annotation.
 
-At most one `JsonbCreator` annotation can be used to annotate custom constructor or static factory method in a class/record, otherwise `JsonbException` MUST be thrown.
+At most one `@JsonbCreator` annotation can be used to annotate a custom constructor or static factory method in a class or record, otherwise a `JsonbException` MUST be thrown.
 
-Factory method annotated with `JsonbCreator` annotation should return instance of a particular class/record this annotation is used for, otherwise `JsonbException` MUST be thrown.
+A factory method annotated with the `@JsonbCreator` annotation must return an instance of the class or record the annotated factory method is defined within, otherwise a `JsonbException` MUST be thrown.
 
-Mapping between parameters of constructor/factory method annotated with `JsonbCreator` and JSON fields is defined using `JsonbProperty` annotation on all parameters.
+A JSON field is mapped to the parameter of the same name on the custom constructor or static factory method annotated by `@JsonbCreator` when the application is compiled with the `-parameters` compiler options and the parameter is not annotated with the `@JsonbProperty` annotation.
 
-If the `JsonbProperty` annotation on parameters is not used, then parameters should be mapped from JSON fields with the same name. In this case the proper mapping is NOT guaranteed.
+Otherwise, applications must explicitly define the mapping between JSON field and the parameters of the custom constructor or static factory method annotated by `@JsonbCreator` using the `@JsonbProperty` parameter annotation.
 
-All the `JsonbCreator` parameters are treated as optional by default. See <<optional-parameter-values, Optional parameter values>> chapter for default optional parameter values.
+All the `@JsonbCreator` parameters are treated as optional by default. See <<optional-parameter-values, Optional parameter values>> chapter for default optional parameter values.
 
-All the `JsonbCreator` parameters can be turned to required by using configuration method `Config::withCreatorParametersRequired`.
+All the `@JsonbCreator` parameters can be made required by using configuration method `Config::withCreatorParametersRequired`.
 
 If a required field for a parameter mapping does not exist in the JSON document, then `JsonbException` MUST be thrown.
 

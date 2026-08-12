@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2026 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,49 +14,31 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
-
 package ee.jakarta.tck.json.bind.customizedmapping.instantiation.model;
 
 import jakarta.json.bind.annotation.JsonbCreator;
+import jakarta.json.bind.annotation.JsonbProperty;
 
 /**
  * Used to verify a @JsonbCreator annotation on both a static factory method, 
  * and constructor results in an exception being thrown.
  */
-public class CreatorPlusFactoryContainer {
-    private String stringInstance;
-
-    private Integer integerInstance;
-
-    private float floatInstance;
+public record CreatorPlusFactoryRecord(String stringInstance, Integer integerInstance, float floatInstance) {
 
     @JsonbCreator
-    public CreatorPlusFactoryContainer(String stringInstance,
-                                       Integer integerInstance, float floatInstance) {
+    public CreatorPlusFactoryRecord(
+            @JsonbProperty("stringInstance") String stringInstance,
+            @JsonbProperty("integerInstance") Integer integerInstance,
+            @JsonbProperty("floatInstance") float floatInstance) {
         // supplied values are intentionally ignored for testing
         this.stringInstance = "Constructor String";
         this.integerInstance = 2;
-        this.floatInstance = 2;
+        this.floatInstance = 2f;
     }
 
     @JsonbCreator
-    public static CreatorPlusFactoryContainer createInstance(
-            String stringInstance) {
-        return new CreatorPlusFactoryContainer(stringInstance, 3, 3);
-    }
-
-    public String getStringInstance() {
-        return stringInstance;
-    }
-
-    public Integer getIntegerInstance() {
-        return integerInstance;
-    }
-
-    public float getFloatInstance() {
-        return floatInstance;
+    public static CreatorPlusFactoryRecord createInstance(
+            @JsonbProperty("stringInstance") String stringInstance) {
+        return new CreatorPlusFactoryRecord(stringInstance, 3, 3f);
     }
 }

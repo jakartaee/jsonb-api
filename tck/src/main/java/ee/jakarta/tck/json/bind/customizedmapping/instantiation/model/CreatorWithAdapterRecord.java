@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, 2026 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -25,18 +25,12 @@ import jakarta.json.bind.annotation.JsonbTypeAdapter;
  * Used to verify that an @JsonbTypeAdapter can be used on a parameter of a 
  * custom constructor used by @JsonbCreator
  */
-public class CreatorWithAdapterContainer {
-
-    private final StringWrapper stringWrapper;
+public record CreatorWithAdapterRecord(StringWrapper stringWrapper) {
 
     @JsonbCreator
-    public CreatorWithAdapterContainer(@JsonbProperty("instance")
-                                       @JsonbTypeAdapter(SimpleStringAdapter.class) StringWrapper stringWrapper) {
+    public CreatorWithAdapterRecord(
+            @JsonbProperty("instance") @JsonbTypeAdapter(SimpleStringAdapter.class) StringWrapper stringWrapper) {
         this.stringWrapper = stringWrapper;
-    }
-
-    public StringWrapper getStringWrapper() {
-        return stringWrapper;
     }
 
     public static class StringWrapper {
@@ -50,7 +44,6 @@ public class CreatorWithAdapterContainer {
         public String getWrapped() {
             return wrapped;
         }
-
     }
 
     public static class SimpleStringAdapter implements JsonbAdapter<StringWrapper, String> {
@@ -65,5 +58,4 @@ public class CreatorWithAdapterContainer {
             return new StringWrapper(obj);
         }
     }
-
 }

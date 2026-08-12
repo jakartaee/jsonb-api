@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2021, 2026 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -27,6 +27,7 @@ import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbSubtype;
 import jakarta.json.bind.annotation.JsonbTypeInfo;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -79,6 +80,7 @@ public class AnnotationTypeInfoTest {
     }
 
     @Test
+    @Disabled("See: https://github.com/jakartaee/jsonb-api/issues/347")
     public void testCreatorDeserialization() {
         SomeDateType deserialized = jsonb.fromJson("{\"@dateType\":\"constructor\",\"localDate\":\"26-02-2021\"}",
                                                    SomeDateType.class);

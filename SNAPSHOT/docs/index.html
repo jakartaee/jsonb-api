@@ -1145,10 +1145,11 @@ Jsonb jsonb = JsonbBuilder.create(nillableConfig);
 <h4 id="custom-instantiation"><a class="anchor" href="#custom-instantiation"></a>Custom instantiation</h4>
 <div class="paragraph">
 <p>By default, a public default no-arguments constructor is required for deserialization of the class.
-In the case of records, the record&#8217;s default constructor is required for deserialization of the record. The record can include a compact constructor if the compact constructor does not reassign any of the record components.</p>
+In the case of records, the record&#8217;s canonical constructor is used for deserialization. A compact constructor
+whose body is merged into the canonical constructor at compile time is used as the default deserialization path.</p>
 </div>
 <div class="paragraph">
-<p>In many scenarios this requirement is too strict. JSON-B provides @JsonbCreator annotation which can be used to annotate a custom constructor with parameters or a static factory method used to create a class instance.</p>
+<p>In many scenarios this requirement is too strict. JSON-B provides @JsonbCreator annotation which can be used to annotate a custom constructor that has parameters or a static factory method that creates a class or record instance.</p>
 </div>
 <div class="paragraph">
 <p>The sample below shows how @JsonbCreator annotation can be used on a custom constructor. @JsonbProperty annotation on the constructor parameter is required for proper parameter substitution. In this case a value of JSON property 'name' will be passed to the constructor.</p>
@@ -1538,7 +1539,7 @@ Jsonb jsonb = JsonbBuilder.create(config);
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-08-07 17:10:48 UTC
+Last updated 2026-08-12 20:50:20 UTC
 </div>
 </div>
 </body>

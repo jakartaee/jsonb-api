@@ -1,0 +1,42 @@
+# This workflow automates the creation of Specification Documents
+# which will be copied into https://github.com/jakartaee/specifications
+
+name: Generate specification documentation
+
+on: 
+    workflow_dispatch:
+        inputs:
+            specVersion:
+                description: 'Major and Minor level of release. Example: 1.0'
+                required: true
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+    - name: Set up JDK 17
+      uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+      with:
+        java-version: 17
+        distribution: 'temurin'
+        cache: maven
+    - name: Generate specification docs
+      run: |
+        mvn package --file api/pom.xml -Prelease -Dspec.version=${{ github.event.inputs.specVersion }}
+        mvn package --file spec/pom.xml -Dstatus=FINAL -Dspec.version=${{ github.event.inputs.specVersion }}
+    - name: Assemble documentation
+      run: |
+        mkdir documentation/
+        cp spec/target/generated-docs/jsonb-spec-${{ github.event.inputs.specVersion }}.pdf   documentation/jsonb-spec-${{ github.event.inputs.specVersion }}.pdf
+        cp spec/target/generated-docs/jsonb-spec-${{ github.event.inputs.specVersion }}.html  documentation/jsonb-spec-${{ github.event.inputs.specVersion }}.html
+
+        cp -r api/target/reports/apidocs/ documentation/apidocs
+    - name: Upload documentation
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      with:
+        name: Specification Documentation
+        path: documentation/
+        if-no-files-found: error

@@ -21,3 +21,6 @@ nbproject/
 # Java noise
 *.class
 *err_pid*.log
+
+# Environment files
+.envrc

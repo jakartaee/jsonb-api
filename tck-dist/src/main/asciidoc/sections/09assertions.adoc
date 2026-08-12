@@ -1,0 +1,11 @@
+== Assertion Details
+
+This section lists the total number of assertions in the TCK, and provides details about each assertion. The assertions are categorized as JavaDoc Assertions and Specification Assertions.
+
+=== JavaDoc Assertions
+
+include::../includes/javadocAssertions.adoc[]
+
+=== Specification Assertions
+
+include::../includes/specificationAssertions.adoc[]

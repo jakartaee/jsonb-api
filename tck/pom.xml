@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
+    Copyright (c) 2021, 2026 Oracle and/or its affiliates. All rights reserved.
     Copyright (c) 2020 IBM and/or its affiliates. All rights reserved.
 
     This program and the accompanying materials are made available under the
@@ -16,21 +17,20 @@
     SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
 
 -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.eclipse.ee4j</groupId>
-        <artifactId>project</artifactId>
-        <version>1.0.6</version>
+        <groupId>jakarta.json.bind</groupId>
+        <artifactId>jakarta.json.bind-parent</artifactId>
+        <version>3.1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>jakarta.json.bind</groupId>
     <artifactId>jakarta.json.bind-tck</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>JSON-B TCK</name>
+    <name>Jakarta JSON Binding TCK</name>
     <description>Jakarta JSON Binding TCK Tests</description>
 
     <licenses>
@@ -46,12 +46,6 @@
         </license>
     </licenses>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>jakarta.json.bind</groupId>
@@ -62,35 +56,251 @@
         <dependency>
             <groupId>jakarta.json</groupId>
             <artifactId>jakarta.json-api</artifactId>
-            <version>2.0.0-RC1</version>
+            <version>2.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>jakarta.inject</groupId>
             <artifactId>jakarta.inject-api</artifactId>
-            <version>1.0</version>
+            <version>2.0.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.jboss.arquillian.junit</groupId>
-            <artifactId>arquillian-junit-container</artifactId>
-            <version>1.6.0.Final</version>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+            <version>3.0.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.tools</groupId>
+            <artifactId>sigtest-maven-plugin</artifactId>
+            <version>1.4</version>
         </dependency>
     </dependencies>
 
+    <!-- TODO: Temporarily enable snapshot repository -->
+    <repositories>
+        <repository>
+            <id>jakarta-snapshots</id>
+            <url>https://jakarta.oss.sonatype.org/content/repositories/staging/</url>
+        </repository>
+    </repositories>
+
+
     <build>
         <plugins>
+            <!--
+            <plugin>
+                <groupId>org.netbeans.tools</groupId>
+                <artifactId>sigtest-maven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <FileName>${project.build.directory}/jakarta.json.bind.sig_${version}</FileName>
+                    <packages>"jakarta.json.bind","jakarta.json.bind.adapter","jakarta.json.bind.annotation","jakarta.json.bind.config","jakarta.json.bind.serializer","jakarta.json.bind.spi"</packages>
+                </configuration>
+            </plugin>
+            -->
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
                     <doclint>none</doclint>
                 </configuration>
             </plugin>
+        <!-- This plugin marks all files as needing a copyright header update in the CI builds. Even though no files are actually updated.
+             This plugin is no longer actively maintained and should be removed/replaced
+            <plugin>
+                <groupId>org.glassfish.copyright</groupId>
+                <artifactId>glassfish-copyright-maven-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <excludeFile>${basedir}/../etc/config/copyright-exclude</excludeFile>
+                    <scm>git</scm>
+                    <debug>false</debug>
+                    <scmOnly>true</scmOnly>
+                    <warn>false</warn>
+                    <update>false</update>
+                    <ignoreYear>false</ignoreYear>
+                    <templateFile>${basedir}/../etc/config/epl-copyright.txt</templateFile>
+                    <bsdTemplateFile>${basedir}/../etc/config/edl-copyright.txt</bsdTemplateFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>copyright</goal>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        -->
+             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+              </executions>
+            </plugin>
         </plugins>
-    </build>    
+    </build>
+
+    <profiles>
+    <profile>
+      <!-- 
+      ~ This profile can be used to (re)generate signatures of Jakarta JSON Binding API.
+      ~ Note that they differ based on JDK used to build them 
+      ~ All .sig files should be included in the generated jar files! 
+      -->
+      <id>signature-generation</id>
+      <activation>
+        <property>
+          <name>signature</name>
+        </property>
+      </activation>
+      <properties>
+        <!--Default assumed JDK version, can be overriden via -Dmajor.jdk.version=X -->
+        <jdk.major.version>17</jdk.major.version>
+      </properties>
+      <build>
+        <plugins>
+          <!-- Extract api into output directory for use by signature plugin -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>jakarta.json.bind</groupId>
+                      <artifactId>jakarta.json.bind-api</artifactId>
+                      <version>${project.version}</version>
+                      <type>jar</type>
+                      <overWrite>false</overWrite>
+                      <outputDirectory>${project.build.directory}/jakarta.json.bind-api</outputDirectory>
+                      <includes>**/*.class,**/*.xml</includes>
+                    </artifactItem>
+                  </artifactItems>
+                  <includes>**/*.java</includes>
+                  <excludes>**/*.properties</excludes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <!-- Extract JDK modules into output directory for use by signature plugin -->
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>${exec.maven.plugin.version}</version>
+            <executions>
+                <execution>
+                    <id>extractModules</id>
+                    <phase>generate-sources</phase>
+                    <goals>
+                        <goal>exec</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <executable>jimage</executable>
+                <arguments>
+                    <argument>extract</argument>
+                    <argument>--dir=${project.build.directory}/jimage</argument>
+                    <argument>${java.home}/lib/modules</argument>
+                </arguments>
+            </configuration>
+          </plugin>
+          
+          <!-- Run signature plugin to generate signature file -->
+          <plugin>
+            <groupId>jakarta.tck</groupId>
+            <artifactId>sigtest-maven-plugin</artifactId>
+            <version>${sigtest.version}</version>
+            <executions>
+              <execution>
+                <id>createSigFile</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <classes>${project.build.directory}/jakarta.json.bind-api</classes>
+              <classes>${project.build.directory}/jimage/java.base</classes>
+              <packages>
+                  jakarta.json.bind,
+                  jakarta.json.bind.adapter,
+                  jakarta.json.bind.annotation,
+                  jakarta.json.bind.config,
+                  jakarta.json.bind.serializer,
+                  jakarta.json.bind.spi
+              </packages>
+              <version>${project.version}</version>
+              <attach>false</attach>
+              <sigfile>${project.build.directory}/jakarta.json.bind.sig_${project.version}</sigfile>
+            </configuration>
+          </plugin>
+          
+          <!-- Copy signature file to tck resources with major java version -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>${maven.antrun.plugin.version}</version>
+            <executions>
+              <execution>
+                <id>copySigFile</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <mkdir dir="${project.basedir}/src/main/resources/ee/jakarta/tck/json/bind/signaturetest/"/>
+                    <copy todir="${project.basedir}/src/main/resources/ee/jakarta/tck/json/bind/signaturetest/">
+                      <fileset dir="${project.build.directory}" includes="jakarta.json.bind.sig_${project.version}"/>
+                      <mapper from="^(jakarta.json.bind.sig_[0-9\.]+)" to="\1" type="regexp"/>
+                    </copy>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

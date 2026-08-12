@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2020 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2024 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -35,6 +35,11 @@ import java.lang.annotation.Target;
  *   <li> parameter </li>
  *   <li> package </li>
  * </ul>
+ *
+ * <p>Note that even when specifying a pattern, the format of the JSON value also depends on the Locale.
+ * For best portability it is recommended to either specify the {@link #locale()} or define a default Locale
+ * for JSON-B via {@link jakarta.json.bind.JsonbConfig#withLocale(java.util.Locale)}.
+ * </p>
  *
  * @since JSON Binding 1.0
  */

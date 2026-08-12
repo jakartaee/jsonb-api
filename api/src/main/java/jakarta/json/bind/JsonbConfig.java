@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2020 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -140,6 +140,11 @@ public class JsonbConfig {
      * Property used to specify locale globally.
      */
     public static final String LOCALE = "jsonb.locale";
+
+    /**
+     * Property used to specify required creator parameters.
+     */
+    public static final String CREATOR_PARAMETERS_REQUIRED = "jsonb.creator-parameters-required";
 
     /**
      * Set the particular configuration property to a new value. The method can
@@ -402,6 +407,18 @@ public class JsonbConfig {
      */
     public final JsonbConfig withLocale(final Locale locale) {
         return setProperty(LOCALE, locale);
+    }
+
+    /**
+     * Property used to specify whether all creator parameters should be treated as required.
+     * <br>
+     * Default value is {@code false}.
+     *
+     * @param requiredParameters Whether creator parameters are required
+     * @return This JsonbConfig instance.
+     */
+    public final JsonbConfig withCreatorParametersRequired(final boolean requiredParameters) {
+        return setProperty(CREATOR_PARAMETERS_REQUIRED, requiredParameters);
     }
 
     @SuppressWarnings("unchecked")

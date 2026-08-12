@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (c) 2016, 2020 Oracle and/or its affiliates. All rights reserved.
+    Copyright (c) 2016, 2026 Oracle and/or its affiliates. All rights reserved.
 
     This program and the accompanying materials are made available under the
     terms of the Eclipse Public License v. 2.0, which is available at
@@ -21,81 +21,44 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.eclipse.ee4j</groupId>
-        <artifactId>project</artifactId>
-        <version>1.0.6</version>
+        <groupId>jakarta.json.bind</groupId>
+        <artifactId>jakarta.json.bind-parent</artifactId>
+        <version>3.1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>jakarta.json.bind</groupId>
     <artifactId>jakarta.json.bind-api</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>JSON-B API</name>
-    <description>Jakarta JSON Binding is a standard binding layer for converting Java objects to/from JSON documents.</description>
-    <inceptionYear>2016</inceptionYear>
-    <url>https://eclipse-ee4j.github.io/jsonb-api</url>
-
-    <issueManagement>
-        <system>github</system>
-        <url>https://github.com/eclipse-ee4j/jsonb-api/issues</url>
-    </issueManagement>
-
-    <mailingLists>
-        <mailingList>
-            <name>Mailing list</name>
-            <archive>jsonb-dev@eclipse.org</archive>
-        </mailingList>
-    </mailingLists>
-
-    <licenses>
-        <license>
-            <name>Eclipse Public License 2.0</name>
-            <url>https://projects.eclipse.org/license/epl-2.0</url>
-            <distribution>repo</distribution>
-        </license>
-        <license>
-            <name>GNU General Public License, version 2 with the GNU Classpath Exception</name>
-            <url>https://projects.eclipse.org/license/secondary-gpl-2.0-cp</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <scm>
-        <connection>scm:git:git://github.com/eclipse-ee4j/jsonb-api.git</connection>
-        <developerConnection>scm:git:git@github.com:eclipse-ee4j/jsonb-api.git</developerConnection>
-        <url>https://github.com/eclipse-ee4j/jsonb-api</url>
-        <tag>HEAD</tag>
-    </scm>
-
-    <developers>
-        <developer>
-          	<id>m0mus</id>
-            <name>Dmitry Kornilov</name>
-            <email>dmitry.kornilov@oracle.com</email>
-            <url>https://dmitrykornilov.net</url>
-            <organization>Oracle</organization>
-            <roles>
-                <role>Project Lead</role>
-            </roles>
-            <timezone>CET</timezone>
-        </developer>
-    </developers>
+    <name>Jakarta JSON Binding API</name>
 
     <properties>
         <release.spec.feedback>jsonb-dev@eclipse.org</release.spec.feedback>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <milestone.number>01</milestone.number>
-        <new.spec.version>1.1.0</new.spec.version>
+        <new.spec.version>3.0.0</new.spec.version>
         <non.final>false</non.final>
         <skip.release.tests>false</skip.release.tests>
-        <spec.version>1.1</spec.version>
-        <jakarta.json.version>2.0.0-RC1</jakarta.json.version>
+        <spec.version>3.0</spec.version>
+        
         <!-- The version of JSON-B API to compare against to verify we follow semantic versioning rules -->
-        <baseline.compare.version>1.0.2</baseline.compare.version>
+        <baseline.compare.version>2.0.0</baseline.compare.version>
         <api_package>jakarta.json.bind</api_package>
         <legal.doc.source>${project.basedir}/..</legal.doc.source>
         <vendor.name>Oracle Corporation</vendor.name>
+
+        <copyright.exclude>${project.basedir}/../etc/config/copyright-exclude</copyright.exclude>
+        <copyright.templatefile>${project.basedir}/../etc/config/epl-copyright.txt</copyright.templatefile>
+        <copyright.bsdTemplateFile>${project.basedir}/../etc/config/edl-copyright.txt</copyright.bsdTemplateFile>
+        <copyright.ignoreyear>true</copyright.ignoreyear>
+        <copyright.scmonly>true</copyright.scmonly>
+        <copyright.update>false</copyright.update>
+
+        <spotbugs.exclude>${project.basedir}/../etc/config/spotbugs-exclude.xml</spotbugs.exclude>
+        <spotbugs.skip>false</spotbugs.skip>
+        <spotbugs.threshold>Low</spotbugs.threshold>
+        <spotbugs.version>4.8.3.1</spotbugs.version>
+
+        <maven.compiler.testRelease>${maven.compiler.release}</maven.compiler.testRelease>
     </properties>
 
     <dependencyManagement>
@@ -108,7 +71,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.12</version>
+                <version>4.13.2</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
@@ -127,57 +90,6 @@
     </dependencies>
 
     <profiles>
-        <profile>
-            <id>jdk11</id>
-            <activation>
-                <jdk>[11,)</jdk>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>jdk-11</id>
-                                <goals>
-                                    <goal>compile</goal>
-                                </goals>
-                                <configuration>
-                                    <source>9</source>
-                                    <target>9</target>
-                                    <includes>
-                                        <include>module-info.java</include>
-                                    </includes>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>jdk8</id>
-            <activation>
-                <jdk>(,9)</jdk>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-checkstyle-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>findbugs-maven-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
         <profile>
             <id>final</id>
             <activation>
@@ -222,70 +134,34 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>3.5.0</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>findbugs-maven-plugin</artifactId>
-                    <version>3.0.5</version>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>${spotbugs.version}</version>
                     <configuration>
-                        <effort>Max</effort>
-                        <threshold>Low</threshold>
-                        <xmlOutput>true</xmlOutput>
+                        <skip>${spotbugs.skip}</skip>
+                        <threshold>${spotbugs.threshold}</threshold>
                     </configuration>
-                    <executions>
-                        <execution>
-                            <id>analyze-compile</id>
-                            <phase>compile</phase>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.0</version>
+                    <version>3.12.1</version>
                     <configuration>
                         <compilerArgs>
                             <arg>-Xlint:all</arg>
                         </compilerArgs>
                     </configuration>
-                    <executions>
-                        <execution>
-                            <id>default-compile</id>
-                            <configuration>
-                                <release>11</release>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>base-compile</id>
-                            <goals>
-                                <goal>compile</goal>
-                            </goals>
-                            <!-- recompile everything for 1.8 except the module-info.java -->
-                            <configuration>
-                                <release>8</release>
-                                <excludes>
-                                    <exclude>module-info.java</exclude>
-                                </excludes>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>default-testCompile</id>
-                            <configuration>
-                                <release>11</release>
-                            </configuration>
-                        </execution>
-                    </executions>
                 </plugin>
                 <plugin>
                     <!-- This plugin generates the buildNumber property used in maven-bundle-plugin -->
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>buildnumber-maven-plugin</artifactId>
-                    <version>1.4</version>
+                    <version>3.2.0</version>
                     <configuration>
                         <format>{0,date,MM/dd/yyyy hh:mm aa}</format>
                         <items>
@@ -305,9 +181,8 @@
                     <!-- This plugin generates the spec.* properties used in maven-bundle-plugin -->
                     <groupId>org.glassfish.build</groupId>
                     <artifactId>spec-version-maven-plugin</artifactId>
-                    <version>1.5</version>
+                    <version>2.2</version>
                     <configuration>
-                        <specMode>jakarta</specMode>
                         <spec>
                             <nonFinal>${non.final}</nonFinal>
                             <jarType>api</jarType>
@@ -331,7 +206,7 @@
                 <plugin>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>maven-bundle-plugin</artifactId>
-                    <version>3.5.1</version>
+                    <version>5.1.9</version>
                     <extensions>true</extensions>
                     <configuration>
                         <archive>
@@ -348,7 +223,7 @@
                             <Specification-Version>${spec.specification.version}</Specification-Version>
                             <Specification-Vendor>${vendor.name}</Specification-Vendor>
                             <_nodefaultversion>false</_nodefaultversion>
-                            <Export-Package>javax.json.bind.*; version=${spec.version}</Export-Package>
+                            <Export-Package>jakarta.json.bind.*; version=${spec.version}</Export-Package>
                             <_noee>true</_noee>
                         </instructions>
                     </configuration>
@@ -365,7 +240,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>3.3.0</version>
                     <configuration>
                         <archive>
                             <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
@@ -375,9 +250,8 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>3.6.3</version>
                     <configuration>
-                        <source>8</source>
                         <doctitle>Jakarta JSON Binding ${project.version} API Specification</doctitle>
                         <sourceFileExcludes>
                             <sourceFileExclude>**/module-info.java</sourceFileExclude>
@@ -385,7 +259,7 @@
                         </sourceFileExcludes>
                         <docfilessubdirs>true</docfilessubdirs>
                         <links>
-                            <link>http://docs.oracle.com/javase/8/docs/api/</link>
+                            <link>http://docs.oracle.com/en/java/javase/17/docs/api/</link>
                         </links>
                         <detectJavaApiLink>false</detectJavaApiLink>
                         <detectOfflineLinks>false</detectOfflineLinks>
@@ -393,7 +267,7 @@
                         </header>
                         <bottom><![CDATA[
                         Comments to: <a href="mailto:${release.spec.feedback}">${release.spec.feedback}</a>.<br>
-                        Copyright &#169; 2019 Eclipse Foundation. All Rights Reserved.<br>
+                        Copyright &#169; 2019, 2026 Eclipse Foundation. All Rights Reserved.<br>
                         Use is subject to <a href="{@docRoot}/doc-files/EFSL.html" target="_top">license terms</a>.]]>
                         </bottom>
                     </configuration>
@@ -409,7 +283,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>3.0.1</version>
+                    <version>3.2.1</version>
                     <executions>
                         <execution>
                             <id>attach-sources</id>
@@ -422,7 +296,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jxr-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>3.3.2</version>
                     <executions>
                         <execution>
                             <goals>
@@ -433,40 +307,37 @@
                     </executions>
                 </plugin>
                 <plugin>
+                    <!-- e.g. mvn validate glassfish-copyright:repair -->
                     <groupId>org.glassfish.copyright</groupId>
                     <artifactId>glassfish-copyright-maven-plugin</artifactId>
-                    <version>2.3</version>
+                    <version>2.4</version>
                     <configuration>
-                        <excludeFile>${basedir}/../etc/config/copyright-exclude</excludeFile>
-                        <scm>git</scm>
-                        <debug>false</debug>
-                        <scmOnly>true</scmOnly>
-                        <warn>false</warn>
-                        <!-- for use with repair -->
-                        <update>false</update>
-                        <!-- check that year is correct -->
-                        <ignoreYear>false</ignoreYear>
-                        <templateFile>${basedir}/../etc/config/epl-copyright.txt</templateFile>
-                        <bsdTemplateFile>${basedir}/../etc/config/edl-copyright.txt</bsdTemplateFile>
+                        <excludeFile>${copyright.exclude}</excludeFile>
+                        <scmOnly>${copyright.scmonly}</scmOnly>
+                        <update>${copyright.update}</update>
+                        <ignoreYear>${copyright.ignoreyear}</ignoreYear>
+                        <quiet>false</quiet>
+                        <templateFile>${copyright.templatefile}</templateFile>
+                        <bsdTemplateFile>${copyright.bsdTemplateFile}</bsdTemplateFile>
                     </configuration>
                     <executions>
                         <execution>
+                            <phase>verify</phase>
                             <goals>
                                 <goal>check</goal>
                             </goals>
-                            <phase>compile</phase>
                         </execution>
                     </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>3.3.1</version>
                     <dependencies>
                         <dependency>
                             <groupId>com.puppycrawl.tools</groupId>
                             <artifactId>checkstyle</artifactId>
-                            <version>8.18</version>
+                            <version>8.29</version>
                         </dependency>
                     </dependencies>
                     <configuration>
@@ -488,30 +359,31 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
-                    <version>1.6</version>
+                    <version>3.1.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
 
         <plugins>
             <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>copy-sources</id>
-                        <phase>generate-sources</phase>
+                        <id>add-legal-resource</id>
+                        <phase>generate-resources</phase>
                         <goals>
-                            <goal>copy-resources</goal>
+                            <goal>add-resource</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.outputDirectory}/META-INF</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${legal.doc.source}</directory>
                                     <includes>
-                                        <include>LICENSE.md</include>
                                         <include>NOTICE.md</include>
+                                        <include>LICENSE.md</include>
                                     </includes>
+                                    <targetPath>META-INF</targetPath>
                                 </resource>
                             </resources>
                         </configuration>
@@ -519,24 +391,16 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.glassfish.build</groupId>
+                <artifactId>spec-version-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -546,20 +410,16 @@
                 <groupId>org.glassfish.copyright</groupId>
                 <artifactId>glassfish-copyright-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.glassfish.build</groupId>
-                <artifactId>spec-version-maven-plugin</artifactId>
-            </plugin>
             <!-- Ensures that we follow semantic versioning rules -->
             <plugin>
                 <groupId>biz.aQute.bnd</groupId>
                 <artifactId>bnd-baseline-maven-plugin</artifactId>
-                <version>4.3.0</version>
+                <version>6.0.0</version>
                 <configuration>
                     <base>
                         <version>${baseline.compare.version}</version>
                     </base>
-                 </configuration>
+                </configuration>
                 <executions>
                     <execution>
                         <id>baseline</id>
@@ -569,16 +429,15 @@
                     </execution>
                 </executions>
             </plugin>
-        </plugins>
-    </build>
-
-    <reporting>
-        <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>3.0.5</version>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                    <excludeFilterFile>${spotbugs.exclude}</excludeFilterFile>
+                    <failThreshold>High</failThreshold>
+                </configuration>
             </plugin>
         </plugins>
-    </reporting>
+    </build>
 </project>

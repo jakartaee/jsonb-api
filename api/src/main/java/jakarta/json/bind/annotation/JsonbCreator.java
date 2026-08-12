@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, 2020 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2015, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
  * Such parameters could be annotated for instance with {@code @JsonbProperty}.</p>
  *
  * <p><b>Usage</b></p>
- * <p>The {@code @JsonbCreator} annotation can be used with the followingprogram elements:</p>
+ * <p>The {@code @JsonbCreator} annotation can be used with the following program elements:</p>
  * <ul>
  *   <li> method </li>
  *   <li> constructor </li>

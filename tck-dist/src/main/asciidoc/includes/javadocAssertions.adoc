@@ -1,0 +1,829 @@
+.Summary
+[cols="5*", options="header"]
+|==================================================================
+| Type | Total | Active | Deprecated | Removed
+| # of Assertions | 108 | 100 | 1 | 7
+| # of Required Assertions | 108 | 100 | 1 | 7
+| # of Optional Assertions | 0 | 0 | 0 | 0
+|==================================================================
+
+.Detail
+[%collapsible]
+==============
+
+[cols="7*", options="header"]
+|============================================================================
+| ID | Return | Method/Field | Description | Required | Deprecated | Testable
+
+| JSONB:JAVADOC:1 
+| Object 
+| jakarta.json.bind.Jsonb.fromJson(String, Class)
+| Reads in a JSON data from the specified string and return the resulting content tree.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:2
+| Object
+| jakarta.json.bind.Jsonb.fromJson(String, Class) throws JsonbException
+| If any unexpected error(s) occur(s) during deserialization.
+| true
+| 
+| false
+
+| JSONB:JAVADOC:3
+| Object
+| jakarta.json.bind.Jsonb.fromJson(String, Type)
+| Reads in a JSON data from the specified string and return the resulting content tree.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:4
+| Object
+| jakarta.json.bind.Jsonb.fromJson(String, Type) throws JsonbException
+| If any unexpected error(s) occur(s) during deserialization.
+| true
+| 
+| false
+
+| JSONB:JAVADOC:5
+| Object
+| jakarta.json.bind.Jsonb.fromJson(Reader, Class)
+| Reads in a JSON data from the specified Reader and return the resulting content tree.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:6
+| Object
+| jakarta.json.bind.Jsonb.fromJson(Reader, Class) throws JsonbException
+| If any unexpected error(s) occur(s) during deserialization.
+| true
+| 
+| false
+
+| JSONB:JAVADOC:7
+| Object
+| jakarta.json.bind.Jsonb.fromJson(Reader, Type)
+| Reads in a JSON data from the specified Reader and return the resulting content tree.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:8
+| Object
+| jakarta.json.bind.Jsonb.fromJson(Reader, Type) throws JsonbException
+| If any unexpected error(s) occur(s) during deserialization.
+| true
+| 
+| false
+
+| JSONB:JAVADOC:9
+| Object
+| jakarta.json.bind.Jsonb.fromJson(InputStream, Class)
+| Reads in a JSON data from the specified InputStream and return the resulting content tree.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:10
+| Object
+| jakarta.json.bind.Jsonb.fromJson(InputStream, Class) throws JsonbException
+| If any unexpected error(s) occur(s) during deserialization.
+| true
+| 
+| false
+
+| JSONB:JAVADOC:11
+| Object
+| jakarta.json.bind.Jsonb.fromJson(InputStream, Type)
+| Reads in a JSON data from the specified InputStream and return the resulting content tree.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:12
+| Object
+| jakarta.json.bind.Jsonb.fromJson(InputStream, Type) throws JsonbException
+| If any unexpected error(s) occur(s) during deserialization.
+| true
+| 
+| false
+
+| JSONB:JAVADOC:13
+| String
+| jakarta.json.bind.Jsonb.toJson(Object)
+| Writes the Java object tree with root object object to a String instance as JSON.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:14
+| String
+| jakarta.json.bind.Jsonb.toJson(Object) throws JsonbException
+| If any unexpected problem occurs during the serialization, such as I/O error.
+| true
+| 
+| false
+
+| JSONB:JAVADOC:15
+| String
+| jakarta.json.bind.Jsonb.toJson(Object, Type)
+| Writes the Java object tree with root object object to a String instance as JSON.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:16
+| String
+| jakarta.json.bind.Jsonb.toJson(Object, Type) throws JsonbException
+| If any unexpected problem occurs during the serialization, such as I/O error.
+| true
+| 
+| false
+
+
+| JSONB:JAVADOC:17
+| void
+| jakarta.json.bind.Jsonb.toJson(Object, Writer)
+| Writes the object content tree into a Writer character stream.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:18
+| void
+| jakarta.json.bind.Jsonb.toJson(Object, Writer) throws JsonbException
+| If any unexpected problem occurs during the serialization.
+| true
+| 
+| false
+
+| JSONB:JAVADOC:19
+| void
+| jakarta.json.bind.Jsonb.toJson(Object, Type, Writer)
+| Writes the object content tree into a Writer character stream.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:20
+| void
+| jakarta.json.bind.Jsonb.toJson(Object, Type, Writer) throws JsonbException
+| If any unexpected problem occurs during the serialization.
+| true
+| 
+| false
+
+| JSONB:JAVADOC:21
+| void
+| jakarta.json.bind.Jsonb.toJson(Object, OutputStream)
+| Writes the object content tree into output stream.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:22
+| void
+| jakarta.json.bind.Jsonb.toJson(Object, OutputStream) throws JsonbException
+| If any unexpected problem occurs during the serialization.
+| true
+| 
+| false
+
+| JSONB:JAVADOC:23
+| void
+| jakarta.json.bind.Jsonb.toJson(Object, Type, OutputStream)
+| Writes the object content tree into output stream.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:24
+| void
+| jakarta.json.bind.Jsonb.toJson(Object, Type, OutputStream) throws JsonbException
+| If any unexpected problem occurs during the serialization.
+| true
+| 
+| false
+
+| JSONB:JAVADOC:25
+| Jsonb
+| jakarta.json.bind.JsonbBuilder.build
+| Returns a new instance of jakarta.json.bind.Jsonb Jsonb based on the parameters and configuration specified previously in this builder.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:26
+| Jsonb
+| jakarta.json.bind.JsonbBuilder.create
+| Create a new jakarta.json.bind.Jsonb instance using the default JsonbBuilder implementation provided as returned from jakarta.json.bind.spi.JsonbProvider#provider() method.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:27
+| Jsonb
+| jakarta.json.bind.JsonbBuilder.create(JsonbConfig)
+| Create a new jakarta.json.bind.Jsonb instance using the default JsonbBuilder implementation provided as returned from jakarta.json.bind.spi.JsonbProvider#provider() method, configured with provided configuration.
+| true
+| 
+| true
+
+
+| JSONB:JAVADOC:28
+| JsonbBuilder
+| jakarta.json.bind.JsonbBuilder.newBuilder
+| Create a new JsonbBuilder instance as returned by the default jakarta.json.bind.spi.JsonbProvider#provider() method.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:29
+| JsonbBuilder
+| jakarta.json.bind.JsonbBuilder.newBuilder(String)
+| Create a new JsonbBuilder instance as returned by jakarta.json.bind.spi.JsonbProvider#provider(String) method.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:30
+| JsonbBuilder
+| jakarta.json.bind.JsonbBuilder.newBuilder(JsonbProvider)
+| Create a new JsonbBuilder instance as returned by provider#create call.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:31
+| JsonbBuilder
+| jakarta.json.bind.JsonbBuilder.withConfig(JsonbConfig)
+| Set configuration which will be set to the newly created jakarta.json.bind.Jsonb Jsonb instance.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:33
+| Map
+| jakarta.json.bind.JsonbConfig.getAsMap
+| Return all configuration properties as an unmodifiable map.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:34
+| Optional
+| jakarta.json.bind.JsonbConfig.getProperty(String)
+| Return value of particular configuration property. The method can only be used to retrieve one of the standard JSON Binding properties defined in this class or a provider specific property. Attempting to get an undefined property will result in an empty Optional value. See Supported Properties.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:35
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.JsonbConfig
+| 
+| true
+| 
+| true
+
+| JSONB:JAVADOC:36
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.setProperty(String, Object)
+| Set the particular configuration property to a new value. The method can only be used to set one of the standard JSON Binding properties defined in this class or a provider specific property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:51
+| JsonbException
+| jakarta.json.bind.JsonbException.JsonbException(String)
+| Constructs a new runtime exception with the specified detail message. The cause is not initialized, and may subsequently be initialized by a call to #initCause.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:52
+| JsonbException
+| jakarta.json.bind.JsonbException.JsonbException(String, Throwable)
+| Constructs a new runtime exception with the specified detail message and cause. Note that the detail message associated with cause is not automatically incorporated in this runtime exception's detail message.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:53
+| Object
+| jakarta.json.bind.adapter.JsonbAdapter.adaptFromJson(Object)
+| This method is used on deserialization only. It contains a conversion logic from type Adapted to type Original.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:54
+| Object
+| jakarta.json.bind.adapter.JsonbAdapter.adaptFromJson(Object) throws Exception
+| if there is an error during the conversion.
+| true
+| 
+| false
+
+| JSONB:JAVADOC:55
+| Object
+| jakarta.json.bind.adapter.JsonbAdapter.adaptToJson(Object)
+| This method is used on serialization only. It contains a conversion logic from type Original to type Adapted. After conversion Adapted type will be mapped to JSON the standard way.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:56
+| Object
+| jakarta.json.bind.adapter.JsonbAdapter.adaptToJson(Object) throws Exception
+| if there is an error during the conversion.
+| true
+| 
+| false
+
+| JSONB:JAVADOC:57
+| String
+| jakarta.json.bind.annotation.JsonbDateFormat.locale
+| Custom java.util.Locale to use.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:58
+| String
+| jakarta.json.bind.annotation.JsonbDateFormat.value
+| Specifies the date pattern to use.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:60
+| String
+| jakarta.json.bind.annotation.JsonbNumberFormat.locale
+| Custom java.util.Locale to use.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:61
+| String
+| jakarta.json.bind.annotation.JsonbNumberFormat.value
+| Specifies the number pattern to use.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:63
+| String
+| jakarta.json.bind.annotation.JsonbProperty.value
+| Customized name of the field (or JavaBean property).
+| true
+| 
+| true
+
+| JSONB:JAVADOC:64
+| String[]
+| jakarta.json.bind.annotation.JsonbPropertyOrder.value
+| Order in which properties are serialized. Names must correspond to original names defined in Java class before any customization applied.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:65
+| Class
+| jakarta.json.bind.annotation.JsonbTypeAdapter.value
+| Custom JsonbAdapter which provides custom mapping for given field or JavaBean property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:66
+| Class
+| jakarta.json.bind.annotation.JsonbTypeDeserializer.value
+| Custom JsonbDeserializer which provides custom mapping for given field or JavaBean property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:67
+| Class
+| jakarta.json.bind.annotation.JsonbTypeSerializer.value
+| Custom JsonbSerializer which provides custom mapping for given field or JavaBean property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:68
+| Class
+| jakarta.json.bind.annotation.JsonbVisibility.value
+| Custom property visibility strategy used to resolve visibility of the members.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:69
+| String
+| jakarta.json.bind.config.PropertyNamingStrategy.translateName(String)
+| Translates the property name into its JSON field name representation.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:70
+| boolean
+| jakarta.json.bind.config.PropertyVisibilityStrategy.isVisible(Field)
+| Responds whether the given field should be considered as the JsonbProperty.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:71
+| boolean
+| jakarta.json.bind.config.PropertyVisibilityStrategy.isVisible(Method)
+| Responds whether the given method should be considered as the JsonbProperty.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:78
+| JsonbBuilder
+| jakarta.json.bind.spi.JsonbProvider.create
+| Returns a new instance of jakarta.json.bind.JsonbBuilder JsonbBuilder class. jakarta.json.bind.JsonbBuilder JsonbBuilder provides necessary getter methods to access required parameters.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:80
+| JsonbProvider
+| jakarta.json.bind.spi.JsonbProvider.provider
+| Creates a JSON Binding provider object by using the java.util.ServiceLoader#load(Class) method. The first provider of JsonbProvider class from list of providers returned by ServiceLoader.load call is returned. If there are no available service providers, this method tries to load the default service provider using Class#forName(String) method.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:81
+| JsonbProvider
+| jakarta.json.bind.spi.JsonbProvider.provider(String)
+| Creates a JSON Binding provider object by using the java.util.ServiceLoader#load(Class) method, matching providerName. The first provider of JsonbProvider class from list of providers returned by ServiceLoader.load call, matching providerName is returned. If no such provider is found, JsonbException is thrown.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:37__OLD
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withAdapters(JsonbAdapter[])
+| Property used to specify custom mapping adapters. Configures value of ADAPTERS property. Calling withAdapters more than once will merge the adapters with previous value.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:37
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withAdapters(JsonbAdapter[])
+| Property used to specify custom mapping adapters. Configures value of #ADAPTERS property. Calling withAdapters more than once will merge the adapters with previous value.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:38__OLD
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withBinaryDataStrategy(String)
+| Property used to specify custom binary data strategy. Configures value of BINARY_DATA_STRATEGY property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:38
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withBinaryDataStrategy(String)
+| Property used to specify custom binary data strategy. Configures value of #BINARY_DATA_STRATEGY property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:39__OLD
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withDateFormat(String, Locale)
+| Property used to specify custom date format. This format will be used by default for all date classes serialization and deserialization.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:39
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withDateFormat(String, Locale)
+| Property used to specify custom date format. This format will be used by default for all date classes serialization and deserialization. Configures values of #DATE_FORMAT and #LOCALE properties.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:40__OLD
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withDeserializers(JsonbDeserializer[])
+| Property used to specify custom deserializers. Configures value of DESERIALIZERS property. Calling withDeserializers more than once will merge the deserializers with previous value.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:40
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withDeserializers(JsonbDeserializer[])
+| Property used to specify custom deserializers. Configures value of #DESERIALIZERS property. Calling withDeserializers more than once will merge the deserializers with previous value.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:41__OLD
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withEncoding(String)
+| The binding operations will default to this property for encoding of JSON data. For input data (fromJson), selected encoding is used if the encoding cannot be detected automatically. Default value is 'UTF-8'. Configures value of ENCODING property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:41
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withEncoding(String)
+| The binding operations will default to this property for encoding of JSON data. For input data (fromJson), selected encoding is used if the encoding cannot be detected automatically. Default value is 'UTF-8'. Configures value of #ENCODING property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:42__OLD
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withFormatting(Boolean)
+| Property used to specify whether or not the serialized JSON data is formatted with linefeeds and indentation. Configures value of FORMATTING property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:42
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withFormatting(Boolean)
+| Property used to specify whether or not the serialized JSON data is formatted with linefeeds and indentation. Configures value of #FORMATTING property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:43__OLD
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withLocale(Locale)
+| Property used to specify custom locale.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:43
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withLocale(Locale)
+| Property used to specify custom locale. Configures value of #LOCALE property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:44__OLD
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withNullValues(Boolean)
+| Property used to specify whether null values should be serialized to JSON document or skipped. Configures value of NULL_VALUES property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:44
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withNullValues(Boolean)
+| Property used to specify whether null values should be serialized to JSON document or skipped. Configures value of #NULL_VALUES property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:45__OLD
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withPropertyNamingStrategy(PropertyNamingStrategy)
+| Property used to specify custom naming strategy. Configures value of JSONB_PROPERTY_NAMING_STRATEGY property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:45
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withPropertyNamingStrategy(PropertyNamingStrategy)
+| Property used to specify custom naming strategy. Configures value of #PROPERTY_NAMING_STRATEGY property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:46__OLD
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withPropertyNamingStrategy(String)
+| Property used to specify custom naming strategy. Configures value of JSONB_PROPERTY_NAMING_STRATEGY property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:46
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withPropertyNamingStrategy(String)
+| Property used to specify custom naming strategy. Configures value of #PROPERTY_NAMING_STRATEGY property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:47__OLD
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withPropertyOrderStrategy(String)
+| Property used to specify property order strategy. Configures values of JSONB_PROPERTY_ORDER_STRATEGY property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:47
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withPropertyOrderStrategy(String)
+| Property used to specify property order strategy. Configures values of #PROPERTY_ORDER_STRATEGY property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:48__OLD
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withPropertyVisibilityStrategy(PropertyVisibilityStrategy)
+| Property used to specify custom property visibility strategy. Configures value of PROPERTY_VISIBILITY_STRATEGY property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:48
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withPropertyVisibilityStrategy(PropertyVisibilityStrategy)
+| Property used to specify custom property visibility strategy. Configures value of #PROPERTY_VISIBILITY_STRATEGY property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:49__OLD
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withSerializers(JsonbSerializer[])
+| Property used to specify custom serializers. Configures value of SERIALIZERS property. Calling withSerializers more than once will merge the serializers with previous value.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:49
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withSerializers(JsonbSerializer[])
+| Property used to specify custom serializers. Configures value of #SERIALIZERS property. Calling withSerializers more than once will merge the serializers with previous value.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:50__OLD
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withStrictIJSON(Boolean)
+| Property used to specify whether strict I-JSON serialization compliance should be enforced. Configures value of STRICT_IJSON property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:50
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withStrictIJSON(Boolean)
+| Property used to specify whether strict I-JSON serialization compliance should be enforced. Configures value of #STRICT_IJSON property.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:59__OLD
+| boolean
+| jakarta.json.bind.annotation.JsonbNillable.value
+| True if field with null value should be serialized as key/value pair into JSON with null value.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:59
+| boolean
+| jakarta.json.bind.annotation.JsonbNillable.value
+| Switches on/off serialization of properties with null value.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:62__OLD
+| boolean
+| jakarta.json.bind.annotation.JsonbProperty.nillable
+| True if field with null value should be serialized as key/value pair into JSON with null value.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:62
+| boolean
+| jakarta.json.bind.annotation.JsonbProperty.nillable
+| Switches on/off serialization of null values.
+| true
+| true
+| true
+
+| JSONB:JAVADOC:82
+| JsonbBuilder
+| jakarta.json.bind.JsonbBuilder.withProvider(JsonProvider)
+| Provides a JSON-P provider to be used for all JSON-P related operations.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:83
+| JsonbConfig
+| jakarta.json.bind.JsonbConfig.withCreatorParametersRequired(boolean)
+| Property used to specify whether all creator parameters should be treated as required. Default value is false.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:84
+| String
+| jakarta.json.bind.annotation.JsonbSubtype.alias
+| Type alias which is used instead of a class name.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:85
+| Class
+| jakarta.json.bind.annotation.JsonbSubtype.type
+| An actual type bound to the alias.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:86
+| String
+| jakarta.json.bind.annotation.JsonbTypeInfo.key
+| Key used for keeping the type information (alias). Default value is @type.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:87
+| JsonbSubtype[]
+| jakarta.json.bind.annotation.JsonbTypeInfo.value
+| Allowed aliases of the handled type.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:88
+| Object
+| jakarta.json.bind.serializer.DeserializationContext.deserialize(Class, JsonParser)
+| Deserialize JSON stream into instance of provided class using jakarta.json.stream.JsonParser. JsonParser cursor have to be at KEY_NAME before START_OBJECT / START_ARRAY, or at START_OBJECT / START_ARRAY to call this method. After deserialization is complete JsonParser will be at END_OBJECT / END_ARRAY for deserialized JSON structure. If method is called for the same type, which is deserializer bound to, deserializer recursion is suppressed. Otherwise deserializers are reentrant during deserialization process started by this method. JsonParser instance of JSONB runtime is shared with custom deserializer.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:89
+| Object
+| jakarta.json.bind.serializer.DeserializationContext.deserialize(Type, JsonParser)
+| Deserialize JSON stream into instance of provided class using jakarta.json.stream.JsonParser. JsonParser cursor have to be at KEY_NAME before START_OBJECT / START_ARRAY, or at START_OBJECT / START_ARRAY to call this method. After deserialization is complete JsonParser will be at END_OBJECT / END_ARRAY for deserialized JSON structure. If method is called for the same type, which is deserializer bound to, deserializer recursion is suppressed. Otherwise deserializers are reentrant during deserialization process started by this method. JsonParser instance of JSONB runtime is shared with custom deserializer.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:90
+| Object
+| jakarta.json.bind.serializer.JsonbDeserializer.deserialize(JsonParser, DeserializationContext, Type)
+| Deserialize JSON stream into object.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:91
+| void
+| jakarta.json.bind.serializer.JsonbSerializer.serialize(Object, JsonGenerator, SerializationContext)
+| Serializes object into JSON stream.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:92
+| void
+| jakarta.json.bind.serializer.SerializationContext.serialize(String, Object, JsonGenerator)
+| Serializes arbitrary object to JSON, using current jakarta.json.stream.JsonGenerator instance. Serialization is ran as serialization of a root type from user JsonbSerializer. JsonGenerator instance is shared with JSONB and user serializer.
+| true
+| 
+| true
+
+| JSONB:JAVADOC:93
+| void
+| jakarta.json.bind.serializer.SerializationContext.serialize(Object, JsonGenerator)
+| Serializes arbitrary object to JSON, using current jakarta.json.stream.JsonGenerator instance. Serialization is ran as serialization of a root type from user JsonbSerializer. JsonGenerator instance is shared with JSONB and user serializer. Method without key parameter is intended to serialize inside JSON_ARRAYs.
+| true
+| 
+| true
+|============================================================================
+
+==============

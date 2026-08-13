@@ -85,7 +85,7 @@ public class SimpleMappingTester<T> {
     private void testMarshallingToWriter(T value, String expectedRepresentation) {
         try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 OutputStreamWriter writer = new OutputStreamWriter(stream)) {
-            jsonb.toJson(value, writer); // Writer determins character encoding (Default)
+            jsonb.toJson(value, writer); // Writer determines character encoding (Default)
             String jsonString = new String(stream.toByteArray(), Charset.defaultCharset());
             assertThat("[testMarshallingToWriter] - Failed to correctly marshal " + value.getClass().getName() + " object",
                        jsonString, matchesPattern(expectedRepresentation));
@@ -114,7 +114,7 @@ public class SimpleMappingTester<T> {
     private void testMarshallingByTypeToWriter(T value, String expectedRepresentation) {
         try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 OutputStreamWriter writer = new OutputStreamWriter(stream)) {
-            jsonb.toJson(value, serializationType, writer); // Writer determins character encoding (Default)
+            jsonb.toJson(value, serializationType, writer); // Writer determines character encoding (Default)
             String jsonString = new String(stream.toByteArray(), Charset.defaultCharset());
             assertThat("[testMarshallingByTypeToWriter] - Failed to correctly marshal " + value.getClass().getName() + " object",
                        jsonString, matchesPattern(expectedRepresentation));
@@ -143,7 +143,7 @@ public class SimpleMappingTester<T> {
     private void testUnmarshallingByClassFromReader(String expectedRepresentation, Object value) {
         try (ByteArrayInputStream stream = new ByteArrayInputStream(expectedRepresentation.getBytes());
                 InputStreamReader reader = new InputStreamReader(stream)) {
-            Object unmarshalledObject = jsonb.fromJson(reader, typeClass); // Reader determins character encoding (Default)
+            Object unmarshalledObject = jsonb.fromJson(reader, typeClass); // Reader determines character encoding (Default)
             assertThat("[testUnmarshallingByClassFromReader] - Failed to correctly unmarshal " + value.getClass()
                                .getName() + " object",
                        unmarshalledObject, is(value));
@@ -172,7 +172,7 @@ public class SimpleMappingTester<T> {
     private void testUnmarshallingByTypeFromReader(String expectedRepresentation, Object value) {
         try (ByteArrayInputStream stream = new ByteArrayInputStream(expectedRepresentation.getBytes());
                 InputStreamReader reader = new InputStreamReader(stream)) {
-            Object unmarshalledObject = jsonb.fromJson(reader, (Type) typeClass);  // Reader determins character encoding (Default)
+            Object unmarshalledObject = jsonb.fromJson(reader, (Type) typeClass);  // Reader determines character encoding (Default)
             assertThat("[testUnmarshallingByTypeFromReader] - Failed to correctly unmarshal " + value.getClass()
                                .getName() + " object",
                        unmarshalledObject, is(value));

@@ -154,13 +154,16 @@ public class AnnotationTypeInfoTest {
 
     public static final class DateConstructor implements SomeDateType {
 
-        public LocalDate localDate;
+        private LocalDate localDate;
 
         @JsonbCreator
         public DateConstructor(@JsonbProperty("localDate") @JsonbDateFormat(value = "dd-MM-yyyy", locale = "nl-NL") LocalDate localDate) {
             this.localDate = localDate;
         }
 
+        public LocalDate getLocalDate() {
+            return this.localDate;
+        }
     }
 
 }

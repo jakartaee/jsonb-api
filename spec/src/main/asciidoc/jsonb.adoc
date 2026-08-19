@@ -294,23 +294,41 @@ JSON object values are deserialized into an implementation of `java.util.Map<Str
 
 === Java Class and Record
 
-Any class instance passed to a deserialization operation must have a public or protected no-argument constructor. Implementations SHOULD throw an error if this condition is not met. This limitation does not apply to serialization operations, as well as to classes which specify explicit instantiation methods as described in section 4.5.
+Any class instance passed to a deserialization operation must have a public or protected no-argument constructor.
+Implementations SHOULD throw an error if this condition is not met.
+This limitation does not apply to serialization operations or to classes which specify explicit instantiation methods as described in the <<custom-instantiation,Custom Instantiation>> section.
 
-Any record instance passed to a deserialization operation is instantiated via its canonical constructor. A compact constructor whose body is merged into the canonical constructor at compile time is indistinguishable at runtime and corresponds to the same deserialization path. Implementations SHOULD throw an error if this condition is not met. This limitation does not apply to serialization operations, as well as to records which specify explicit instantiation methods as described in section 4.5.
+Any record instance passed to a deserialization operation is instantiated via its canonical constructor. 
+A compact constructor whose body is merged into the canonical constructor at compile time is indistinguishable at runtime and corresponds to the same deserialization path.
+Implementations SHOULD throw an error if this condition is not met.
+This limitation does not apply to serialization operations or to records which specify explicit instantiation methods as described in the <<custom-instantiation,Custom Instantiation>> section.
 
 ==== Scope and Field access strategy
 
-For a deserialization operation of a Java property, if a matching public setter method exists, the method is called to set the value of the property. If a matching setter method with private, protected, or defaulted to package-only access exists, then this field is ignored. If no matching setter method exists and the field is public, then direct field assignment is used.
+For a deserialization operation of a Java property:
 
-For a serialization operation, if a matching public getter method exists, the method is called to obtain the value of the property. If a matching getter method with private, protected, or defaulted to package-only access exists, then this field is ignored. If no matching getter method exists and the field is public, then the value is obtained directly from the field.
+* If a matching public setter method exists, the method is called to set the value of the property.
+* If a matching setter method with private, protected, or defaulted to package-only access exists, then this property is ignored.
+* If no matching setter method exists and the field is public, then direct field assignment is used.
+
+For a serialization operation of a Java property:
+
+* If a matching public getter method exists, the method is called to obtain the value of the property. 
+* If a matching getter method with private, protected, or defaulted to package-only access exists, then this property is ignored. 
+* If no matching getter method exists and the field is public, then the value is obtained directly from the field.
 
 JSON Binding implementations MUST NOT deserialize into transient, final or static fields and MUST ignore name/value pairs corresponding to such fields.
 
-Implementations MUST support serialization of final fields. Transient and static fields MUST be ignored during serialization operation.
+Implementations MUST support serialization of final fields.
+Transient and static fields MUST be ignored during serialization operation.
 
-If a JSON document contains a name/value pair not corresponding to field or setter method then this name/value pair is skipped (see 3.18).
+If a JSON document contains a name/value pair not corresponding to field or setter method then this name/value pair is skipped 
+as described in the <<must-ignore-policy, Must-Ignore Policy>> section.
 
-Public getter/setter methods without a corresponding field MUST be supported. When only public getter/setter methods without corresponding fields are present in the class, the getter method is called to obtain the value to serialize, and the setter method is called during deserialization operation.
+Public getter/setter methods without a corresponding field MUST be supported.
+When only public getter/setter methods without corresponding fields are present in the class, 
+the getter method is called to obtain the value to serialize, 
+and the setter method is called during deserialization operation.
 
 ==== Nested Classes
 
@@ -529,7 +547,8 @@ public class MyGenericType<T,U> {
 
 To resolve type of `field1`, runtime type of `MyGenericType` and static type of `field1` is required.
 
-=== Must-Ignore policy
+[[must-ignore-policy]]
+=== Must-Ignore Policy
 
 When JSON Binding implementation during deserialization encounters key in key/value pair that it does not recognize, it should treat the rest of the JSON document as if the element simply did not appear, and in particular, the implementation MUST NOT treat this as an error condition.
 
@@ -688,26 +707,32 @@ JSON Binding implementations MUST serialize `java.util.Date, java.util.Calendar,
 
 The result of serialization of duration must conform to the "duration" production in Appendix A of RFC 3339, with the same additional restrictions.
 
-=== Custom instantiation
+[[custom-instantiation]]
+=== Custom Instantiation
 
-In many scenarios instantiation with the use of the default constructor or canonical constructor is not enough. To support these scenarios, JSON Binding provides the `jakarta.json.bind.annotation.JsonbCreator` annotation.
+In many scenarios instantiation with the use of the default constructor or canonical constructor is not enough.
+To support these scenarios, JSON Binding provides the `jakarta.json.bind.annotation.JsonbCreator` annotation.
 
-At most one `@JsonbCreator` annotation can be used to annotate a custom constructor or static factory method in a class or record, otherwise a `JsonbException` MUST be thrown.
+At most one `@JsonbCreator` annotation can be used to annotate a custom constructor or static factory method in a class or record, 
+otherwise a `JsonbException` MUST be thrown.
 
-A factory method annotated with the `@JsonbCreator` annotation must return an instance of the class or record the annotated factory method is defined within, otherwise a `JsonbException` MUST be thrown.
+A factory method annotated with the `@JsonbCreator` annotation must return an instance of the class or record the annotated factory method is defined within, 
+otherwise a `JsonbException` MUST be thrown.
 
-A JSON field is mapped to the parameter of the same name on the custom constructor or static factory method annotated by `@JsonbCreator` when the application is compiled with the `-parameters` compiler options and the parameter is not annotated with the `@JsonbProperty` annotation.
+A JSON field is mapped to the parameter of the same name on the custom constructor or static factory method annotated by `@JsonbCreator` 
+when the application is compiled with the `-parameters` compiler options and the parameter is not annotated with the `@JsonbProperty` annotation.
+Otherwise, applications must explicitly define the mapping between JSON field and the parameters of the custom constructor or static factory method annotated 
+by `@JsonbCreator` using the `@JsonbProperty` parameter annotation.
 
-Otherwise, applications must explicitly define the mapping between JSON field and the parameters of the custom constructor or static factory method annotated by `@JsonbCreator` using the `@JsonbProperty` parameter annotation.
-
-All the `@JsonbCreator` parameters are treated as optional by default. See <<optional-parameter-values, Optional parameter values>> chapter for default optional parameter values.
+All the `@JsonbCreator` parameters are treated as optional by default. 
+See <<optional-parameter-values, Optional parameter values>> section for default optional parameter values.
 
 All the `@JsonbCreator` parameters can be made required by using configuration method `Config::withCreatorParametersRequired`.
-
 If a required field for a parameter mapping does not exist in the JSON document, then `JsonbException` MUST be thrown.
 
 [[optional-parameter-values]]
 ==== Optional parameter values
+
 When a property is marked as optional, the proper default should be used. If the parameter is any type other than `Optional` or its variations, then the `null` value is used. If the parameter is `java.util.Optional`, `OptionalInt`, `OptionalLong`, `OptionalDouble`, then the corresponding empty object must be used.
 
 Primitive types cannot accept `null` values, so a corresponding value is required as listed in the following table:

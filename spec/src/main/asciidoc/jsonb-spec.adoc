@@ -8,7 +8,8 @@
 :version-label!:
 :doctype: book
 :docinfo: shared
-:license: Eclipse Foundation Specification License v1.0
+:license: Eclipse Foundation Specification License v2.0
+:jsonp-version: 2.2
 :source-highlighter: coderay
 :toc: left
 :toclevels: 4

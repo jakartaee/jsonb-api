@@ -1,6 +1,6 @@
-:sectnums:
-:jsonp-version: 2.2
 = Jakarta JSON Binding Specification
+
+Copyright (c) 2019, 2026 Eclipse Foundation.
 
 == Introduction
 

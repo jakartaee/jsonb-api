@@ -21,6 +21,7 @@ import jakarta.json.bind.adapter.JsonbAdapter;
 import jakarta.json.bind.config.PropertyNamingStrategy;
 import jakarta.json.bind.config.PropertyVisibilityStrategy;
 
+import jakarta.json.bind.customization.TypeCustomization;
 import jakarta.json.bind.serializer.JsonbDeserializer;
 import jakarta.json.bind.serializer.JsonbSerializer;
 
@@ -125,6 +126,11 @@ public class JsonbConfig {
      * Property used to specify custom deserializers.
      */
     public static final String DESERIALIZERS = "jsonb.derializers";
+
+    /**
+     * Property used to specify runtime type customizations.
+     */
+    public static final String TYPE_CUSTOMIZATIONS = "jsonb.type-customizations";
 
     /**
      * Property used to specify custom binary data strategy.
@@ -362,6 +368,21 @@ public class JsonbConfig {
      */
     public final JsonbConfig withDeserializers(final JsonbDeserializer... deserializers) {
         mergeProperties(DESERIALIZERS, deserializers, JsonbDeserializer.class);
+        return this;
+    }
+
+    /**
+     * Property used to specify custom runtime type customizations.
+     *
+     * Configures value of {@link #TYPE_CUSTOMIZATIONS} property.
+     *
+     * Calling withTypeCustomizations more than once will merge the type customizations with previous value.
+     *
+     * @param typeCustomizations Type customizations which affects deserialization and serialization of the customized types.
+     * @return This JsonbConfig instance.
+     */
+    public final JsonbConfig withTypeCustomizations(final TypeCustomization... typeCustomizations) {
+        mergeProperties(TYPE_CUSTOMIZATIONS, typeCustomizations, TypeCustomization.class);
         return this;
     }
 

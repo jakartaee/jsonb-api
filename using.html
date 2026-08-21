@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Executing Tests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://use.fontawesome.com/96c4d89611.js"></script>
+  </head>
+  <body>
+<table id="doc-title" cellspacing="0" cellpadding="0">
+  <tr>
+  <td align="left" valign="top">
+  <b>Executing Tests</b><br />
+  </td>
+  </tr>
+</table>
+<hr />
+
+<table width="90%" id="top-nav" cellspacing="0" cellpadding="0">
+	<colgroup>
+		<col width="12%"/>
+		<col width="12%"/>
+		<col width="*"/>
+	</colgroup>
+	<tr>
+		<td align="left">
+		<a href="config.html">
+			<span class="vector-font"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Previous</span>
+		</a>
+		</td>
+
+		<td align="left">
+		<a href="debug.html">
+			<span class=" vector-font"><i class="fa fa-arrow-circle-right vector-font" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Next</span>
+		</a>
+		</td>
+
+		<td align="right">
+		<a href="toc.html">
+			<span class=" vector-font"><i class="fa fa-list vector-font" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Contents</span>
+		</a>
+		</td>
+	</tr>
+</table>
+
+
+<div class="sect1">
+<h2 id="executing-tests">5 Executing Tests</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The JSON Binding TCK uses the Junit
+framework to execute the tests.</p>
+</div>
+<div class="paragraph">
+<p>This chapter includes the following topics:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#GBFUZ">Running All Tests</a></p>
+</li>
+<li>
+<p><a href="#GBFWM">Running a Subset of the Tests</a></p>
+</li>
+<li>
+<p><a href="#GCLRR">Running the TCK Against your selected CI</a></p>
+</li>
+<li>
+<p><a href="#GCLRZ">Running the TCK Against a Vendor&#8217;s Implementation</a></p>
+</li>
+<li>
+<p><a href="#GBFVK">Test Reports</a></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The instructions in this chapter assume that you have installed and
+configured your test environment as described in
+<a href="install.html#GBFTP">Chapter 3, "Installation,"</a> and
+<a href="config.html#GBFVV">Chapter 4, "Setup and Configuration,"</a>,
+respectively.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><a id="GBFUZ"></a><a id="starting-javatest"></a></p>
+</div>
+<div class="sect2">
+<h3 id="_5_1_starting_the_tests">5.1 Starting the tests</h3>
+<div class="paragraph">
+<p>The JSON Binding TCK can be run from the command line
+in your shell environment by executing tests from the TCK jar.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The <code>mvn</code> command referenced in the following
+two procedures and elsewhere in this guide is the Apache Maven
+build tool, which will need to be downloaded separately.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><a id="GBFVW"></a><a id="to-start-tests-in-command-line-mode"></a></p>
+</div>
+<div class="sect3">
+<h4 id="_5_1_1_to_run_all_tests">5.1.1 To Run All Tests</h4>
+<div class="paragraph">
+<p>To run all tests, enter the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code>cd $JSONB_HOME/bin
+mvn verify</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><a id="GBFWM"></a><a id="running-a-subset-of-the-tests"></a></p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_5_2_running_a_subset_of_the_tests">5.2 Running a Subset of the Tests</h3>
+<div class="paragraph">
+<p>Use the following modes to run a subset of the tests:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#GBFWK">Section 5.2.1, "To Run a Single Test"</a></p>
+</li>
+<li>
+<p><a href="#GCMCA">Section 5.2.2, "To Run a Subset of Tests"</a></p>
+</li>
+<li>
+<p><a href="#GCMCU">Section 5.2.3, "To Run Signature Tests"</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a id="GBFWK"></a><a id="to-run-a-single-test"></a></p>
+</div>
+<div class="sect3">
+<h4 id="_5_2_1_to_run_a_single_test">5.2.1 To Run a Single Test</h4>
+<div class="paragraph">
+<p>To run a single test, enter the following command:<br></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code>cd $JSONB_HOME/bin
+mvn verify -Dtest=ee.jakarta.tck.json.bind.api.jsonb.JsonbTest</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><a id="GCMCA"></a><a id="to-run-a-subset-of-tests"></a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_5_2_2_to_run_a_subset_of_tests">5.2.2 To Run a Subset of Tests</h4>
+<div class="paragraph">
+<p>To run a subset of tests, enter the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code>cd $JSONB_HOME/bin
+mvn verify -Dtest=ee.jakarta.tck.json.bind.api</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><a id="GCMCU"></a><a id="to-run-signature-tests"></a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_5_2_3_to_run_signature_tests">5.2.3 To Run Signature Tests</h4>
+<div class="paragraph">
+<p>To run the JSON Binding TCK Signature Tests, enter the
+following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code>cd $JSONB_HOME/bin
+mvn verify -Dtest=ee.jakarta.tck.json.bind.signaturetest.jsonb.JSONBSigTest</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><a id="GCLRR"></a><a id="running-the-tck-against-the-ri"></a></p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_5_3_running_the_tck_against_another_ci">5.3 Running the TCK Against another CI</h3>
+<div class="paragraph">
+<p>Some test scenarios are designed to ensure that the configuration and deployment of
+all the prebuilt JSON Binding TCK tests against one Compatible
+Implementation are successful operating with other compatible implementations, and that the TCK is ready for
+compatibility testing against the Vendor and Compatible Implementations.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Verify that you have followed the configuration instructions in
+<a href="config.html#GBFVU">Section 4.1, "Configuring Your Environment to Run
+the TCK Against the Compatible Implementation."</a></p>
+</li>
+<li>
+<p>Run the tests, as described in <a href="#GBFUZ">Section 5.1, "Starting
+the tests,"</a> and, if desired, <a href="#GBFWM">Section 5.2, "Running a Subset
+of the Tests."</a></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><a id="GCLRZ"></a><a id="running-the-tck-against-a-vendors-implementation"></a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_5_4_running_the_tck_against_a_vendors_implementation">5.4 Running the TCK Against a Vendor&#8217;s Implementation</h3>
+<div class="paragraph">
+<p>This test scenario is one of the compatibility test phases that all
+Vendors must pass.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Verify that you have followed the configuration instructions in
+<a href="config.html#GCLHU">Section 4.2, "Configuring Your Environment to
+Run the TCK Against the Vendor Implementation."</a></p>
+</li>
+<li>
+<p>If required, verify that you have completed the steps in
+<a href="config.html#GCLIL">Section 4.3.3, "Deploying the
+Test Applications Against the Vendor Implementation."</a></p>
+</li>
+<li>
+<p>Run the tests, as described in <a href="#GBFUZ">Section 5.1, "Starting
+the Tests,"</a> and, if desired, <a href="#GBFWM">Section 5.2, "Running a Subset
+of the Tests."</a></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><a id="GBFVK"></a><a id="test-reports"></a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_5_5_test_reports">5.5 Test Reports</h3>
+<div class="paragraph">
+<p>A set of report files is created for every test run. These report files
+can be found in the target directory that the test is run. After a test run is
+completed, the Junit framework writes  reports for the test run.</p>
+</div>
+</div>
+</div>
+</div>
+
+<hr />
+
+<table width="90%" id="bottom-nav" cellspacing="0" cellpadding="0">
+	<colgroup>
+		<col width="12%"/>
+		<col width="12%"/>
+		<col width="*"/>
+	</colgroup>
+	<tr>		
+		<td align="left">
+		<a href="config.html">
+			<span class=" vector-font"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Previous</span>
+		</a>
+		</td>
+
+		<td align="left">
+		<a href="debug.html">
+			<span class="vector-font"><i class="fa fa-arrow-circle-right vector-font" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Next</span>
+		</a>
+		</td>
+
+		<td align="right">
+		<a href="toc.html">
+			<span class="vector-font"><i class="fa fa-list vector-font" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Contents</span>
+		</a>
+		</td>
+	</tr>
+</table>
+
+<span id="copyright">
+		<img src="img/eclipse_foundation_logo_tiny.png" height="20px" alt="Eclipse Foundation Logo" align="top"/>&nbsp;			
+		<span >Copyright&nbsp;&copy;&nbsp;2017,&nbsp;2022&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span>
+</span>
+
+</body>
+</html>

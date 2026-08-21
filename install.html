@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Installation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://use.fontawesome.com/96c4d89611.js"></script>
+  </head>
+  <body>
+<table id="doc-title" cellspacing="0" cellpadding="0">
+  <tr>
+  <td align="left" valign="top">
+  <b>Installation</b><br />
+  </td>
+  </tr>
+</table>
+<hr />
+
+<table width="90%" id="top-nav" cellspacing="0" cellpadding="0">
+	<colgroup>
+		<col width="12%"/>
+		<col width="12%"/>
+		<col width="*"/>
+	</colgroup>
+	<tr>
+		<td align="left">
+		<a href="rules.html">
+			<span class="vector-font"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Previous</span>
+		</a>
+		</td>
+
+		<td align="left">
+		<a href="config.html">
+			<span class=" vector-font"><i class="fa fa-arrow-circle-right vector-font" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Next</span>
+		</a>
+		</td>
+
+		<td align="right">
+		<a href="toc.html">
+			<span class=" vector-font"><i class="fa fa-list vector-font" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Contents</span>
+		</a>
+		</td>
+	</tr>
+</table>
+
+
+<div class="sect1">
+<h2 id="installation">3 Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter explains how to install the Jakarta JSON Binding TCK software.</p>
+</div>
+<div class="paragraph">
+<p>After installing the software according to the instructions in this
+chapter, proceed to <a href="config.html#GBFVV">Chapter 4, "Setup and
+Configuration,"</a> for instructions on configuring your test environment.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Although the JSON Binding 3.0 TCK is not
+depended on any particular build tool, it is convenient to install
+Apache Maven 3.6.3+ for setup and execution of tests.
+Any other build tools like Gradle and JUnit 4 Console Runner can also
+be used that is Jupiter API compatible.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><a id="GBFUD"></a><a id="obtaining-the-reference-implementation"></a></p>
+</div>
+<div class="sect2">
+<h3 id="_3_1_obtaining_a_compatible_implementation">3.1 Obtaining a Compatible Implementation</h3>
+<div class="paragraph">
+<p>Each compatible implementation (CI) will provide instructions for obtaining
+their implementation.
+Eclipse Yasson 3.0 is a compatible implementation which may be obtained
+from <a href="https://projects.eclipse.org/projects/ee4j.yasson" class="bare">https://projects.eclipse.org/projects/ee4j.yasson</a></p>
+</div>
+<div class="paragraph">
+<p><a id="GBFTS"></a><a id="installing-the-software"></a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_3_2_installing_the_software">3.2 Installing the Software</h3>
+<div class="paragraph">
+<p>Before you can run the JSON Binding TCK tests, you must
+install and set up the following software components:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Java SE 11+</p>
+</li>
+<li>
+<p>A CI for JSON Binding 3.0, one example is Eclipse Yasson 3.0</p>
+</li>
+<li>
+<p>The JSON Binding 3.0 Vendor Implementation (VI)</p>
+</li>
+<li>
+<p>Any Jupiter API compatible test runner (eg. Apache Maven 3.6.3+)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Follow these steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Install the Java SE 11+ software, if it is not already installed.<br>
+Download and install the Java SE 11+ software from
+<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" class="bare">http://www.oracle.com/technetwork/java/javase/downloads/index.html</a>.
+Refer to the installation instructions that accompany the software for
+additional information.</p>
+</li>
+<li>
+<p>Install the build tool that will be used to run the TCK, if it is not already installed.<br>
+It will be convenient to use Apache Maven 3.6.3+ for running the tests. The test kit
+is not depended on Maven, any build tool compatible with Jupiter API is suffitient.</p>
+</li>
+<li>
+<p>Install the JSON Binding TCK 3.0 software.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha">
+<li>
+<p>Copy or download the JSON Binding TCK software to your
+local system.<br>
+You can obtain the JSON Binding TCK software from the
+Jakarta EE site <a href="https://jakarta.ee/specifications/jsonb/3.0/" class="bare">https://jakarta.ee/specifications/jsonb/3.0/</a>.</p>
+</li>
+<li>
+<p>Use the <code>unzip</code> command to extract the bundle in the directory of
+your choice:<br>
+<code>unzip jakarta-jsonb-tck-3.0.0.zip</code><br></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Install a JSON Binding 3.0 Compatible
+Implementation.<br>
+A Compatible Implementation is used to validate your initial
+configuration and setup of the JSON Binding TCK
+3.0 tests, which are explained further in
+<a href="config.html#GBFVV">Chapter 4, "Setup and Configuration."</a><br>
+The Compatible Implementations for JSON Binding are listed on
+the Jakarta EE Specifications web site: <a href="https://jakarta.ee/specifications/jsonb/3.0/" class="bare">https://jakarta.ee/specifications/jsonb/3.0/</a>.</p>
+</li>
+<li>
+<p>Install the JSON Binding VI to be tested.<br>
+Follow the installation instructions for the particular VI under test.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+
+<hr />
+
+<table width="90%" id="bottom-nav" cellspacing="0" cellpadding="0">
+	<colgroup>
+		<col width="12%"/>
+		<col width="12%"/>
+		<col width="*"/>
+	</colgroup>
+	<tr>		
+		<td align="left">
+		<a href="rules.html">
+			<span class=" vector-font"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Previous</span>
+		</a>
+		</td>
+
+		<td align="left">
+		<a href="config.html">
+			<span class="vector-font"><i class="fa fa-arrow-circle-right vector-font" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Next</span>
+		</a>
+		</td>
+
+		<td align="right">
+		<a href="toc.html">
+			<span class="vector-font"><i class="fa fa-list vector-font" aria-hidden="true"></i></span>
+			<span style="position:relative;top:-2px;">Contents</span>
+		</a>
+		</td>
+	</tr>
+</table>
+
+<span id="copyright">
+		<img src="img/eclipse_foundation_logo_tiny.png" height="20px" alt="Eclipse Foundation Logo" align="top"/>&nbsp;			
+		<span >Copyright&nbsp;&copy;&nbsp;2017,&nbsp;2022&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span>
+</span>
+
+</body>
+</html>

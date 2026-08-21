@@ -1,16 +1,14 @@
 remote_theme: jakartaee/jekyll-theme-jakarta-ee
 
-title: [Jakarta JSON Binding]
-description: [Homepage for resources related to the Jakarta JSON Binding project]
+title: [tck_jsonb_v1_0]
+description: [Oracle Technology Compatibility Kit User's Guide for Java API for JSON Binding 3.0 for Technology Licensees, Release 3.0]
 
 # sidebar links url
-# TODO update links to point to snapshot version of javadoc / userguide / tck guide
 links:
-  source: https://github.com/jakartaee/jsonb-api
-  download: https://github.com/jakartaee/jsonb-api/releases
-  hide_issuetracker: true # Issue tracker never populates correctly
-  mailinglist: https://accounts.eclipse.org/mailing-list/jsonb-dev
-  javadocs: SNAPSHOT/api/apidocs/
-  docs: SNAPSHOT/docs/
-  faq: SNAPSHOT/tck/
+  source: https://github.com/javaee/tck_jsonb_v1_0
+  download: https://github.com/javaee/tck_jsonb_v1_0/releases
+  #mailinglist: https://javaee.groups.io/g/tck_jsonb_v1_0
+  #javadocs:
+  docs: https://javaee.github.io/tck_jsonb_v1_0
+  #faq:
 

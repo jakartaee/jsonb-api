@@ -24,7 +24,7 @@
     <parent>
         <groupId>jakarta.json.bind</groupId>
         <artifactId>jakarta.json.bind-parent</artifactId>
-        <version>3.0.3-SNAPSHOT</version>
+        <version>3.0.3</version>
     </parent>
 
     <artifactId>jakarta.json.bind-tck</artifactId>

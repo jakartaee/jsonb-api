@@ -103,7 +103,6 @@
                                 <data-uri />
                                 <icons>font</icons>
                                 <toc>left</toc>
-                                <icons>font</icons>
                                 <sectanchors>true</sectanchors>
                                 <idprefix />
                                 <idseparator>-</idseparator>
@@ -129,7 +128,6 @@
                                 <icons>font</icons>
                                 <pagenums />
                                 <toc />
-                                <icons>font</icons>
                                 <sectanchors>true</sectanchors>
                                 <idprefix />
                                 <idseparator>-</idseparator>

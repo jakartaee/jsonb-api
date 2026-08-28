@@ -98,40 +98,39 @@
 
         <maven.compiler.release>17</maven.compiler.release>
 
+        <!-- Required by org.eclipse.ee4j:project -->
         <nexus.staging.repository>jsonb-maven2-staging</nexus.staging.repository>
 
         <!-- Plugin versions -->
+        <bnd.baseline.maven.plugin.version>7.1.0</bnd.baseline.maven.plugin.version>
         <build.helper.maven.plugin.version>3.6.0</build.helper.maven.plugin.version>
-        <buildnumber.maven.plugin.version>3.2.0</buildnumber.maven.plugin.version>
-        <maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
+        <buildnumber.maven.plugin.version>3.2.1</buildnumber.maven.plugin.version>
+        <maven.assembly.plugin.version>3.8.0</maven.assembly.plugin.version>
         <maven.antrun.plugin.version>3.2.0</maven.antrun.plugin.version>
         <maven.bundle.plugin.version>5.1.9</maven.bundle.plugin.version>
         <maven.checkstyle.plugin.version>3.3.1</maven.checkstyle.plugin.version>
-        <maven.compiler.plugin.version>3.12.1</maven.compiler.plugin.version>
-        <maven.dependency.plugin.version>3.6.1</maven.dependency.plugin.version>
-        <maven.deploy.plugin.version>3.1.1</maven.deploy.plugin.version>
-        <maven.enforcer.plugin.version>3.6.2</maven.enforcer.plugin.version>
-        <maven.gpg.plugin.version>3.1.0</maven.gpg.plugin.version>
-        <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
-        <maven.javadoc.plugin.version>3.6.3</maven.javadoc.plugin.version>
-        <maven.jxr.plugin.version>3.3.2</maven.jxr.plugin.version>
-        <maven.release.plugin.version>2.5.2</maven.release.plugin.version>
-        <maven.source.plugin.version>3.3.0</maven.source.plugin.version>
-        <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
+        <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
+        <maven.dependency.plugin.version>3.8.1</maven.dependency.plugin.version>
+        <maven.deploy.plugin.version>3.1.4</maven.deploy.plugin.version>
+        <maven.enforcer.plugin.version>3.6.3</maven.enforcer.plugin.version>
+        <maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
+        <maven.jar.plugin.version>3.5.0</maven.jar.plugin.version>
+        <maven.javadoc.plugin.version>3.11.2</maven.javadoc.plugin.version>
+        <maven.jxr.plugin.version>3.6.0</maven.jxr.plugin.version>
+        <maven.release.plugin.version>3.1.1</maven.release.plugin.version>
+        <maven.source.plugin.version>3.3.1</maven.source.plugin.version>
+        <maven.surefire.plugin.version>3.5.3</maven.surefire.plugin.version>
         <spec.version.maven.plugin.version>2.2</spec.version.maven.plugin.version>
-        <spotbugs.maven.plugin.version>4.8.3.1</spotbugs.maven.plugin.version>
+        <spotbugs.maven.plugin.version>4.9.3.0</spotbugs.maven.plugin.version>
         <glassfish.copyright.plugin.version>2.4</glassfish.copyright.plugin.version>
 
-        <!-- JBake determines the versions of asciidoctor we can use -->
-        <!-- Which in turn determines the version of jruby we can use -->
-        <jbake.maven.plugin.version>2.7.0</jbake.maven.plugin.version>
-        <asciidoctorj.version>2.5.7</asciidoctorj.version>
-        <asciidoctorj.pdf.version>2.1.6</asciidoctorj.pdf.version>
-        <asciidoctorj.diagram.version>2.1.2</asciidoctorj.diagram.version>
-        <asciidoctor.maven.plugin.version>2.1.0</asciidoctor.maven.plugin.version>
-        <jruby.version>9.2.21.0</jruby.version>
+        <!-- Asciidoctor and jruby versions -->
+        <asciidoctorj.version>3.0.0</asciidoctorj.version>
+        <asciidoctorj.pdf.version>2.3.19</asciidoctorj.pdf.version>
+        <asciidoctor.maven.plugin.version>3.1.1</asciidoctor.maven.plugin.version>
+        <jruby.version>9.4.12.1</jruby.version>
 
-        <exec.maven.plugin.version>3.6.3</exec.maven.plugin.version>
+        <exec.maven.plugin.version>3.5.0</exec.maven.plugin.version>
         <sigtest.version>2.6</sigtest.version>
 
         <!-- Dependency versions -->
@@ -139,7 +138,7 @@
         <jakarta.inject.version>2.0.0</jakarta.inject.version>
         <jakarta.enterprise.cdi.version>3.0.0</jakarta.enterprise.cdi.version>
         <junit.version>4.13.2</junit.version>
-        <junit.jupiter.version>5.10.2</junit.jupiter.version>
+        <junit.jupiter.version>5.12.2</junit.jupiter.version>
         <hamcrest.version>2.2</hamcrest.version>
         <sigtest.netbeans.version>1.4</sigtest.netbeans.version>
 
@@ -236,7 +235,7 @@
                         <dependency>
                             <groupId>com.puppycrawl.tools</groupId>
                             <artifactId>checkstyle</artifactId>
-                            <version>8.29</version>
+                            <version>10.21.4</version>
                         </dependency>
                     </dependencies>
                     <configuration>
@@ -289,11 +288,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>${maven.jar.plugin.version}</version>
-                    <configuration>
-                        <archive>
-                            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-                        </archive>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -338,17 +332,9 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>${maven.release.plugin.version}</version>
                     <configuration>
-                        <mavenExecutorId>forked-path</mavenExecutorId>
                         <useReleaseProfile>false</useReleaseProfile>
                         <arguments>${release.arguments}</arguments>
                     </configuration>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.apache.maven.scm</groupId>
-                            <artifactId>maven-scm-provider-gitexe</artifactId>
-                            <version>1.9.4</version>
-                        </dependency>
-                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -432,6 +418,11 @@
                     <groupId>org.asciidoctor</groupId>
                     <artifactId>asciidoctor-maven-plugin</artifactId>
                     <version>${asciidoctor.maven.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>biz.aQute.bnd</groupId>
+                    <artifactId>bnd-baseline-maven-plugin</artifactId>
+                    <version>${bnd.baseline.maven.plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

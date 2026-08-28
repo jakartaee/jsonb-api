@@ -104,7 +104,7 @@
                 <dependencies>
                     <dependency>
                         <groupId>org.jruby</groupId>
-                        <artifactId>jruby</artifactId>
+                        <artifactId>jruby-complete</artifactId>
                         <version>${jruby.version}</version>
                     </dependency>
                     <dependency>

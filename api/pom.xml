@@ -71,16 +71,6 @@
 
     <profiles>
         <profile>
-            <id>final</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <properties>
-                <!-- Final API bundle version properties -->
-                <non.final>false</non.final>
-            </properties>
-        </profile>
-        <profile>
             <!-- Use it with release-perform goal to skip another test run. -->
             <id>skip-tests</id>
             <activation>
@@ -206,6 +196,15 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
             </plugin>
             <plugin>
@@ -216,7 +215,6 @@
             <plugin>
                 <groupId>biz.aQute.bnd</groupId>
                 <artifactId>bnd-baseline-maven-plugin</artifactId>
-                <version>6.0.0</version>
                 <configuration>
                     <base>
                         <version>${baseline.compare.version}</version>

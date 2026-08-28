@@ -34,8 +34,6 @@
         <site.output.dir>${project.build.directory}/staging</site.output.dir>
         <maven.site.skip>true</maven.site.skip>
 
-        <!-- status: DRAFT, BETA, etc., or blank for final -->
-        <status>DRAFT</status>
         <maven.build.timestamp.format>MMMM dd, yyyy</maven.build.timestamp.format>
         <revisiondate>${maven.build.timestamp}</revisiondate>
     </properties>
@@ -110,7 +108,7 @@
                             <outputFile>${project.build.directory}/generated-docs/jsonb-spec-${project.version}.html</outputFile>
                             <attributes>
                                 <doctype>book</doctype>
-                                <status>${status}</status>
+                                <status>${doc.mark}</status>
                                 <data-uri />
                                 <icons>font</icons>
                                 <toc>left</toc>
@@ -135,7 +133,7 @@
                                 <pdf-stylesdir>${project.basedir}/src/theme</pdf-stylesdir>
                                 <pdf-style>jakartaee</pdf-style>
                                 <doctype>book</doctype>
-                                <status>${status}</status>
+                                <status>${doc.mark}</status>
                                 <data-uri />
                                 <icons>font</icons>
                                 <pagenums />
@@ -155,7 +153,7 @@
                     <sourceHighlighter>coderay</sourceHighlighter>
                     <attributes>
                         <revnumber>${project.version}</revnumber>
-                        <revremark>${status}</revremark>
+                        <revremark>${doc.mark}</revremark>
                         <revdate>${revisiondate}</revdate>
                     </attributes>
                 </configuration>

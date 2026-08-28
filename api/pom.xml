@@ -38,8 +38,7 @@
         <new.spec.version>3.0.0</new.spec.version>
         <non.final>false</non.final>
         <skip.release.tests>false</skip.release.tests>
-        <spec.version>3.0</spec.version>
-        
+
         <!-- The version of JSON-B API to compare against to verify we follow semantic versioning rules -->
         <baseline.compare.version>2.0.0</baseline.compare.version>
         <api_package>jakarta.json.bind</api_package>
@@ -136,7 +135,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>3.5.0</version>
+                    <version>${build.helper.maven.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>com.github.spotbugs</groupId>

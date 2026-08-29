@@ -109,6 +109,7 @@
         <maven.antrun.plugin.version>3.2.0</maven.antrun.plugin.version>
         <maven.bundle.plugin.version>5.1.9</maven.bundle.plugin.version>
         <maven.checkstyle.plugin.version>3.3.1</maven.checkstyle.plugin.version>
+        <checkstyle.version>10.21.4</checkstyle.version>
         <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
         <maven.dependency.plugin.version>3.8.1</maven.dependency.plugin.version>
         <maven.deploy.plugin.version>3.1.4</maven.deploy.plugin.version>
@@ -235,7 +236,7 @@
                         <dependency>
                             <groupId>com.puppycrawl.tools</groupId>
                             <artifactId>checkstyle</artifactId>
-                            <version>10.21.4</version>
+                            <version>${checkstyle.version}</version>
                         </dependency>
                     </dependencies>
                     <configuration>

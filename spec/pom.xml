@@ -30,43 +30,8 @@
 
     <name>Jakarta JSON Binding Specification</name>
 
-    <properties>
-        <site.output.dir>${project.build.directory}/staging</site.output.dir>
-        <maven.site.skip>true</maven.site.skip>
-
-        <maven.build.timestamp.format>MMMM dd, yyyy</maven.build.timestamp.format>
-        <revisiondate>${maven.build.timestamp}</revisiondate>
-    </properties>
-
-    <distributionManagement>
-        <site>
-            <url>scm:git:git@github.com:jakartaee/jsonb-api.git</url>
-        </site>
-    </distributionManagement>
-
     <build>
-        <defaultGoal>package</defaultGoal>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>enforce-versions</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <requireJavaVersion>
-                                    <version>[17,)</version>
-                                    <message>You need JDK17 or newer</message>
-                                </requireJavaVersion>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>

@@ -67,33 +67,10 @@
             <artifactId>hamcrest</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.netbeans.tools</groupId>
+            <groupId>jakarta.tck</groupId>
             <artifactId>sigtest-maven-plugin</artifactId>
         </dependency>
     </dependencies>
-
-    <!-- TODO: Temporarily enable snapshot repository -->
-    <repositories>
-        <repository>
-            <id>jakarta-snapshots</id>
-            <url>https://jakarta.oss.sonatype.org/content/repositories/staging/</url>
-        </repository>
-    </repositories>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <doclint>none</doclint>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
     <profiles>
         <profile>
@@ -110,7 +87,7 @@
             </activation>
             <properties>
                 <!--Default assumed JDK version, can be overriden via -Dmajor.jdk.version=X -->
-                <jdk.major.version>17</jdk.major.version>
+                <jdk.major.version>${maven.compiler.release}</jdk.major.version>
             </properties>
             <build>
                 <plugins>

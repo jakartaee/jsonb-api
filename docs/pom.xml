@@ -25,7 +25,6 @@
     <name>Jakarta JSON Binding Documentation</name>
 
     <build>
-        <defaultGoal>process-resources</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.asciidoctor</groupId>

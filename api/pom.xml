@@ -16,8 +16,9 @@
     SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
 
 -->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -32,19 +33,10 @@
     <name>Jakarta JSON Binding API</name>
 
     <properties>
-        <release.spec.feedback>jsonb-dev@eclipse.org</release.spec.feedback>
-
-        <milestone.number>01</milestone.number>
-        <new.spec.version>3.0.0</new.spec.version>
-        <non.final>false</non.final>
-        <skip.release.tests>false</skip.release.tests>
-
-        <!-- The version of JSON-B API to compare against to verify we follow semantic versioning rules -->
-        <baseline.compare.version>2.0.0</baseline.compare.version>
-        <api_package>jakarta.json.bind</api_package>
+        <!-- build-helper-maven-plugin configuration -->
         <legal.doc.source>${project.basedir}/..</legal.doc.source>
-        <vendor.name>Oracle Corporation</vendor.name>
 
+        <!-- glassfish-copyright-maven-plugin settings -->
         <copyright.exclude>${project.basedir}/../etc/config/copyright-exclude</copyright.exclude>
         <copyright.templatefile>${project.basedir}/../etc/config/epl-copyright.txt</copyright.templatefile>
         <copyright.bsdTemplateFile>${project.basedir}/../etc/config/edl-copyright.txt</copyright.bsdTemplateFile>
@@ -52,9 +44,8 @@
         <copyright.scmonly>true</copyright.scmonly>
         <copyright.update>false</copyright.update>
 
+        <!-- spotbugs-maven-plugin settings -->
         <spotbugs.exclude>${project.basedir}/../etc/config/spotbugs-exclude.xml</spotbugs.exclude>
-
-        <maven.compiler.testRelease>${maven.compiler.release}</maven.compiler.testRelease>
     </properties>
 
     <dependencies>
@@ -69,49 +60,9 @@
         </dependency>
     </dependencies>
 
-    <profiles>
-        <profile>
-            <!-- Use it with release-perform goal to skip another test run. -->
-            <id>skip-tests</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <properties>
-                <skip.release.tests>true</skip.release.tests>
-            </properties>
-        </profile>
-        <profile>
-            <id>release</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <configuration>
-                            <doctitle>Jakarta JSON Binding ${project.version} API Specification</doctitle>
-                            <header><![CDATA[<br>Jakarta JSON Binding API v${project.version}]]>
-                            </header>
-                            <bottom><![CDATA[
-                            Comments to: <a href="mailto:${release.spec.feedback}">${release.spec.feedback}</a>.<br>
-                            Copyright &#169; 2019, 2026 Eclipse Foundation. All Rights Reserved.<br>
-                            Use is subject to <a href="{@docRoot}/doc-files/EFSL.html" target="_top">license terms</a>.]]>
-                            </bottom>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-deploy-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
     <build>
         <plugins>
+            <!-- Adds NOTICE.md and LICENSE.md from the project root into META-INF of the produced JAR. -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -137,51 +88,33 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Generates a unique build number (${buildNumber}) from SCM metadata, embedded in the OSGi manifest. -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.glassfish.build</groupId>
-                <artifactId>spec-version-maven-plugin</artifactId>
-                <configuration>
-                    <spec>
-                        <nonFinal>${non.final}</nonFinal>
-                        <jarType>api</jarType>
-                        <specVersion>${spec.version}</specVersion>
-                        <newSpecVersion>${new.spec.version}</newSpecVersion>
-                        <specBuild>${milestone.number}</specBuild>
-                        <specImplVersion>${project.version}</specImplVersion>
-                        <apiPackage>${api_package}</apiPackage>
-                    </spec>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>set-spec-properties</goal>
-                            <!-- TODO: Enable when spec version plugin is fixed. -->
-                            <!--goal>check-module</goal-->
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!-- Generates the OSGi MANIFEST.MF under target/classes/META-INF during process-classes,
+                 embedding bundle metadata, export packages, and spec version headers. -->
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
                         <Build-Id>${buildNumber}</Build-Id>
-                        <Bundle-Description>Java API for JSON Binding (JSON-Binding)</Bundle-Description>
-                        <Bundle-Version>${spec.bundle.version}</Bundle-Version>
-                        <Bundle-SymbolicName>${spec.bundle.symbolic-name}</Bundle-SymbolicName>
-                        <DynamicImport-Package>*</DynamicImport-Package>
-                        <Extension-Name>${spec.extension.name}</Extension-Name>
-                        <Implementation-Version>${spec.implementation.version}</Implementation-Version>
-                        <Specification-Version>${spec.specification.version}</Specification-Version>
-                        <Specification-Vendor>${vendor.name}</Specification-Vendor>
-                        <_nodefaultversion>false</_nodefaultversion>
-                        <Export-Package>jakarta.json.bind.*; version=${spec.version}</Export-Package>
-                        <_noee>true</_noee>
+                        <Bundle-Description>
+                            Jakarta JSON Binding ${spec.version} API jar
+                        </Bundle-Description>
+                        <Bundle-Name>Jakarta JSON Binding API jar</Bundle-Name>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <Bundle-Version>${project.version}</Bundle-Version>
+                        <Extension-Name>${project.groupId}</Extension-Name>
+                        <Implementation-Version>${project.version}</Implementation-Version>
+                        <Specification-Vendor>Eclipse Foundation</Specification-Vendor>
+                        <Specification-Version>${spec.version}</Specification-Version>
+                        <DynamicImport-Package>*</DynamicImport-Package>                        
+                        <Export-Package>
+                            jakarta.json.bind.*; version=${spec.version}
+                        </Export-Package>
                     </instructions>
                 </configuration>
                 <executions>
@@ -194,6 +127,8 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Packages the compiled classes into a JAR, using the OSGi-generated MANIFEST.MF
+                 produced by the maven-bundle-plugin. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -203,32 +138,33 @@
                     </archive>
                 </configuration>
             </plugin>
+            <!-- Generates cross-referenced HTML source reports, used as input by maven-checkstyle-plugin
+                 and other reporting tools. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
             </plugin>
+            <!-- Verifies that every source file carries the required EPL-2.0 / GPL-2.0+CE copyright header. -->
             <plugin>
                 <groupId>org.glassfish.copyright</groupId>
                 <artifactId>glassfish-copyright-maven-plugin</artifactId>
             </plugin>
-            <!-- Ensures that we follow semantic versioning rules -->
+            <!-- Generates the API Javadoc with custom spec title, header, and license footer. -->
             <plugin>
-                <groupId>biz.aQute.bnd</groupId>
-                <artifactId>bnd-baseline-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
-                    <base>
-                        <version>${baseline.compare.version}</version>
-                    </base>
+                    <doctitle>Jakarta JSON Binding ${project.version} API Specification</doctitle>
+                    <header><![CDATA[<br>Jakarta JSON Binding API v${project.version}]]>
+                    </header>
+                    <bottom><![CDATA[
+                    Comments to: <a href="mailto:${release.spec.feedback}">${release.spec.feedback}</a>.<br>
+                    Copyright &#169; 2019, 2026 Eclipse Foundation. All Rights Reserved.<br>
+                    Use is subject to <a href="{@docRoot}/doc-files/EFSL.html" target="_top">license terms</a>.]]>
+                    </bottom>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>baseline</id>
-                        <goals>
-                            <goal>baseline</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
+            <!-- Static analysis to detect bug patterns; fails the build on High-severity findings. -->
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>

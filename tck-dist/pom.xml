@@ -128,7 +128,7 @@
                         <configuration>
                             <backend>html5</backend>
                             <outputFile>
-                                ${project.build.directory}/generated-docs/jsonb-tck-reference-guide-${spec.version}.html</outputFile>
+                                ${project.build.directory}/generated-docs/jsonb-tck-reference-guide.html</outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -140,7 +140,7 @@
                         <configuration>
                             <backend>pdf</backend>
                             <outputFile>
-                                ${project.build.directory}/generated-docs/jsonb-tck-reference-guide-${spec.version}.pdf</outputFile>
+                                ${project.build.directory}/generated-docs/jsonb-tck-reference-guide.pdf</outputFile>
                         </configuration>
                     </execution>
                 </executions>

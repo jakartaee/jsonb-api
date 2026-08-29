@@ -97,12 +97,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.testRelease>17</maven.compiler.testRelease>
 
         <!-- Required by org.eclipse.ee4j:project -->
         <nexus.staging.repository>jsonb-maven2-staging</nexus.staging.repository>
+        
+        <release.spec.feedback>jsonb-dev@eclipse.org</release.spec.feedback>
+        <maven.build.timestamp.format>MMMM dd, yyyy</maven.build.timestamp.format>
+        <revisiondate>${maven.build.timestamp}</revisiondate>
 
         <!-- Plugin versions -->
-        <bnd.baseline.maven.plugin.version>7.1.0</bnd.baseline.maven.plugin.version>
         <build.helper.maven.plugin.version>3.6.0</build.helper.maven.plugin.version>
         <buildnumber.maven.plugin.version>3.2.1</buildnumber.maven.plugin.version>
         <maven.assembly.plugin.version>3.8.0</maven.assembly.plugin.version>
@@ -141,7 +145,6 @@
         <junit.version>4.13.2</junit.version>
         <junit.jupiter.version>5.12.2</junit.jupiter.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <sigtest.netbeans.version>1.4</sigtest.netbeans.version>
 
         <!-- SpotBugs configuration -->
         <spotbugs.skip>false</spotbugs.skip>
@@ -192,9 +195,9 @@
                 <version>${hamcrest.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.netbeans.tools</groupId>
+                <groupId>jakarta.tck</groupId>
                 <artifactId>sigtest-maven-plugin</artifactId>
-                <version>${sigtest.netbeans.version}</version>
+                <version>${sigtest.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -420,15 +423,30 @@
                     <artifactId>asciidoctor-maven-plugin</artifactId>
                     <version>${asciidoctor.maven.plugin.version}</version>
                 </plugin>
-                <plugin>
-                    <groupId>biz.aQute.bnd</groupId>
-                    <artifactId>bnd-baseline-maven-plugin</artifactId>
-                    <version>${bnd.baseline.maven.plugin.version}</version>
-                </plugin>
             </plugins>
         </pluginManagement>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>[${maven.compiler.release},)</version>
+                                    <message>You need JDK ${maven.compiler.release} or newer</message>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>

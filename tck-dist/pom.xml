@@ -54,26 +54,6 @@
         </dependency>
     </dependencies>
 
-    <profiles>
-        <profile>
-            <id>EFTL</id>
-            <properties>
-                <license>EFTL</license>
-                <bundle-name>jakarta-jsonb-tck</bundle-name>
-            </properties>
-        </profile>
-        <profile>
-            <id>EPL</id>
-            <properties>
-                <license>EPL</license>
-                <bundle-name>jsonb-tck</bundle-name>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-    </profiles>
-
     <build>
         <plugins>
             <plugin>
@@ -92,7 +72,7 @@
                             </descriptors>
                             <escapeString>\</escapeString>
                             <appendAssemblyId>false</appendAssemblyId>
-                            <finalName>${bundle-name}-${project.version}</finalName>
+                            <finalName>jsonb-tck</finalName>
                         </configuration>
                     </execution>
                 </executions>
@@ -146,7 +126,12 @@
                 </executions>
                 <configuration>
                     <sourceDocumentName>jsonb-tck-reference-guide.adoc</sourceDocumentName>
-                    <skip>${maven.adoc.skip}</skip>
+                    <sourceHighlighter>coderay</sourceHighlighter>
+                    <attributes>
+                        <revnumber>${spec.version}</revnumber>
+                        <revremark>${doc.mark}</revremark>
+                        <revdate>${revisiondate}</revdate>
+                    </attributes>
                 </configuration>
             </plugin>
         </plugins>

@@ -69,7 +69,7 @@ jobs:
         cp README.md "_site/README.md"
         cp docs/target/generated-docs/user-guide.html "_site/docs/index.html"
         cp -r api/target/apidocs/ "_site/api/"
-        cp tck-dist/target/generated-docs/jsonb-tck-reference-guide-*.html "_site/tck/index.html"
+        cp tck-dist/target/generated-docs/jsonb-tck-reference-guide.html "_site/tck/index.html"
     - name: Deploy to GitHub Pages
       uses: jamesives/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445 # v4.9.0
       with:

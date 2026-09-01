@@ -50,6 +50,12 @@
                 <configuration>
                     <sourceDirectory>src/docs</sourceDirectory>
                     <sourceDocumentName>user-guide.adoc</sourceDocumentName>
+                    <attributes>
+                        <sourceHighlighter>coderay</sourceHighlighter>
+                        <revnumber>${spec.version}</revnumber>
+                        <revremark>${doc.mark}</revremark>
+                        <revdate>${revisiondate}</revdate>
+                    </attributes>
                 </configuration>
                 <executions>
                     <execution>

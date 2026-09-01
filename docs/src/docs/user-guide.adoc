@@ -1,4 +1,4 @@
-:component-name: Json Binding 3.1.0 Users Guide
+:component-name: Json Binding {revnumber} Users Guide
 :toc: left
 :toclevels: 3
 :source-highlighter: coderay

@@ -86,12 +86,12 @@
                 </property>
             </activation>
             <properties>
-                <!--Default assumed JDK version, can be overriden via -Dmajor.jdk.version=X -->
+                <!--Default assumed JDK version, can be overridden via -Dmajor.jdk.version=X -->
                 <jdk.major.version>${maven.compiler.release}</jdk.major.version>
             </properties>
             <build>
                 <plugins>
-                    <!-- Extract api into output directory for use by signature plugin -->
+                    <!-- Unpacks the API jar into target/jakarta.json.bind-api for use by sigtest-maven-plugin -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-dependency-plugin</artifactId>
@@ -111,11 +111,11 @@
                                             <type>jar</type>
                                             <overWrite>false</overWrite>
                                             <outputDirectory>${project.build.directory}/jakarta.json.bind-api</outputDirectory>
+                                            <!-- Include only compiled classes; exclude source and property files -->
                                             <includes>**/*.class,**/*.xml</includes>
+                                            <excludes>**/*.properties</excludes>
                                         </artifactItem>
                                     </artifactItems>
-                                    <includes>**/*.java</includes>
-                                    <excludes>**/*.properties</excludes>
                                 </configuration>
                             </execution>
                         </executions>

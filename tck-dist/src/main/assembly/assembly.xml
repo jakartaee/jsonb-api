@@ -44,7 +44,7 @@
         </fileSet>
         <!-- The artifacts -->
         <fileSet>
-            <directory>src/main/artifacts</directory>
+            <directory>src/main/scripts</directory>
             <outputDirectory>artifacts</outputDirectory>
             <fileMode>755</fileMode>
             <includes>
@@ -73,6 +73,8 @@
     <dependencySets>
         <dependencySet>
             <includes>
+                <include>jakarta.json.bind:jakarta.json.bind-parent</include>
+                <include>jakarta.json.bind:jakarta.json.bind-api</include>
                 <include>jakarta.json.bind:jakarta.json.bind-tck</include>
             </includes>
             <useTransitiveDependencies>true</useTransitiveDependencies>

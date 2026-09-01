@@ -18,9 +18,10 @@
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>jakarta.json.bind</groupId>
         <artifactId>jakarta.json.bind-parent</artifactId>
@@ -32,19 +33,41 @@
 
     <name>Jakarta JSON Binding TCK Distribution</name>
 
+    <!--
+        These dependencies are resolved by maven-assembly-plugin to populate the artifacts/
+        directory inside the distribution zip. They are not compile/runtime dependencies of
+        this module itself.
+    -->
     <dependencies>
+        <!-- Parent POM included so implementors can inspect the managed dependency versions -->
+        <dependency>
+            <groupId>jakarta.json.bind</groupId>
+            <artifactId>jakarta.json.bind-parent</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+        </dependency>
+        <!-- API jar -->
+        <dependency>
+            <groupId>jakarta.json.bind</groupId>
+            <artifactId>jakarta.json.bind-api</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+        </dependency>
+        <!-- TCK POM (for dependency resolution when running tests) -->
         <dependency>
             <groupId>jakarta.json.bind</groupId>
             <artifactId>jakarta.json.bind-tck</artifactId>
             <version>${project.version}</version>
             <type>pom</type>
         </dependency>
+        <!-- TCK test jar -->
         <dependency>
             <groupId>jakarta.json.bind</groupId>
             <artifactId>jakarta.json.bind-tck</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
         </dependency>
+        <!-- TCK sources jar (optional — useful for debugging test failures) -->
         <dependency>
             <groupId>jakarta.json.bind</groupId>
             <artifactId>jakarta.json.bind-tck</artifactId>
@@ -56,6 +79,7 @@
 
     <build>
         <plugins>
+            <!-- Packages the TCK distribution zip containing artifacts, docs, bin/pom.xml, and README -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -126,8 +150,8 @@
                 </executions>
                 <configuration>
                     <sourceDocumentName>jsonb-tck-reference-guide.adoc</sourceDocumentName>
-                    <sourceHighlighter>coderay</sourceHighlighter>
                     <attributes>
+                        <sourceHighlighter>coderay</sourceHighlighter>
                         <revnumber>${spec.version}</revnumber>
                         <revremark>${doc.mark}</revremark>
                         <revdate>${revisiondate}</revdate>

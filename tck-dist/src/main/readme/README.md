@@ -5,14 +5,9 @@ This bundle contains the Jakarta JSON Binding TCK. The contents of this bundle a
 - docs/*      - the TCK user guide (HTML and PDF)
 - bin/*       - a TCK starter project with sample code from user guide
 - README.md   - this README
-- LICENSE     - the EFTL license terms
+- LICENSE*    - the license terms
 
 ## Release Notes
-
-### Facts
-
-The test suite bundle contains the following:
-- 295 total tests
 
 ### Platform
 

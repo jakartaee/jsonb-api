@@ -35,7 +35,7 @@
     <name>Jakarta JSON Binding Parent</name>
     <description>Jakarta JSON Binding is a standard binding layer for converting Java objects to/from JSON documents.</description>
     <url>https://projects.eclipse.org/projects/ee4j.jsonb</url>
-    
+
     <inceptionYear>2016</inceptionYear>
 
     <licenses>
@@ -86,16 +86,14 @@
         <!-- Project settings -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>17</maven.compiler.release>
-        <maven.compiler.testRelease>17</maven.compiler.testRelease>
 
-        <!-- Required by org.eclipse.ee4j:project -->
+        <!-- Required by org.eclipse.ee4j:project parent POM for Nexus staging deployment -->
         <nexus.staging.repository>jsonb-maven2-staging</nexus.staging.repository>
-        
-        <!-- Timestamp configuration-->
+
+        <!-- Timestamp used as the spec document revision date (e.g. "March 15, 2026") -->
         <maven.build.timestamp.format>MMMM dd, yyyy</maven.build.timestamp.format>
         <revisiondate>${maven.build.timestamp}</revisiondate>
 
-        <!-- Version management -->
         <!-- Plugin versions -->
         <build.helper.maven.plugin.version>3.6.0</build.helper.maven.plugin.version>
         <buildnumber.maven.plugin.version>3.2.1</buildnumber.maven.plugin.version>
@@ -117,11 +115,13 @@
         <maven.release.plugin.version>3.1.1</maven.release.plugin.version>
         <maven.source.plugin.version>3.3.1</maven.source.plugin.version>
         <maven.surefire.plugin.version>3.5.3</maven.surefire.plugin.version>
+        <maven.surefire.report.plugin.version>3.5.3</maven.surefire.report.plugin.version>
         <spec.version.maven.plugin.version>2.2</spec.version.maven.plugin.version>
         <sigtest.maven.version>2.6</sigtest.maven.version>
         <spotbugs.maven.plugin.version>4.9.3.0</spotbugs.maven.plugin.version>
-        
-        <!-- Asciidoctor and jruby versions -->
+
+        <!-- Asciidoctor plugin and its runtime classpath dependencies (jruby + asciidoctorj are
+             injected as plugin deps, not project deps, so they do not appear in the compile classpath) -->
         <asciidoctorj.version>3.0.0</asciidoctorj.version>
         <asciidoctorj.pdf.version>2.3.19</asciidoctorj.pdf.version>
         <asciidoctor.maven.plugin.version>3.1.1</asciidoctor.maven.plugin.version>
@@ -130,14 +130,13 @@
         <!-- Dependency versions -->
         <jakarta.json.version>2.1.3</jakarta.json.version>
         <jakarta.inject.version>2.0.0</jakarta.inject.version>
-        <jakarta.enterprise.cdi.version>3.0.0</jakarta.enterprise.cdi.version>
-        <junit.version>4.13.2</junit.version>
+        <jakarta.enterprise.cdi.version>4.1.0</jakarta.enterprise.cdi.version>
         <junit.jupiter.version>5.12.2</junit.jupiter.version>
         <hamcrest.version>2.2</hamcrest.version>
 
     </properties>
 
-    <!-- Used only for version managment-->
+    <!-- Central version management: declare versions here, omit <version> in child module <dependencies> -->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -159,12 +158,6 @@
                 <groupId>jakarta.enterprise</groupId>
                 <artifactId>jakarta.enterprise.cdi-api</artifactId>
                 <version>${jakarta.enterprise.cdi.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
@@ -190,7 +183,7 @@
     </dependencyManagement>
 
     <build>
-        <!-- Used only for version managment-->
+        <!-- Central plugin version management: declare versions here, omit <version> in child module <build><plugins> -->
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -328,14 +321,12 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <!-- Parse the version number to determine the spec version, minor version, and document mark (DRAFT/FINAL) -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>${build.helper.maven.plugin.version}</version>
                 <executions>
-                    
                     <!-- 1. Parse spec.version (Takes the first two parts, e.g., 3.0 from 3.0.0-SNAPSHOT) -->
                     <execution>
                         <id>parse-spec-version</id>

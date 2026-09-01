@@ -104,26 +104,17 @@
                 </executions>
                 <configuration>
                     <sourceDocumentName>jsonb-spec.adoc</sourceDocumentName>
-                    <sourceHighlighter>coderay</sourceHighlighter>
                     <attributes>
+                        <sourceHighlighter>coderay</sourceHighlighter>
                         <revnumber>${spec.version}</revnumber>
                         <revremark>${doc.mark}</revremark>
                         <revdate>${revisiondate}</revdate>
                     </attributes>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <useReleaseProfile>false</useReleaseProfile>
-                    <arguments>${release.arguments}</arguments>
-                </configuration>
-            </plugin>
 
-            <!--
-                This is the rule that builds the zip file for download.
-            -->
+            <!-- Packages the generated spec HTML and PDF into a zip artifact for download. -->
+            <!-- inherited=false: this assembly is spec-specific and must not run in child modules -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>

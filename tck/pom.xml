@@ -148,7 +148,6 @@
                     <plugin>
                         <groupId>jakarta.tck</groupId>
                         <artifactId>sigtest-maven-plugin</artifactId>
-                        <version>${sigtest.version}</version>
                         <executions>
                             <execution>
                                 <id>createSigFile</id>

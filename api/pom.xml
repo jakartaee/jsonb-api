@@ -134,6 +134,11 @@
                         <Export-Package>
                             jakarta.json.bind.*; version=${spec.version}
                         </Export-Package>
+                        <!-- Avoid BND package scanner picking up string literal as a package -->
+                        <Import-Package>
+                            !org.eclipse.yasson,
+                            *
+                        </Import-Package>
                     </instructions>
                 </configuration>
                 <executions>

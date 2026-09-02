@@ -32,11 +32,12 @@ import static java.lang.annotation.ElementType.TYPE;
  * <p>There are two possible values which can be specified. In case of true, fields are serialized as
  * key/value pair with value null. In case of false, fields will not be serialized (default behaviour).</p>
  *
- * <p>Annotation can be specified on field, method, type, or package,
+ * <p>The annotation can be specified on a field, method, type, or package,
  * and affects all underlying properties and classes.</p>
  *
  * <p>For similar functionality on a property level see {@link JsonbProperty}.
- * However this {@link JsonbProperty} functionality has been deprecated and should not be used</p>
+ * However, the {@link JsonbProperty#nillable()} functionality has been deprecated
+ * and should not be used.</p>
  *
  * @since JSON Binding 1.0
  */

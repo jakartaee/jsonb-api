@@ -223,7 +223,14 @@
                             <Specification-Version>${spec.specification.version}</Specification-Version>
                             <Specification-Vendor>${vendor.name}</Specification-Vendor>
                             <_nodefaultversion>false</_nodefaultversion>
-                            <Export-Package>jakarta.json.bind.*; version=${spec.version}</Export-Package>
+                            <Export-Package>
+                                jakarta.json.bind.*; version=${spec.version}
+                            </Export-Package>
+                            <!-- Avoid BND package scanner picking up string literal as a package -->
+                            <Import-Package>
+                                !org.eclipse.yasson,
+                                *
+                            </Import-Package>
                             <_noee>true</_noee>
                         </instructions>
                     </configuration>

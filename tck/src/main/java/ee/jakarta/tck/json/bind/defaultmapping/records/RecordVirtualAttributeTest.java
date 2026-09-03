@@ -25,6 +25,7 @@ import jakarta.json.bind.JsonbException;
 
 import org.junit.jupiter.api.Test;
 
+import ee.jakarta.tck.json.bind.defaultmapping.records.model.BeanStyleVirtualAttributeRecord;
 import ee.jakarta.tck.json.bind.defaultmapping.records.model.DateFormatVirtualAttributeRecord;
 import ee.jakarta.tck.json.bind.defaultmapping.records.model.NillableTypeVirtualAttributeRecord;
 import ee.jakarta.tck.json.bind.defaultmapping.records.model.NillableVirtualAttributeRecord;
@@ -187,5 +188,22 @@ public class RecordVirtualAttributeTest {
 
         assertThat(jsonString, matchesPattern("\\{\\s*\"amount\"\\s*:\\s*1234\\.56\\s*,\\s*\"formatted\"\\s*:\\s*"
                 + "\"1,234\\.56\"\\s*}"));
+    }
+
+    /*
+     * @testName: testBeanStyleVirtualAttributeNameNotStripped
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.7.1-1
+     *
+     * @test_Strategy: Serialize a record whose virtual attribute method name begins with "get"
+     * and assert that the "get" prefix is NOT stripped from the serialized property name,
+     * i.e. the full method name is used as the component name.
+     */
+    @Test
+    public void testBeanStyleVirtualAttributeNameNotStripped() {
+        String jsonString = jsonb.toJson(new BeanStyleVirtualAttributeRecord("Jason", "Borne"));
+
+        assertThat(jsonString, matchesPattern("\\{\\s*\"first\"\\s*:\\s*\"Jason\"\\s*,\\s*\"getDisplay\"\\s*:\\s*"
+                + "\"Jason Borne\"\\s*,\\s*\"last\"\\s*:\\s*\"Borne\"\\s*}"));
     }
 }

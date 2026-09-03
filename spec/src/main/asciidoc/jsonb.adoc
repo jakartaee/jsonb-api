@@ -292,6 +292,7 @@ For an unspecified output type of a deserialization operation, as well as where 
 
 JSON object values are deserialized into an implementation of `java.util.Map<String, Object>` with a predictable iteration order.
 
+[[java-class-and-record]]
 === Java Class and Record
 
 Any class instance passed to a deserialization operation must have a public or protected no-argument constructor.
@@ -302,6 +303,39 @@ Any record instance passed to a deserialization operation is instantiated via it
 A compact constructor whose body is merged into the canonical constructor at compile time is indistinguishable at runtime and corresponds to the same deserialization path.
 Implementations SHOULD throw an error if this condition is not met.
 This limitation does not apply to serialization operations or to records which specify explicit instantiation methods as described in the <<custom-instantiation,Custom Instantiation>> section.
+
+==== Record Virtual Attributes
+
+A _record virtual attribute_ is a public, non-static, no-argument instance method declared on a record type that is not the compiler-generated component accessor for any record component of that record and does not return `void`.
+
+Implementations MUST include all public virtual attributes in the serialized JSON output of a record unless suppressed by `@JsonbTransient`.
+
+The JSON property name for a virtual attribute is the method name unchanged (identity transformation, consistent with <<names-identifiers,Names and Identifiers>>).
+
+The JSON property value is the return value of the method, serialized according to the type's default or customized mapping.
+
+Virtual attributes are read-only.
+A JSON name/value pair whose key matches the name of a virtual attribute MUST be silently ignored during deserialization, consistent with the <<must-ignore-policy,Must-Ignore Policy>>.
+No exception is thrown when such a pair is present in the input document.
+
+[source,java]
+----
+public record FullName(String first, String last) {
+    // virtual attribute — not a record component accessor
+    public String display() {
+        return first + " " + last;
+    }
+}
+----
+
+Serializing `new FullName("Jason", "Borne")` with default mapping produces:
+
+[source,json]
+----
+{"first":"Jason","last":"Borne","display":"Jason Borne"}
+----
+
+Deserializing the prior JSON into `FullName` silently ignores the `display` property and produces an instance of `FullName [ first="Jason", last="Borne" ]`.
 
 ==== Scope and Field access strategy
 
@@ -317,6 +351,20 @@ For a serialization operation of a Java property:
 * If a matching getter method with private, protected, or defaulted to package-only access exists, then this property is ignored. 
 * If no matching getter method exists and the field is public, then the value is obtained directly from the field.
 
+Public getter/setter methods without a corresponding field MUST be supported when serializing and deserialzing Java Bean classes.
+When only public getter/setter methods without corresponding fields are present in the class,
+the getter method is called to obtain the value to serialize,
+and the setter method is called during deserialization operation.
+
+For a deserialization operation of a Java record component:
+
+* If a custom constructor or factory method as described in <<custom-instantiation,Custom Instantiation>>, then custom constructor or factory method is called to set the value of the component.
+* If no custom constructor or factory method exists, then the canonical constructor as described in <<java-class-and-record,Java Class and Record>> is called to set the value of the component.
+
+For a serialization operation of a Java record component:
+
+* The component accessor method is called to obtain the value of the component.  The component accessor method may be compiler-generated or explicitly redeclared by the record author.
+
 JSON Binding implementations MUST NOT deserialize into transient, final or static fields and MUST ignore name/value pairs corresponding to such fields.
 
 Implementations MUST support serialization of final fields.
@@ -324,11 +372,6 @@ Transient and static fields MUST be ignored during serialization operation.
 
 If a JSON document contains a name/value pair not corresponding to field or setter method then this name/value pair is skipped 
 as described in the <<must-ignore-policy, Must-Ignore Policy>> section.
-
-Public getter/setter methods without a corresponding field MUST be supported.
-When only public getter/setter methods without corresponding fields are present in the class, 
-the getter method is called to obtain the value to serialize, 
-and the setter method is called during deserialization operation.
 
 ==== Nested Classes
 
@@ -439,12 +482,16 @@ Arrays of primitive types and multi-dimensional arrays MUST be supported.
 
 === Attribute order
 
-Class properties MUST be serialized in lexicographical order into the resulting JSON document. In case of inheritance, properties declared in super class MUST be serialized before properties declared in a child class.
+<!-- TODO are attribute orders lexicographical for records as well?  If so this needs to be updated -->
+
+Class properties MUST be serialized in lexicographical order into the resulting JSON document.
+In case of inheritance, properties declared in super class MUST be serialized before properties declared in a child class.
 
 When deserializing a JSON document, field values MUST be set in the order of attributes present in the JSON document.
 
 === Null value handling
 
+[[null-java-field]]
 ==== Null Java field
 
 The result of serializing a java field with a null value is the absence of the property in the resulting JSON document.
@@ -461,6 +508,7 @@ Null value in JSON array is represented by null value in Java array.
 
 Serialization operation on Java array with null value at index `i` MUST output null value at index `i` of the array in resulting JSON document.
 
+[[names-identifiers]]
 === Names and identifiers
 
 According to RFC 7159 Section 7, every Java identifier name can be transformed using identity function into a valid JSON String. Identity function MUST be used for transforming Java identifier names into Strings in JSON document.
@@ -503,30 +551,30 @@ JSON Binding implementations MUST use the most specific type derived from the in
 
 Let’s consider situation when there is only a static type information of a given field/class/record/interface known, and there is no runtime type information available.
 
-Let `GenericClass<T~1~…T~n~>` be part of generic type declaration, where `GenericClass` is name of the generic type and `T~1~…T~n~` are type parameters. For every , where `i` in `1…n`, there are 3 possible options:
+Let `GenericClass<T~1~…T~n~>` be part of generic type declaration, where `GenericClass` is name of the generic type and `T~1~…T~n~` are type parameters. For every `T~i~`, where `i` in `1…n`, there are 3 possible options:
 
 [arabic]
-. is concrete parameter type
-. is bounded parameter type
-. is wildcard parameter type without bounds
+. `T~i~` is concrete parameter type
+. `T~i~` is bounded parameter type
+. `T~i~` is wildcard parameter type without bounds
 
-In case 1, the most specific parameter type MUST be given concrete parameter type.
+In case 1, the most specific parameter type MUST be given concrete parameter type `T~i~`.
 
 For bounded parameter type, let’s use bounds `B~1~,…,B~m~`.
 
-If `m = 1`, then the most specific parameter type MUST be derived from the given bound.
+If `m = 1`, then the most specific parameter type MUST be derived from the given bound `B~1~`.
 
-If it is a class, record or interface, the most specific parameter type MUST be the class, record or interface.
+If `B~1~` is a class, record or interface, the most specific parameter type MUST be the class, record or interface.
 
 Otherwise, the most specific parameter type SHOULD be `java.lang.Object`.
 
 If multiple bounds are specified, the first step is to resolve every bound separately. Let’s define result of such resolution as `S~1~,…,S~m~` specific parameter types.
 
-If `S~1~,…,S~m~` are `java.lang.Object`, then the bounded parameter type MUST be `java.lang.Object`.
+If `S~1~,…,S~m~` are `java.lang.Object`, then the bounded parameter `T~i~` type MUST be `java.lang.Object`.
 
-If there is exactly one , where `1<=k<=m` is different than `java.lang.Object`, then the most specific parameter type for this bounded parameter type MUST be .
+If there is exactly one `S~k~`, where `1<=k<=m` is different than `java.lang.Object`, then the most specific parameter type for this bounded parameter `T~i~` type MUST be `S~k~`.
 
-If there exists `S~k1~,S~k2~`, where `1<=k1<=k2<=m`, then the most specific parameter type is .
+If there exists `S~k1~,S~k2~`, where `1<=k1<=k2<=m`, then the most specific parameter type is `S~k1~`.
 
 For wildcard parameter type without bounds, the most specific parameter type MUST be `java.lang.Object`.
 
@@ -595,14 +643,19 @@ JSON Binding implementations MUST NOT process fields, record components, JavaBea
 ** An exception is thrown if the field, record component or this getter are annotated with other JSON Binding annotations. An exception is not thrown if JSON Binding annotations are present on the setter.
 * Setter is annotated with `@JsonbTransient`
 ** Exception is thrown if when the field or this setter are annotated with other JSON Binding annotations. Exception is not thrown if JSON Binding annotations are presented on the getter.
+* Record virtual attribute method is annotated with `@JsonbTransient`
+** The method is excluded from serialization output.
+** An exception must be thrown if the method is also annotated with any other JSON Binding annotation.
 
 ==== jakarta.json.bind.annotation.JsonbProperty
 
-According to default mapping 3.15, property names are serialized unchanged to JSON document (identity transformation). To provide custom name for given field or record component (or JavaBean property), `jakarta.json.bind.annotation.JsonbProperty` may be used. `JsonbProperty` annotation may be specified on field, record component, getter or setter method.
+According to default mapping 3.15, property names are serialized unchanged to JSON document (identity transformation). To provide custom name for given field or record component (or JavaBean property), `jakarta.json.bind.annotation.JsonbProperty` may be used. `JsonbProperty` annotation may be specified on field, record component, virtual attribute method, component accessor method, getter or setter method.
 
 If specified on field or record component, custom name is used both for serialization and deserialization.
 
 If `jakarta.json.bind.annotation.JsonbProperty` is specified on getter method, it is used only for serialization. If `jakarta.json.bind.annotation.JsonbProperty` is specified on setter method, it is used only for deserialization.
+
+If `jakarta.json.bind.annotation.JsonbProperty` is specified on a virtual attribute method or component accessor method, then it is used only for serialization.
 
 It is possible to specify different values for getter and setter method for `jakarta.json.bind.annotation.JsonbProperty` annotation. In such case the different custom name will be used for serialization and deserialization.
 
@@ -664,7 +717,7 @@ If `JsonbNillable` and `JsonbProperty` are applied on the same level, `JsonbNill
 
 To customize the result of serializing field or record component (or JavaBean property) with null value, JSON Binding provides `jakarta.json.bind.annotation.JsonbNillable` annotation.
 
-When given object (type, package, field, record component or JavaBean property) is annotated with `jakarta.json.bind.annotation.JsonbNillable` annotation, the result of null value will be presence of associated property in JSON document with explicit null value.
+When a given object (type, package, field, record component, virtual attribute, or JavaBean property) is annotated with `jakarta.json.bind.annotation.JsonbNillable` annotation, then a value of `null` will be explicitly serialized to `null` in the JSON document, instead of being skipped as described in <<null-java-field, Null Java Field>>.
 
 The same behavior as `JsonbNillable`, but only at field, record component, parameter and method (JavaBean property) level is provided by `jakarta.json.bind.annotation.JsonbProperty` annotation with its `nillable` parameter. This option is currently deprecated, and it is recommended to use `jakarta.json.bind.annotation.JsonbNillable` instead.
 
@@ -803,6 +856,8 @@ To specify custom date format, it is necessary to annotate given annotation. `Js
 
 * field
 * record component
+* virtual attribute
+* component accessor
 * getter/setter
 * type
 * parameter
@@ -810,7 +865,7 @@ To specify custom date format, it is necessary to annotate given annotation. `Js
 
 Default date format and default locale can be customized globally using `jakarta.json.bind.JsonbConfig::withDateFormat` and `jakarta.json.bind.JsonbConfig::withLocale` methods.
 
-If `jakarta.json.bind.annotation.JsonbDateFormat` is specified on a getter method, it is used only for serialization. If `jakarta.json.bind.annotation.JsonbDateFormat` is specified on a setter method, it is used only for deserialization.
+If `jakarta.json.bind.annotation.JsonbDateFormat` is specified on a getter, virtual attribute, or component accessor method, it is used only for serialization. If `jakarta.json.bind.annotation.JsonbDateFormat` is specified on a setter method, it is used only for deserialization.
 
 Annotation applied to more specific target overrides the same annotation applied to target with wider scope and global configuration. For example, annotation applied to type target will override the same annotation applied to package target.
 
@@ -820,12 +875,14 @@ To specify custom number format, it is necessary to annotate given annotation ta
 
 * field
 * record component
+* virtual attribute
+* component accessor
 * getter/setter
 * type
 * parameter
 * package
 
-If `jakarta.json.bind.annotation.JsonbNumberFormat` is specified on a getter method, it is used only for serialization. If `jakarta.json.bind.annotation.JsonbNumberFormat` is specified on a setter method, it is used only for deserialization.
+If `jakarta.json.bind.annotation.JsonbNumberFormat` is specified on a getter, virtual attribute, or component accessor method, it is used only for serialization. If `jakarta.json.bind.annotation.JsonbNumberFormat` is specified on a setter method, it is used only for deserialization.
 
 Annotation applied to more specific target overrides the same annotation applied to target with wider scope. For example, annotation applied to type target will override the same annotation applied to package target.
 

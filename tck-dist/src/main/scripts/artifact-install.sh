@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2022 Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2022, 2026 Oracle and/or its affiliates. All rights reserved.
 #
 # This program and the accompanying materials are made available under the
 # terms of the Eclipse Public License v. 2.0, which is available at
@@ -19,16 +19,20 @@
 if [[ $1 =~ ^[0-9]+\.[0-9]+\.[0-9]+.*$ ]]; then
   VERSION="$1"
 else
-  VERSION="3.0.0"
+  VERSION="3.1.0"
 fi
 
-#jar
-mvn org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file \
--Dfile=jakarta.json.bind-tck-"$VERSION".jar -DgroupId=jakarta.json.bind \
--DartifactId=jakarta.json.bind-tck -Dversion="$VERSION" -Dpackaging=jar
+# Parent pom
+mvn org.apache.maven.plugins:maven-install-plugin:3.1.4:install-file \
+-Dfile=jakarta.json.bind-parent-"$VERSION".pom -DgroupId=jakarta.json.bind \
+-DartifactId=jakarta.json.bind-parent -Dversion="$VERSION" -Dpackaging=pom
 
+# API jar
+mvn org.apache.maven.plugins:maven-install-plugin:3.1.4:install-file \
+-Dfile=jakarta.json.bind-api-"$VERSION".jar -DgroupId=jakarta.json.bind \
+-DartifactId=jakarta.json.bind-api -Dversion="$VERSION" -Dpackaging=jar
 
-#jar
-mvn org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file \
+# TCK jar
+mvn org.apache.maven.plugins:maven-install-plugin:3.1.4:install-file \
 -Dfile=jakarta.json.bind-tck-"$VERSION".jar -DgroupId=jakarta.json.bind \
 -DartifactId=jakarta.json.bind-tck-sources -Dversion="$VERSION" -Dpackaging=jar

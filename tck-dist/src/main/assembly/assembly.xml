@@ -27,11 +27,6 @@
     </formats>
 
     <files>
-        <!-- license -->
-        <file>
-            <source>src/main/resources/LICENSE_${license}.md</source>
-            <destName>LICENSE.md</destName>
-        </file>
         <!-- The readme included in the distribution zip -->
         <file>
             <source>src/main/readme/README.md</source>
@@ -39,9 +34,17 @@
         </file>
     </files>
     <fileSets>
+        <!-- licenses -->
+        <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>**/*.md</include>
+            </includes>
+        </fileSet>
         <!-- The artifacts -->
         <fileSet>
-            <directory>src/main/artifacts</directory>
+            <directory>src/main/scripts</directory>
             <outputDirectory>artifacts</outputDirectory>
             <fileMode>755</fileMode>
             <includes>
@@ -70,6 +73,8 @@
     <dependencySets>
         <dependencySet>
             <includes>
+                <include>jakarta.json.bind:jakarta.json.bind-parent</include>
+                <include>jakarta.json.bind:jakarta.json.bind-api</include>
                 <include>jakarta.json.bind:jakarta.json.bind-tck</include>
             </includes>
             <useTransitiveDependencies>true</useTransitiveDependencies>

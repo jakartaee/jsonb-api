@@ -25,13 +25,17 @@
     <name>Jakarta JSON Binding Documentation</name>
 
     <build>
-        <defaultGoal>process-resources</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
-                <version>${asciidoctor.maven.plugin.version}</version>
                 <dependencies>
+                    <!-- JRuby provides the Ruby runtime required by Asciidoctor -->
+                    <dependency>
+                        <groupId>org.jruby</groupId>
+                        <artifactId>jruby-complete</artifactId>
+                        <version>${jruby.version}</version>
+                    </dependency>
                     <dependency>
                         <groupId>org.asciidoctor</groupId>
                         <artifactId>asciidoctorj</artifactId>
@@ -46,6 +50,12 @@
                 <configuration>
                     <sourceDirectory>src/docs</sourceDirectory>
                     <sourceDocumentName>user-guide.adoc</sourceDocumentName>
+                    <attributes>
+                        <sourceHighlighter>coderay</sourceHighlighter>
+                        <revnumber>${spec.version}</revnumber>
+                        <revremark>${doc.mark}</revremark>
+                        <revdate>${revisiondate}</revdate>
+                    </attributes>
                 </configuration>
                 <executions>
                     <execution>
@@ -85,7 +95,6 @@
                                 <icons>font</icons>
                                 <pagenums/>
                                 <toc/>
-                                <icons>font</icons>
                                 <sectanchors>true</sectanchors>
                                 <idprefix/>
                                 <idseparator>-</idseparator>

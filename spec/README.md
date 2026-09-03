@@ -8,16 +8,12 @@ Building
 
 Prerequisites:
 
-* JDK8+
-* Maven 3.0.3+
+* JDK 17+
+* Maven 3.6.0+
 
 Run the full build:
 
 `mvn clean install`
-
-Generate specification with given status:
-
-`mvn clean install -Dstatus="Final Release"`
 
 Locate the html files:
 - target/generated-docs/jsonb-spec-XXX.html

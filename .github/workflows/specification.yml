@@ -5,10 +5,6 @@ name: Generate specification documentation
 
 on: 
     workflow_dispatch:
-        inputs:
-            specVersion:
-                description: 'Major and Minor level of release. Example: 1.0'
-                required: true
 
 jobs:
   generate:
@@ -25,13 +21,15 @@ jobs:
         cache: maven
     - name: Generate specification docs
       run: |
-        mvn package --file api/pom.xml -Prelease -Dspec.version=${{ github.event.inputs.specVersion }}
-        mvn package --file spec/pom.xml -Dstatus=FINAL -Dspec.version=${{ github.event.inputs.specVersion }}
+        mvn package --file api/pom.xml
+        mvn package --file spec/pom.xml
     - name: Assemble documentation
       run: |
         mkdir documentation/
-        cp spec/target/generated-docs/jsonb-spec-${{ github.event.inputs.specVersion }}.pdf   documentation/jsonb-spec-${{ github.event.inputs.specVersion }}.pdf
-        cp spec/target/generated-docs/jsonb-spec-${{ github.event.inputs.specVersion }}.html  documentation/jsonb-spec-${{ github.event.inputs.specVersion }}.html
+        cp spec/target/generated-docs/jakarta-json-bind.pdf \
+           documentation/jakarta-json-bind.pdf
+        cp spec/target/generated-docs/jakarta-json-bind.html \
+          documentation/jakarta-json-bind.html
 
         cp -r api/target/reports/apidocs/ documentation/apidocs
     - name: Upload documentation

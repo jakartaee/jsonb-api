@@ -18,9 +18,10 @@
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>jakarta.json.bind</groupId>
         <artifactId>jakarta.json.bind-parent</artifactId>
@@ -32,23 +33,41 @@
 
     <name>Jakarta JSON Binding TCK Distribution</name>
 
-    <properties>
-        <jakarta.jsonb.tck.version>3.1.0</jakarta.jsonb.tck.version>
-    </properties>
-
+    <!--
+        These dependencies are resolved by maven-assembly-plugin to populate the artifacts/
+        directory inside the distribution zip. They are not compile/runtime dependencies of
+        this module itself.
+    -->
     <dependencies>
+        <!-- Parent POM included so implementors can inspect the managed dependency versions -->
+        <dependency>
+            <groupId>jakarta.json.bind</groupId>
+            <artifactId>jakarta.json.bind-parent</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+        </dependency>
+        <!-- API jar -->
+        <dependency>
+            <groupId>jakarta.json.bind</groupId>
+            <artifactId>jakarta.json.bind-api</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+        </dependency>
+        <!-- TCK POM (for dependency resolution when running tests) -->
         <dependency>
             <groupId>jakarta.json.bind</groupId>
             <artifactId>jakarta.json.bind-tck</artifactId>
             <version>${project.version}</version>
             <type>pom</type>
         </dependency>
+        <!-- TCK test jar -->
         <dependency>
             <groupId>jakarta.json.bind</groupId>
             <artifactId>jakarta.json.bind-tck</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
         </dependency>
+        <!-- TCK sources jar (optional — useful for debugging test failures) -->
         <dependency>
             <groupId>jakarta.json.bind</groupId>
             <artifactId>jakarta.json.bind-tck</artifactId>
@@ -58,32 +77,12 @@
         </dependency>
     </dependencies>
 
-    <profiles>
-        <profile>
-            <id>EFTL</id>
-            <properties>
-                <license>EFTL</license>
-                <bundle-name>jakarta-jsonb-tck</bundle-name>
-            </properties>
-        </profile>
-        <profile>
-            <id>EPL</id>
-            <properties>
-                <license>EPL</license>
-                <bundle-name>jsonb-tck</bundle-name>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-    </profiles>
-
     <build>
         <plugins>
+            <!-- Packages the TCK distribution zip containing artifacts, docs, bin/pom.xml, and README -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <id>distribution</id>
@@ -97,7 +96,7 @@
                             </descriptors>
                             <escapeString>\</escapeString>
                             <appendAssemblyId>false</appendAssemblyId>
-                            <finalName>${bundle-name}-${project.version}</finalName>
+                            <finalName>jsonb-tck</finalName>
                         </configuration>
                     </execution>
                 </executions>
@@ -106,11 +105,10 @@
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
-                <version>${asciidoctor.maven.plugin.version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.jruby</groupId>
-                        <artifactId>jruby</artifactId>
+                        <artifactId>jruby-complete</artifactId>
                         <version>${jruby.version}</version>
                     </dependency>
                     <dependency>
@@ -134,7 +132,7 @@
                         <configuration>
                             <backend>html5</backend>
                             <outputFile>
-                                ${project.build.directory}/generated-docs/jsonb-tck-reference-guide-${jakarta.jsonb.tck.version}.html</outputFile>
+                                ${project.build.directory}/generated-docs/jsonb-tck-reference-guide.html</outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -146,13 +144,18 @@
                         <configuration>
                             <backend>pdf</backend>
                             <outputFile>
-                                ${project.build.directory}/generated-docs/jsonb-tck-reference-guide-${jakarta.jsonb.tck.version}.pdf</outputFile>
+                                ${project.build.directory}/generated-docs/jsonb-tck-reference-guide.pdf</outputFile>
                         </configuration>
                     </execution>
                 </executions>
                 <configuration>
                     <sourceDocumentName>jsonb-tck-reference-guide.adoc</sourceDocumentName>
-                    <skip>${maven.adoc.skip}</skip>
+                    <attributes>
+                        <sourceHighlighter>coderay</sourceHighlighter>
+                        <revnumber>${spec.version}</revnumber>
+                        <revremark>${doc.mark}</revremark>
+                        <revdate>${revisiondate}</revdate>
+                    </attributes>
                 </configuration>
             </plugin>
         </plugins>

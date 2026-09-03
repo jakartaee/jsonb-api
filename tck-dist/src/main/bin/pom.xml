@@ -16,70 +16,81 @@
     SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
 
 -->
+<!--
+    NOTE: This file is the standalone TCK runner POM distributed inside the TCK zip under bin/.
+    It is NOT a module of the multi-module build. However, this project does use the same
+    parent pom as the the other sub-modules and therefore inherits the dependency and plugin 
+    versions managed by the parent pom.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- TODO update to Jakarta JSON Binding Parent -->
     <parent>
-        <groupId>org.eclipse.ee4j</groupId>
-        <artifactId>project</artifactId>
-        <version>2.0.4</version>
+        <groupId>jakarta.json.bind</groupId>
+        <artifactId>jakarta.json.bind-parent</artifactId>
+        <version>${project.version}</version>
     </parent>
 
     <groupId>jakarta.json.bind</groupId>
     <artifactId>jakarta.json.bind-tck-tests</artifactId>
-    <version>${project.version}</version>
+
     <properties>
-        <!-- Vendor Implementation (VI) -->
-        <jsonb-api.groupId>jakarta.json.bind</jsonb-api.groupId>
-        <jsonb-api.artifactId>jakarta.json.bind-api</jsonb-api.artifactId>
-        <jsonb-api.version>3.0.0</jsonb-api.version>
-        <!-- Compatible Implementation (CI) -->
+        <!-- Build settings -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Compatible Implementation (CI): replace with your own JSON-B implementation coordinates -->
         <jsonb-impl.groupId>org.eclipse</jsonb-impl.groupId>
         <jsonb-impl.artifactId>yasson</jsonb-impl.artifactId>
-        <jsonb-impl.version>3.0.0-RC1</jsonb-impl.version>
-        <!-- TCK -->
-        <jsonb.tck.version>${project.version}</jsonb.tck.version>
-        <!-- properties -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jsonb-impl.version>3.0.5</jsonb-impl.version>
+
+        <!-- CDI container: replace with your own CDI Container implementation coordinates -->
+        <weld.se.core.version>6.0.3.Final</weld.se.core.version>
+
+        <!-- Directory where jimage extracts JDK modules for use by the signature test -->
         <jimage.dir>\${project.build.directory}/jdk-bundle</jimage.dir>
-        <!-- !!! DO NOT EDIT !!! -->
-        <jakarta.jsonb-api.version>3.0.0</jakarta.jsonb-api.version>
-        <jakarta.json-api.version>2.1.0</jakarta.json-api.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>jakarta.json.bind</groupId>
             <artifactId>jakarta.json.bind-tck</artifactId>
-            <version>\${jsonb.tck.version}</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>\${jsonb-api.groupId}</groupId>
-            <artifactId>\${jsonb-api.artifactId}</artifactId>
-            <version>\${jsonb-api.version}</version>
+            <groupId>jakarta.json.bind</groupId>
+            <artifactId>jakarta.json.bind-api</artifactId>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>\${jsonb-impl.groupId}</groupId>
-            <artifactId>\${jsonb-impl.artifactId}</artifactId>
-            <version>\${jsonb-impl.version}</version>
+            <groupId>${jsonb-impl.groupId}</groupId>
+            <artifactId>${jsonb-impl.artifactId}</artifactId>
+            <version>${jsonb-impl.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+            <version>${jakarta.enterprise.cdi.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.weld.se</groupId>
             <artifactId>weld-se-core</artifactId>
-            <version>5.0.0.Beta1</version>
+            <version>${weld.se.core.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <build>
         <defaultGoal>verify</defaultGoal>
         <plugins>
+            <!-- Copies the JSON-B API jar and JSON-P API jar into signaturedirectory for
+                 use by the signature test classpath configured in maven-surefire-plugin below. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>copy</id>
@@ -92,7 +103,7 @@
                                 <artifactItem>
                                     <groupId>jakarta.json.bind</groupId>
                                     <artifactId>jakarta.json.bind-api</artifactId>
-                                    <version>\${jakarta.jsonb-api.version}</version>
+                                    <version>${project.version}</version>
                                     <type>jar</type>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>\${project.build.directory}/signaturedirectory</outputDirectory>
@@ -101,7 +112,7 @@
                                 <artifactItem>
                                     <groupId>jakarta.json</groupId>
                                     <artifactId>jakarta.json-api</artifactId>
-                                    <version>\${jakarta.json-api.version}</version>
+                                    <version>${jakarta.json.version}</version>
                                     <type>jar</type>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>\${project.build.directory}/signaturedirectory</outputDirectory>
@@ -112,23 +123,27 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Runs TCK tests by scanning the TCK jar for test classes; module path is
+                 disabled because the TCK relies on classpath-based class discovery. -->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
                     <trimStackTrace>false</trimStackTrace>
                     <failIfNoTests>true</failIfNoTests>
                     <dependenciesToScan>jakarta.json.bind:jakarta.json.bind-tck</dependenciesToScan>
                     <systemPropertyVariables>
-                        <jimage.dir>\${jimage.dir}</jimage.dir>
+                        <jimage.dir>${jimage.dir}</jimage.dir>
                         <signature.sigTestClasspath>\${project.build.directory}/signaturedirectory/jakarta.json.bind-api.jar:\${jimage.dir}/java.base:\${jimage.dir}/java.rmi:\${jimage.dir}/java.sql:\${jimage.dir}/java.naming</signature.sigTestClasspath>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
+            <!-- Generates an HTML surefire report after the test phase completes. -->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>3.0.0-M4</version>
+                <version>${maven.surefire.report.plugin.version}</version>
                 <executions>
                     <execution>
                         <id>post-unit-test</id>

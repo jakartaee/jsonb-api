@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2021 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,20 +14,22 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
+package jakarta.json.bind.customization;
+
+import java.util.Optional;
+
+import jakarta.json.bind.serializer.JsonbSerializer;
+
 /**
- * Jakarta JSON Binding API.
+ * Extension of the {@link JsonbCustomization} over the serialization specific methods.
  */
-module jakarta.json.bind {
-    exports jakarta.json.bind;
-    exports jakarta.json.bind.adapter;
-    exports jakarta.json.bind.annotation;
-    exports jakarta.json.bind.config;
-    exports jakarta.json.bind.customization;
-    exports jakarta.json.bind.serializer;
-    exports jakarta.json.bind.spi;
+public interface SerializationCustomization extends JsonbCustomization {
 
-    requires jakarta.json;
-    requires java.logging;
+    /**
+     * Return {@link JsonbSerializer} of the component.
+     *
+     * @return component serializer instance, otherwise empty
+     */
+    Optional<JsonbSerializer<?>> getSerializer();
 
-    uses jakarta.json.bind.spi.JsonbProvider;
 }

@@ -122,7 +122,7 @@
 
         <!-- Asciidoctor plugin and its runtime classpath dependencies (jruby + asciidoctorj are
              injected as plugin deps, not project deps, so they do not appear in the compile classpath) -->
-        <asciidoctorj.version>3.0.0</asciidoctorj.version>
+        <asciidoctorj.version>3.0.1</asciidoctorj.version>
         <asciidoctorj.pdf.version>2.3.23</asciidoctorj.pdf.version>
         <asciidoctor.maven.plugin.version>3.1.1</asciidoctor.maven.plugin.version>
         <jruby.version>9.4.12.1</jruby.version>

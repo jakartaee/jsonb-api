@@ -337,6 +337,7 @@ Serializing `new FullName("Jason", "Bourne")` with default mapping produces:
 
 Deserializing the prior JSON into `FullName` silently ignores the `display` property and produces an instance of `FullName [ first="Jason", last="Bourne" ]`.
 
+[[scope-and-field-access-strategy]]
 ==== Scope and Field access strategy
 
 For a deserialization operation of a Java property:
@@ -482,9 +483,7 @@ Arrays of primitive types and multi-dimensional arrays MUST be supported.
 
 === Attribute order
 
-<!-- TODO are attribute orders lexicographical for records as well?  If so this needs to be updated -->
-
-Class properties MUST be serialized in lexicographical order into the resulting JSON document.
+Java properties and record components as described in <<scope-and-field-access-strategy,Scope and Field access strategy>> MUST be serialized in lexicographical order into the resulting JSON document.
 In case of inheritance, properties declared in the super class MUST be serialized before properties declared in a child class.
 
 When deserializing a JSON document, field values MUST be set in the order of attributes present in the JSON document.

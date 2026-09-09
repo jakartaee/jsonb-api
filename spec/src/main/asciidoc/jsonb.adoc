@@ -306,7 +306,7 @@ This limitation does not apply to serialization operations or to records which s
 
 ==== Record Virtual Attributes
 
-A _record virtual attribute_ is a public, non-static, no-argument instance method declared on a record type that is not the compiler-generated component accessor for any record component of that record and does not return `void`.
+A _record virtual attribute_ is a value-returning, no-argument method of a record type where the method is declared `public`, but not `static`, and whose name differs from the names of components of the record. Additionally, methods from `java.lang.Object` and overrides thereof, such as `String toString()`, are excluded from being _record virtual attributes_.
 
 Implementations MUST include all public virtual attributes in the serialized JSON output of a record unless suppressed by `@JsonbTransient`.
 
@@ -351,14 +351,14 @@ For a serialization operation of a Java property:
 * If a matching getter method with private, protected, or defaulted to package-only access exists, then this property is ignored. 
 * If no matching getter method exists and the field is public, then the value is obtained directly from the field.
 
-Public getter/setter methods without a corresponding field MUST be supported when serializing and deserialzing Java Bean classes.
+Public getter/setter methods without a corresponding field MUST be supported when serializing and deserializing Java Bean classes.
 When only public getter/setter methods without corresponding fields are present in the class,
 the getter method is called to obtain the value to serialize,
-and the setter method is called during deserialization operation.
+and the setter method is called during the deserialization operation.
 
 For a deserialization operation of a Java record component:
 
-* If a custom constructor or factory method as described in <<custom-instantiation,Custom Instantiation>>, then custom constructor or factory method is called to set the value of the component.
+* If a custom constructor or factory method as described in <<custom-instantiation,Custom Instantiation>> is present, then a custom constructor or factory method is called to set the value of the component.
 * If no custom constructor or factory method exists, then the canonical constructor as described in <<java-class-and-record,Java Class and Record>> is called to set the value of the component.
 
 For a serialization operation of a Java record component:
@@ -485,7 +485,7 @@ Arrays of primitive types and multi-dimensional arrays MUST be supported.
 <!-- TODO are attribute orders lexicographical for records as well?  If so this needs to be updated -->
 
 Class properties MUST be serialized in lexicographical order into the resulting JSON document.
-In case of inheritance, properties declared in super class MUST be serialized before properties declared in a child class.
+In case of inheritance, properties declared in the super class MUST be serialized before properties declared in a child class.
 
 When deserializing a JSON document, field values MUST be set in the order of attributes present in the JSON document.
 
@@ -649,13 +649,13 @@ JSON Binding implementations MUST NOT process fields, record components, JavaBea
 
 ==== jakarta.json.bind.annotation.JsonbProperty
 
-According to default mapping 3.15, property names are serialized unchanged to JSON document (identity transformation). To provide custom name for given field or record component (or JavaBean property), `jakarta.json.bind.annotation.JsonbProperty` may be used. `JsonbProperty` annotation may be specified on field, record component, virtual attribute method, component accessor method, getter or setter method.
+According to default mapping 3.15, property names are serialized unchanged to a JSON document (identity transformation). To provide a custom name for a given field or record component (or JavaBean property), `jakarta.json.bind.annotation.JsonbProperty` may be used. The `JsonbProperty` annotation may be specified on a field, record component, record component accessor method, virtual attribute method, getter or setter method.
 
 If specified on field or record component, custom name is used both for serialization and deserialization.
 
 If `jakarta.json.bind.annotation.JsonbProperty` is specified on getter method, it is used only for serialization. If `jakarta.json.bind.annotation.JsonbProperty` is specified on setter method, it is used only for deserialization.
 
-If `jakarta.json.bind.annotation.JsonbProperty` is specified on a virtual attribute method or component accessor method, then it is used only for serialization.
+If `jakarta.json.bind.annotation.JsonbProperty` is specified on a virtual attribute method or component accessor method, then the customization defined by the `JsonbProperty` annotation applies only for serialization.
 
 It is possible to specify different values for getter and setter method for `jakarta.json.bind.annotation.JsonbProperty` annotation. In such case the different custom name will be used for serialization and deserialization.
 
@@ -856,8 +856,8 @@ To specify custom date format, it is necessary to annotate given annotation. `Js
 
 * field
 * record component
+* record component accessor
 * virtual attribute
-* component accessor
 * getter/setter
 * type
 * parameter
@@ -875,8 +875,8 @@ To specify custom number format, it is necessary to annotate given annotation ta
 
 * field
 * record component
+* record component accessor
 * virtual attribute
-* component accessor
 * getter/setter
 * type
 * parameter

@@ -328,14 +328,14 @@ public record FullName(String first, String last) {
 }
 ----
 
-Serializing `new FullName("Jason", "Borne")` with default mapping produces:
+Serializing `new FullName("Jason", "Bourne")` with default mapping produces:
 
 [source,json]
 ----
-{"first":"Jason","last":"Borne","display":"Jason Borne"}
+{"first":"Jason","last":"Bourne","display":"Jason Bourne"}
 ----
 
-Deserializing the prior JSON into `FullName` silently ignores the `display` property and produces an instance of `FullName [ first="Jason", last="Borne" ]`.
+Deserializing the prior JSON into `FullName` silently ignores the `display` property and produces an instance of `FullName [ first="Jason", last="Bourne" ]`.
 
 ==== Scope and Field access strategy
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2020 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2016, 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -18,8 +18,13 @@ package jakarta.json.bind.spi;
 
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
+import jakarta.json.bind.customization.CreatorCustomizationBuilder;
+import jakarta.json.bind.customization.ParamCustomizationBuilder;
+import jakarta.json.bind.customization.PropertyCustomizationBuilder;
+import jakarta.json.bind.customization.TypeCustomizationBuilder;
 
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.ServiceLoader;
 
 /**
@@ -61,6 +66,7 @@ public abstract class JsonbProvider {
      */
     private static final String DEFAULT_PROVIDER = "org.eclipse.yasson.JsonBindingProvider";
 
+    private static volatile JsonbProvider instance = null;
     /**
      * Protected constructor.
      */
@@ -84,21 +90,28 @@ public abstract class JsonbProvider {
      */
     @SuppressWarnings("UseSpecificCatch")
     public static JsonbProvider provider() {
-        ServiceLoader<JsonbProvider> loader = ServiceLoader.load(JsonbProvider.class);
-        Iterator<JsonbProvider> it = loader.iterator();
-        if (it.hasNext()) {
-            return it.next();
+        if (instance == null) {
+            synchronized (JsonbProvider.class) {
+                if (instance == null) {
+                    ServiceLoader<JsonbProvider> loader = ServiceLoader.load(JsonbProvider.class);
+                    Iterator<JsonbProvider> it = loader.iterator();
+                    if (it.hasNext()) {
+                        instance = it.next();
+                    } else {
+                        try {
+                            Class<?> clazz = Class.forName(DEFAULT_PROVIDER);
+                            instance = (JsonbProvider) clazz.newInstance();
+                        } catch (ClassNotFoundException x) {
+                            throw new JsonbException("JSON Binding provider " + DEFAULT_PROVIDER + " not found", x);
+                        } catch (Exception x) {
+                            throw new JsonbException("JSON Binding provider " + DEFAULT_PROVIDER
+                                                             + " could not be instantiated: " + x, x);
+                        }
+                    }
+                }
+            }
         }
-
-        try {
-            Class<?> clazz = Class.forName(DEFAULT_PROVIDER);
-            return (JsonbProvider) clazz.newInstance();
-        } catch (ClassNotFoundException x) {
-            throw new JsonbException("JSON Binding provider " + DEFAULT_PROVIDER + " not found", x);
-        } catch (Exception x) {
-            throw new JsonbException("JSON Binding provider " + DEFAULT_PROVIDER
-                                        + " could not be instantiated: " + x, x);
-        }
+        return instance;
     }
 
     /**
@@ -123,13 +136,12 @@ public abstract class JsonbProvider {
      */
     @SuppressWarnings("UseSpecificCatch")
     public static JsonbProvider provider(final String providerName) {
-        if (providerName == null) {
-            throw new IllegalArgumentException();
+        Objects.requireNonNull(providerName, "providerName is required");
+        if (instance != null && providerName.equals(instance.getClass().getName())) {
+            return instance;
         }
         ServiceLoader<JsonbProvider> loader = ServiceLoader.load(JsonbProvider.class);
-        Iterator<JsonbProvider> it = loader.iterator();
-        while (it.hasNext()) {
-            JsonbProvider provider = it.next();
+        for (JsonbProvider provider : loader) {
             if (providerName.equals(provider.getClass().getName())) {
                 return provider;
             }
@@ -156,5 +168,45 @@ public abstract class JsonbProvider {
      *      If an error was encountered while creating the {@link JsonbBuilder} instance.
      */
     public abstract JsonbBuilder create();
+
+    /**
+     * Return new {@link TypeCustomizationBuilder} instance based on customized type class.
+     *
+     * @param decoratedType customized type class
+     * @return new builder instance
+     */
+    public abstract TypeCustomizationBuilder newTypeCustomizationBuilder(Class<?> decoratedType);
+
+    /**
+     * Return new {@link PropertyCustomizationBuilder} instance based on customized property name.
+     *
+     * @param propertyName customized property name
+     * @return new builder instance
+     */
+    public abstract PropertyCustomizationBuilder newPropertyCustomizationBuilder(String propertyName);
+
+    /**
+     * Return new {@link CreatorCustomizationBuilder}.
+     *
+     * @return new builder instance
+     */
+    public abstract CreatorCustomizationBuilder newCreatorCustomizationBuilder();
+
+    /**
+     * Return new {@link CreatorCustomizationBuilder} instance based on creator method name.
+     *
+     * @param methodName customized creator method name
+     * @return new builder instance
+     */
+    public abstract CreatorCustomizationBuilder newCreatorCustomizationBuilder(String methodName);
+
+    /**
+     * Return new {@link ParamCustomizationBuilder} instance based on parameter class and its name in JSON document.
+     *
+     * @param paramClass customized parameter class
+     * @param jsonName customized parameter json name
+     * @return new builder instance
+     */
+    public abstract ParamCustomizationBuilder newParamCustomizationBuilder(Class<?> paramClass, String jsonName);
 
 }

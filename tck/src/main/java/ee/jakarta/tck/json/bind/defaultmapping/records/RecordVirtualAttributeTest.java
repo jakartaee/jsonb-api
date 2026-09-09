@@ -61,10 +61,10 @@ public class RecordVirtualAttributeTest {
      */
     @Test
     public void testVirtualAttributeIncludedInSerialization() {
-        String jsonString = jsonb.toJson(new VirtualAttributeRecord("Jason", "Borne"));
+        String jsonString = jsonb.toJson(new VirtualAttributeRecord("Jason", "Bourne"));
 
-        assertThat(jsonString, matchesPattern("\\{\\s*\"display\"\\s*:\\s*\"Jason Borne\"\\s*,\\s*"
-                + "\"first\"\\s*:\\s*\"Jason\"\\s*,\\s*\"last\"\\s*:\\s*\"Borne\"\\s*}"));
+        assertThat(jsonString, matchesPattern("\\{\\s*\"display\"\\s*:\\s*\"Jason Bourne\"\\s*,\\s*"
+                + "\"first\"\\s*:\\s*\"Jason\"\\s*,\\s*\"last\"\\s*:\\s*\"Bourne\"\\s*}"));
     }
 
     /*
@@ -93,9 +93,9 @@ public class RecordVirtualAttributeTest {
      */
     @Test
     public void testVirtualAttributeSuppressedByJsonbTransient() {
-        String jsonString = jsonb.toJson(new TransientVirtualAttributeRecord("Jason", "Borne"));
+        String jsonString = jsonb.toJson(new TransientVirtualAttributeRecord("Jason", "Bourne"));
 
-        assertThat(jsonString, matchesPattern("\\{\\s*\"first\"\\s*:\\s*\"Jason\"\\s*,\\s*\"last\"\\s*:\\s*\"Borne\"\\s*}"));
+        assertThat(jsonString, matchesPattern("\\{\\s*\"first\"\\s*:\\s*\"Jason\"\\s*,\\s*\"last\"\\s*:\\s*\"Bourne\"\\s*}"));
     }
 
     /*
@@ -121,10 +121,10 @@ public class RecordVirtualAttributeTest {
      */
     @Test
     public void testVirtualAttributeCustomNameViaJsonbProperty() {
-        String jsonString = jsonb.toJson(new RenamedVirtualAttributeRecord("Jason", "Borne"));
+        String jsonString = jsonb.toJson(new RenamedVirtualAttributeRecord("Jason", "Bourne"));
 
         assertThat(jsonString, matchesPattern("\\{\\s*\"first\"\\s*:\\s*\"Jason\"\\s*,\\s*\"fullName\"\\s*:\\s*"
-                + "\"Jason Borne\"\\s*,\\s*\"last\"\\s*:\\s*\"Borne\"\\s*}"));
+                + "\"Jason Bourne\"\\s*,\\s*\"last\"\\s*:\\s*\"Bourne\"\\s*}"));
     }
 
     /*

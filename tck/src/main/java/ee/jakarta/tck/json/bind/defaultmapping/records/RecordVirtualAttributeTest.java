@@ -201,9 +201,9 @@ public class RecordVirtualAttributeTest {
      */
     @Test
     public void testBeanStyleVirtualAttributeNameNotStripped() {
-        String jsonString = jsonb.toJson(new BeanStyleVirtualAttributeRecord("Jason", "Borne"));
+        String jsonString = jsonb.toJson(new BeanStyleVirtualAttributeRecord("Jason", "Bourne"));
 
         assertThat(jsonString, matchesPattern("\\{\\s*\"first\"\\s*:\\s*\"Jason\"\\s*,\\s*\"getDisplay\"\\s*:\\s*"
-                + "\"Jason Borne\"\\s*,\\s*\"last\"\\s*:\\s*\"Borne\"\\s*}"));
+                + "\"Jason Bourne\"\\s*,\\s*\"last\"\\s*:\\s*\"Bourne\"\\s*}"));
     }
 }

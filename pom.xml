@@ -132,7 +132,7 @@
         <jakarta.inject.version>2.0.1</jakarta.inject.version>
         <jakarta.enterprise.cdi.version>4.1.0</jakarta.enterprise.cdi.version>
         <junit.jupiter.version>5.12.2</junit.jupiter.version>
-        <hamcrest.version>2.2</hamcrest.version>
+        <hamcrest.version>3.0</hamcrest.version>
 
     </properties>
 

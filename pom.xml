@@ -118,7 +118,7 @@
         <maven.surefire.report.plugin.version>3.5.3</maven.surefire.report.plugin.version>
         <spec.version.maven.plugin.version>2.2</spec.version.maven.plugin.version>
         <sigtest.maven.version>2.6</sigtest.maven.version>
-        <spotbugs.maven.plugin.version>4.9.3.0</spotbugs.maven.plugin.version>
+        <spotbugs.maven.plugin.version>4.10.4.1</spotbugs.maven.plugin.version>
 
         <!-- Asciidoctor plugin and its runtime classpath dependencies (jruby + asciidoctorj are
              injected as plugin deps, not project deps, so they do not appear in the compile classpath) -->

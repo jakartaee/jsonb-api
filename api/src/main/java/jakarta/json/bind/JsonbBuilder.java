@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2015, 2020 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Eclipse Foundation and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -97,7 +98,7 @@ public interface JsonbBuilder {
      *
      * @return new {@link jakarta.json.bind.Jsonb Jsonb} instance.
      */
-    static Jsonb create(JsonbConfig config) {
+    static Jsonb create(final JsonbConfig config) {
         return JsonbProvider.provider().create().withConfig(config).build();
     }
 

@@ -16,6 +16,8 @@
 
 package ee.jakarta.tck.json.bind.defaultmapping.records;
 
+import java.util.Locale;
+
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 
@@ -44,7 +46,7 @@ public class RecordDefaultMappingTest {
     /** Record with a compact constructor that normalizes {@code value} to uppercase. */
     public record Tag(String value) {
         public Tag {
-            value = value == null ? null : value.toUpperCase();
+            value = value == null ? null : value.toUpperCase(Locale.ROOT);
         }
     }
 

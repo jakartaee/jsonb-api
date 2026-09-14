@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2016, 2021 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -30,7 +31,7 @@ import java.lang.annotation.Target;
  * </p>
  *
  * <p><b>Usage</b></p>
- * <p> The {@code @JsonbDeserializer} annotation can be used with the following
+ * <p> The {@code @JsonbTypeDeserializer} annotation can be used with the following
  *     program elements:
  * <ul>
  *   <li> type </li>

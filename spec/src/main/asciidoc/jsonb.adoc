@@ -843,7 +843,7 @@ There are two ways how to register `JsonbSerializer/JsonbDeserializer`:
 
 [arabic]
 . Using `JsonbConfig::withSerializers/ JsonbConfig::withDeserializers` method;
-. Annotating a type with `JsonbSerializer/JsonbDeserializer` annotation.
+. Annotating a type with `@JsonbTypeSerializer`/`@JsonbTypeDeserializer` annotation.
 
 It is possible to annotate `JsonbCreator` parameter with `JsonbTypeDeserializer` and provide deserializer for a parameter this way. However, if `JsonbTypeDeserializer` annotation is provided to any other parameter (such as setter method parameter) it will be ignored.
 

@@ -63,7 +63,7 @@ Support and integration with Lightweight JSON API as defined within JEP 198 is o
 
 === Conventions
 
-The keywords ‘MUST’, ‘MUST NOT’, ‘REQUIRED’, ‘SHALL’, ‘SHALL NOT’, ‘SHOULD’, ‘SHOULD NOT’, ‘RECOMMENDED’, ‘MAY’, and ‘OPTIONAL’ in this document are to be interpreted as described in https://www.ietf.org/rfc/rfc2119.txt[RFC 2119].
+The keywords 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'MAY', and 'OPTIONAL' in this document are to be interpreted as described in https://www.ietf.org/rfc/rfc2119.txt[RFC 2119].
 
 Java code and sample data fragments are formatted as shown in Figure 1:
 
@@ -82,7 +82,7 @@ public class Hello {
 URIs of the general form link:http://example.org/...[http://example.org/...] and link:http://example.com/...[http://example.com/...] represent
 application or context-dependent URIs.
 
-All parts of this specification are normative, with the exception of examples, notes and sections explicitly marked as ‘Non-Normative’. Non-normative notes are formatted as shown below:
+All parts of this specification are normative, with the exception of examples, notes and sections explicitly marked as 'Non-Normative'. Non-normative notes are formatted as shown below:
 
 *Note:* _This is a note._
 
@@ -92,10 +92,10 @@ All parts of this specification are normative, with the exception of examples, n
 Process which defines the representation of information in a JSON document as an object instance, and vice versa.
 
 *Deserialization* +
-Process of reading a JSON document and constructing a tree of content objects, where each object corresponds to part of JSON document, thus the content tree reflects the document’s content.
+Process of reading a JSON document and constructing a tree of content objects, where each object corresponds to part of JSON document, thus the content tree reflects the document's content.
 
 *Serialization* +
-Inverse process to deserialization. Process of traversing a content object tree and writing a JSON document that reflects the tree’s content.
+Inverse process to deserialization. Process of traversing a content object tree and writing a JSON document that reflects the tree's content.
 
 === Acknowledgements
 
@@ -156,7 +156,7 @@ Instances of type `java.lang.String` and `java.lang.Character` are serialized to
 
 ==== java.lang.Byte, Short, Integer, Long, Float, Double
 
-Serialization of type `java.lang.Byte`, `Short`, `Integer`, `Long`, `Float` or `Double` (and their corresponding primitive types) to a JSON Number MUST follow the conversion process defined in the javadoc specification for the corresponding type’s `toString()` method. [[JSB-3.3.2-1]] Deserialization of a JSON value into `java.lang.Byte`, `Short`, `Integer`, `Long`, `Float` or `Double` instance (or their corresponding primitive types) MUST follow the conversion process defined in the javadoc specification for the corresponding `parse$Type` method, such as `java.lang.Byte.parseByte()` for `Byte`.
+Serialization of type `java.lang.Byte`, `Short`, `Integer`, `Long`, `Float` or `Double` (and their corresponding primitive types) to a JSON Number MUST follow the conversion process defined in the javadoc specification for the corresponding type's `toString()` method. [[JSB-3.3.2-1]] Deserialization of a JSON value into `java.lang.Byte`, `Short`, `Integer`, `Long`, `Float` or `Double` instance (or their corresponding primitive types) MUST follow the conversion process defined in the javadoc specification for the corresponding `parse$Type` method, such as `java.lang.Byte.parseByte()` for `Byte`.
 
 ==== java.lang.Boolean
 
@@ -182,11 +182,11 @@ Implementations MUST support binding of the following standard Java SE classes:
 
 ==== java.math.BigInteger, BigDecimal
 
-Serialization of type `java.math.BigInteger` or `BigDecimal` to a JSON Number MUST follow the conversion process defined in the javadoc specification for the corresponding type’s `toString()` method. Deserialization of a JSON value into `java.math.BigInteger` or `BigDecimal` instance MUST follow the conversion process defined in the javadoc specification for the constructor of `java.math.BigInteger` or `BigDecimal` with a `java.lang.String` argument.
+Serialization of type `java.math.BigInteger` or `BigDecimal` to a JSON Number MUST follow the conversion process defined in the javadoc specification for the corresponding type's `toString()` method. Deserialization of a JSON value into `java.math.BigInteger` or `BigDecimal` instance MUST follow the conversion process defined in the javadoc specification for the constructor of `java.math.BigInteger` or `BigDecimal` with a `java.lang.String` argument.
 
 ==== java.net.URL, URI
 
-Serialization of type `java.net.URL` or `URI` to a JSON String MUST follow the conversion process defined in the javadoc specification for the corresponding type’s `toString()` method. Deserialization of a JSON value into a `java.net.URL` or `URI` instance MUST follow the conversion process defined in the javadoc specification for the constructor of `java.net.URL` or `URI` with a `java.lang.String` argument.
+Serialization of type `java.net.URL` or `URI` to a JSON String MUST follow the conversion process defined in the javadoc specification for the corresponding type's `toString()` method. Deserialization of a JSON value into a `java.net.URL` or `URI` instance MUST follow the conversion process defined in the javadoc specification for the constructor of `java.net.URL` or `URI` with a `java.lang.String` argument.
 
 ==== java.util.Optional, OptionalInt, OptionalLong, OptionalDouble
 
@@ -436,7 +436,7 @@ The order of the type information properties must be the same in which they appe
 
 Serialization of an Enum instance to a JSON String value MUST follow the conversion process defined in javadoc specification for their `name()`.
 
-Deserialization of a JSON value into an enum instance MUST be done by calling the enum’s `valueOf(String)` method.
+Deserialization of a JSON value into an enum instance MUST be done by calling the enum's `valueOf(String)` method.
 
 === Interfaces
 
@@ -548,7 +548,7 @@ If only raw type of given field/class/record/interface is known, then the type M
 
 JSON Binding implementations MUST use the most specific type derived from the information available.
 
-Let’s consider situation when there is only a static type information of a given field/class/record/interface known, and there is no runtime type information available.
+Let's consider situation when there is only a static type information of a given field/class/record/interface known, and there is no runtime type information available.
 
 Let `GenericClass<T~1~…T~n~>` be part of generic type declaration, where `GenericClass` is name of the generic type and `T~1~…T~n~` are type parameters. For every `T~i~`, where `i` in `1…n`, there are 3 possible options:
 
@@ -559,7 +559,7 @@ Let `GenericClass<T~1~…T~n~>` be part of generic type declaration, where `Gene
 
 In case 1, the most specific parameter type MUST be given concrete parameter type `T~i~`.
 
-For bounded parameter type, let’s use bounds `B~1~,…,B~m~`.
+For bounded parameter type, let's use bounds `B~1~,…,B~m~`.
 
 If `m = 1`, then the most specific parameter type MUST be derived from the given bound `B~1~`.
 
@@ -567,7 +567,7 @@ If `B~1~` is a class, record or interface, the most specific parameter type MUST
 
 Otherwise, the most specific parameter type SHOULD be `java.lang.Object`.
 
-If multiple bounds are specified, the first step is to resolve every bound separately. Let’s define result of such resolution as `S~1~,…,S~m~` specific parameter types.
+If multiple bounds are specified, the first step is to resolve every bound separately. Let's define result of such resolution as `S~1~,…,S~m~` specific parameter types.
 
 If `S~1~,…,S~m~` are `java.lang.Object`, then the bounded parameter `T~i~` type MUST be `java.lang.Object`.
 
@@ -603,7 +603,7 @@ When JSON Binding implementation during deserialization encounters key in key/va
 
 JSON Binding implementations MUST NOT produce JSON documents with members with duplicate names. In this context, "duplicate" means that the names, after processing any escaped characters, are identical sequences of Unicode characters.
 
-When non-unique property (after override and rename) is found, implementation MUST throw an exception. This doesn’t apply for customized user serialization behavior implemented with the usage of `JsonbAdapter` and `JsonbSerializer/JsonbDeserializer` mechanisms.
+When non-unique property (after override and rename) is found, implementation MUST throw an exception. This doesn't apply for customized user serialization behavior implemented with the usage of `JsonbAdapter` and `JsonbSerializer/JsonbDeserializer` mechanisms.
 
 === JSON Processing integration
 
@@ -835,9 +835,9 @@ Implementations must provide a CDI support in adapters to allow injection of CDI
 
 Sometimes adapters mechanism is not enough and low level access to JSONP parser/generator is needed.
 
-Serializer is a class implementing `jakarta.json.bind.serializers.JsonbSerializer` interface. It is used to serialize the type it’s registered on (Original). On serializing of Original type JSONB calls `JsonbSerializer::serialize` method. This method has to contain a custom code to serialize Original type using provided `JsonpGenerator`.
+Serializer is a class implementing `jakarta.json.bind.serializers.JsonbSerializer` interface. It is used to serialize the type it's registered on (Original). On serializing of Original type JSONB calls `JsonbSerializer::serialize` method. This method has to contain a custom code to serialize Original type using provided `JsonpGenerator`.
 
-Deserializer is a class implementing `jakarta.json.bind.serializers.JsonbDeserializer` interface. It is used to deserialize the type it’s registered on (Original). On deserialization of Original type JSONB calls `JsonbDeserializer::deserialize` method. This method has to contain a custom code to deserialize Original type using provided `JsonpParser`.
+Deserializer is a class implementing `jakarta.json.bind.serializers.JsonbDeserializer` interface. It is used to deserialize the type it's registered on (Original). On deserialization of Original type JSONB calls `JsonbDeserializer::deserialize` method. This method has to contain a custom code to deserialize Original type using provided `JsonpParser`.
 
 There are two ways how to register `JsonbSerializer/JsonbDeserializer`:
 
@@ -910,8 +910,8 @@ The way to set custom binary data handling strategy is to use `jakarta.json.bind
 * Section 3.9: Conversion method changed from `toString()` to `name()`.
 * Section 3.4.3: Changed serialization rules of object properties with `Optional` type and `null` value.
 * Section 3.14.1: Added an exception for `Optional` fields.
-* Section 3.6: Removed ’smallest possible type’ rule for number types. JSON number type is always mapped to `BigDecimal` in case target type is not specified.
-* Removed ’Simple Value’ customization (`@JsonbValue`). Adapters shouldbe used instead.
+* Section 3.6: Removed 'smallest possible type' rule for number types. JSON number type is always mapped to `BigDecimal` in case target type is not specified.
+* Removed 'Simple Value' customization (`@JsonbValue`). Adapters shouldbe used instead.
 * Adapters section (4.7.1) changed.
 * Serializers/Deserializers section (4.7.2) added.
 

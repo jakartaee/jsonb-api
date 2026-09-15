@@ -16,6 +16,8 @@
 
 package ee.jakarta.tck.json.bind.defaultmapping.records.model;
 
+import java.util.Locale;
+
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbTransient;
 
@@ -24,6 +26,6 @@ public record TransientPlusAnnotationVirtualAttributeRecord(String value) {
     @JsonbTransient
     @JsonbProperty("renamed")
     public String derived() {
-        return value.toUpperCase();
+        return value.toUpperCase(Locale.ROOT);
     }
 }

@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * @test
  * @sources RecordDefaultMappingTest.java
- * @executeClass ee.jakarta.tck.json.bind.defaultmapping.records
+ * @executeClass ee.jakarta.tck.json.bind.defaultmapping.records.RecordDefaultMappingTest
  *
  * Tests for default serialization and default deserialization of Java records.
  */

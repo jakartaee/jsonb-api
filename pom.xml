@@ -98,7 +98,7 @@
         <build.helper.maven.plugin.version>3.6.1</build.helper.maven.plugin.version>
         <buildnumber.maven.plugin.version>3.3.1</buildnumber.maven.plugin.version>
         <checkstyle.version>10.21.4</checkstyle.version>
-        <exec.maven.plugin.version>3.6.3</exec.maven.plugin.version>
+        <exec.maven.plugin.version>3.6.4</exec.maven.plugin.version>
         <glassfish.copyright.plugin.version>2.4</glassfish.copyright.plugin.version>
         <maven.assembly.plugin.version>3.8.0</maven.assembly.plugin.version>
         <maven.antrun.plugin.version>3.2.0</maven.antrun.plugin.version>

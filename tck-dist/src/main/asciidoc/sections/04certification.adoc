@@ -288,7 +288,7 @@ The following scenarios are considered in scope for test challenges:
 
 The following scenarios are considered out of scope for test challenges and will be immediately closed if filed:
 
-* Challenging an implementation’s claim of passing a test.  Certification is an honor system and these issues must be raised directly with the implementation.
+* Challenging an implementation's claim of passing a test.  Certification is an honor system and these issues must be raised directly with the implementation.
 * Challenging the usefulness of a specification requirement.  The challenge process cannot be used to bypass the specification process and raise in question the need or relevance of a specification requirement.
 * Claims the TCK is inadequate or missing assertions required by the specification.  See the Improvement section, which is outside the scope of test challenges.
 * Challenges that do not represent a consensus of the implementing community will be closed until such time that the community does agree or agreement cannot be made.  The test challenge process is not the place for implementations to initiate their own internal discussions.
@@ -303,7 +303,7 @@ for that version of the {TechnologyShortName} TCK.
 
 ==== TCK Test Appeals Steps
 
-1. Challenges should be filed via the {TechnologyFullName} specification project’s issue tracker using the label `challenge` and include the following information:
+1. Challenges should be filed via the {TechnologyFullName} specification project's issue tracker using the label `challenge` and include the following information:
 * The relevant specification version and section number(s)
 * The coordinates of the challenged test(s)
 * The exact TCK and exclude list versions
@@ -326,7 +326,7 @@ A consensus that a test produces invalid results will result in the exclusion of
 4.  Rejected Challenges and Remedy. +
 When a`challenge` issue is rejected, it must be closed with a label of `invalid` to indicate it has been rejected.
 There appeal process for challenges rejected on technical terms is outlined in Escalation Appeal.
-If, however, an implementer feels the TCK challenge process was not followed, an appeal issue should be filed with specification project’s TCK issue tracker using the label `challenge-appeal`.
+If, however, an implementer feels the TCK challenge process was not followed, an appeal issue should be filed with specification project's TCK issue tracker using the label `challenge-appeal`.
 A project lead should escalate the issue with the Jakarta EE Specification Committee via email (jakarta.ee-spec@eclipse.org).
 The committee will evaluate the matter purely in terms of due process.
 If the appeal is accepted, the original TCK challenge issue will be reopened and a label of `appealed-challenge` added, along with a discussion of the appeal decision, and the `challenge-appeal` issue with be closed.

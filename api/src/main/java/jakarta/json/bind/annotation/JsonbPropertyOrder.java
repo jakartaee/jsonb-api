@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2015, 2020 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -22,12 +23,30 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Specifies order in which properties are serialized.</p>
+ * <p>Customizes the order in which properties are serialized for the annotated type.</p>
  *
- * <p>Partial mapping can also be specified. In that case, properties included
- * in annotation declaration will be serialized first (in defined order), followed
- * by any properties not included in the definition. The order of properties not
- * included in the definition is not guaranteed.</p>
+ * <p>By default, properties are serialized in lexicographical order. This annotation
+ * overrides that default and any order specified by
+ * {@link jakarta.json.bind.config.PropertyOrderStrategy} for the annotated type.</p>
+ *
+ * <p><b>Usage</b></p>
+ * <p>The {@code @JsonbPropertyOrder} annotation can be used with the following program elements:</p>
+ * <ul>
+ *   <li>class: ordering applies to all serializable fields and JavaBean properties.</li>
+ *   <li>record: ordering applies to all serializable record components and record virtual attributes.</li>
+ * </ul>
+ *
+ * <p><b>Partial ordering</b></p>
+ * <p>A partial ordering may be specified by listing only a subset of properties in
+ * {@link #value()}. Properties listed in the annotation are serialized first, in
+ * the declared order. Any remaining properties not listed are serialized afterward
+ * in an unspecified order.</p>
+ *
+ * <p><b>Property name resolution</b></p>
+ * <p>Names provided in {@link #value()} must correspond to the original property
+ * names as defined in the class or record, before any renaming customization
+ * (such as {@link JsonbProperty} or a
+ * {@link jakarta.json.bind.config.PropertyNamingStrategy}) is applied.</p>
  *
  * @since JSON Binding 1.0
  */
@@ -37,10 +56,11 @@ import java.lang.annotation.Target;
 public @interface JsonbPropertyOrder {
 
     /**
-     * Order in which properties are serialized. Names must correspond to original
-     * names defined in Java class before any customization applied.
+     * The order in which properties are serialized. Names must correspond to the
+     * original property or record component names as defined in the type, before
+     * any renaming customization is applied.
      *
-     * @return Array of property names which defines an order.
+     * @return Array of property names defining the serialization order.
      */
     String[] value();
 }

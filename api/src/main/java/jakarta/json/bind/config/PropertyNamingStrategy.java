@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2016, 2020 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -17,56 +18,109 @@
 package jakarta.json.bind.config;
 
 /**
- * <p>Allows to define custom property naming strategy.
- * Specifies predefined property naming strategies.
- * Does not override JsonbProperty value.</p>
+ * <p>Specifies a predefined property name conversion for serialization and deserialization.</p>
  *
- * <p>This strategy can be set via {@link jakarta.json.bind.JsonbConfig}.</p>
+ * <p>This interface serves two purposes:</p>
+ * <ul>
+ *   <li>It defines the globally predefined naming strategy constants (e.g. {@link #IDENTITY},
+ *       {@link #LOWER_CASE_WITH_DASHES}) that can be passed to
+ *       {@link jakarta.json.bind.JsonbConfig#withPropertyNamingStrategy(String)}.</li>
+ *   <li>It can be implemented directly to provide a custom naming strategy, which can be passed to
+ *       {@link jakarta.json.bind.JsonbConfig#withPropertyNamingStrategy(PropertyNamingStrategy)}.</li>
+ * </ul>
+ *
+ * <p>All naming stategies apply to the {@code identity property name}
+ *    which is determined by one of the following program elements: </p>
+ * <ul>
+ *   <li>field name</li>
+ *   <li>JavaBean property name</li>
+ *   <li>record component name</li>
+ *   <li>record virtual attribute name</li>
+ * </ul>
+ *
+ * <p>A naming strategy applies globally to all serialized and deserialized types.
+ * The stategy transforms the {@code identity property name} into a JSON property name.</p>
+ *
+ * <p><b>Interaction with other naming customizations</b></p>
+ * <p>A {@link jakarta.json.bind.annotation.JsonbProperty} annotation on a field,
+ * record component, accessor method, virtual attribute, or constructor/factory-method parameter takes
+ * precedence over this strategy for that individual property. The strategy is applied to properties
+ * only when no such annotation is present.</p>
  *
  * @see jakarta.json.bind.JsonbConfig
+ * @see jakarta.json.bind.annotation.JsonbProperty
  * @since JSON Binding 1.0
  */
 public interface PropertyNamingStrategy {
+
     /**
-     * Using this strategy, the property name is unchanged.
+     * <p>The {@code identity property name} is used unchanged as the JSON property name.</p>
+     *
+     * <p>This is the default naming stategy.</p>
      */
     String IDENTITY = "IDENTITY";
 
     /**
-     * Using this strategy, the property name is transformed to lower case with dashes.
-     * The dashes are on the positions of different case boundaries in the original field name (camel case).
+     * <p>The {@code identity property name} is transformed to lower case with dashes.</p>
+     *
+     * <p>Dashes are inserted at camel-case boundaries in the identity property name</p>
+     *
+     * <p>For example, {@code myPropertyName} becomes
+     * {@code my-property-name}.</p>
      */
     String LOWER_CASE_WITH_DASHES = "LOWER_CASE_WITH_DASHES";
 
     /**
-     * Using this strategy, the property name is transformed to lower case with underscores.
-     * The underscores are on the positions of different case boundaries in the original field name (camel case).
+     * <p>The {@code identity property name} is transformed to lower case with underscores.</p>
+     *
+     * <p>Underscores are inserted at camel-case boundaries in the identity
+     * property name.</p>
+     *
+     * <p>For example, {@code myPropertyName} becomes
+     * {@code my_property_name}.</p>
      */
     String LOWER_CASE_WITH_UNDERSCORES = "LOWER_CASE_WITH_UNDERSCORES";
 
     /**
-     * Using this strategy, the first character will be capitalized.
+     * <p>The first character of the {@code identity property name} is capitalized;
+     * the remainder is unchanged.</p>
+     *
+     * <p>For example, {@code myPropertyName} becomes
+     * {@code MyPropertyName}.</p>
      */
     String UPPER_CAMEL_CASE = "UPPER_CAMEL_CASE";
 
     /**
-     * Using this strategy, the first character will be capitalized and the words
-     * will be separated by spaces.
+     * <p>The first character of the property name is capitalized and camel-case
+     * word boundaries are replaced with spaces.</p>
+     *
+     * <p>For example, {@code myPropertyName} becomes
+     * {@code My Property Name}.</p>
      */
     String UPPER_CAMEL_CASE_WITH_SPACES = "UPPER_CAMEL_CASE_WITH_SPACES";
 
     /**
-     * Using this strategy, the serialization will be same as identity.
-     * Deserialization will be case insensitive. E.g. property in JSON with name
-     * PropertyNAME, will be mapped to field propertyName.
+     * <p>During serialization, the {@link #IDENTITY} strategy is used;
+     * the property name is written to JSON unchanged.</p>
+     *
+     * <p>During deserialization, JSON property name matching is case-insensitive.</p>
+     *
+     * <p>For example, a JSON property named
+     * {@code PropertyNAME} will be mapped to the {@code identity property name}
+     * {@code propertyName}.</p>
      */
     String CASE_INSENSITIVE = "CASE_INSENSITIVE";
 
     /**
-     * Translates the property name into its JSON field name representation.
+     * <p>Translates an {@code identity property name} into its JSON property name
+     * representation according to this strategy.</p>
      *
-     * @param propertyName Name of the property to translate.
-     * @return Translated JSON field name.
+     * <p>The returned value is used as the JSON property name during serialization
+     * and as the expected JSON property name during deserialization,
+     * unless overridden by a {@link jakarta.json.bind.annotation.JsonbProperty} annotation.</p>
+     *
+     * @param propertyName {@code identity property name} to translate.
+     * @return the translated JSON property name.
      */
     String translateName(String propertyName);
 }

@@ -648,7 +648,7 @@ JSON Binding implementations MUST NOT process fields, record components, JavaBea
 
 ==== jakarta.json.bind.annotation.JsonbProperty
 
-According to default mapping 3.15, property names are serialized unchanged to a JSON document (identity transformation). To provide a custom name for a given field or record component (or JavaBean property), `jakarta.json.bind.annotation.JsonbProperty` may be used. The `JsonbProperty` annotation may be specified on a field, record component, record component accessor method, virtual attribute method, getter or setter method.
+According to default mapping 3.15, property names are serialized unchanged to a JSON document (identity transformation). To provide a custom name for a given field or record component (or JavaBean property), `jakarta.json.bind.annotation.JsonbProperty` may be used. The `JsonbProperty` annotation may be specified on a field, record component, record component accessor method, virtual attribute method, getter or setter method, or a `@JsonbCreator` annotated constructor or static factory method parameter.
 
 If specified on field or record component, custom name is used both for serialization and deserialization.
 
@@ -656,13 +656,30 @@ If `jakarta.json.bind.annotation.JsonbProperty` is specified on getter method, i
 
 If `jakarta.json.bind.annotation.JsonbProperty` is specified on a virtual attribute method or component accessor method, then the customization defined by the `JsonbProperty` annotation applies only for serialization.
 
-It is possible to specify different values for getter and setter method for `jakarta.json.bind.annotation.JsonbProperty` annotation. In such case the different custom name will be used for serialization and deserialization.
+If `jakarta.json.bind.annotation.JsonbProperty` is specified on a parameter of a `@JsonbCreator` annotated constructor or static factory method, the custom name is used only for deserialization.
+
+It is possible to specify different values for getter and setter method for `jakarta.json.bind.annotation.JsonbProperty` annotation. In such case the different custom name will be used for serialization and deserialization independently.
+
+=== jakarta.json.bind.annotation.JsonbPropertyOrder
+
+To customize the order of serialized properties only for one specific type, JSON Binding provides the `jakarta.json.bind.annotation.JsonbPropertyOrder` annotation. The order specified by the `JsonbPropertyOrder` annotation overrides the order specified by `PropertyOrderStrategy` for that type.
+
+Properties listed in `@JsonbPropertyOrder` are serialized first in the declared order. Any remaining properties not listed are serialized afterward in an unspecified order. Names provided in `@JsonbPropertyOrder` MUST correspond to the original property or record component names as defined in the type, before any renaming customization (such as `@JsonbProperty` or a `PropertyNamingStrategy`) is applied.
 
 ==== jakarta.json.bind.config.PropertyNamingStrategy
 
-To customize name translation of properties, JSON Binding provides `jakarta.json.bind.config.PropertyNamingStrategy` interface.
+To customize name translation of properties, JSON Binding provides the `jakarta.json.bind.config.PropertyNamingStrategy` interface.
 
-Interface `jakarta.json.bind.config.PropertyNamingStrategy` provides the most common property naming strategies.
+A naming strategy transforms the _identity property name_ into the JSON property name used during serialization and deserialization. The identity property name is determined by one of the following program elements: 
+
+- a field name
+- a JavaBean property name
+- a record component name
+- a record virtual attribute name.
+
+A `jakarta.json.bind.annotation.JsonbProperty` annotation on an individual field, record component, accessor method, virtual attribute, or `@JsonbCreator` parameter takes precedence over the naming strategy for that property. The strategy is applied only when no such annotation is present.
+
+Interface `jakarta.json.bind.config.PropertyNamingStrategy` provides the following predefined naming strategies:
 
 * IDENTITY
 * LOWER_CASE_WITH_DASHES
@@ -673,7 +690,7 @@ Interface `jakarta.json.bind.config.PropertyNamingStrategy` provides the most co
 
 The detailed description of property naming strategies can be found in javadoc.
 
-The way to set custom property naming strategy is to use `jakarta.json.bind.JsonbConfig::withPropertyNamingStrategy` method.
+To set a property naming strategy use the `jakarta.json.bind.JsonbConfig::withPropertyNamingStrategy` method.
 
 ==== Property names resolution
 
@@ -690,7 +707,7 @@ If duplicate name is found exception MUST be thrown. The definition of duplicate
 
 To customize the order of serialized properties, JSON Binding provides the `jakarta.json.bind.config.PropertyOrderStrategy` class.
 
-Class `jakarta.json.bind.config.PropertyOrderStrategy` provides the most common property order strategies.
+Class `jakarta.json.bind.config.PropertyOrderStrategy` provides the following predefined property order strategies:
 
 * LEXICOGRAPHICAL
 * ANY
@@ -698,11 +715,7 @@ Class `jakarta.json.bind.config.PropertyOrderStrategy` provides the most common 
 
 Detailed descriptions of property order strategies can be found in the javadoc.
 
-Use the `jakarta.json.bind.JsonbConfig::withPropertyOrderStrategy` method to configure a custom property order strategy.
-
-To customize the order of serialized properties only for one specific type, JSON Binding provides the `jakarta.json.bind.annotation.JsonbPropertyOrder` annotation. The order specified by the `JsonbPropertyOrder` annotation overrides the order specified by `PropertyOrderStrategy`.
-
-A `PropertyOrderStrategy` determines the order based on the already renamed properties that have been customized according to the rules outlined under section 4.1.
+Use the `jakarta.json.bind.JsonbConfig::withPropertyOrderStrategy` method to configure a property order strategy.
 
 === Customizing Null Handling
 

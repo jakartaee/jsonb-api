@@ -95,10 +95,10 @@
         <revisiondate>${maven.build.timestamp}</revisiondate>
 
         <!-- Plugin versions -->
-        <build.helper.maven.plugin.version>3.6.1</build.helper.maven.plugin.version>
-        <buildnumber.maven.plugin.version>3.3.0</buildnumber.maven.plugin.version>
+        <build.helper.maven.plugin.version>3.6.2</build.helper.maven.plugin.version>
+        <buildnumber.maven.plugin.version>3.3.1</buildnumber.maven.plugin.version>
         <checkstyle.version>12.3.1</checkstyle.version>
-        <exec.maven.plugin.version>3.6.3</exec.maven.plugin.version>
+        <exec.maven.plugin.version>3.6.4</exec.maven.plugin.version>
         <glassfish.copyright.plugin.version>2.4</glassfish.copyright.plugin.version>
         <maven.assembly.plugin.version>3.8.0</maven.assembly.plugin.version>
         <maven.antrun.plugin.version>3.2.0</maven.antrun.plugin.version>
@@ -106,7 +106,7 @@
         <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
         <maven.compiler.plugin.version>3.16.0</maven.compiler.plugin.version>
         <maven.dependency.plugin.version>3.11.0</maven.dependency.plugin.version>
-        <maven.deploy.plugin.version>3.1.4</maven.deploy.plugin.version>
+        <maven.deploy.plugin.version>3.2.0</maven.deploy.plugin.version>
         <maven.enforcer.plugin.version>3.6.3</maven.enforcer.plugin.version>
         <maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
         <maven.jar.plugin.version>3.5.1</maven.jar.plugin.version>
@@ -123,7 +123,7 @@
         <!-- Asciidoctor plugin and its runtime classpath dependencies (jruby + asciidoctorj are
              injected as plugin deps, not project deps, so they do not appear in the compile classpath) -->
         <asciidoctorj.version>3.0.1</asciidoctorj.version>
-        <asciidoctorj.pdf.version>2.3.23</asciidoctorj.pdf.version>
+        <asciidoctorj.pdf.version>2.3.27</asciidoctorj.pdf.version>
         <asciidoctor.maven.plugin.version>3.2.0</asciidoctor.maven.plugin.version>
         <jruby.version>9.4.12.1</jruby.version>
 

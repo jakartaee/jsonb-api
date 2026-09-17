@@ -19,6 +19,8 @@
  */
 package ee.jakarta.tck.json.bind.defaultmapping.records;
 
+import java.util.Locale;
+
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbException;
@@ -33,7 +35,7 @@ public class RecordInstantiationTest {
 
     public static record RecordWithCanonicalConstructor(String a, int b) {
         public RecordWithCanonicalConstructor(String a, int b) {
-            this.a = a.toUpperCase();
+            this.a = a.toUpperCase(Locale.ROOT);
             this.b = b;
         }
     }

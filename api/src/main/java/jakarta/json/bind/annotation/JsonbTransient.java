@@ -24,10 +24,10 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.RECORD_COMPONENT;
 
 /**
- * <p>Prevents mapping of properties during serialization and deserialization of Java objects
- * to JSON representation.</p>
+ * <p>Prevents serialization and/or deserialization of JSON properties.</p>
  *
  * <p><b>Usage</b></p>
  * <p>The {@code @JsonbTransient} annotation can be used with the following program elements:</p>
@@ -84,6 +84,6 @@ import static java.lang.annotation.ElementType.METHOD;
  */
 @JsonbAnnotation
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ANNOTATION_TYPE, FIELD, METHOD})
+@Target({ANNOTATION_TYPE, FIELD, METHOD, RECORD_COMPONENT})
 public @interface JsonbTransient { }
 

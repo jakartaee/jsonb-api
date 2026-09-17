@@ -636,12 +636,16 @@ JSON Binding implementations MUST NOT process fields, record components, JavaBea
 
 `JsonbTransient` annotation is mutually exclusive with all other JSON Binding defined annotations. Implementations must throw `JsonbException` in the following cases:
 
-* Class field or record component is annotated with `@JsonbTransient`
-** Exception must be thrown when this field, record component, getter or setter is annotated with other JSON Binding annotations.
+* Class field is annotated with `@JsonbTransient`
+** Exception must be thrown when this field, its getter, or its setter is annotated with other JSON Binding annotations.
 * Getter is annotated with `@JsonbTransient`
-** An exception is thrown if the field, record component or this getter are annotated with other JSON Binding annotations. An exception is not thrown if JSON Binding annotations are present on the setter.
+** An exception is thrown if the field or this getter are annotated with other JSON Binding annotations. An exception is not thrown if JSON Binding annotations are present on the setter.
 * Setter is annotated with `@JsonbTransient`
-** Exception is thrown if when the field or this setter are annotated with other JSON Binding annotations. Exception is not thrown if JSON Binding annotations are presented on the getter.
+** An exception is thrown if the field or this setter are annotated with other JSON Binding annotations. An exception is not thrown if JSON Binding annotations are present on the getter.
+* Record component is annotated with `@JsonbTransient`
+** An exception must be thrown when this component or its accessor is annotated with other JSON Binding annotations.
+* Record component accessor is annotated with `@JsonbTransient`
+** An exception is thrown if the corresponding component or this accessor is annotated with other JSON Binding annotations.
 * Record virtual attribute method is annotated with `@JsonbTransient`
 ** The method is excluded from serialization output.
 ** An exception must be thrown if the method is also annotated with any other JSON Binding annotation.

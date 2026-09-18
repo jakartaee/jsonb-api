@@ -50,7 +50,7 @@ public class BigNumbersMappingTest {
      * to JSON-B)
      */
     @Test
-    @Disabled("See https://github.com/jakartaee/jsonb-api/issues/180")
+    @Disabled("link: https://github.com/jakartaee/jsonb-api/issues/180 since: 1.0.0")
     public void testBigNumberMarshalling() {
         String jsonString = jsonb.toJson(new Object() {
             @SuppressWarnings("unused")

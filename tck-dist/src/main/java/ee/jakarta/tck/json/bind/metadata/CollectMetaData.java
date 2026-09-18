@@ -40,6 +40,7 @@ import org.objectweb.asm.Opcodes;
  *   <li>The number of tests that need to pass for certification</li>
  *   <li>Expected JUnit output</li>
  *   <li>Expected signature test output</li>
+ *   <li>The list of API packages covered by the TCK</li>
  * </ol>
  *
  * <p>This is run automatically each time the tck-dist module is built so the
@@ -58,6 +59,7 @@ import org.objectweb.asm.Opcodes;
  * <pre>
  *   expected-output.adoc
  *   expected-sig-output.adoc
+ *   packages.adoc
  *   runtime-tests.adoc
  *   successful-challenges.adoc
  * </pre>
@@ -75,6 +77,7 @@ public final class CollectMetaData {
     private static final String CHALLENGED_TESTS_FILE = "successful-challenges.adoc";
     private static final String SIG_OUTPUT_FILE       = "expected-sig-output.adoc";
     private static final String EXPECTED_OUTPUT_FILE  = "expected-output.adoc";
+    private static final String PACKAGES_FILE         = "packages.adoc";
 
     // Data holders
     private static boolean debug = false;
@@ -119,8 +122,9 @@ public final class CollectMetaData {
         writeSuccessfulChallenges(testMetaData, new File(adocGeneratedLocation, CHALLENGED_TESTS_FILE));
         writeSigOutput(new File(adocGeneratedLocation, SIG_OUTPUT_FILE));
         writeOutput(testMetaData, new File(adocGeneratedLocation, EXPECTED_OUTPUT_FILE));
+        writePackages(new File(adocGeneratedLocation, PACKAGES_FILE));
         writeGitIgnore(new File(adocGeneratedLocation, ".gitignore"),
-                RUNTIME_TESTS_FILE, CHALLENGED_TESTS_FILE, SIG_OUTPUT_FILE, EXPECTED_OUTPUT_FILE);
+                RUNTIME_TESTS_FILE, CHALLENGED_TESTS_FILE, SIG_OUTPUT_FILE, EXPECTED_OUTPUT_FILE, PACKAGES_FILE);
 
         for (TestMetaData data : testMetaData) {
             debug(data.debugString());
@@ -324,7 +328,7 @@ public final class CollectMetaData {
                 ----
                 $ mvn clean test
                 ...
-                [INFO] --- maven-surefire-plugin:3.0.0-M7:test (default-test) @ tck.runner ---
+                [INFO] --- maven-surefire-plugin:x.x.x:test (default-test) @ tck.runner ---
                 [INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
                 [INFO]
                 [INFO] -------------------------------------------------------
@@ -437,6 +441,28 @@ public final class CollectMetaData {
                     """.indent(8).replaceAll("\\$package", apiPackage);
         }
         return output;
+    }
+
+    /**
+     * Writes the list of API packages to the generated adoc folder as an
+     * AsciiDoc nested bullet list, matching the format:
+     * <pre>
+     *   ** `jakarta.json.bind`
+     *   ** `jakarta.json.bind.adapter`
+     * </pre>
+     *
+     * @param outputLocation the output file
+     * @throws IOException if the file cannot be written
+     */
+    private static void writePackages(final File outputLocation) throws IOException {
+        StringBuilder output = new StringBuilder();
+        for (String apiPackage : apiPackages) {
+            output.append("** `").append(apiPackage).append("`").append(System.lineSeparator());
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputLocation))) {
+            writer.write(output.toString().trim() + System.lineSeparator());
+        }
     }
 
     /**

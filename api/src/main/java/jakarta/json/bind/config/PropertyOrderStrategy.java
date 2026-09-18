@@ -18,7 +18,7 @@
 package jakarta.json.bind.config;
 
 /**
- * <p>Specifies predefined property order stategy for serialization.</p>
+ * <p>Specifies predefined property order strategy for serialization.</p>
  *
  * <p>This strategy can be set globally via
  * {@link jakarta.json.bind.JsonbConfig#withPropertyOrderStrategy(String)}.</p>
@@ -37,7 +37,7 @@ package jakarta.json.bind.config;
  *
  * <p><b>Interaction with property renaming</b></p>
  * <p>When {@link LEXICOGRAPHICAL} or {@link REVERSE} is used, ordering is applied
- * to the final JSON property names; that is, names after any renaming customization
+ * to the final JSON property names; that is, the names after any renaming customization
  * (such as {@link jakarta.json.bind.annotation.JsonbProperty} or a
  * {@link PropertyNamingStrategy}) has been applied.</p>
  *

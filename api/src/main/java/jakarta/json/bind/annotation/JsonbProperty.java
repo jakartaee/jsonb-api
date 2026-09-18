@@ -23,7 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Customizes serialization and/or deserialziaton of JSON property names.</p>
+ * <p>Customizes serialization and/or deserialization of JSON property names.</p>
  *
  * <p>By default, property names are serialized unchanged (identity transformation).
  * This annotation overrides that default for the annotated program element.</p>

@@ -29,7 +29,7 @@ package jakarta.json.bind.config;
  *       {@link jakarta.json.bind.JsonbConfig#withPropertyNamingStrategy(PropertyNamingStrategy)}.</li>
  * </ul>
  *
- * <p>All naming stategies apply to the {@code identity property name}
+ * <p>All naming strategies apply to the {@code identity property name}
  *    which is determined by one of the following program elements: </p>
  * <ul>
  *   <li>field name</li>
@@ -39,13 +39,13 @@ package jakarta.json.bind.config;
  * </ul>
  *
  * <p>A naming strategy applies globally to all serialized and deserialized types.
- * The stategy transforms the {@code identity property name} into a JSON property name.</p>
+ * The strategy transforms the {@code identity property name} into a JSON property name.</p>
  *
  * <p><b>Interaction with other naming customizations</b></p>
  * <p>A {@link jakarta.json.bind.annotation.JsonbProperty} annotation on a field,
  * record component, accessor method, virtual attribute, or constructor/factory-method parameter takes
- * precedence over this strategy for that individual property. The strategy is applied to properties
- * only when no such annotation is present.</p>
+ * precedence over this strategy for the given property. The strategy is applied to properties
+ * for which no such annotation is present.</p>
  *
  * @see jakarta.json.bind.JsonbConfig
  * @see jakarta.json.bind.annotation.JsonbProperty
@@ -56,14 +56,14 @@ public interface PropertyNamingStrategy {
     /**
      * <p>The {@code identity property name} is used unchanged as the JSON property name.</p>
      *
-     * <p>This is the default naming stategy.</p>
+     * <p>This is the default naming strategy.</p>
      */
     String IDENTITY = "IDENTITY";
 
     /**
      * <p>The {@code identity property name} is transformed to lower case with dashes.</p>
      *
-     * <p>Dashes are inserted at camel-case boundaries in the identity property name</p>
+     * <p>Dashes are inserted at camel-case boundaries in the identity property name.</p>
      *
      * <p>For example, {@code myPropertyName} becomes
      * {@code my-property-name}.</p>

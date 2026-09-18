@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,10 +15,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
-
 package ee.jakarta.tck.json.bind.customizedmapping.propertynames;
 
 import jakarta.json.bind.Jsonb;
@@ -26,7 +23,9 @@ import jakarta.json.bind.JsonbConfig;
 import jakarta.json.bind.JsonbException;
 import jakarta.json.bind.config.PropertyNamingStrategy;
 
+import ee.jakarta.tck.json.bind.customizedmapping.propertynames.model.DifferentGetterSetterNamesContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.propertynames.model.DuplicateNameContainer;
+import ee.jakarta.tck.json.bind.customizedmapping.propertynames.model.MixedNamingStrategyContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.propertynames.model.PropertyNameCustomizationAccessorsContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.propertynames.model.PropertyNameCustomizationContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.propertynames.model.StringContainer;
@@ -479,6 +478,90 @@ public class PropertyNameCustomizationTest {
         assertThat("Failed to correctly unmarshal property using PropertyNamingStrategy.CASE_INSENSITIVE.",
                    unmarshalledObject.getStringInstance(), is("Test String"));
     }
+
+    /*
+     * @testName: testDifferentGetterSetterNames
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-4.1.2-1; JSONB:SPEC:JSB-4.1.2-2;
+     * JSONB:SPEC:JSB-4.1.2-3
+     *
+     * @test_Strategy: Assert that when getter and setter carry different
+     * JsonbProperty values, the getter name is used for serialization and
+     * the setter name is used for deserialization independently.
+     */
+    @Test
+    public void testDifferentGetterSetterNames() {
+        DifferentGetterSetterNamesContainer container = new DifferentGetterSetterNamesContainer();
+        container.setInstance("Test String");
+
+        String jsonString = jsonb.toJson(container);
+        assertThat("Failed to use getter JsonbProperty name during serialization.",
+                   jsonString, matchesPattern("\\{\\s*\"serializedName\"\\s*:\\s*\"Test String\"\\s*\\}"));
+
+        DifferentGetterSetterNamesContainer unmarshalledObject =
+                jsonb.fromJson("{ \"deserializedName\" : \"Deserialized String\" }",
+                               DifferentGetterSetterNamesContainer.class);
+        assertThat("Failed to use setter JsonbProperty name during deserialization.",
+                   unmarshalledObject.getInstance(), is("Deserialized String"));
+    }
+
+    /*
+     * @testName: testCaseInsensitiveDeserializationWithMismatch
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-4.1.3-1
+     *
+     * @test_Strategy: Assert that PropertyNamingStrategy.CASE_INSENSITIVE accepts
+     * JSON property names with arbitrary casing during deserialization.
+     */
+    @Test
+    public void testCaseInsensitiveDeserializationWithMismatch() {
+        JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
+                                                           PropertyNamingStrategy.CASE_INSENSITIVE);
+        Jsonb jsonb = JsonbBuilder.create(config);
+
+        StringContainer unmarshalledObject = jsonb.fromJson("{ \"STRINGINSTANCE\" : \"Test String\" }", StringContainer.class);
+        assertThat("Failed to accept upper-case property name using PropertyNamingStrategy.CASE_INSENSITIVE.",
+                   unmarshalledObject.getStringInstance(), is("Test String"));
+
+        StringContainer unmarshalledObject2 = jsonb.fromJson("{ \"StringInstance\" : \"Another String\" }", StringContainer.class);
+        assertThat("Failed to accept pascal-case property name using PropertyNamingStrategy.CASE_INSENSITIVE.",
+                   unmarshalledObject2.getStringInstance(), is("Another String"));
+    }
+
+    /*
+     * @testName: testNamingStrategyOverriddenByJsonbProperty
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-4.1.3-1
+     *
+     * @test_Strategy: Assert that a JsonbProperty annotation on an individual
+     * field takes precedence over a global PropertyNamingStrategy for that
+     * field, while the strategy is still applied to un-annotated fields.
+     */
+    @Test
+    public void testNamingStrategyOverriddenByJsonbProperty() {
+        JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
+                                                           PropertyNamingStrategy.LOWER_CASE_WITH_DASHES);
+        Jsonb jsonb = JsonbBuilder.create(config);
+
+        MixedNamingStrategyContainer container = new MixedNamingStrategyContainer();
+        container.setAnnotatedInstance("annotated value");
+        container.setStrategyInstance("strategy value");
+
+        String jsonString = jsonb.toJson(container);
+        assertThat("JsonbProperty annotation should override naming strategy for annotated field.",
+                   jsonString, matchesPattern(".*\"fixedName\"\\s*:\\s*\"annotated value\".*"));
+        assertThat("Naming strategy should still apply to un-annotated field.",
+                   jsonString, matchesPattern(".*\"strategy-instance\"\\s*:\\s*\"strategy value\".*"));
+
+        MixedNamingStrategyContainer unmarshalledObject =
+                jsonb.fromJson("{ \"fixedName\" : \"annotated value\", \"strategy-instance\" : \"strategy value\" }",
+                               MixedNamingStrategyContainer.class);
+        assertThat("Failed to deserialize annotated field using JsonbProperty name.",
+                   unmarshalledObject.getAnnotatedInstance(), is("annotated value"));
+        assertThat("Failed to deserialize un-annotated field using strategy-transformed name.",
+                   unmarshalledObject.getStrategyInstance(), is("strategy value"));
+    }
+
 
     /*
      * @testName: testDuplicateName

@@ -2,6 +2,7 @@
 <!--
 
     Copyright (c) 2022, 2026 Oracle and/or its affiliates. All rights reserved.
+    Copyright (c) 2026 Contributors to the Eclipse Foundation
 
     This program and the accompanying materials are made available under the
     terms of the Eclipse Public License v. 2.0, which is available at
@@ -29,15 +30,9 @@
     </parent>
 
     <artifactId>jakarta.json.bind-tck-dist</artifactId>
-    <packaging>pom</packaging>
 
     <name>Jakarta JSON Binding TCK Distribution</name>
 
-    <!--
-        These dependencies are resolved by maven-assembly-plugin to populate the artifacts/
-        directory inside the distribution zip. They are not compile/runtime dependencies of
-        this module itself.
-    -->
     <dependencies>
         <!-- Parent POM included so implementors can inspect the managed dependency versions -->
         <dependency>
@@ -51,7 +46,6 @@
             <groupId>jakarta.json.bind</groupId>
             <artifactId>jakarta.json.bind-api</artifactId>
             <version>${project.version}</version>
-            <type>jar</type>
         </dependency>
         <!-- TCK POM (for dependency resolution when running tests) -->
         <dependency>
@@ -60,12 +54,11 @@
             <version>${project.version}</version>
             <type>pom</type>
         </dependency>
-        <!-- TCK test jar -->
+        <!-- TCK test jar — path resolved by maven-dependency-plugin and passed to CollectMetaData -->
         <dependency>
             <groupId>jakarta.json.bind</groupId>
             <artifactId>jakarta.json.bind-tck</artifactId>
             <version>${project.version}</version>
-            <type>jar</type>
         </dependency>
         <!-- TCK sources jar (optional — useful for debugging test failures) -->
         <dependency>
@@ -75,10 +68,59 @@
             <classifier>sources</classifier>
             <optional>true</optional>
         </dependency>
+        <!-- ASM bytecode reader used by CollectMetaData to scan @Assertion/@Challenge without loading classes -->
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Compile CollectMetaData and any other sources in this module -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <!-- Expose TCK jar path as ${jakarta.json.bind:jakarta.json.bind-tck:jar} -->
+                    <execution>
+                        <id>resolve-tck-jar-path</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>properties</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Generate asciidoc sections from @Assertion / @Challenge metadata in the TCK jar -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-asciidoc</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>ee.jakarta.tck.json.bind.metadata.CollectMetaData</mainClass>
+                    <arguments>
+                        <argument>false</argument> <!-- debug? -->
+                        <argument>${jakarta.json.bind:jakarta.json.bind-tck:jar}</argument>
+                        <argument>${project.basedir}/src/main/asciidoc/generated</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+
             <!-- Packages the TCK distribution zip containing artifacts, docs, bin/pom.xml, and README -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

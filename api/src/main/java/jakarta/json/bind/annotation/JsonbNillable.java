@@ -34,8 +34,6 @@ import java.lang.annotation.Target;
  * <p>The annotation can be specified on a field, method, type, or package,
  * and affects all underlying properties and classes.</p>
  *
- * <p>For similar functionality on a property level see {@link JsonbProperty}.</p>
- *
  * @since JSON Binding 1.0
  */
 @JsonbAnnotation

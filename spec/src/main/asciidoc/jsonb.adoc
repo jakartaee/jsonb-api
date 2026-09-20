@@ -706,10 +706,9 @@ A `PropertyOrderStrategy` determines the order based on the already renamed prop
 
 === Customizing Null Handling
 
-There are two main ways how to change default null handling. The first option is to annotate type, package, field, record component or JavaBean property with `jakarta.json.bind.annotation.JsonbNillable` annotation. The second option is to set config-wide configuration via `JsonbConfig::withNullValues` method. There is also a third option to annotate a field, record component or JavaBean property with `jakarta.json.bind.annotation.JsonbProperty` and to set nillable parameter to true. However, this option is currently deprecated, and it is recommended to use `jakarta.json.bind.annotation.JsonbNillable` instead.
+There are two main ways how to change default null handling. The first option is to annotate type, package, field, record component or JavaBean property with `jakarta.json.bind.annotation.JsonbNillable` annotation. The second option is to set config-wide configuration via `JsonbConfig::withNullValues` method.
 
-If annotations (`JsonbNillable` or `JsonbProperty`) on different level apply to the same field (or JavaBean property), record component or if there is config wide configuration and some annotation (`JsonbNillable` or `JsonbProperty`) which apply to the same field or record component (or JavaBean property), the annotation with the smallest scope applies. For example, if there is type level `JsonbNillable` annotation applied to some class with field which is annotated with `JsonbProperty` annotation with nillable = false, then `JsonbProperty` annotation overrides `JsonbNillable` annotation.
-
+If null-serialization rules (JsonbNillable) apply at different levels to the same field, JavaBean property, or record component-or between a configuration-wide setting and an annotation-the setting with the smallest scope takes precedence. For example, a type-level @JsonbNillable annotation applied to a class overrides a configuration-wide nillable setting for fields within that class.
 If `JsonbNillable` and `JsonbProperty` are applied on the same level, `JsonbNillable` takes precedence.
 
 ==== jakarta.json.bind.annotation.JsonbNillable
@@ -717,8 +716,6 @@ If `JsonbNillable` and `JsonbProperty` are applied on the same level, `JsonbNill
 To customize the result of serializing field or record component (or JavaBean property) with null value, JSON Binding provides `jakarta.json.bind.annotation.JsonbNillable` annotation.
 
 When a given object (type, package, field, record component, virtual attribute, or JavaBean property) is annotated with `jakarta.json.bind.annotation.JsonbNillable` annotation, then a value of `null` will be explicitly serialized to `null` in the JSON document, instead of being skipped as described in <<null-java-field, Null Java Field>>.
-
-The same behavior as `JsonbNillable`, but only at field, record component, parameter and method (JavaBean property) level is provided by `jakarta.json.bind.annotation.JsonbProperty` annotation with its `nillable` parameter. This option is currently deprecated, and it is recommended to use `jakarta.json.bind.annotation.JsonbNillable` instead.
 
 JSON Binding implementations MUST implement override of annotations according to target of the annotation (FIELD, PARAMETER, METHOD, TYPE, PACKAGE). Type level annotation overrides behavior set at the package level. Method, parameter or field level annotation overrides behavior set at the type level.
 

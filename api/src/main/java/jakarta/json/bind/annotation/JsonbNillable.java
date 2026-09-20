@@ -16,15 +16,14 @@
 
 package jakarta.json.bind.annotation;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PACKAGE;
 import static java.lang.annotation.ElementType.TYPE;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * <p>Specifies how fields having null values are serialized into JSON.</p>
@@ -35,9 +34,7 @@ import static java.lang.annotation.ElementType.TYPE;
  * <p>The annotation can be specified on a field, method, type, or package,
  * and affects all underlying properties and classes.</p>
  *
- * <p>For similar functionality on a property level see {@link JsonbProperty}.
- * However, the {@link JsonbProperty#nillable()} functionality has been deprecated
- * and should not be used.</p>
+ * <p>For similar functionality on a property level see {@link JsonbProperty}.</p>
  *
  * @since JSON Binding 1.0
  */

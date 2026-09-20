@@ -46,14 +46,4 @@ public @interface JsonbProperty {
      * @return Customized property name.
      */
     String value() default "";
-
-    /**
-     * Switches on/off serialization of null values.
-     *
-     * @return True if field with null value should be serialized as key/value pair into JSON with null value.
-     * @deprecated Please use the {@link JsonbNillable} annotation instead.
-     * This element will be removed in the future.
-     */
-    @Deprecated(since = "2.1")
-    boolean nillable() default false;
 }

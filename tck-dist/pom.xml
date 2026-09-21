@@ -68,7 +68,7 @@
             <classifier>sources</classifier>
             <optional>true</optional>
         </dependency>
-        <!-- ASM bytecode reader used by CollectMetaData to scan @Assertion/@Challenge without loading classes -->
+        <!-- ASM bytecode reader used by CollectMetaData to scan @Test/@Disabled without loading classes -->
         <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
@@ -98,7 +98,7 @@
                 </executions>
             </plugin>
 
-            <!-- Generate asciidoc sections from @Assertion / @Challenge metadata in the TCK jar -->
+            <!-- Generate asciidoc sections from @Test / @Disabled metadata in the TCK jar -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>

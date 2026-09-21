@@ -29,7 +29,7 @@ package jakarta.json.bind.config;
  *       {@link jakarta.json.bind.JsonbConfig#withPropertyNamingStrategy(PropertyNamingStrategy)}.</li>
  * </ul>
  *
- * <p>All naming stategies apply to the {@code identity property name}
+ * <p>All naming stategies apply to the <em>identity property name</em>
  *    which is determined by one of the following program elements: </p>
  * <ul>
  *   <li>field name</li>
@@ -39,7 +39,7 @@ package jakarta.json.bind.config;
  * </ul>
  *
  * <p>A naming strategy applies globally to all serialized and deserialized types.
- * The stategy transforms the {@code identity property name} into a JSON property name.</p>
+ * The stategy transforms the <em>identity property name</em> into a JSON property name.</p>
  *
  * <p><b>Interaction with other naming customizations</b></p>
  * <p>A {@link jakarta.json.bind.annotation.JsonbProperty} annotation on a field,
@@ -54,14 +54,14 @@ package jakarta.json.bind.config;
 public interface PropertyNamingStrategy {
 
     /**
-     * <p>The {@code identity property name} is used unchanged as the JSON property name.</p>
+     * <p>The <em>identity property name</em> is used unchanged as the JSON property name.</p>
      *
      * <p>This is the default naming stategy.</p>
      */
     String IDENTITY = "IDENTITY";
 
     /**
-     * <p>The {@code identity property name} is transformed to lower case with dashes.</p>
+     * <p>The <em>identity property name</em> is transformed to lower case with dashes.</p>
      *
      * <p>Dashes are inserted at camel-case boundaries in the identity property name</p>
      *
@@ -71,7 +71,7 @@ public interface PropertyNamingStrategy {
     String LOWER_CASE_WITH_DASHES = "LOWER_CASE_WITH_DASHES";
 
     /**
-     * <p>The {@code identity property name} is transformed to lower case with underscores.</p>
+     * <p>The <em>identity property name</em> is transformed to lower case with underscores.</p>
      *
      * <p>Underscores are inserted at camel-case boundaries in the identity
      * property name.</p>
@@ -82,7 +82,7 @@ public interface PropertyNamingStrategy {
     String LOWER_CASE_WITH_UNDERSCORES = "LOWER_CASE_WITH_UNDERSCORES";
 
     /**
-     * <p>The first character of the {@code identity property name} is capitalized;
+     * <p>The first character of the <em>identity property name</em> is capitalized;
      * the remainder is unchanged.</p>
      *
      * <p>For example, {@code myPropertyName} becomes
@@ -106,20 +106,20 @@ public interface PropertyNamingStrategy {
      * <p>During deserialization, JSON property name matching is case-insensitive.</p>
      *
      * <p>For example, a JSON property named
-     * {@code PropertyNAME} will be mapped to the {@code identity property name}
+     * {@code PropertyNAME} will be mapped to the <em>identity property name</em>
      * {@code propertyName}.</p>
      */
     String CASE_INSENSITIVE = "CASE_INSENSITIVE";
 
     /**
-     * <p>Translates an {@code identity property name} into its JSON property name
+     * <p>Translates an <em>identity property name</em> into its JSON property name
      * representation according to this strategy.</p>
      *
      * <p>The returned value is used as the JSON property name during serialization
      * and as the expected JSON property name during deserialization,
      * unless overridden by a {@link jakarta.json.bind.annotation.JsonbProperty} annotation.</p>
      *
-     * @param propertyName {@code identity property name} to translate.
+     * @param propertyName <em>identity property name</em> to translate.
      * @return the translated JSON property name.
      */
     String translateName(String propertyName);

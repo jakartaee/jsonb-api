@@ -102,7 +102,7 @@
         <glassfish.copyright.plugin.version>2.4</glassfish.copyright.plugin.version>
         <maven.assembly.plugin.version>3.8.0</maven.assembly.plugin.version>
         <maven.antrun.plugin.version>3.2.0</maven.antrun.plugin.version>
-        <maven.bundle.plugin.version>6.1.2</maven.bundle.plugin.version>
+        <maven.bundle.plugin.version>6.2.0</maven.bundle.plugin.version>
         <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
         <maven.compiler.plugin.version>3.16.0</maven.compiler.plugin.version>
         <maven.dependency.plugin.version>3.11.0</maven.dependency.plugin.version>

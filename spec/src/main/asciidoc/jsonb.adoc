@@ -706,9 +706,9 @@ A `PropertyOrderStrategy` determines the order based on the already renamed prop
 
 === Customizing Null Handling
 
-There are two main ways how to change default null handling. The first option is to annotate type, package, field, record component or JavaBean property with `jakarta.json.bind.annotation.JsonbNillable` annotation. The second option is to set config-wide configuration via `JsonbConfig::withNullValues` method.
+There are two ways to configure default null handling. The first option is to annotate type, package, field, record component or JavaBean property with the `jakarta.json.bind.annotation.JsonbNillable` annotation. The second option is to set the global configuration via `JsonbConfig.withNullValues` method.
 
-If null-serialization rules (JsonbNillable) apply at different levels to the same field, JavaBean property, or record component-or between a configuration-wide setting and an annotation-the setting with the smallest scope takes precedence. For example, a type-level @JsonbNillable annotation applied to a class overrides a configuration-wide nillable setting for fields within that class.
+If @JsonbNillable applies at different levels to the same field, JavaBean property, or record component, then the setting with the smallest scope takes precedence. Where the largest scope is given to global configuration via `JsonbConfig::withNullValues`. For example, a package-level @JsonbNillable annotation is overridden by a type-level @JsonbNillable annotation.
 If `JsonbNillable` and `JsonbProperty` are applied on the same level, `JsonbNillable` takes precedence.
 
 ==== jakarta.json.bind.annotation.JsonbNillable

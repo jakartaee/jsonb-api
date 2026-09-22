@@ -316,19 +316,6 @@ Jsonb jsonb = JsonbBuilder.create(config);
 ...
 ----
 
-or using @JsonbPropertyOrder annotation on class:
-
-[source,java]
-----
-@JsonbPropertyOrder(PropertyOrderStrategy.ANY)
-public class Person {
-    private String name;
-    private String profession;
-
-    // public getters/setters ...
-}
-----
-
 ==== Ignoring properties
 
 By default, JSONB ignores properties with a non public access. All public properties - either public fields or
@@ -348,7 +335,6 @@ Serialization of this class
 
 [source,java]
 ----
-@JsonbPropertyOrder(PropertyOrderStrategy.ANY)
 public class Person {
     @JsonbTransient
     private String name;

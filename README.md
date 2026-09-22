@@ -62,6 +62,7 @@ include the TCK module and apply the appropriate Arquillian container. See the [
 - [Official web site](https://jakartaee.github.io/jsonb-api)
 - [Eclipse project](https://projects.eclipse.org/projects/ee4j.jsonb)
 - [User's Guide](https://jakartaee.github.io/jsonb-api/docs/user-guide.html)
+- [Issue #462: Remove nillable attribute from @JsonbProperty](https://github.com/jakartaee/jsonb-api/issues/462)
 - [Jenkins Builds](https://ci.eclipse.org/jsonb/view/all/)
 - [Mailing list](https://www.eclipse.org/lists/jsonb-dev/)
 - [Yasson (Compatible Implementation)](https://github.com/eclipse-ee4j/yasson)

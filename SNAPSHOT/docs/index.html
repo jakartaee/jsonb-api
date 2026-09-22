@@ -990,20 +990,6 @@ Jsonb jsonb = JsonbBuilder.create(config);
 ...</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>or using @JsonbPropertyOrder annotation on class:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@JsonbPropertyOrder</span>(PropertyOrderStrategy.ANY)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">Person</span> {
-    <span class="directive">private</span> <span class="predefined-type">String</span> name;
-    <span class="directive">private</span> <span class="predefined-type">String</span> profession;
-
-    <span class="comment">// public getters/setters ...</span>
-}</code></pre>
-</div>
-</div>
 </div>
 <div class="sect3">
 <h4 id="ignoring-properties"><a class="anchor" href="#ignoring-properties"></a>Ignoring properties</h4>
@@ -1040,8 +1026,7 @@ where @JsonbTransient annotation is placed.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@JsonbPropertyOrder</span>(PropertyOrderStrategy.ANY)
-<span class="directive">public</span> <span class="type">class</span> <span class="class">Person</span> {
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">Person</span> {
     <span class="annotation">@JsonbTransient</span>
     <span class="directive">private</span> <span class="predefined-type">String</span> name;
 
@@ -1549,7 +1534,7 @@ Jsonb jsonb = JsonbBuilder.create(config);
 <div id="footer">
 <div id="footer-text">
 Version 3.1<br>
-Last updated 2026-09-22 21:20:09 UTC
+Last updated 2026-09-22 21:20:35 UTC
 </div>
 </div>
 </body>

@@ -140,7 +140,7 @@ meth public abstract java.lang.String alias()
 CLSS public abstract interface !annotation jakarta.json.bind.annotation.JsonbTransient
  anno 0 jakarta.json.bind.annotation.JsonbAnnotation()
  anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
- anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[ANNOTATION_TYPE, FIELD, METHOD])
+ anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[ANNOTATION_TYPE, FIELD, METHOD, RECORD_COMPONENT])
 intf java.lang.annotation.Annotation
 
 CLSS public abstract interface !annotation jakarta.json.bind.annotation.JsonbTypeAdapter

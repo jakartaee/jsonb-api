@@ -473,8 +473,24 @@ public class DatesMappingTest {
      */
     @Test
     public void testZoneIdMapping() {
-        new MappingTester<>(ZoneIdContainer.class).test(ZoneId.of("UTC"),
-                                                        "\"Z\"");
+        new MappingTester<>(ZoneIdContainer.class)
+            .test(ZoneId.of("Europe/Paris"), "\"Europe/Paris\"");
+    }
+
+    /*
+     * @testName: testZoneIdMapping
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.5-1; JSONB:SPEC:JSB-3.5.3-4;
+     * JSONB:SPEC:JSB-3.5.3-5
+     *
+     * @test_Strategy: Assert that java.time.ZoneId is correctly handled
+     * and normalized during serialziation.
+     */
+    @Test
+    public void testZoneIdMappingNormalized() {
+        new MappingTester<>(ZoneIdContainer.class)
+            .setUnmarshallTestPredicate((a, b) -> a.normalized().equals(b.normalized()))
+            .test(ZoneId.of("UTC"), "\"Z\"");
     }
 
     /*

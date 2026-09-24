@@ -508,6 +508,21 @@ public class DatesMappingTest {
     }
 
     /*
+     * @testName: testZoneOffsetMapping
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.5-1; JSONB:SPEC:JSB-3.5.3-6;
+     * JSONB:SPEC:JSB-3.5.3-7
+     *
+     * @test_Strategy: Assert that java.time.ZoneOffset is correctly handled
+     * and normalized during serialziation.
+     */
+    @Test
+    public void testZoneOffsetMappingNormalized() {
+        new MappingTester<>(ZoneOffsetContainer.class)
+                .test(ZoneOffset.UTC, "\"Z\"");
+    }
+
+    /*
      * @testName: testOffsetDateTimeMapping
      *
      * @assertion_ids: JSONB:SPEC:JSB-3.5-1; JSONB:SPEC:JSB-3.5.3-3

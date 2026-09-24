@@ -72,18 +72,29 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="annotations"><a href="JsonbAnnotation.html" title="annotation interface in jakarta.json.bind.annotation">@JsonbAnnotation</a>
 <a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/annotation/Retention.html" title="class or interface in java.lang.annotation" class="external-link">@Retention</a>(<a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/annotation/RetentionPolicy.html#RUNTIME" title="class or interface in java.lang.annotation" class="external-link">RUNTIME</a>)
-<a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/annotation/Target.html" title="class or interface in java.lang.annotation" class="external-link">@Target</a>({<a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/annotation/ElementType.html#ANNOTATION_TYPE" title="class or interface in java.lang.annotation" class="external-link">ANNOTATION_TYPE</a>,<a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/annotation/ElementType.html#METHOD" title="class or interface in java.lang.annotation" class="external-link">METHOD</a>,<a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/annotation/ElementType.html#FIELD" title="class or interface in java.lang.annotation" class="external-link">FIELD</a>,<a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/annotation/ElementType.html#PARAMETER" title="class or interface in java.lang.annotation" class="external-link">PARAMETER</a>})
+<a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/annotation/Target.html" title="class or interface in java.lang.annotation" class="external-link">@Target</a>({<a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/annotation/ElementType.html#ANNOTATION_TYPE" title="class or interface in java.lang.annotation" class="external-link">ANNOTATION_TYPE</a>,<a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/annotation/ElementType.html#METHOD" title="class or interface in java.lang.annotation" class="external-link">METHOD</a>,<a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/annotation/ElementType.html#FIELD" title="class or interface in java.lang.annotation" class="external-link">FIELD</a>,<a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/annotation/ElementType.html#PARAMETER" title="class or interface in java.lang.annotation" class="external-link">PARAMETER</a>,<a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/annotation/ElementType.html#RECORD_COMPONENT" title="class or interface in java.lang.annotation" class="external-link">RECORD_COMPONENT</a>})
 </span><span class="modifiers">public @interface </span><span class="element-name type-name-label">JsonbProperty</span></div>
-<div class="block"><p>Allows customization of field (or JavaBean property) name.This name is used either in serialization or
- in deserialization.</p>
+<div class="block"><p>Customizes serialization and/or deserialziaton of JSON property names.</p>
+
+ <p>By default, property names are serialized unchanged (identity transformation).
+ This annotation overrides that default for the annotated program element.</p>
 
  <p><b>Usage</b></p>
  <p>The <code>@JsonbProperty</code> annotation can be used with the following program elements:</p>
  <ul>
-   <li> a JavaBean property </li>
-   <li> field </li>
-   <li> parameter </li>
- </ul></div>
+   <li>field: used for both serialization and deserialization.</li>
+   <li>record component: used for both serialization and deserialization.</li>
+   <li>getter: used only for serialization.</li>
+   <li>setter: used only for deserialization.</li>
+   <li>record component accessor method: used only for serialization.</li>
+   <li>record virtual attribute method: used only for serialization.</li>
+   <li>parameter: used on a <a href="JsonbCreator.html" title="annotation interface in jakarta.json.bind.annotation"><code>JsonbCreator</code></a> annotated constructor or
+        static factory method parameter only for deserialization.</li>
+ </ul>
+
+ <p>It is possible to specify different custom names on the getter and setter of the same
+ JavaBean property, in which case the getter name is used for serialization and the setter
+ name is used for deserialization independently.</p></div>
 <dl class="notes">
 <dt>Since:</dt>
 <dd>JSON Binding 1.0</dd>
@@ -110,7 +121,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code><a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#value()" class="member-name-link">value</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Customized name of the field (or JavaBean property).</div>
+<div class="block">Customized JSON property name for the annotated element.</div>
 </div>
 </div>
 </section>
@@ -128,7 +139,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="value()">
 <h3>value</h3>
 <div class="member-signature"><span class="return-type"><a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">value</span></div>
-<div class="block">Customized name of the field (or JavaBean property).</div>
+<div class="block">Customized JSON property name for the annotated element.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>Customized property name.</dd>

@@ -77,11 +77,34 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">PropertyNamingStrategy</span></div>
-<div class="block"><p>Allows to define custom property naming strategy.
- Specifies predefined property naming strategies.
- Does not override JsonbProperty value.</p>
+<div class="block"><p>Specifies a predefined property name conversion for serialization and deserialization.</p>
 
- <p>This strategy can be set via <a href="../JsonbConfig.html" title="class in jakarta.json.bind"><code>JsonbConfig</code></a>.</p></div>
+ <p>This interface serves two purposes:</p>
+ <ul>
+   <li>It defines the globally predefined naming strategy constants (e.g. <a href="#IDENTITY"><code>IDENTITY</code></a>,
+       <a href="#LOWER_CASE_WITH_DASHES"><code>LOWER_CASE_WITH_DASHES</code></a>) that can be passed to
+       <a href="../JsonbConfig.html#withPropertyNamingStrategy(java.lang.String)"><code>JsonbConfig.withPropertyNamingStrategy(String)</code></a>.</li>
+   <li>It can be implemented directly to provide a custom naming strategy, which can be passed to
+       <a href="../JsonbConfig.html#withPropertyNamingStrategy(jakarta.json.bind.config.PropertyNamingStrategy)"><code>JsonbConfig.withPropertyNamingStrategy(PropertyNamingStrategy)</code></a>.</li>
+ </ul>
+
+ <p>All naming stategies apply to the <em>identity property name</em>
+    which is determined by one of the following program elements: </p>
+ <ul>
+   <li>field name</li>
+   <li>JavaBean property name</li>
+   <li>record component name</li>
+   <li>record virtual attribute name</li>
+ </ul>
+
+ <p>A naming strategy applies globally to all serialized and deserialized types.
+ The stategy transforms the <em>identity property name</em> into a JSON property name.</p>
+
+ <p><b>Interaction with other naming customizations</b></p>
+ <p>A <a href="../annotation/JsonbProperty.html" title="annotation interface in jakarta.json.bind.annotation"><code>JsonbProperty</code></a> annotation on a field,
+ record component, accessor method, virtual attribute, or constructor/factory-method parameter takes
+ precedence over this strategy for that individual property. The strategy is applied to properties
+ only when no such annotation is present.</p></div>
 <dl class="notes">
 <dt>Since:</dt>
 <dd>JSON Binding 1.0</dd>
@@ -89,6 +112,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="see-list">
 <li><a href="../JsonbConfig.html" title="class in jakarta.json.bind"><code>JsonbConfig</code></a></li>
+<li><a href="../annotation/JsonbProperty.html" title="annotation interface in jakarta.json.bind.annotation"><code>JsonbProperty</code></a></li>
 </ul>
 </dd>
 </dl>
@@ -107,33 +131,35 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>static final <a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#CASE_INSENSITIVE" class="member-name-link">CASE_INSENSITIVE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Using this strategy, the serialization will be same as identity.</div>
+<div class="block">During serialization, the <a href="#IDENTITY"><code>IDENTITY</code></a> strategy is used;
+ the property name is written to JSON unchanged.</div>
 </div>
 <div class="col-first odd-row-color"><code>static final <a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#IDENTITY" class="member-name-link">IDENTITY</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Using this strategy, the property name is unchanged.</div>
+<div class="block">The <em>identity property name</em> is used unchanged as the JSON property name.</div>
 </div>
 <div class="col-first even-row-color"><code>static final <a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#LOWER_CASE_WITH_DASHES" class="member-name-link">LOWER_CASE_WITH_DASHES</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Using this strategy, the property name is transformed to lower case with dashes.</div>
+<div class="block">The <em>identity property name</em> is transformed to lower case with dashes.</div>
 </div>
 <div class="col-first odd-row-color"><code>static final <a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#LOWER_CASE_WITH_UNDERSCORES" class="member-name-link">LOWER_CASE_WITH_UNDERSCORES</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Using this strategy, the property name is transformed to lower case with underscores.</div>
+<div class="block">The <em>identity property name</em> is transformed to lower case with underscores.</div>
 </div>
 <div class="col-first even-row-color"><code>static final <a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#UPPER_CAMEL_CASE" class="member-name-link">UPPER_CAMEL_CASE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Using this strategy, the first character will be capitalized.</div>
+<div class="block">The first character of the <em>identity property name</em> is capitalized;
+ the remainder is unchanged.</div>
 </div>
 <div class="col-first odd-row-color"><code>static final <a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#UPPER_CAMEL_CASE_WITH_SPACES" class="member-name-link">UPPER_CAMEL_CASE_WITH_SPACES</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Using this strategy, the first character will be capitalized and the words
- will be separated by spaces.</div>
+<div class="block">The first character of the property name is capitalized and camel-case
+ word boundaries are replaced with spaces.</div>
 </div>
 </div>
 </section>
@@ -152,7 +178,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#translateName(java.lang.String)" class="member-name-link">translateName</a><wbr>(<a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Translates the property name into its JSON field name representation.</div>
+<div class="block">Translates an <em>identity property name</em> into its JSON property name
+ representation according to this strategy.</div>
 </div>
 </div>
 </div>
@@ -172,7 +199,9 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="IDENTITY">
 <h3>IDENTITY</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type"><a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">IDENTITY</span></div>
-<div class="block">Using this strategy, the property name is unchanged.</div>
+<div class="block"><p>The <em>identity property name</em> is used unchanged as the JSON property name.</p>
+
+ <p>This is the default naming stategy.</p></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -187,8 +216,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="LOWER_CASE_WITH_DASHES">
 <h3>LOWER_CASE_WITH_DASHES</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type"><a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">LOWER_CASE_WITH_DASHES</span></div>
-<div class="block">Using this strategy, the property name is transformed to lower case with dashes.
- The dashes are on the positions of different case boundaries in the original field name (camel case).</div>
+<div class="block"><p>The <em>identity property name</em> is transformed to lower case with dashes.</p>
+
+ <p>Dashes are inserted at camel-case boundaries in the identity property name</p>
+
+ <p>For example, <code>myPropertyName</code> becomes
+ <code>my-property-name</code>.</p></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -203,8 +236,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="LOWER_CASE_WITH_UNDERSCORES">
 <h3>LOWER_CASE_WITH_UNDERSCORES</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type"><a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">LOWER_CASE_WITH_UNDERSCORES</span></div>
-<div class="block">Using this strategy, the property name is transformed to lower case with underscores.
- The underscores are on the positions of different case boundaries in the original field name (camel case).</div>
+<div class="block"><p>The <em>identity property name</em> is transformed to lower case with underscores.</p>
+
+ <p>Underscores are inserted at camel-case boundaries in the identity
+ property name.</p>
+
+ <p>For example, <code>myPropertyName</code> becomes
+ <code>my_property_name</code>.</p></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -219,7 +257,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="UPPER_CAMEL_CASE">
 <h3>UPPER_CAMEL_CASE</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type"><a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">UPPER_CAMEL_CASE</span></div>
-<div class="block">Using this strategy, the first character will be capitalized.</div>
+<div class="block"><p>The first character of the <em>identity property name</em> is capitalized;
+ the remainder is unchanged.</p>
+
+ <p>For example, <code>myPropertyName</code> becomes
+ <code>MyPropertyName</code>.</p></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -234,8 +276,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="UPPER_CAMEL_CASE_WITH_SPACES">
 <h3>UPPER_CAMEL_CASE_WITH_SPACES</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type"><a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">UPPER_CAMEL_CASE_WITH_SPACES</span></div>
-<div class="block">Using this strategy, the first character will be capitalized and the words
- will be separated by spaces.</div>
+<div class="block"><p>The first character of the property name is capitalized and camel-case
+ word boundaries are replaced with spaces.</p>
+
+ <p>For example, <code>myPropertyName</code> becomes
+ <code>My Property Name</code>.</p></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -250,9 +295,14 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="CASE_INSENSITIVE">
 <h3>CASE_INSENSITIVE</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type"><a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">CASE_INSENSITIVE</span></div>
-<div class="block">Using this strategy, the serialization will be same as identity.
- Deserialization will be case insensitive. E.g. property in JSON with name
- PropertyNAME, will be mapped to field propertyName.</div>
+<div class="block"><p>During serialization, the <a href="#IDENTITY"><code>IDENTITY</code></a> strategy is used;
+ the property name is written to JSON unchanged.</p>
+
+ <p>During deserialization, JSON property name matching is case-insensitive.</p>
+
+ <p>For example, a JSON property named
+ <code>PropertyNAME</code> will be mapped to the <em>identity property name</em>
+ <code>propertyName</code>.</p></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -275,12 +325,17 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="translateName(java.lang.String)">
 <h3>translateName</h3>
 <div class="member-signature"><span class="return-type"><a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">translateName</span><wbr><span class="parameters">(<a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName)</span></div>
-<div class="block">Translates the property name into its JSON field name representation.</div>
+<div class="block"><p>Translates an <em>identity property name</em> into its JSON property name
+ representation according to this strategy.</p>
+
+ <p>The returned value is used as the JSON property name during serialization
+ and as the expected JSON property name during deserialization,
+ unless overridden by a <a href="../annotation/JsonbProperty.html" title="annotation interface in jakarta.json.bind.annotation"><code>JsonbProperty</code></a> annotation.</p></div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>propertyName</code> - Name of the property to translate.</dd>
+<dd><code>propertyName</code> - <em>identity property name</em> to translate.</dd>
 <dt>Returns:</dt>
-<dd>Translated JSON field name.</dd>
+<dd>the translated JSON property name.</dd>
 </dl>
 </section>
 </li>

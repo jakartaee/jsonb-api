@@ -73,8 +73,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/config/PropertyOrderStrategy.html#ANY" class="member-name-link">ANY</a> - Static variable in class jakarta.json.bind.config.<a href="jakarta.json.bind/jakarta/json/bind/config/PropertyOrderStrategy.html" title="class in jakarta.json.bind.config">PropertyOrderStrategy</a></dt>
 <dd>
-<div class="block">Using this strategy, the order of properties
- is not guaranteed to retain any order.</div>
+<div class="block">The order of properties is not specified and may vary across
+ serializations.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:B">B</h2>
@@ -111,7 +111,8 @@ loadScripts(document, 'script');</script>
 <dl class="index">
 <dt><a href="jakarta.json.bind/jakarta/json/bind/config/PropertyNamingStrategy.html#CASE_INSENSITIVE" class="member-name-link">CASE_INSENSITIVE</a> - Static variable in interface jakarta.json.bind.config.<a href="jakarta.json.bind/jakarta/json/bind/config/PropertyNamingStrategy.html" title="interface in jakarta.json.bind.config">PropertyNamingStrategy</a></dt>
 <dd>
-<div class="block">Using this strategy, the serialization will be same as identity.</div>
+<div class="block">During serialization, the <a href="jakarta.json.bind/jakarta/json/bind/config/PropertyNamingStrategy.html#IDENTITY"><code>PropertyNamingStrategy.IDENTITY</code></a> strategy is used;
+ the property name is written to JSON unchanged.</div>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/JsonbBuilder.html#create()" class="member-name-link">create()</a> - Static method in interface jakarta.json.bind.<a href="jakarta.json.bind/jakarta/json/bind/JsonbBuilder.html" title="interface in jakarta.json.bind">JsonbBuilder</a></dt>
 <dd>
@@ -241,7 +242,7 @@ loadScripts(document, 'script');</script>
 <dl class="index">
 <dt><a href="jakarta.json.bind/jakarta/json/bind/config/PropertyNamingStrategy.html#IDENTITY" class="member-name-link">IDENTITY</a> - Static variable in interface jakarta.json.bind.config.<a href="jakarta.json.bind/jakarta/json/bind/config/PropertyNamingStrategy.html" title="interface in jakarta.json.bind.config">PropertyNamingStrategy</a></dt>
 <dd>
-<div class="block">Using this strategy, the property name is unchanged.</div>
+<div class="block">The <em>identity property name</em> is used unchanged as the JSON property name.</div>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/config/PropertyVisibilityStrategy.html#isVisible(java.lang.reflect.Field)" class="member-name-link">isVisible(Field)</a> - Method in interface jakarta.json.bind.config.<a href="jakarta.json.bind/jakarta/json/bind/config/PropertyVisibilityStrategy.html" title="interface in jakarta.json.bind.config">PropertyVisibilityStrategy</a></dt>
 <dd>
@@ -354,12 +355,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/annotation/JsonbProperty.html" class="type-name-link" title="annotation interface in jakarta.json.bind.annotation">JsonbProperty</a> - Annotation Interface in <a href="jakarta.json.bind/jakarta/json/bind/annotation/package-summary.html">jakarta.json.bind.annotation</a></dt>
 <dd>
-<div class="block">Allows customization of field (or JavaBean property) name.This name is used either in serialization or
- in deserialization.</div>
+<div class="block">Customizes serialization and/or deserialziaton of JSON property names.</div>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/annotation/JsonbPropertyOrder.html" class="type-name-link" title="annotation interface in jakarta.json.bind.annotation">JsonbPropertyOrder</a> - Annotation Interface in <a href="jakarta.json.bind/jakarta/json/bind/annotation/package-summary.html">jakarta.json.bind.annotation</a></dt>
 <dd>
-<div class="block">Specifies order in which properties are serialized.</div>
+<div class="block">Customizes the order in which properties are serialized for the annotated type.</div>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/spi/JsonbProvider.html" class="type-name-link" title="class in jakarta.json.bind.spi">JsonbProvider</a> - Class in <a href="jakarta.json.bind/jakarta/json/bind/spi/package-summary.html">jakarta.json.bind.spi</a></dt>
 <dd>
@@ -414,7 +414,8 @@ loadScripts(document, 'script');</script>
 <dl class="index">
 <dt><a href="jakarta.json.bind/jakarta/json/bind/config/PropertyOrderStrategy.html#LEXICOGRAPHICAL" class="member-name-link">LEXICOGRAPHICAL</a> - Static variable in class jakarta.json.bind.config.<a href="jakarta.json.bind/jakarta/json/bind/config/PropertyOrderStrategy.html" title="class in jakarta.json.bind.config">PropertyOrderStrategy</a></dt>
 <dd>
-<div class="block">Using this strategy, the order of properties is lexicographical.</div>
+<div class="block">Properties are serialized in ascending lexicographical order of their
+ JSON property names.</div>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/annotation/JsonbDateFormat.html#locale()" class="member-name-link">locale()</a> - Element in annotation interface jakarta.json.bind.annotation.<a href="jakarta.json.bind/jakarta/json/bind/annotation/JsonbDateFormat.html" title="annotation interface in jakarta.json.bind.annotation">JsonbDateFormat</a></dt>
 <dd>
@@ -430,11 +431,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/config/PropertyNamingStrategy.html#LOWER_CASE_WITH_DASHES" class="member-name-link">LOWER_CASE_WITH_DASHES</a> - Static variable in interface jakarta.json.bind.config.<a href="jakarta.json.bind/jakarta/json/bind/config/PropertyNamingStrategy.html" title="interface in jakarta.json.bind.config">PropertyNamingStrategy</a></dt>
 <dd>
-<div class="block">Using this strategy, the property name is transformed to lower case with dashes.</div>
+<div class="block">The <em>identity property name</em> is transformed to lower case with dashes.</div>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/config/PropertyNamingStrategy.html#LOWER_CASE_WITH_UNDERSCORES" class="member-name-link">LOWER_CASE_WITH_UNDERSCORES</a> - Static variable in interface jakarta.json.bind.config.<a href="jakarta.json.bind/jakarta/json/bind/config/PropertyNamingStrategy.html" title="interface in jakarta.json.bind.config">PropertyNamingStrategy</a></dt>
 <dd>
-<div class="block">Using this strategy, the property name is transformed to lower case with underscores.</div>
+<div class="block">The <em>identity property name</em> is transformed to lower case with underscores.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:N">N</h2>
@@ -483,11 +484,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/config/PropertyNamingStrategy.html" class="type-name-link" title="interface in jakarta.json.bind.config">PropertyNamingStrategy</a> - Interface in <a href="jakarta.json.bind/jakarta/json/bind/config/package-summary.html">jakarta.json.bind.config</a></dt>
 <dd>
-<div class="block">Allows to define custom property naming strategy.</div>
+<div class="block">Specifies a predefined property name conversion for serialization and deserialization.</div>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/config/PropertyOrderStrategy.html" class="type-name-link" title="class in jakarta.json.bind.config">PropertyOrderStrategy</a> - Class in <a href="jakarta.json.bind/jakarta/json/bind/config/package-summary.html">jakarta.json.bind.config</a></dt>
 <dd>
-<div class="block">Specifies predefined property order strategies.</div>
+<div class="block">Specifies predefined property order stategy for serialization.</div>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/config/PropertyVisibilityStrategy.html" class="type-name-link" title="interface in jakarta.json.bind.config">PropertyVisibilityStrategy</a> - Interface in <a href="jakarta.json.bind/jakarta/json/bind/config/package-summary.html">jakarta.json.bind.config</a></dt>
 <dd>
@@ -508,8 +509,8 @@ loadScripts(document, 'script');</script>
 <dl class="index">
 <dt><a href="jakarta.json.bind/jakarta/json/bind/config/PropertyOrderStrategy.html#REVERSE" class="member-name-link">REVERSE</a> - Static variable in class jakarta.json.bind.config.<a href="jakarta.json.bind/jakarta/json/bind/config/PropertyOrderStrategy.html" title="class in jakarta.json.bind.config">PropertyOrderStrategy</a></dt>
 <dd>
-<div class="block">Using this strategy, the order of properties is in reverse order
- to lexicographical order.</div>
+<div class="block">Properties are serialized in descending lexicographical order of their
+ JSON property names; the reverse of <a href="jakarta.json.bind/jakarta/json/bind/config/PropertyOrderStrategy.html#LEXICOGRAPHICAL"><code>PropertyOrderStrategy.LEXICOGRAPHICAL</code></a>.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:S">S</h2>
@@ -577,7 +578,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/config/PropertyNamingStrategy.html#translateName(java.lang.String)" class="member-name-link">translateName(String)</a> - Method in interface jakarta.json.bind.config.<a href="jakarta.json.bind/jakarta/json/bind/config/PropertyNamingStrategy.html" title="interface in jakarta.json.bind.config">PropertyNamingStrategy</a></dt>
 <dd>
-<div class="block">Translates the property name into its JSON field name representation.</div>
+<div class="block">Translates an <em>identity property name</em> into its JSON property name
+ representation according to this strategy.</div>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/annotation/JsonbSubtype.html#type()" class="member-name-link">type()</a> - Element in annotation interface jakarta.json.bind.annotation.<a href="jakarta.json.bind/jakarta/json/bind/annotation/JsonbSubtype.html" title="annotation interface in jakarta.json.bind.annotation">JsonbSubtype</a></dt>
 <dd>
@@ -588,12 +590,13 @@ loadScripts(document, 'script');</script>
 <dl class="index">
 <dt><a href="jakarta.json.bind/jakarta/json/bind/config/PropertyNamingStrategy.html#UPPER_CAMEL_CASE" class="member-name-link">UPPER_CAMEL_CASE</a> - Static variable in interface jakarta.json.bind.config.<a href="jakarta.json.bind/jakarta/json/bind/config/PropertyNamingStrategy.html" title="interface in jakarta.json.bind.config">PropertyNamingStrategy</a></dt>
 <dd>
-<div class="block">Using this strategy, the first character will be capitalized.</div>
+<div class="block">The first character of the <em>identity property name</em> is capitalized;
+ the remainder is unchanged.</div>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/config/PropertyNamingStrategy.html#UPPER_CAMEL_CASE_WITH_SPACES" class="member-name-link">UPPER_CAMEL_CASE_WITH_SPACES</a> - Static variable in interface jakarta.json.bind.config.<a href="jakarta.json.bind/jakarta/json/bind/config/PropertyNamingStrategy.html" title="interface in jakarta.json.bind.config">PropertyNamingStrategy</a></dt>
 <dd>
-<div class="block">Using this strategy, the first character will be capitalized and the words
- will be separated by spaces.</div>
+<div class="block">The first character of the property name is capitalized and camel-case
+ word boundaries are replaced with spaces.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:V">V</h2>
@@ -612,11 +615,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/annotation/JsonbProperty.html#value()" class="member-name-link">value()</a> - Element in annotation interface jakarta.json.bind.annotation.<a href="jakarta.json.bind/jakarta/json/bind/annotation/JsonbProperty.html" title="annotation interface in jakarta.json.bind.annotation">JsonbProperty</a></dt>
 <dd>
-<div class="block">Customized name of the field (or JavaBean property).</div>
+<div class="block">Customized JSON property name for the annotated element.</div>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/annotation/JsonbPropertyOrder.html#value()" class="member-name-link">value()</a> - Element in annotation interface jakarta.json.bind.annotation.<a href="jakarta.json.bind/jakarta/json/bind/annotation/JsonbPropertyOrder.html" title="annotation interface in jakarta.json.bind.annotation">JsonbPropertyOrder</a></dt>
 <dd>
-<div class="block">Order in which properties are serialized.</div>
+<div class="block">The order in which properties are serialized.</div>
 </dd>
 <dt><a href="jakarta.json.bind/jakarta/json/bind/annotation/JsonbTypeAdapter.html#value()" class="member-name-link">value()</a> - Element in annotation interface jakarta.json.bind.annotation.<a href="jakarta.json.bind/jakarta/json/bind/annotation/JsonbTypeAdapter.html" title="annotation interface in jakarta.json.bind.annotation">JsonbTypeAdapter</a></dt>
 <dd>

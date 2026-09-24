@@ -77,8 +77,28 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public final class </span><span class="element-name type-name-label">PropertyOrderStrategy</span>
 <span class="extends-implements">extends <a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">Specifies predefined property order strategies.
- This strategy can be set via <a href="../JsonbConfig.html#withPropertyOrderStrategy(java.lang.String)"><code>JsonbConfig.withPropertyOrderStrategy(String)</code></a></div>
+<div class="block"><p>Specifies predefined property order stategy for serialization.</p>
+
+ <p>This strategy can be set globally via
+ <a href="../JsonbConfig.html#withPropertyOrderStrategy(java.lang.String)"><code>JsonbConfig.withPropertyOrderStrategy(String)</code></a>.</p>
+
+ <p><b>Interaction with other ordering customizations</b></p>
+ <p>This strategy applies globally to all serialized types, but its effect can be
+ overridden at the type level. The following precedence rules apply:</p>
+ <ol>
+   <li><a href="../annotation/JsonbPropertyOrder.html" title="annotation interface in jakarta.json.bind.annotation"><code>JsonbPropertyOrder</code></a> on a class or record
+       takes precedence over this strategy for that specific type. Properties listed
+       in that annotation are serialized first in the declared order; any remaining
+       properties follow in an unspecified order.</li>
+   <li>This strategy is applied to all other types that do not carry a
+       <a href="../annotation/JsonbPropertyOrder.html" title="annotation interface in jakarta.json.bind.annotation"><code>JsonbPropertyOrder</code></a> annotation.</li>
+ </ol>
+
+ <p><b>Interaction with property renaming</b></p>
+ <p>When <a href="#LEXICOGRAPHICAL"><code>LEXICOGRAPHICAL</code></a> or <a href="#REVERSE"><code>REVERSE</code></a> is used, ordering is applied
+ to the final JSON property names; that is, names after any renaming customization
+ (such as <a href="../annotation/JsonbProperty.html" title="annotation interface in jakarta.json.bind.annotation"><code>JsonbProperty</code></a> or a
+ <a href="PropertyNamingStrategy.html" title="interface in jakarta.json.bind.config"><code>PropertyNamingStrategy</code></a>) has been applied.</p></div>
 <dl class="notes">
 <dt>Since:</dt>
 <dd>JSON Binding 1.0</dd>
@@ -86,6 +106,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="see-list">
 <li><a href="../JsonbConfig.html" title="class in jakarta.json.bind"><code>JsonbConfig</code></a></li>
+<li><a href="../annotation/JsonbPropertyOrder.html" title="annotation interface in jakarta.json.bind.annotation"><code>JsonbPropertyOrder</code></a></li>
+<li><a href="../annotation/JsonbProperty.html" title="annotation interface in jakarta.json.bind.annotation"><code>JsonbProperty</code></a></li>
 </ul>
 </dd>
 </dl>
@@ -104,19 +126,20 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>static final <a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#ANY" class="member-name-link">ANY</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Using this strategy, the order of properties
- is not guaranteed to retain any order.</div>
+<div class="block">The order of properties is not specified and may vary across
+ serializations.</div>
 </div>
 <div class="col-first odd-row-color"><code>static final <a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#LEXICOGRAPHICAL" class="member-name-link">LEXICOGRAPHICAL</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Using this strategy, the order of properties is lexicographical.</div>
+<div class="block">Properties are serialized in ascending lexicographical order of their
+ JSON property names.</div>
 </div>
 <div class="col-first even-row-color"><code>static final <a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#REVERSE" class="member-name-link">REVERSE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Using this strategy, the order of properties is in reverse order
- to lexicographical order.</div>
+<div class="block">Properties are serialized in descending lexicographical order of their
+ JSON property names; the reverse of <a href="#LEXICOGRAPHICAL"><code>LEXICOGRAPHICAL</code></a>.</div>
 </div>
 </div>
 </section>
@@ -143,7 +166,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="LEXICOGRAPHICAL">
 <h3>LEXICOGRAPHICAL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">LEXICOGRAPHICAL</span></div>
-<div class="block">Using this strategy, the order of properties is lexicographical.</div>
+<div class="block">Properties are serialized in ascending lexicographical order of their
+ JSON property names. If a property name has been customized via
+ <a href="../annotation/JsonbProperty.html" title="annotation interface in jakarta.json.bind.annotation"><code>JsonbProperty</code></a> or a
+ <a href="PropertyNamingStrategy.html" title="interface in jakarta.json.bind.config"><code>PropertyNamingStrategy</code></a>, the customized name is used for ordering.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -158,8 +184,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="ANY">
 <h3>ANY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">ANY</span></div>
-<div class="block">Using this strategy, the order of properties
- is not guaranteed to retain any order.</div>
+<div class="block">The order of properties is not specified and may vary across
+ serializations. No ordering guarantees are provided.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -174,8 +200,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="REVERSE">
 <h3>REVERSE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="http://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">REVERSE</span></div>
-<div class="block">Using this strategy, the order of properties is in reverse order
- to lexicographical order.</div>
+<div class="block">Properties are serialized in descending lexicographical order of their
+ JSON property names; the reverse of <a href="#LEXICOGRAPHICAL"><code>LEXICOGRAPHICAL</code></a>. If a
+ property name has been customized via
+ <a href="../annotation/JsonbProperty.html" title="annotation interface in jakarta.json.bind.annotation"><code>JsonbProperty</code></a> or a
+ <a href="PropertyNamingStrategy.html" title="interface in jakarta.json.bind.config"><code>PropertyNamingStrategy</code></a>, the customized name is used for ordering.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>

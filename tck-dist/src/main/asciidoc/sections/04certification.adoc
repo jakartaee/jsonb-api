@@ -340,7 +340,7 @@ https://www.eclipse.org/projects/dev_process/#6_5_Grievance_Handling[Eclipse Dev
 
 The following tests are exempt from TCK testing due to challenges:
 
-include::../includes/successfulChallenges.adoc[]
+include::../generated/successful-challenges.adoc[]
 
 === Specifications for {TechnologyFullName}
 
@@ -354,7 +354,7 @@ project web-site: {SpecificationURL}.
 The following is a list of the packages comprising the required class
 libraries for {TechnologyShortName} {TechnologyVersion}:
 
-include::../includes/packages.adoc[]
+include::../generated/packages.adoc[]
 
 For the latest list of packages, also see:
 

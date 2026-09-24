@@ -146,7 +146,7 @@ public class RecordsBasicTypeMappingTest {
      * with toString and parseLong methods
      */
     @Test
-    @Disabled("See https://github.com/jakartaee/jsonb-api/issues/180")
+    @Disabled("link: https://github.com/jakartaee/jsonb-api/issues/180 since: 1.0.0")
     public void testLongMapping() {
         RecordMappingTester<Long> longRecordMappingTester = new RecordMappingTester<>(LongContainer.class);
         longRecordMappingTester.test(0L, "0");

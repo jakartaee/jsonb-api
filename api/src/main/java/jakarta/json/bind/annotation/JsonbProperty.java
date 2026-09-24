@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2015, 2021 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -22,26 +23,38 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Allows customization of field (or JavaBean property) name.This name is used either in serialization or
- * in deserialization.</p>
+ * <p>Customizes serialization and/or deserialziaton of JSON property names.</p>
+ *
+ * <p>By default, property names are serialized unchanged (identity transformation).
+ * This annotation overrides that default for the annotated program element.</p>
  *
  * <p><b>Usage</b></p>
  * <p>The {@code @JsonbProperty} annotation can be used with the following program elements:</p>
  * <ul>
- *   <li> a JavaBean property </li>
- *   <li> field </li>
- *   <li> parameter </li>
+ *   <li>field: used for both serialization and deserialization.</li>
+ *   <li>record component: used for both serialization and deserialization.</li>
+ *   <li>getter: used only for serialization.</li>
+ *   <li>setter: used only for deserialization.</li>
+ *   <li>record component accessor method: used only for serialization.</li>
+ *   <li>record virtual attribute method: used only for serialization.</li>
+ *   <li>parameter: used on a {@link JsonbCreator} annotated constructor or
+ *        static factory method parameter only for deserialization.</li>
  * </ul>
+ *
+ * <p>It is possible to specify different custom names on the getter and setter of the same
+ * JavaBean property, in which case the getter name is used for serialization and the setter
+ * name is used for deserialization independently.</p>
  *
  * @since JSON Binding 1.0
  */
 @JsonbAnnotation
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
+@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD, ElementType.FIELD,
+         ElementType.PARAMETER, ElementType.RECORD_COMPONENT})
 public @interface JsonbProperty {
 
     /**
-     * Customized name of the field (or JavaBean property).
+     * Customized JSON property name for the annotated element.
      *
      * @return Customized property name.
      */

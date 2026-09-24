@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,22 +15,22 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-/*
- * $Id$
- */
-
 package ee.jakarta.tck.json.bind.customizedmapping.propertyorder;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbConfig;
+import jakarta.json.bind.config.PropertyNamingStrategy;
 import jakarta.json.bind.config.PropertyOrderStrategy;
 
 import ee.jakarta.tck.json.bind.customizedmapping.propertyorder.model.CustomOrderContainer;
+import ee.jakarta.tck.json.bind.customizedmapping.propertyorder.model.OrderedNamingStrategyContainer;
+import ee.jakarta.tck.json.bind.customizedmapping.propertyorder.model.OrderedRenamedPropertiesContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.propertyorder.model.PartialOrderContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.propertyorder.model.RenamedPropertiesContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.propertyorder.model.SimpleContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.propertyorder.model.SimpleOrderContainer;
+import ee.jakarta.tck.json.bind.customizedmapping.propertyorder.model.SimpleOrderInverseNameStrategy;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -296,4 +297,120 @@ public class PropertyOrderCustomizationTest {
                            + "using PropertyOrderStrategy.LEXICOGRAPHICAL.",
                    unmarshalledObject.getIntInstance(), is(3));
     }
+
+    /*
+     * @testName: testPropertyOrderOriginalNamesWithRenamedProperties
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-4.2-2
+     *
+     * @test_Strategy: Assert that names provided in @JsonbPropertyOrder correspond
+     * to the original property names before any @JsonbProperty renaming is applied,
+     * and that the serialized JSON keys use the renamed values.
+     */
+    @Test
+    public void testPropertyOrderOriginalNamesWithRenamedProperties() {
+        // OrderedRenamedPropertiesContainer: @JsonbPropertyOrder({"longInstance","intInstance","stringInstance"})
+        // fields renamed: intInstance->"alpha", stringInstance->"beta", longInstance->"gamma"
+        // expected output order: gamma, alpha, beta  (following annotation order of original names)
+        OrderedRenamedPropertiesContainer container = new OrderedRenamedPropertiesContainer();
+        container.setStringInstance("Test String");
+
+        String jsonString = jsonb.toJson(container);
+        assertThat("Failed to serialize properties in @JsonbPropertyOrder order using original names "
+                           + "when @JsonbProperty renames are present.",
+                   jsonString, matchesPattern("\\{\\s*\"gamma\"\\s*:\\s*0\\s*,\\s*\"alpha\"\\s*:\\s*0\\s*,"
+                                                      + "\\s*\"beta\"\\s*:\\s*\"Test String\"\\s*\\}"));
+    }
+
+    /*
+     * @testName: testPropertyOrderOriginalNamesWithNamingStrategy
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-4.2-2
+     *
+     * @test_Strategy: Assert that names provided in @JsonbPropertyOrder correspond
+     * to the original property names before any PropertyNamingStrategy is applied,
+     * and that the serialized JSON keys use the strategy-transformed values.
+     */
+    @Test
+    public void testPropertyOrderOriginalNamesWithNamingStrategy() {
+        JsonbConfig config = new JsonbConfig().setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY,
+                                                           PropertyNamingStrategy.LOWER_CASE_WITH_DASHES);
+        Jsonb jsonb = JsonbBuilder.create(config);
+
+        // OrderedNamingStrategyContainer: @JsonbPropertyOrder({"longInstance","intInstance","stringInstance"})
+        // strategy transforms: longInstance->"long-instance", intInstance->"int-instance",
+        //                      stringInstance->"string-instance"
+        // expected order: long-instance, int-instance, string-instance
+        OrderedNamingStrategyContainer container = new OrderedNamingStrategyContainer();
+        container.setStringInstance("Test String");
+
+        String jsonString = jsonb.toJson(container);
+        assertThat("Failed to serialize properties in @JsonbPropertyOrder order using original names "
+                           + "when PropertyNamingStrategy is present.",
+                   jsonString, matchesPattern("\\{\\s*\"long-instance\"\\s*:\\s*0\\s*,\\s*\"int-instance\"\\s*:\\s*0\\s*,"
+                                                      + "\\s*\"string-instance\"\\s*:\\s*\"Test String\"\\s*\\}"));
+    }
+
+    /*
+     * @testName: testLexicographicalOrderWithNamingStrategy
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-4.2
+     *
+     * @test_Strategy: Assert that PropertyOrderStrategy.LEXICOGRAPHICAL orders
+     * properties by their final JSON names after PropertyNamingStrategy is applied.
+     */
+    @Test
+    public void testLexicographicalOrderWithNamingStrategy() {
+        JsonbConfig config = new JsonbConfig()
+                .withPropertyOrderStrategy(PropertyOrderStrategy.LEXICOGRAPHICAL)
+                .withPropertyNamingStrategy(new SimpleOrderInverseNameStrategy());
+        Jsonb jsonb = JsonbBuilder.create(config);
+
+        // SimpleOrderContainer fields: intInstance, longInstance, stringInstance
+        // After SimpleOrderInverseNameStrategy:
+        //   intInstance    -> "z_int_instance"
+        //   longInstance   -> "m_long_instance"
+        //   stringInstance -> "a_string_instance"
+        // Lexicographical order of final names: a_string_instance, m_long_instance, z_int_instance
+        SimpleOrderContainer container = new SimpleOrderContainer();
+        container.setStringInstance("Test String");
+
+        String jsonString = jsonb.toJson(container);
+        assertThat("Failed to apply LEXICOGRAPHICAL ordering on final names after PropertyNamingStrategy.",
+                   jsonString, matchesPattern("\\{\\s*\"a_string_instance\"\\s*:\\s*\"Test String\"\\s*,"
+                                                      + "\\s*\"m_long_instance\"\\s*:\\s*0\\s*,"
+                                                      + "\\s*\"z_int_instance\"\\s*:\\s*0\\s*\\}"));
+    }
+
+    /*
+     * @testName: testReverseOrderWithNamingStrategy
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-4.2
+     *
+     * @test_Strategy: Assert that PropertyOrderStrategy.REVERSE orders
+     * properties by their final JSON names (descending) after PropertyNamingStrategy is applied.
+     */
+    @Test
+    public void testReverseOrderWithNamingStrategy() {
+        JsonbConfig config = new JsonbConfig()
+                .withPropertyOrderStrategy(PropertyOrderStrategy.REVERSE)
+                .withPropertyNamingStrategy(new SimpleOrderInverseNameStrategy());
+        Jsonb jsonb = JsonbBuilder.create(config);
+
+        // SimpleOrderContainer fields: intInstance, longInstance, stringInstance
+        // After SimpleOrderInverseNameStrategy:
+        //   intInstance    -> "z_int_instance"
+        //   longInstance   -> "m_long_instance"
+        //   stringInstance -> "a_string_instance"
+        // Reverse lexicographical order of final names: z_int_instance, m_long_instance, a_string_instance
+        SimpleOrderContainer container = new SimpleOrderContainer();
+        container.setStringInstance("Test String");
+
+        String jsonString = jsonb.toJson(container);
+        assertThat("Failed to apply REVERSE ordering on final names after PropertyNamingStrategy.",
+                   jsonString, matchesPattern("\\{\\s*\"z_int_instance\"\\s*:\\s*0\\s*,"
+                                                      + "\\s*\"m_long_instance\"\\s*:\\s*0\\s*,"
+                                                      + "\\s*\"a_string_instance\"\\s*:\\s*\"Test String\"\\s*\\}"));
+    }
+
 }

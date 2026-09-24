@@ -455,7 +455,7 @@ public class DatesMappingTest {
     @Test
     public void testZoneIdMapping() {
         new MappingTester<>(ZoneIdContainer.class).test(ZoneId.of("UTC"),
-                                                        "\"UTC\"");
+                                                        "\"Z\"");
     }
 
     /*

@@ -57,6 +57,11 @@ User alice = jsonb.fromJson(aliceJson, User.class);
 The JSON-B TCK tests are produced as a Maven artifact where the tests use Arquillian + JUnit. To run the TCK tests using your implementation,
 include the TCK module and apply the appropriate Arquillian container. See the [Eclipse Yasson](https://github.com/eclipse-ee4j/yasson) repository for an example of this.
 
+## How to publish a new release
+
+Open a new issue using the [release issue template](https://github.com/jakartaee/jsonb-api/issues/new?template=release.yml)
+which has a checklist of pipelines and updates that need to happen in order to publish a new release.
+
 ## Links
 
 - [Official web site](https://jakartaee.github.io/jsonb-api)

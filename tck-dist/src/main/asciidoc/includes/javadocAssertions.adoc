@@ -713,22 +713,6 @@
 | 
 | true
 
-| JSONB:JAVADOC:62__OLD
-| boolean
-| jakarta.json.bind.annotation.JsonbProperty.nillable
-| True if field with null value should be serialized as key/value pair into JSON with null value.
-| true
-| 
-| true
-
-| JSONB:JAVADOC:62
-| boolean
-| jakarta.json.bind.annotation.JsonbProperty.nillable
-| Switches on/off serialization of null values.
-| true
-| true
-| true
-
 | JSONB:JAVADOC:82
 | JsonbBuilder
 | jakarta.json.bind.JsonbBuilder.withProvider(JsonProvider)

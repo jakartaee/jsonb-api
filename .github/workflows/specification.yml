@@ -4,7 +4,9 @@
 name: Generate specification documentation
 
 on: 
-    workflow_dispatch:
+    release:
+        types: [published]
+    workflow_dispatch: # For testing purposes
 
 jobs:
   generate:
@@ -20,9 +22,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Generate specification docs
-      run: |
-        mvn package --file api/pom.xml
-        mvn package --file spec/pom.xml
+      run: mvn package -DskipTests -projects '.,api,spec'
     - name: Assemble documentation
       run: |
         mkdir documentation/

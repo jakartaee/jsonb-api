@@ -116,7 +116,7 @@ meth public abstract !hasdefault java.lang.String value()
 CLSS public abstract interface !annotation jakarta.json.bind.annotation.JsonbProperty
  anno 0 jakarta.json.bind.annotation.JsonbAnnotation()
  anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
- anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[ANNOTATION_TYPE, METHOD, FIELD, PARAMETER])
+ anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[ANNOTATION_TYPE, METHOD, FIELD, PARAMETER, RECORD_COMPONENT])
 intf java.lang.annotation.Annotation
 meth public abstract !hasdefault boolean nillable()
  anno 0 java.lang.Deprecated(boolean forRemoval=false, java.lang.String since="2.1")

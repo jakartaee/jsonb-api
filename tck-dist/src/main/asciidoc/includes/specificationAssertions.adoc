@@ -1669,7 +1669,7 @@ can be found in 3.19.
 | JSONB:SPEC:JSB-4.3-1
 | 4
 | 4.3
-| If annotations (JsonbNillable or JsonbProperty) on different level apply to the same field (or JavaBean property) or if there is config wide configuration and some annotation (JsonbNillable or JsonbProperty) which apply to the same field (or JavaBean property), the annotation with the smallest scope applies.
+| If the JsonbNillable annotation at different levels applies to the same field (or JavaBean property, or record component) or if there is a config-wide configuration and a JsonbNillable annotation applying to the same target, the annotation with the smallest scope applies.
 | true
 | 
 | false
@@ -1692,17 +1692,6 @@ can be found in 3.19.
 | 4
 | 4.3.1
 | When given object (type or package) is annotated with jakarta.json.bind.annotation.JsonbNillable annotation, the result of null value will be presence of associated property in JSON document with explicit null value.
-| true
-| 
-| false
-| technology
-| active
-| true
-
-| JSONB:SPEC:JSB-4.3.1-2
-| 4
-| 4.3.1
-| The same behavior as JsonbNillable, but only at field, parameter and method (JavaBean property) level is provided by jakarta.json.bind.annotation.JsonbProperty annotation with its nillable parameter. This option is currently deprecated, and it is recommended to use jakarta.json.bind.annotation.JsonbNillable instead.
 | true
 | 
 | false

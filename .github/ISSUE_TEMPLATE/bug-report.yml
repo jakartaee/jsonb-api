@@ -17,7 +17,6 @@ body:
       description: What version of the JSON Bind Spec are you running using?
       options:
         - 3.1.0-M2
-        - 3.1.0-M2
         - 3.1.0-M1
         - 3.0.2
         - 3.0.1

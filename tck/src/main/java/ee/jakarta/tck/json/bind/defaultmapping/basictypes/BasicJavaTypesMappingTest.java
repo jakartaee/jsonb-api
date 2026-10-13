@@ -144,7 +144,7 @@ public class BasicJavaTypesMappingTest {
      * with toString and parseLong methods
      */
     @Test
-    @Disabled("See https://github.com/jakartaee/jsonb-api/issues/180")
+    @Disabled("link: https://github.com/jakartaee/jsonb-api/issues/180 since: 1.0.0")
     public void testLongMapping() {
         MappingTester<Long> longMappingTester = new MappingTester<>(LongContainer.class);
         longMappingTester.test(0L, "0");

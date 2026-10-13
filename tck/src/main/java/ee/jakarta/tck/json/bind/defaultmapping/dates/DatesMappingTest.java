@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2024 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -257,13 +258,31 @@ public class DatesMappingTest {
      * marshalled as and unmarshalled from ISO_DATE_TIME
      */
     @Test
-    @Disabled("See: https://github.com/jakartaee/platform-tck/issues/102")
     public void testGregorianCalendarWithTimeMapping() {
         GregorianCalendar calendar = GregorianCalendar.from(
                 ZonedDateTime.of(LocalDateTime.of(1970, Month.FEBRUARY, 1, 1, 0, 0),
                                  ZoneId.of("GMT")));
-        new MappingTester<>(GregorianCalendarContainer.class).test(calendar,
-                                                                   "\"1970-01-01T01:00:00Z[GMT]\"");
+        new MappingTester<>(GregorianCalendarContainer.class)
+        .setUnmarshallTestPredicate(calendarEquals())
+        .test(calendar, "\"1970-02-01T01:00:00Z[GMT]\"");
+    }
+
+    /**
+     * Helper predicate to compare two {@link Calendar} instances by epoch instant
+     * and time zone offset, avoiding field-mask issues with {@link Calendar#equals(Object)}.
+     *
+     * @param <C> type extending {@link Calendar}
+     * @return BiPredicate checking equality of instant and timezone offset
+     */
+    private static <C extends Calendar> BiPredicate<C, C> calendarEquals() {
+        return (expected, actual) -> {
+            if (expected == null || actual == null) {
+                return expected == actual;
+            }
+            return expected.getTimeInMillis() == actual.getTimeInMillis()
+                    && expected.getTimeZone().getOffset(expected.getTimeInMillis())
+                    == actual.getTimeZone().getOffset(actual.getTimeInMillis());
+        };
     }
 
     /*
@@ -454,8 +473,24 @@ public class DatesMappingTest {
      */
     @Test
     public void testZoneIdMapping() {
-        new MappingTester<>(ZoneIdContainer.class).test(ZoneId.of("UTC"),
-                                                        "\"UTC\"");
+        new MappingTester<>(ZoneIdContainer.class)
+            .test(ZoneId.of("Europe/Paris"), "\"Europe/Paris\"");
+    }
+
+    /*
+     * @testName: testZoneIdMapping
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.5-1; JSONB:SPEC:JSB-3.5.3-4;
+     * JSONB:SPEC:JSB-3.5.3-5
+     *
+     * @test_Strategy: Assert that java.time.ZoneId is correctly handled
+     * and normalized during serialziation.
+     */
+    @Test
+    public void testZoneIdMappingNormalized() {
+        new MappingTester<>(ZoneIdContainer.class)
+            .setUnmarshallTestPredicate((a, b) -> a.normalized().equals(b.normalized()))
+            .test(ZoneId.of("UTC"), "\"Z\"");
     }
 
     /*
@@ -470,6 +505,21 @@ public class DatesMappingTest {
     public void testZoneOffsetMapping() {
         new MappingTester<>(ZoneOffsetContainer.class)
                 .test(ZoneOffset.of("+01:00"), "\"+01:00\"");
+    }
+
+    /*
+     * @testName: testZoneOffsetMapping
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-3.5-1; JSONB:SPEC:JSB-3.5.3-6;
+     * JSONB:SPEC:JSB-3.5.3-7
+     *
+     * @test_Strategy: Assert that java.time.ZoneOffset is correctly handled
+     * and normalized during serialziation.
+     */
+    @Test
+    public void testZoneOffsetMappingNormalized() {
+        new MappingTester<>(ZoneOffsetContainer.class)
+                .test(ZoneOffset.UTC, "\"Z\"");
     }
 
     /*

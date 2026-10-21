@@ -395,20 +395,6 @@ public class Person {
 }
 ----
 
-- On individual properties using @JsonbProperty annotation with nillable=true parameter
-
-[source,java]
-----
-public class Person {
-    @JsonbProperty(nillable=true)
-    private String name;
-
-    private String profession;
-
-    // public getters/setters ...
-}
-----
-
 - Globally using withNullValues method of JsonbConfig class
 
 [source,java]

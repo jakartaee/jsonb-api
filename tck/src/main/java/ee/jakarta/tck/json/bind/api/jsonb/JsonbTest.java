@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2023 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -31,6 +32,7 @@ import java.nio.charset.StandardCharsets;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 
+import ee.jakarta.tck.json.bind.TypeToken;
 import ee.jakarta.tck.json.bind.api.model.SimpleContainer;
 import org.junit.jupiter.api.Test;
 
@@ -79,7 +81,7 @@ public class JsonbTest {
     @Test
     public void testFromJsonStringType() {
         SimpleContainer unmarshalledObject = jsonb
-                .fromJson(TEST_JSON, new SimpleContainer() { }.getClass().getGenericSuperclass());
+                .fromJson(TEST_JSON, new TypeToken<SimpleContainer>() { }.getType());
         assertThat("Failed to unmarshal using Jsonb.fromJson method with String and Type arguments.",
                    unmarshalledObject.getInstance(), is(TEST_STRING));
     }
@@ -115,7 +117,7 @@ public class JsonbTest {
         try (ByteArrayInputStream stream = new ByteArrayInputStream(TEST_JSON_BYTE);
                 InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) { //TEST_JSON uses UTF-8
             SimpleContainer unmarshalledObject = jsonb
-                    .fromJson(reader, new SimpleContainer() { }.getClass().getGenericSuperclass());
+                    .fromJson(reader, new TypeToken<SimpleContainer>() { }.getType());
             assertThat("Failed to unmarshal using Jsonb.fromJson method with Reader and Type arguments.",
                        unmarshalledObject.getInstance(), is(TEST_STRING));
         }
@@ -150,7 +152,7 @@ public class JsonbTest {
     public void testFromJsonStreamType() throws IOException {
         try (ByteArrayInputStream stream = new ByteArrayInputStream(TEST_JSON_BYTE)) {
             SimpleContainer unmarshalledObject = jsonb
-                    .fromJson(stream, new SimpleContainer() { }.getClass().getGenericSuperclass());
+                    .fromJson(stream, new TypeToken<SimpleContainer>() { }.getType());
             assertThat("Failed to unmarshal using Jsonb.fromJson method with InputStream and Type arguments.",
                        unmarshalledObject.getInstance(), is(TEST_STRING));
         }
@@ -181,7 +183,7 @@ public class JsonbTest {
      */
     @Test
     public void testToJsonObjectType() {
-        String jsonString = jsonb.toJson(new SimpleContainer(), new SimpleContainer() { }.getClass().getGenericSuperclass());
+        String jsonString = jsonb.toJson(new SimpleContainer(), new TypeToken<SimpleContainer>() { }.getType());
         assertThat("Failed to marshal using Jsonb.toJson method with Object and Type arguments.",
                    jsonString, matchesPattern(MATCHING_PATTERN));
     }
@@ -217,7 +219,7 @@ public class JsonbTest {
     public void testToJsonObjectTypeWriter() throws IOException {
         try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 OutputStreamWriter writer = new OutputStreamWriter(stream)) {
-            jsonb.toJson(new SimpleContainer(), new SimpleContainer() { }.getClass().getGenericSuperclass(), writer);
+            jsonb.toJson(new SimpleContainer(), new TypeToken<SimpleContainer>() { }.getType(), writer);
             String jsonString = new String(stream.toByteArray(), Charset.defaultCharset()); //Writer uses Default
             assertThat("Failed to marshal using Jsonb.toJson method with Object, Type and Writer arguments.",
                        jsonString, matchesPattern(MATCHING_PATTERN));
@@ -253,7 +255,7 @@ public class JsonbTest {
     @Test
     public void testToJsonObjectTypeStream() throws IOException {
         try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
-            jsonb.toJson(new SimpleContainer(), new SimpleContainer() { }.getClass().getGenericSuperclass(), stream);
+            jsonb.toJson(new SimpleContainer(), new TypeToken<SimpleContainer>() { }.getType(), stream);
             String jsonString = new String(stream.toByteArray(), StandardCharsets.UTF_8);
             assertThat("Failed to marshal using Jsonb.toJson method with Object, Type and OutputStream arguments.",
                        jsonString, matchesPattern(MATCHING_PATTERN));

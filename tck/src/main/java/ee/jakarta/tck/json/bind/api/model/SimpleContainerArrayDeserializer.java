@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -24,6 +25,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import ee.jakarta.tck.json.bind.TypeToken;
 import jakarta.json.bind.serializer.DeserializationContext;
 import jakarta.json.bind.serializer.JsonbDeserializer;
 import jakarta.json.stream.JsonParser;
@@ -38,8 +40,8 @@ public class SimpleContainerArrayDeserializer
             JsonParser.Event event = jsonParser.next();
             if (event == JsonParser.Event.START_OBJECT) {
                 containers
-                        .add(deserializationContext.deserialize(new SimpleContainer() {
-                        }.getClass().getGenericSuperclass(), jsonParser));
+                        .add(deserializationContext.deserialize(new TypeToken<SimpleContainer>() {
+                        }.getType(), jsonParser));
             }
             if (event == JsonParser.Event.END_OBJECT) {
                 break;

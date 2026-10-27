@@ -257,7 +257,7 @@ public class DatesMappingTest {
      * marshalled as and unmarshalled from ISO_DATE_TIME
      */
     @Test
-    @Disabled("See: https://github.com/jakartaee/platform-tck/issues/102")
+    @Disabled("link: https://github.com/jakartaee/platform-tck/issues/102 since: 1.0.0")
     public void testGregorianCalendarWithTimeMapping() {
         GregorianCalendar calendar = GregorianCalendar.from(
                 ZonedDateTime.of(LocalDateTime.of(1970, Month.FEBRUARY, 1, 1, 0, 0),

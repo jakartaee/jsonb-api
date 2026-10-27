@@ -133,7 +133,7 @@ implementation is not required to pass.
 ifndef::no-api-tests[]
 * API tests for all of the {TechnologyShortName} API in all related packages:
 
-include::../includes/packages.adoc[]
+include::../generated/packages.adoc[]
 
 endif::no-api-tests[]
 ifdef::end-to-end-tests[]

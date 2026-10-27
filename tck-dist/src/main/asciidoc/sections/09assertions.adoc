@@ -1,11 +1,15 @@
 == Assertion Details
 
-This section lists the total number of assertions in the TCK, and provides details about each assertion. The assertions are categorized as JavaDoc Assertions and Specification Assertions.
+This section lists the total number of assertions in the TCK, and the expected output from a successful run of the TCK.
 
-=== JavaDoc Assertions
+=== Total Assertions
 
-include::../includes/javadocAssertions.adoc[]
+include::../generated/runtime-tests.adoc[]
 
-=== Specification Assertions
+=== Expected TCK Output
 
-include::../includes/specificationAssertions.adoc[]
+include::../generated/expected-output.adoc[]
+
+=== Expected Signature Test Output
+
+include::../generated/expected-sig-output.adoc[]

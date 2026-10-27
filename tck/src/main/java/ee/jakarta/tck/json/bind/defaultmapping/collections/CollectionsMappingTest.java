@@ -603,7 +603,7 @@ public class CollectionsMappingTest {
      * an error when unmarshalling
      */
     @Test
-    @Disabled("See: https://github.com/jakartaee/platform-tck/issues/103")
+    @Disabled("link: https://github.com/jakartaee/platform-tck/issues/103 since: 1.0.0")
     public void testEnumSet() {
         EnumSet<EnumSetContainer.Enum> instance = EnumSet.allOf(EnumSetContainer.Enum.class);
         String jsonString = jsonb.toJson(new EnumSetContainer() {{
@@ -627,7 +627,7 @@ public class CollectionsMappingTest {
      * an error when unmarshalling
      */
     @Test
-    @Disabled("See: https://github.com/jakartaee/platform-tck/issues/103")
+    @Disabled("link: https://github.com/jakartaee/platform-tck/issues/103 since: 1.0.0")
     public void testEnumMap() {
         EnumMap<EnumSetContainer.Enum, String> instance =
                 new EnumMap<EnumSetContainer.Enum, String>(EnumSetContainer.Enum.class) {{

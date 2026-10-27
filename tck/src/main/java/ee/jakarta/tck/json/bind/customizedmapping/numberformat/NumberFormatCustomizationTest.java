@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2024 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -22,6 +23,7 @@ package ee.jakarta.tck.json.bind.customizedmapping.numberformat;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.annotation.JsonbNumberFormat;
 
 import ee.jakarta.tck.json.bind.customizedmapping.numberformat.model.AccessorCustomizedDoubleContainer;
 import ee.jakarta.tck.json.bind.customizedmapping.numberformat.model.FieldCustomizedDoubleContainer;
@@ -44,6 +46,20 @@ import static org.hamcrest.Matchers.matchesPattern;
 public class NumberFormatCustomizationTest {
 
     private static final String FRENCH_NUMBER = "\"123\\u00a0456,789\"";
+
+    /**
+     * Fields with an explicit {@code locale}; the output must not depend on the JVM default locale.
+     */
+    public static class ExplicitLocaleContainer {
+        @JsonbNumberFormat(value = "###,###.##", locale = "de-DE")
+        public Double deDe;
+
+        @JsonbNumberFormat(value = "###,###.##", locale = "en-US")
+        public Double enUs;
+
+        @JsonbNumberFormat(value = "###,###.##", locale = "pt-BR")
+        public Double ptBr;
+    }
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
@@ -213,6 +229,38 @@ public class NumberFormatCustomizationTest {
         assertThat("Failed to correctly override number format customization using JsonbNumberFormat annotation on "
                            + "package during unmarshalling using JsonbNumberFormat annotation on type.",
                    unmarshalledObject.getInstance(), is(123456.789));
+    }
+
+    /*
+     * @testName: testNumberFormatExplicitLocaleIndependentOfDefaultLocale
+     *
+     * @assertion_ids: JSONB:SPEC:JSB-4.9-1
+     *
+     * @test_Strategy: Assert that JsonbNumberFormat with an explicit locale produces
+     * the same output and parses the same input regardless of the JVM default locale.
+     * The expected values are fixed for each explicit locale, so the test yields the
+     * same result under any default locale.
+     */
+    @Test
+    public void testNumberFormatExplicitLocaleIndependentOfDefaultLocale() {
+        ExplicitLocaleContainer container = new ExplicitLocaleContainer();
+        container.deDe = 123456.789;
+        container.enUs = 123456.789;
+        container.ptBr = 123456.789;
+
+        String jsonString = jsonb.toJson(container);
+        assertThat("Failed to format numbers using the explicit locale of each JsonbNumberFormat annotation.",
+                   jsonString,
+                   matchesPattern("\\{\\s*\"deDe\"\\s*:\\s*\"123\\.456,79\"\\s*,"
+                                          + "\\s*\"enUs\"\\s*:\\s*\"123,456\\.79\"\\s*,"
+                                          + "\\s*\"ptBr\"\\s*:\\s*\"123\\.456,79\"\\s*\\}"));
+
+        ExplicitLocaleContainer unmarshalled = jsonb.fromJson(
+                "{ \"deDe\" : \"123.456,789\", \"enUs\" : \"123,456.789\", \"ptBr\" : \"123.456,789\" }",
+                ExplicitLocaleContainer.class);
+        assertThat("Failed to parse de-DE formatted number using the explicit locale.", unmarshalled.deDe, is(123456.789));
+        assertThat("Failed to parse en-US formatted number using the explicit locale.", unmarshalled.enUs, is(123456.789));
+        assertThat("Failed to parse pt-BR formatted number using the explicit locale.", unmarshalled.ptBr, is(123456.789));
     }
 
 }

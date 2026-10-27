@@ -299,10 +299,13 @@ Any class instance passed to a deserialization operation must have a public or p
 Implementations SHOULD throw an error if this condition is not met.
 This limitation does not apply to serialization operations or to classes which specify explicit instantiation methods as described in the <<custom-instantiation,Custom Instantiation>> section.
 
-Any record instance passed to a deserialization operation is instantiated via its canonical constructor. 
+Any record instance passed to a deserialization operation is instantiated via its canonical constructor.
 A compact constructor whose body is merged into the canonical constructor at compile time is indistinguishable at runtime and corresponds to the same deserialization path.
 Implementations SHOULD throw an error if this condition is not met.
 This limitation does not apply to serialization operations or to records which specify explicit instantiation methods as described in the <<custom-instantiation,Custom Instantiation>> section.
+
+A record type used as the component type of another record, or as a type parameter of a generic type (for example `List<Point>` or `Map<String, Point>`), follows the same default and customized mapping rules as a top-level record, without any additional configuration.
+Type information MUST be resolved through the full generic type signature as described in the <<generics-binding,Generics>> section.
 
 ==== Record Virtual Attributes
 
@@ -520,6 +523,7 @@ Naming strategy can be further customized in customization.
 
 JSON Binding implementation MUST serialize/deserialize numbers that express greater magnitude or precision than an IEEE 754 double precision number as strings.
 
+[[generics-binding]]
 === Generics
 
 JSON Binding implementations MUST support binding of generic types.

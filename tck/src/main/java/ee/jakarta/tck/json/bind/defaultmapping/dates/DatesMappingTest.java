@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2024 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -36,6 +37,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 import java.util.function.BiPredicate;
@@ -547,7 +549,7 @@ public class DatesMappingTest {
 
     private static String getHoursFromUTC(Calendar calendar) {
         int offsetInTenMins = getMinutesFromUTC(calendar);
-        String offset = String.format("%s%02d:%02d",
+        String offset = String.format(Locale.ROOT, "%s%02d:%02d",
                                       offsetInTenMins >= 0 ? "+" : "-", Math.abs(offsetInTenMins / 60),
                                       Math.abs((offsetInTenMins) % 60));
         return offset;

@@ -17,11 +17,11 @@
 package ee.jakarta.tck.json.bind.customizedmapping.records;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ee.jakarta.tck.json.bind.TypeToken;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.annotation.JsonbProperty;
@@ -135,7 +135,7 @@ public class RecordGenericAndNestedCustomizationTest {
     @Test
     public void testCustomizedRecordInListDeserialization() {
         String json = "[{\"town\":\"Lyon\"},{\"town\":\"Paris\"}]";
-        Type listOfAddressType = new ArrayList<CustomizedAddress>() {}.getClass().getGenericSuperclass();
+        Type listOfAddressType = new TypeToken<List<CustomizedAddress>>() { }.getType();
         List<CustomizedAddress> result = jsonb.fromJson(json, listOfAddressType);
         assertThat("Deserialized list must contain two elements.", result, hasSize(2));
         assertThat("First element @JsonbProperty 'town' must map to 'city' component.",
@@ -178,7 +178,7 @@ public class RecordGenericAndNestedCustomizationTest {
     @Test
     public void testCustomizedRecordInMapDeserialization() {
         String json = "{\"home\":{\"town\":\"Lyon\"}}";
-        Type mapType = new HashMap<String, CustomizedAddress>() {}.getClass().getGenericSuperclass();
+        Type mapType = new TypeToken<Map<String, CustomizedAddress>>() { }.getType();
         Map<String, CustomizedAddress> result = jsonb.fromJson(json, mapType);
         assertThat("Deserialized map must contain the 'home' key.",
                    result, hasEntry("home", new CustomizedAddress("Lyon")));

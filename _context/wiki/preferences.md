@@ -23,6 +23,7 @@ These apply to every file touched in this repository.
 - Tests are Arquillian + JUnit 5; follow the patterns in existing test classes
 - Test class names mirror the behaviour under test (e.g. `CustomizedMappingTest`)
 - Add tests in the same PR as the API and spec changes — do not defer coverage
+- Use `ee.jakarta.tck.json.bind.TypeToken` to create generic `Type` instances for tests (e.g. `new TypeToken<GenericContainer<String>>() { }.getType()`) instead of creating arbitrary anonymous subclasses
 
 ---
 

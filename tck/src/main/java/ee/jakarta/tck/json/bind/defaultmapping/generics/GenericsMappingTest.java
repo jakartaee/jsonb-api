@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -30,6 +31,7 @@ import java.util.Map;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 
+import ee.jakarta.tck.json.bind.TypeToken;
 import ee.jakarta.tck.json.bind.defaultmapping.generics.model.CollectionContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.generics.model.GenericContainer;
 import ee.jakarta.tck.json.bind.defaultmapping.generics.model.MultipleBoundsContainer;
@@ -70,7 +72,7 @@ public class GenericsMappingTest {
         assertThat("Failed to marshal generic object with String attribute value.",
                    jsonString, matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*\"Test String\"\\s*\\}"));
 
-        Type runtimeType = new GenericContainer<String>() { }.getClass().getGenericSuperclass();
+        Type runtimeType = new TypeToken<GenericContainer<String>>() { }.getType();
         GenericContainer<String> unmarshalledObject = jsonb.fromJson("{ \"instance\" : \"Test String\" }", runtimeType);
         assertThat("Failed to unmarshal generic object with String attribute value.",
                    unmarshalledObject.getInstance(), is("Test String"));
@@ -164,7 +166,7 @@ public class GenericsMappingTest {
         }});
         assertThat("Failed to marshal object with bounded Number attribute.",
                    jsonString, matchesPattern("\\{\\s*\"instance\"\\s*\\:\\s*" + Integer.MAX_VALUE + "\\s*\\}"));
-        Type runtimeType = new NumberContainer<Integer>() { }.getClass().getGenericSuperclass();
+        Type runtimeType = new TypeToken<NumberContainer<Integer>>() { }.getType();
         NumberContainer<Integer> unmarshalledObject = jsonb.fromJson("{ \"instance\" : " + Integer.MAX_VALUE + " }", runtimeType);
         assertThat("Failed to unmarshal object with bounded Number attribute.",
                    unmarshalledObject.getInstance(), is(Integer.MAX_VALUE));
@@ -187,7 +189,7 @@ public class GenericsMappingTest {
         container.setInstance(new ArrayList<>());
         container.getInstance().add(list);
 
-        final Type type = new MultipleBoundsContainer<LinkedList<String>>() { }.getClass().getGenericSuperclass();
+        final Type type = new TypeToken<MultipleBoundsContainer<LinkedList<String>>>() { }.getType();
         String jsonString = jsonb.toJson(container, type);
         assertThat("Failed to marshal object with multiple bounded attribute.",
                    jsonString,

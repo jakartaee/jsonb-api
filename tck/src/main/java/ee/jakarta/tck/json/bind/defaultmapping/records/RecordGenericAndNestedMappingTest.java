@@ -17,11 +17,11 @@
 package ee.jakarta.tck.json.bind.defaultmapping.records;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ee.jakarta.tck.json.bind.TypeToken;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 
@@ -86,7 +86,7 @@ public class RecordGenericAndNestedMappingTest {
     @Test
     public void testListOfRecordsDeserialization() {
         String json = "[{\"x\":1,\"y\":2},{\"x\":3,\"y\":4}]";
-        Type listOfPointType = new ArrayList<Point>() {}.getClass().getGenericSuperclass();
+        Type listOfPointType = new TypeToken<List<Point>>() { }.getType();
         List<Point> result = jsonb.fromJson(json, listOfPointType);
         assertThat("Deserialized list must contain two elements.", result, hasSize(2));
         assertThat("First element x must be 1.", result.get(0).x(), is(1));
@@ -126,7 +126,7 @@ public class RecordGenericAndNestedMappingTest {
     @Test
     public void testMapWithRecordValueDeserialization() {
         String json = "{\"origin\":{\"x\":0,\"y\":0}}";
-        Type mapType = new HashMap<String, Point>() {}.getClass().getGenericSuperclass();
+        Type mapType = new TypeToken<Map<String, Point>>() { }.getType();
         Map<String, Point> result = jsonb.fromJson(json, mapType);
         assertThat("Deserialized map must contain the 'origin' key.", result, hasEntry("origin", new Point(0, 0)));
     }

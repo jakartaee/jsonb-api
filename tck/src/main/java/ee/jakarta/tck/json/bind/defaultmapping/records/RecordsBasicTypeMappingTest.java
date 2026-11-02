@@ -220,7 +220,7 @@ public class RecordsBasicTypeMappingTest {
     @Test
     public void testNumberMapping() {
         new SimpleMappingTester<>(NumberContainer.class, NumberContainer.class).test(
-                new NumberContainer(0), "\\{\\s*\"instance\"\\s*:\\s*0[\\.0]?+\\s*}",
+                new NumberContainer(0), "\\{\\s*\"instance\"\\s*:\\s*0(\\.0)?+\\s*}",
                 "{ \"instance\" : 0 }", new NumberContainer(new BigDecimal("0")));
     }
 

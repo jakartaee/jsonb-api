@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2024 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -218,7 +219,7 @@ public class BasicJavaTypesMappingTest {
     @Test
     public void testNumberMapping() {
         new SimpleMappingTester<>(NumberContainer.class, TypeContainer.class).test(
-                new NumberContainer(), "\\{\\s*\"instance\"\\s*:\\s*0[\\.0]?+\\s*}",
+                new NumberContainer(), "\\{\\s*\"instance\"\\s*:\\s*0(\\.0)?+\\s*}",
                 "{ \"instance\" : 0 }", new NumberContainer() {
                     {
                         setInstance(new BigDecimal("0"));

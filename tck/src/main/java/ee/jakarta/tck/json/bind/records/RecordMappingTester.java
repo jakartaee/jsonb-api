@@ -137,7 +137,7 @@ public class RecordMappingTester<T> {
                 return fixedRegExp;
             }
             // value Float.MAX_VALUE can have E38 or E+38, depending on impl
-            representation = representation.replace("E38", "E[\\+]?\\+38");
+            representation = representation.replace("E38", "E[\\+]?38");
             if (!Number.class.isInstance(testValue)) {
                 representation = Pattern.quote(representation);
                 // quote numbers that do not fit into double decimal precision

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -126,7 +127,7 @@ public class MappingTester<T> {
             return fixedRegExp;
         }
         // value Float.MAX_VALUE can have E38 or E+38, depending on impl
-        representation = representation.replace("E38", "E[\\+]?\\+38");
+        representation = representation.replace("E38", "E[\\+]?38");
         if (!Number.class.isInstance(testValue)) {
             representation = Pattern.quote(representation);
             // quote numbers that do not fit into double decimal precision
